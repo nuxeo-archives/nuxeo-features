@@ -356,5 +356,4 @@ public class QueryModelTestCase extends RepositoryOSGITestCase {
                 descriptor.getQuery(documentModelWithFixedPart));
     }
 
-    // TODO: add tests for the batching clause
 }
