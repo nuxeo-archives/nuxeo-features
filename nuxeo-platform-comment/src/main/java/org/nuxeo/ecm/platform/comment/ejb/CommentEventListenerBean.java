@@ -158,12 +158,13 @@ public class CommentEventListenerBean implements MessageListener {
 
             QNameResource resource = (QNameResource) stmt.getSubject();
             String commentId = resource.getLocalName();
-            DocumentModel docModel = (DocumentModel) relationManager.getResourceRepresentation(
+
+            Object docModel = relationManager.getResourceRepresentation(
                     config.commentNamespace, resource);
 
-            if (docModel != null) {
+            if (docModel instanceof DocumentModel) {
                 try {
-                    mySession.removeDocument(docModel.getRef());
+                    mySession.removeDocument(((DocumentModel) docModel).getRef());
                     log.debug("comment removal succeded for id: " + commentId);
                 } catch (Exception e) {
                     log.error("comment removal failed", e);

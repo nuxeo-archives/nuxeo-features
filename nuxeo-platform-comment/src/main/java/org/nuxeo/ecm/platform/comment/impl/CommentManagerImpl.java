@@ -151,20 +151,20 @@ public class CommentManagerImpl implements CommentManager {
         for (Statement stmt : statementList) {
             QNameResourceImpl subject = (QNameResourceImpl) stmt.getSubject();
 
-            DocumentModel commentDocModel = null;
+            Object commentDocModel = null;
             try {
-                commentDocModel = (DocumentModel) relationManager.getResourceRepresentation(
+                commentDocModel = relationManager.getResourceRepresentation(
                         config.commentNamespace, subject);
             } catch (Exception e) {
                 log.error("failed to retrieve commentDocModel from relations");
             }
-            if (commentDocModel == null) {
+            if (!(commentDocModel instanceof DocumentModel)) {
                 // XXX AT: maybe user cannot see the comment
                 log.error("Could not adapt comment relation subject to a document "
                         + "model; check the service relation adapters configuration");
                 continue;
             }
-            commentList.add(commentDocModel);
+            commentList.add((DocumentModel) commentDocModel);
         }
         return commentList;
     }
@@ -194,8 +194,8 @@ public class CommentManagerImpl implements CommentManager {
      * @param comment The comment to update
      * @throws ClientException
      */
-    private static String updateAuthor(DocumentModel docModel, DocumentModel comment)
-            throws ClientException {
+    private static String updateAuthor(DocumentModel docModel,
+            DocumentModel comment) throws ClientException {
         // update the author if not set
         String author = (String) comment.getProperty("comment", "author");
         if (author == null) {
@@ -344,10 +344,11 @@ public class CommentManagerImpl implements CommentManager {
 
     private static void setCommentPermissions(DocumentModel dm) {
         ACP acp = new ACPImpl();
-        ACE grantRead = new ACE(SecurityConstants.EVERYONE, SecurityConstants.READ, true);
+        ACE grantRead = new ACE(SecurityConstants.EVERYONE,
+                SecurityConstants.READ, true);
         ACE grantRemove = new ACE("members", SecurityConstants.REMOVE, true);
         ACL acl = new ACLImpl();
-        acl.setACEs(new ACE[] { grantRead,grantRemove });
+        acl.setACEs(new ACE[] { grantRead, grantRemove });
         acp.addACL(acl);
         dm.setACP(acp, true);
     }
@@ -368,7 +369,8 @@ public class CommentManagerImpl implements CommentManager {
      * @deprecated if the caller is remote, we cannot obtain the session
      */
     @Deprecated
-    private static String getCurrentUser(DocumentModel target) throws ClientException {
+    private static String getCurrentUser(DocumentModel target)
+            throws ClientException {
         String sid = target.getSessionId();
         CoreSession userSession = getUserSession(sid);
         if (userSession == null) {

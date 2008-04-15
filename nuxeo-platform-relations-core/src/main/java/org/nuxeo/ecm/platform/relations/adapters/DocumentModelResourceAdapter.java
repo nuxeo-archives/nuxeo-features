@@ -27,6 +27,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.IdRef;
+import org.nuxeo.ecm.core.api.impl.DocumentLocationImpl;
 import org.nuxeo.ecm.core.api.repository.Repository;
 import org.nuxeo.ecm.core.api.repository.RepositoryManager;
 import org.nuxeo.ecm.platform.relations.api.QNameResource;
@@ -36,7 +37,11 @@ import org.nuxeo.ecm.platform.relations.api.impl.QNameResourceImpl;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * Resource adapter using the document model id.
+ * Resource adapter using the document model id and repository name.
+ * <p>
+ * Returns the document model if it exists and current user can access it,
+ * otherwise returns the DocumentLocation.
+ * </p>
  *
  * @author <a href="mailto:at@nuxeo.com">Anahide Tchertchian</a>
  *
@@ -58,17 +63,21 @@ public class DocumentModelResourceAdapter extends AbstractResourceAdapter
                 String uid = null;
                 String localName = ((QNameResource) resource).getLocalName();
                 int index = localName.indexOf("/");
+                String repositoryName = null;
                 if (index == -1) {
                     // BBB for when repository name was not included in the
                     // local name
                     repo = mgr.getDefaultRepository();
+                    repositoryName = repo.getName();
                     uid = localName;
                 } else {
-                    String repositoryName = localName.substring(0, index);
+                    repositoryName = localName.substring(0, index);
                     repo = mgr.getRepository(repositoryName);
                     uid = localName.substring(index + 1);
                 }
                 DocumentRef ref = new IdRef(uid);
+                // NXP-2289: set it at least to the document location
+                object = new DocumentLocationImpl(repositoryName, ref);
                 session = repo.open();
                 object = session.getDocument(ref);
             } catch (ClientException e) {
