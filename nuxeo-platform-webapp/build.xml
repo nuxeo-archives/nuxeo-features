@@ -3,14 +3,52 @@
 
   <import file="../../build.xml" />
   <property file="build.properties" />
+  <property name="webapp.name" value="nuxeo-platform-webapp" />
+  <property name="webappcore.name" value="nuxeo-platform-webapp" />
+  <property name="build.dir" value="${basedir}/target" />
+  <property name="parent.dir" value="${basedir}/.." />
 
-
-  <target name="deploy-web-live" depends="web"/>
-  <target name="web" description="Deploy Web components to the live ECM"
-    depends="setproperties">
+  <target name="deploy-web-live" depends="web" />
+  <target name="web" description="Deploy Web components to the live ECM" depends="setproperties">
     <copy todir="${jboss.nuxeo.ear}/nuxeo.war">
       <fileset dir="${basedir}/src/main/resources/nuxeo.war" />
     </copy>
+  </target>
+
+  <target name="deploy-webapp" depends="install-webapp,install-webappcore,copy" description="Build and copy to JBoss" />
+
+  <target name="install-webapp" description="Build">
+    <exec executable="mvn" failonerror="true">
+      <arg value="install" />
+      <arg value="-Dmaven.test.skip=true" />
+    </exec>
+  </target>
+  <target name="install-webappcore" description="Build">
+    <exec executable="mvn" failonerror="true">
+      <arg value="-f" />
+      <arg value="../nuxeo-platform-webapp-core/pom.xml" />
+      <arg value="install" />
+      <arg value="-Dmaven.test.skip=true" />
+    </exec>
+  </target>
+
+  <target name="copy" description="Copy files to JBoss">
+    <delete>
+      <!-- delete old versions of the project -->
+      <fileset file="${deploy.dir}/nuxeo.ear/${webapp.name}-*.jar" />
+      <fileset file="${deploy.dir}/nuxeo.ear/${webappcore.name}-*.jar" />
+    </delete>
+    <copy todir="${deploy.dir}/nuxeo.ear/" overwrite="true">
+      <fileset dir="${build.dir}" casesensitive="yes">
+        <include name="${webapp.name}-*.jar" />
+        <exclude name="${webapp.name}-*-sources.jar" />
+      </fileset>
+      <fileset dir="${parent.dir}/nuxeo-platform-webapp-core/target" casesensitive="yes">
+        <include name="${webappcore.name}-*.jar" />
+        <exclude name="${webappcore.name}-*-sources.jar" />
+      </fileset>
+    </copy>
+    <!-- Could copy other files to .../config too -->
   </target>
 
 </project>

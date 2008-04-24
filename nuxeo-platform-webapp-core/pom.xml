@@ -9,7 +9,7 @@
 
   <artifactId>nuxeo-platform-webapp-core</artifactId>
   <packaging>ejb</packaging>
-  <name>Nuxeo WebApp - Base</name>
+  <name>Nuxeo WebApp - Core</name>
   <description>
     Nuxeo Enterprise Platform: WebApp Core. This is the base of the Web UI for
     Nuxeo EP.
