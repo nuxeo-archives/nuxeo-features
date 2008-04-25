@@ -79,6 +79,32 @@
       <resource>screen.css</resource>
     </view>
 
+    <view name="nuxeo5 user identity">
+      <format-type>widget</format-type>
+      <class>org.nuxeo.theme.jsf.views.JSFView</class>
+      <template>incl/user_identity.xhtml</template>
+      <!-- TODO: remove later -->
+      <resource>screen.css</resource>
+    </view>
+
+    <view name="nuxeo5 general actions">
+      <format-type>widget</format-type>
+      <class>org.nuxeo.theme.jsf.views.JSFView</class>
+      <template>incl/general_actions.xhtml</template>
+    </view>
+
+    <view name="nuxeo5 main configuration">
+      <format-type>widget</format-type>
+      <class>org.nuxeo.theme.jsf.views.JSFView</class>
+      <template>incl/main_config.xhtml</template>
+    </view>
+
+    <view name="nuxeo5 search">
+      <format-type>widget</format-type>
+      <class>org.nuxeo.theme.jsf.views.JSFView</class>
+      <template>incl/search.xhtml</template>
+    </view>
+
     <view name="nuxeo5 breadcrumbs">
       <format-type>widget</format-type>
       <class>org.nuxeo.theme.jsf.views.JSFView</class>

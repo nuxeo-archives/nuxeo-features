@@ -1,0 +1,13 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<div class="userServices"><ui:insert name="user">
+  <h:form>
+
+    <h:outputText value="#{messages['label.loggedAsUser']}" />
+    <h:commandLink value="#{messages['command.logout']}" action="#{loginLogoutAction.logout}" />
+
+  </h:form>
+</ui:insert></div>
+
+</div>
