@@ -426,8 +426,26 @@
     </navigation-case>
 
     <navigation-case>
+      <from-outcome>homepage</from-outcome>
+      <to-view-id>/homepage.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+
+    <navigation-case>
       <from-outcome>user_dashboard</from-outcome>
       <to-view-id>/user_dashboard.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>user_history</from-outcome>
+      <to-view-id>/user_history.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+
+    <navigation-case>
+      <from-outcome>recycle_bin</from-outcome>
+      <to-view-id>/recycle_bin.xhtml</to-view-id>
       <redirect />
     </navigation-case>
 

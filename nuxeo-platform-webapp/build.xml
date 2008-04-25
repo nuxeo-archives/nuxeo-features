@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="nuxeo webapp" default="deploy-web-live" basedir=".">
+<project name="nuxeo webapp" default="deploy-all-webapp" basedir=".">
 
   <import file="../../build.xml" />
   <property file="build.properties" />
@@ -15,15 +15,18 @@
     </copy>
   </target>
 
-  <target name="deploy-webapp" depends="install-webapp,install-webappcore,copy" description="Build and copy to JBoss" />
+  <target name="deploy-all-webapp" depends="install-webapp,install-webappcore,copy" description="Build and copy all to JBoss" />
+  <target name="deploy-webapp" depends="install-webapp,copy" description="Build and copy Webapp to JBoss" />
+  <target name="deploy-webappcore" depends="install-webappcore,copy" description="Build and copy Webappcore to JBoss" />
 
-  <target name="install-webapp" description="Build">
+  <target name="install-webapp" description="Build Webapp">
     <exec executable="mvn" failonerror="true">
       <arg value="install" />
       <arg value="-Dmaven.test.skip=true" />
     </exec>
   </target>
-  <target name="install-webappcore" description="Build">
+
+  <target name="install-webappcore" description="Build Webappcore">
     <exec executable="mvn" failonerror="true">
       <arg value="-f" />
       <arg value="../nuxeo-platform-webapp-core/pom.xml" />

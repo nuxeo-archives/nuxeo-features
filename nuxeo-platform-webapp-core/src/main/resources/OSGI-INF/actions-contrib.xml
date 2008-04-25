@@ -5,14 +5,45 @@
 
     <!-- server actions -->
 
+    <action id="default_view" link="homepage" enabled="true"
+      label="command.page.homepage" order="10">
+      <category>PAGES_SERVICES</category>
+    </action>
+
     <action id="user_dashboard" link="user_dashboard" enabled="true"
-      label="command.user_dashboard" order="10">
-      <category>USER_SERVICES</category>
+      label="command.user_dashboard" order="20">
+      <category>PAGES_SERVICES</category>
       <filter id="user_dashboard_enabled">
         <rule grant="true">
           <condition>#{userServicesContext.dashboardEnabled}</condition>
         </rule>
       </filter>
+    </action>
+
+    <action id="user_history" link="user_history" enabled="true"
+      label="command.page.user_history" order="30">
+      <category>PAGES_SERVICES</category>
+    </action>
+
+    <action id="recycle_bin" link="recycle_bin" enabled="true"
+      label="command.page.recycle_bin" order="40">
+      <category>PAGES_SERVICES</category>
+      <filter id="viewTrash">
+        <rule grant="true">
+          <condition>#{deleteActions.trashManagementEnabled}}</condition>
+        </rule>
+      </filter>
+    </action>
+
+    <action id="preferences" link="preferences" enabled="true"
+      label="command.config.preferences" order="10">
+      <category>CONFIG_SERVICES</category>
+    </action>
+
+    <action id="administration" link="administration" enabled="true"
+      label="command.config.administration" order="20">
+      <category>CONFIG_SERVICES</category>
+      <filter-id>only_for_manager</filter-id>
     </action>
 
     <action id="logout" link="#{loginLogoutAction.logout}" enabled="true"
@@ -447,27 +478,27 @@
       <filter-id>mutable_document</filter-id>
       <filter-id>can_unlock</filter-id>
     </action>
-    
-    
+
+
     <!-- live edit new document creation links -->
-    
+
     <!-- WARNING: the following declaration are not yet used by incl/liveedit_create_actions.xhtml
          since nxh:outputLink is not able to perform nested JSF-EL for the link/value attribute
-         as this case for the action attribute of nxh:commandLink 
+         as this case for the action attribute of nxh:commandLink
      -->
-    
+
     <action id="le_create_msword" link="#{nxd:liveCreateUrl('application/msword',
      'File', 'file', 'content', 'filename')}" enabled="true"
       order="40" label="action.liveedit.create.msword" icon="/icons/doc.png">
       <category>LIVEEDIT_CREATE_ACTIONS</category>
     </action>
-    
+
     <action id="le_create_msexcel" link="#{nxd:liveCreateUrl('application/vnd.ms-excel',
      'File', 'file', 'content', 'filename')}" enabled="true"
       order="50" label="action.liveedit.create.msexcel" icon="/icons/xls.png">
       <category>LIVEEDIT_CREATE_ACTIONS</category>
-    </action>    
-    
+    </action>
+
     <action id="le_create_mspowerpoint" link="#{nxd:liveCreateUrl('application/vnd.ms-powerpoint',
      'File', 'file', 'content', 'filename')}" enabled="true"
       order="60" label="action.liveedit.create.mspowerpoint" icon="/icons/ppt.png">

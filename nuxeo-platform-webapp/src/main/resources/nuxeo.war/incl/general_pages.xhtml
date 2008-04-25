@@ -6,14 +6,16 @@
   xmlns:nxu="http://nuxeo.org/nxweb/util"
   xmlns:s="http://jboss.com/products/seam/taglib">
 
-<div class="generalPages">
-<ul>
-<li>Home</li>
-<li>Dashboard</li>
-<li>Default</li>
-<li>History</li>
-<li>Recycle Bin</li>
-</ul>
-</div>
+<div class="generalPages"><nxu:methodResult name="actions"
+  value="#{webActions.getActionsList('PAGES_SERVICES')}">
+  <nxu:dataList layout="simple" var="action" value="#{actions}"
+    rowIndexVar="row" rowCountVar="rowCount">
+    <h:outputText value=" | " rendered="#{row!=(rowCount-1)}" />
+    <nxh:commandLink action="#{action.getLink()}">
+      <t:htmlTag value="br" rendered="#{row==(rowCount-1)}" />
+      <h:outputText value="#{messages[action.label]}" />
+    </nxh:commandLink>
+  </nxu:dataList>
+</nxu:methodResult></div>
 
 </div>
