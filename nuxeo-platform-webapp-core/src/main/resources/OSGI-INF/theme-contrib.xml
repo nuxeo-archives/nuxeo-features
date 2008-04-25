@@ -87,10 +87,10 @@
       <resource>screen.css</resource>
     </view>
 
-    <view name="nuxeo5 general actions">
+    <view name="nuxeo5 general pages">
       <format-type>widget</format-type>
       <class>org.nuxeo.theme.jsf.views.JSFView</class>
-      <template>incl/general_actions.xhtml</template>
+      <template>incl/general_pages.xhtml</template>
     </view>
 
     <view name="nuxeo5 main configuration">
