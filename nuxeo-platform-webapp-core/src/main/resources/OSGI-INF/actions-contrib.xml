@@ -5,8 +5,13 @@
 
     <!-- server actions -->
 
-    <action id="default_view" link="homepage" enabled="true"
-      label="command.page.homepage" order="10">
+    <action id="home_page" link="homepage" enabled="true"
+      label="command.page.homepage" order="0">
+      <category>PAGES_SERVICES</category>
+    </action>
+
+    <action id="default_page" link="default_page" enabled="true"
+      label="command.page.default" order="10">
       <category>PAGES_SERVICES</category>
     </action>
 

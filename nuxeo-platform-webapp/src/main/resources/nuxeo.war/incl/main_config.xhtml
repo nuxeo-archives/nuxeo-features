@@ -12,7 +12,6 @@
     rowIndexVar="row" rowCountVar="rowCount">
     <h:outputText value=" | " rendered="#{row!=(rowCount-1)}" />
     <nxh:commandLink action="#{action.getLink()}">
-      <t:htmlTag value="br" rendered="#{row==(rowCount-1)}" />
       <h:outputText value="#{messages[action.label]}" />
     </nxh:commandLink>
   </nxu:dataList>
