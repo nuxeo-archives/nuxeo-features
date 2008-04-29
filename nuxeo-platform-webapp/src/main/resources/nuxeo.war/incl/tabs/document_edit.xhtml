@@ -10,6 +10,7 @@
   <c:if test="#{!empty documentActions.changeableDocumentType.layout}">
     <ui:include src="/incl/document_editor.xhtml" />
   </c:if>
+
   <c:if test="#{empty documentActions.changeableDocumentType.layout}">
     <nxl:documentLayout mode="edit" value="#{changeableDocument}" />
     <ui:include src="/incl/document_versioning.xhtml" />
@@ -22,4 +23,5 @@
   </p>
 
 </h:form>
+
 </div>

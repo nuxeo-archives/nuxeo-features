@@ -128,7 +128,8 @@
             rendered="#{!provider.sortable}" />
           </h:panelGroup>
         </f:facet>
-        <h:outputText value="#{nxu:userFullName(row.data.dublincore.creator)}" />
+        <h:commandLink value="#{nxu:userFullName(row.data.dublincore.creator)}"
+            action="#{userManagerActions.viewUser(row.data.dublincore.creator)}" />
       </h:column>
 
       <!--  Life cycle -->
@@ -154,6 +155,22 @@
         <h:outputText value="#{messages[row.data.currentLifeCycleState]}" />
       </h:column>
 
+      <!--  File download -->
+      <h:column>
+        <f:facet name="header">
+          <h:panelGroup>
+            <h:outputText value="#{messages['label.content.header.download']}" />
+          </h:panelGroup>
+        </f:facet>
+        <h:outputLink
+          value="#{nxd:fileUrl('downloadFile', row.data, 'file:content', row.data.file.filename)}">
+          <nxu:graphicImage
+            value="/icons/download.gif" alt="#{row.data.file.filename}" title="#{row.data.file.filename}"
+            rendered="#{row.data.file.filename != null}">
+          </nxu:graphicImage>
+        </h:outputLink>
+      </h:column>
+
       <!-- Live edit -->
       <nxu:column styleClass="iconColumn">
         <nxu:methodResult name="editable"
@@ -171,7 +188,7 @@
     <ui:include src="/pagination/pageNavigationControls.xhtml" />
 
     <ui:insert name="buttons" />
-    
+
     <f:subview rendered="#{currentDocument.folder or currentDocument.type == 'section'}">
       <ui:include src="/incl/syndication_buttons.xhtml">
         <ui:param name="type" value="document" />

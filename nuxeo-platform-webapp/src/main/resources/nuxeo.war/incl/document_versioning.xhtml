@@ -8,6 +8,10 @@
 
 <br />
 
+
+  <t:htmlTag value="h3" rendered="#{renderVersioningOptionsForCurrentDocument}"><h:outputText
+      value="#{messages['label.versioning.versionsManagement']}" /></t:htmlTag>
+
   <h:outputText
     value="#{currentDocumentIncrementationRules}" rendered="#{not empty currentDocumentIncrementationRules}"/>
 
@@ -33,15 +37,15 @@
     <h:outputText value="" />
     <h:outputText value="" />
 
-    <h:selectBooleanCheckbox id="createSnapshot" 
-      label="#{messages['label.versioning.createSnapshot']}" 
+    <h:selectBooleanCheckbox id="createSnapshot"
+      label="#{messages['label.versioning.createSnapshot']}"
       value="#{documentVersioning.createSnapshot}"
       rendered="#{documentVersioning.displayCreateSnapshotOption}">
     </h:selectBooleanCheckbox>
-    <h:outputLabel for="createSnapshot" 
+    <h:outputLabel for="createSnapshot"
       rendered="#{documentVersioning.displayCreateSnapshotOption}">#{messages['label.versioning.createSnapshot']}</h:outputLabel>
     <br/>
-      
+
   </h:panelGrid>
 
 </div>

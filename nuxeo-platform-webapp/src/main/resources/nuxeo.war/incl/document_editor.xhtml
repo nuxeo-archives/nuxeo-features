@@ -5,7 +5,8 @@
   xmlns:c="http://java.sun.com/jstl/core"
   xmlns:t="http://myfaces.apache.org/tomahawk"
   xmlns:nxdir="http://nuxeo.org/nxdirectory"
-  xmlns:nxu="http://nuxeo.org/nxweb/util">
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:nxl="http://nuxeo.org/nxforms/layout">
 
 <f:subview rendered="false">
   XXX AT: wrap table in another table to avoid table reset,
@@ -82,6 +83,14 @@
 
 </h:column>
 </h:dataTable>
+
+
+<ui:include src="/incl/document_files_editor.xhtml" />
+
+<h3><h:outputText
+    value="#{messages['label.content.header.metadata']}" /></h3>
+    
+<nxl:layout name="dublincore" mode="edit" value="#{currentDocument}" />
 
 <ui:include src="/incl/document_versioning.xhtml" />
 
