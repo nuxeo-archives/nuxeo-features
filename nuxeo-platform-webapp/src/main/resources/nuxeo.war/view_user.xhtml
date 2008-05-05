@@ -126,6 +126,16 @@
       <!-- outer tabsContent -->
 
     </h:form>
+
+    <nxu:methodResult name="provider"
+      value="#{resultsProvidersCache.get('USER_DOCUMENTS')}">
+      <ui:include src="/incl/user_last_documents.xhtml">
+        <ui:param name="documents" value="#{provider.currentPage}" />
+        <ui:param name="provider" value="#{provider}" />
+        <ui:param name="idParam" value="USER_DOCUMENTS" />
+      </ui:include>
+    </nxu:methodResult>
+
   </ui:define>
 
 </nxthemes:composition>
