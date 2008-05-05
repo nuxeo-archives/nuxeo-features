@@ -25,6 +25,11 @@
       <src>themes/theme-alternative.xml</src>
     </theme>
 
+    <theme>
+      <src>file:///Users/lise/mercurial/nuxeo/nuxeo-platform/nuxeo-platform-webapp-core/src/main/resources/themes/theme-default.xml</src>
+    </theme>
+
+
 
   </extension>
 

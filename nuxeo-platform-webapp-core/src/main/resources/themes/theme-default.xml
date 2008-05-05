@@ -8,7 +8,13 @@
           <fragment type="generic fragment"/>
         </cell>
         <cell>
-          <!-- user services -->
+          <fragment type="generic fragment"/>
+        </cell>
+        <cell>
+          <fragment type="generic fragment"/>
+          <fragment type="generic fragment"/>
+        </cell>
+        <cell>
           <fragment type="generic fragment"/>
         </cell>
         <cell>
@@ -54,7 +60,13 @@
           <fragment type="generic fragment"/>
         </cell>
         <cell>
-          <!-- user services -->
+          <fragment type="generic fragment"/>
+        </cell>
+        <cell>
+          <fragment type="generic fragment"/>
+          <fragment type="generic fragment"/>
+        </cell>
+        <cell>
           <fragment type="generic fragment"/>
         </cell>
         <cell>
@@ -131,15 +143,13 @@
       <width>100%</width>
     </layout>
     <layout element="page[1]/section[1]/cell[1]">
-      <width>18%</width>
-      <text-align>center</text-align>
+      <width>8%</width>
     </layout>
     <layout element="page[1]/section[1]/cell[2]">
-      <width>82%</width>
-      <text-align>right</text-align>
-      <padding>0px 10px 0px 0px</padding>
+      <width>15%</width>
+      <padding>20px 10px 0px 0px</padding>
     </layout>
-    <layout element="page[1]/section[1]/cell[3]">
+    <layout element="page[1]/section[1]/cell[5]">
       <width>0%</width>
     </layout>
     <layout element="page[1]/section[2]">
@@ -177,15 +187,13 @@
       <width>100%</width>
     </layout>
     <layout element="page[3]/section[1]/cell[1]">
-      <width>18%</width>
-      <text-align>center</text-align>
+      <width>8%</width>
     </layout>
     <layout element="page[3]/section[1]/cell[2]">
-      <width>82%</width>
-      <text-align>right</text-align>
-      <padding>0px 10px 0px 0px</padding>
+      <width>15%</width>
+      <padding>20px 10px 0px 0px</padding>
     </layout>
-    <layout element="page[3]/section[1]/cell[3]">
+    <layout element="page[3]/section[1]/cell[5]">
       <width>0%</width>
     </layout>
     <layout element="page[3]/section[2]">
@@ -217,6 +225,26 @@
       <width>100%</width>
     </layout>
     <layout element="page[4]/section[1]/cell[1]"/>
+    <layout element="page[1]/section[1]/cell[3]">
+      <width>50%</width>
+      <text-align>center</text-align>
+      <padding>20px 0px 0px 0px</padding>
+    </layout>
+    <layout element="page[1]/section[1]/cell[4]">
+      <width>20%</width>
+      <text-align>right</text-align>
+      <padding>20px 0px 0px 0px</padding>
+    </layout>
+    <layout element="page[3]/section[1]/cell[4]">
+      <width>20%</width>
+      <text-align>right</text-align>
+      <padding>20px 0px 0px 0px</padding>
+    </layout>
+    <layout element="page[3]/section[1]/cell[3]">
+      <width>50%</width>
+      <text-align>center</text-align>
+      <padding>20px 0px 0px 0px</padding>
+    </layout>
     <widget element="">
       <view>theme view</view>
       <icon>/nuxeo/icons/favicon.png</icon>
@@ -228,16 +256,13 @@
     <widget element="page[1]/section[1]|page[1]/section[2]|page[1]/section[3]|page[2]/section[1]|page[3]/section[1]|page[3]/section[2]|page[3]/section[3]|page[3]/section[4]|page[4]/section[1]">
       <view>section frame</view>
     </widget>
-    <widget element="page[1]/section[1]/cell[1]|page[1]/section[1]/cell[2]|page[1]/section[1]/cell[3]|page[1]/section[3]/cell[1]|page[2]/section[1]/cell[1]|page[3]/section[1]/cell[1]|page[3]/section[1]/cell[2]|page[3]/section[1]/cell[3]|page[3]/section[2]/cell[1]|page[3]/section[3]/cell[1]|page[3]/section[3]/cell[2]|page[3]/section[4]/cell[1]|page[4]/section[1]/cell[1]">
+    <widget element="page[1]/section[1]/cell[1]|page[1]/section[1]/cell[2]|page[1]/section[1]/cell[5]|page[1]/section[3]/cell[1]|page[2]/section[1]/cell[1]|page[3]/section[1]/cell[1]|page[3]/section[1]/cell[2]|page[3]/section[1]/cell[5]|page[3]/section[2]/cell[1]|page[3]/section[3]/cell[1]|page[3]/section[3]/cell[2]|page[3]/section[4]/cell[1]|page[4]/section[1]/cell[1]">
       <view>cell frame</view>
     </widget>
     <widget element="page[1]/section[1]/cell[1]/fragment[1]|page[3]/section[1]/cell[1]/fragment[1]">
       <view>nuxeo5 logo</view>
     </widget>
-    <widget element="page[1]/section[1]/cell[2]/fragment[1]|page[3]/section[1]/cell[2]/fragment[1]">
-      <view>nuxeo5 user services</view>
-    </widget>
-    <widget element="page[1]/section[1]/cell[3]/fragment[1]|page[3]/section[1]/cell[3]/fragment[1]">
+    <widget element="page[1]/section[1]/cell[5]/fragment[1]|page[3]/section[1]/cell[5]/fragment[1]">
       <view>nuxeo5 includes</view>
     </widget>
     <widget element="page[1]/section[2]/cell[1]">
@@ -299,90 +324,95 @@
     <widget element="page[3]/section[3]/cell[2]/fragment[4]">
       <view>nuxeo5 user sections</view>
     </widget>
-    <!-- buttons -->
-    <style name="default buttons">
-      <selector path="input.button">
-        <background>url(/nuxeo/img/button_1.gif) 0 0 repeat-x #e3e6ea</background>
-        <font preset="default (Nuxeo default fonts)"/>
-        <margin>5px 10px 10px 0px</margin>
-        <color>#000</color>
-        <border-style>solid</border-style>
-        <border-width>1px</border-width>
-        <border-color>#ccc #666 #666 #ccc</border-color>
-        <padding>2px 5px 2px 5px</padding>
-        <cursor>pointer</cursor>
-      </selector>
-      <selector path="input.button:hover">
-        <color preset="white (Nuxeo psd colors)"/>
-        <font preset="default (Nuxeo default fonts)"/>
-        <background>url(/nuxeo/img/button_2.gif) 0 0 repeat-x #3f89ef</background>
-        <border-color>#0099ff #0066cc #0066cc #0099ff</border-color>
-        <border-style>solid</border-style>
-        <border-width>1px</border-width>
-      </selector>
-      <selector path="input.button[disabled=disabled], input.button[disabled=disabled]:hover">
-        <color>#c1c1c1</color>
-        <font preset="default (Nuxeo default fonts)"/>
-        <background>url(/nuxeo/img/button_disabled.gif) 0 0 repeat-x #ebeff4</background>
-        <border-color>#ccc #999 #999 #ccc</border-color>
-        <cursor>default</cursor>
-        <border-style>solid</border-style>
-        <border-width>1px</border-width>
-      </selector>
-    </style>
-    
+    <widget element="page[1]/section[1]/cell[3]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[4]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[2]/fragment[1]">
+      <view>nuxeo5 user identity</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[3]/fragment[1]">
+      <view>nuxeo5 general pages</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[3]/fragment[2]">
+      <view>nuxeo5 main configuration</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[4]/fragment[1]">
+      <view>nuxeo5 search</view>
+    </widget>
+    <widget element="page[3]/section[1]/cell[4]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[3]/section[1]/cell[3]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[3]/section[1]/cell[2]/fragment[1]">
+      <view>nuxeo5 user identity</view>
+    </widget>
+    <widget element="page[3]/section[1]/cell[3]/fragment[1]">
+      <view>nuxeo5 general pages</view>
+    </widget>
+    <widget element="page[3]/section[1]/cell[3]/fragment[2]">
+      <view>nuxeo5 main configuration</view>
+    </widget>
+    <widget element="page[3]/section[1]/cell[4]/fragment[1]">
+      <view>nuxeo5 search</view>
+    </widget>
+    <widget element="page[3]/section[1]/cell[2]/fragment[1]">
+      <view>nuxeo5 user identity</view>
+    </widget>
     <style name="breadcrumbs style">
-    <selector path="" view="nuxeo5 breadcrumbs">
+      <selector path="">
         <padding>5px 0px</padding>
       </selector>
-      <selector path="div" view="nuxeo5 breadcrumbs">
+      <selector path="div">
         <font preset="small (Nuxeo default fonts)"/>
         <margin>0</margin>
         <line-height>1.25em</line-height>
         <padding>0</padding>
       </selector>
-      <selector path="a" view="nuxeo5 breadcrumbs">
+      <selector path="a">
         <color preset="link (Nuxeo psd colors)"/>
         <text-decoration>none</text-decoration>
       </selector>
-      <selector path="a:visited" view="nuxeo5 breadcrumbs">
+      <selector path="a:visited">
         <color preset="link.visited (Nuxeo psd colors)"/>
       </selector>
-      <selector path="a:active" view="nuxeo5 breadcrumbs">
+      <selector path="a:active">
         <color preset="link.active (Nuxeo psd colors)"/>
       </selector>
-      <selector path="a:hover" view="nuxeo5 breadcrumbs">
+      <selector path="a:hover">
         <color preset="link (Nuxeo psd colors)"/>
         <text-decoration>underline</text-decoration>
       </selector>
-      <selector
-        path=".breadcrumbs a, .breadcrumbs a:link, .breadcrumbs a:visited" view="nuxeo5 breadcrumbs">
+      <selector path=".breadcrumbs a, .breadcrumbs a:link, .breadcrumbs a:visited">
         <font-weight>normal</font-weight>
         <text-decoration>none</text-decoration>
       </selector>
-      <selector path=".breadcrumbs a:hover, .breadcrumbs a:active" view="nuxeo5 breadcrumbs">
+      <selector path=".breadcrumbs a:hover, .breadcrumbs a:active">
         <font-weight>normal</font-weight>
         <text-decoration>underline</text-decoration>
       </selector>
-      <selector path=".printButton" view="nuxeo5 breadcrumbs">
+      <selector path=".printButton">
         <float>right</float>
         <padding-right>1px</padding-right>
       </selector>
-      <selector path=".printButton div a img" view="nuxeo5 breadcrumbs">
+      <selector path=".printButton div a img">
         <margin-left>5px</margin-left>
       </selector>
-      <selector path=".printButton .liveEditCreateButtons" view="nuxeo5 breadcrumbs">
+      <selector path=".printButton .liveEditCreateButtons">
         <margin-right>5px</margin-right>
-        <padding-right>8px</padding-right>
         <border-right>1px solid #ccc</border-right>
+        <padding-right>8px</padding-right>
       </selector>
-      <selector path=".breadcrumbs" view="nuxeo5 breadcrumbs">
-        <float>left</float>
+      <selector path=".breadcrumbs">
         <font-size>9px</font-size>
         <padding>5px 4px 0px 0px</padding>
+        <float>left</float>
       </selector>
     </style>
-    
     <style name="common style 1">
       <selector path="h1, h2, h3, h4, h5, h6, form, p">
         <margin>0</margin>
@@ -392,10 +422,10 @@
         <margin>0</margin>
       </selector>
       <selector path=".pageNavigationControls span">
-        <margin>10px 5px</margin>
         <color>#757575</color>
         <vertical-align>top</vertical-align>
         <font-weight>bold</font-weight>
+        <margin>10px 5px</margin>
         <font-size>13px</font-size>
       </selector>
       <selector path=".directoryBack">
@@ -416,7 +446,6 @@
         <width>470px</width>
       </selector>
       <selector path="input.button">
-        <background>url(/nuxeo/img/button_1.gif) 0 0 repeat-x #e3e6ea</background>
         <font preset="default (Nuxeo default fonts)"/>
         <margin>5px 10px 10px 0px</margin>
         <color>#000</color>
@@ -429,7 +458,6 @@
       <selector path="input.button[disabled=disabled], input.button[disabled=disabled]:hover">
         <color>#c1c1c1</color>
         <font preset="default (Nuxeo default fonts)"/>
-        <background>url(/nuxeo/img/button_disabled.gif) 0 0 repeat-x #ebeff4</background>
         <border-color>#ccc #999 #999 #ccc</border-color>
         <cursor>default</cursor>
         <border-style>solid</border-style>
@@ -471,7 +499,6 @@
       <selector path="input.button:hover">
         <color preset="white (Nuxeo psd colors)"/>
         <font preset="default (Nuxeo default fonts)"/>
-        <background>url(/nuxeo/img/button_2.gif) 0 0 repeat-x #3f89ef</background>
         <border-color>#0099ff #0066cc #0066cc #0099ff</border-color>
         <border-style>solid</border-style>
         <border-width>1px</border-width>
@@ -511,15 +538,14 @@
       </selector>
       <selector path=".facesStatusMessage ul, .infoFeedback ul, .warningFeedback ul, .errorFeedback ul">
         <list-style-type>none</list-style-type>
-        <padding>10px</padding>
         <width>200px</width>
+        <padding>10px</padding>
       </selector>
       <selector path=".vocabularyEntryContent .notEditable">
         <color>#000</color>
         <background-color>#fff</background-color>
       </selector>
       <selector path=".warningMessage">
-        <background>url(/nuxeo/img/warning.gif) 2px 3px no-repeat #FFCC33</background>
         <width>500px</width>
         <margin>2px 0 2px 0</margin>
         <border>1px solid #666</border>
@@ -534,9 +560,10 @@
         <margin-bottom>15px</margin-bottom>
       </selector>
       <selector path=".tabsBar ul">
-        <margin>0</margin>
-        <padding>0px 10px 0 0</padding>
         <list-style>none</list-style>
+        <padding-bottom>24px</padding-bottom>
+        <border-bottom>1px solid #0066cc</border-bottom>
+        <margin>0</margin>
         <font-size>11px</font-size>
       </selector>
       <selector path=".buttonColumn">
@@ -545,15 +572,14 @@
       </selector>
       <selector path=".radioColumn">
         <width>8px</width>
-        <padding>0 0 0 5px</padding>
         <vertical-align>top</vertical-align>
+        <padding>0 0 0 5px</padding>
       </selector>
       <selector path=".focusColumn">
         <background-color>#ddeeff</background-color>
       </selector>
       <selector path=".tabsBar">
         <font>normal 13px Verdana, sans-serif</font>
-        <background>url(/nuxeo/img/tabs/blue_pixel.gif) bottom left repeat-x #FFF</background>
         <width>100%</width>
         <margin-top>5px</margin-top>
         <line-height>normal</line-height>
@@ -614,7 +640,6 @@
       <selector path=".dataList thead th">
         <color>#FFF</color>
         <border>1px solid #333</border>
-        <background>url(/nuxeo/img/table_header_gray_back.gif) top left repeat-x #767676</background>
         <font-size>11px</font-size>
         <padding>3px</padding>
         <text-align>left</text-align>
@@ -685,9 +710,6 @@
         <color preset="link (Nuxeo psd colors)"/>
         <text-decoration>none</text-decoration>
       </selector>
-      <selector path="a:visited">
-        <color preset="link.visited (Nuxeo psd colors)"/>
-      </selector>
       <selector path="a:active">
         <color preset="link.active (Nuxeo psd colors)"/>
       </selector>
@@ -710,22 +732,22 @@
         <float>left</float>
       </selector>
       <selector path=".pictureBookItem">
-        <float>left</float>
-        <width>140px</width>
         <height>160px</height>
-        <text-align>center</text-align>
-        <background-color>#ddeeff</background-color>
         <border>1px solid #2A90F6</border>
+        <width>140px</width>
+        <background-color>#ddeeff</background-color>
         <margin>10px 20px 10px 0px</margin>
+        <float>left</float>
+        <text-align>center</text-align>
       </selector>
       <selector path=".itemSelected">
-        <background-color>#ffcc66</background-color>
         <border>1px solid #ff9933</border>
+        <background-color>#ffcc66</background-color>
       </selector>
       <selector path=".pictureBookItem .cell">
         <height>110px</height>
-        <text-align>center</text-align>
         <padding-top>15px</padding-top>
+        <text-align>center</text-align>
       </selector>
       <selector path=".pictureBookItem .cell a">
         <height>100px</height>
@@ -742,11 +764,10 @@
         <color>#001986</color>
       </selector>
       <selector path=".slideShowControl input">
-        <padding>0px</padding>
         <margin>0px 3px</margin>
+        <padding>0px</padding>
       </selector>
       <selector path=".slideShowControl input.button[disabled=disabled]">
-        <background>url(/nuxeo/img/button_disabled.gif) 0 0 repeat-x #ebeff4</background>
         <border-color>#ccc #999 #999 #ccc</border-color>
         <cursor>default</cursor>
       </selector>
@@ -758,9 +779,6 @@
       </selector>
       <selector path=".slideshowContent h3">
         <padding>8px 0px 5px 70px</padding>
-      </selector>
-      <selector path="a:active">
-        <color preset="link.active (Nuxeo psd colors)"/>
       </selector>
       <selector path=".foldableBox .boxBody">
         <background>#FFF</background>
@@ -823,17 +841,12 @@
         <float>left</float>
       </selector>
       <selector path=".tabsBar li">
-        <background>url(/nuxeo/img/tabs/tab_left.gif) no-repeat top left</background>
         <border-color>#0066cc</border-color>
-        <margin>0 0 0 3px</margin>
-        <padding>0 0 0 4px</padding>
+        <height>21px</height>
+        <margin>2px 2px 0 2px</margin>
         <float>left</float>
         <border-width>1px</border-width>
-        <border-style>none none solid none</border-style>
-      </selector>
-      <selector path="a:hover">
-        <color preset="link (Nuxeo psd colors)"/>
-        <text-decoration>underline</text-decoration>
+        <border-style>solid solid none</border-style>
       </selector>
       <selector path=".dataInput td">
         <border>0px solid #FFF</border>
@@ -860,7 +873,6 @@
       </selector>
       <selector path=".foldableBox">
         <border>1px solid #2A90F6</border>
-        <background>url(/nuxeo/img/table_header_background.gif) top left repeat-x #0069dc</background>
         <margin-bottom>20px</margin-bottom>
       </selector>
       <selector path=".pageNavigationControls input">
@@ -891,7 +903,6 @@
       <selector path="table.dataOutput thead th">
         <color>#ffffff</color>
         <border>1px solid #c7c7c7</border>
-        <background>url(/nuxeo/img/table_header_background.gif) top left repeat-x #0069dc</background>
         <font-size>11px</font-size>
         <padding>3px</padding>
         <text-align>left</text-align>
@@ -933,8 +944,8 @@
         <text-align>left</text-align>
       </selector>
       <selector path=".fieldColumn img">
-        <margin-right>4px</margin-right>
         <margin-left>4px</margin-left>
+        <margin-right>4px</margin-right>
         <vertical-align>top</vertical-align>
       </selector>
       <selector path=".relationCreateFieldColumn table, .fieldColumn table, .workflowFieldColumn table">
@@ -960,9 +971,9 @@
       </selector>
       <selector path="mainNoTabs"/>
       <selector path=".dataOutput td">
+        <color>#424343</color>
         <border>1px solid #C7C7C7</border>
         <padding>3px</padding>
-        <color>#424343</color>
       </selector>
       <selector path=".selectDocumentType td a img">
         <margin-right>4px</margin-right>
@@ -983,11 +994,10 @@
       </selector>
       <selector path=".tabsBar a, .tabsBar a:hover, .tabsBar a:visited">
         <color>#454545</color>
-        <background>url(/nuxeo/img/tabs/tab_right.gif) no-repeat right top</background>
         <text-decoration>none</text-decoration>
         <font-weight>normal</font-weight>
         <display>block</display>
-        <padding>10px 5px 4px 1px</padding>
+        <padding>5px 7px</padding>
         <float>left</float>
       </selector>
       <selector path=".relationCreateLabelColumn, .labelColumn, .workflowLabelColumn">
@@ -1019,7 +1029,6 @@
         <border-width>1px</border-width>
       </selector>
       <selector path=".action_bar ul">
-        <background>url(/nuxeo/img/action_button_background.gif) repeat-x bottom</background>
         <margin>0</margin>
         <padding>0px 10px 0 0</padding>
         <list-style>none</list-style>
@@ -1033,18 +1042,16 @@
         <border-width>1px</border-width>
       </selector>
       <selector path=".tabsContent table.trashTable thead th">
-        <background-image>url(/nuxeo/img/table_header_trash.gif)</background-image>
         <background-color>#fb8b14</background-color>
       </selector>
       <selector path="table.trashTable tbody tr.dataRowOdd">
         <background-color>#f1ffef</background-color>
       </selector>
-      <selector path=".trashButtons input.button:hover"></selector>
+      <selector path=".trashButtons input.button:hover"/>
       <selector path="textarea">
         <padding>5px</padding>
       </selector>
       <selector path=".rightsAddManager">
-        <background>url(/nuxeo/img/rightsadd_bar.gif) no-repeat center</background>
         <width>100%</width>
         <margin>3px 0 0 0</margin>
       </selector>
@@ -1061,13 +1068,8 @@
         <margin>2px 10px 2px 0px !important</margin>
       </selector>
       <selector path=".tabsBar li.selected">
-        <background>url(/nuxeo/img/tabs/tab_selected_left.gif) no-repeat left top</background>
-        <border-color>#FFF</border-color>
-        <margin>0 0 0 5px</margin>
-        <padding>0 0 0 6px</padding>
+        <border-bottom>1px solid #fff</border-bottom>
         <float>left</float>
-        <border-width>1px</border-width>
-        <border-style>none none solid none</border-style>
       </selector>
       <selector path=".commentBlock">
         <border>1px solid #666</border>
@@ -1088,11 +1090,10 @@
       </selector>
       <selector path=".tabsBar li.selected a, .tabsBar li.selected a:hover, .tabsBar li.selected a:visited">
         <color>#0066cc</color>
-        <background>url(/nuxeo/img/tabs/tab_selected_right.gif) no-repeat right top</background>
         <text-decoration>none</text-decoration>
         <font-weight>normal</font-weight>
         <display>block</display>
-        <padding>7px 15px 7px 6px</padding>
+        <padding>5px 7px</padding>
         <float>left</float>
       </selector>
       <selector path=".taskAssign">
@@ -1161,16 +1162,16 @@
       <selector path=".fieldColumn">
         <padding-left>5px</padding-left>
       </selector>
-        <selector path=".dataOutput th, .dataList th">
+      <selector path=".dataOutput th, .dataList th">
         <color>#fff</color>
         <background-color>#E0E0E0</background-color>
         <padding>4px 5px</padding>
         <text-align>left</text-align>
       </selector>
       <selector path="div">
+        <font-family>Verdana, Arial, sans-serif</font-family>
         <background-color>#fff</background-color>
         <font-size>11pt</font-size>
-        <font-family>Verdana, Arial, sans-serif</font-family>
         <float>none</float>
       </selector>
       <selector path="a:link, a:visited">
@@ -1187,16 +1188,16 @@
         <display>none</display>
       </selector>
       <selector path=".dataOutput td, .dataList td">
-         <border>1px solid #DBDBDB</border>
+        <border>1px solid #DBDBDB</border>
         <padding>4px 5px</padding>
       </selector>
       <selector path="img">
         <display>none</display>
       </selector>
       <selector path=".breadcrumbs">
-        <float>left</float>
         <margin-bottom>10px</margin-bottom>
         <font-size>80%</font-size>
+        <float>left</float>
       </selector>
       <selector path=".syndicationLinks">
         <display>none</display>
@@ -1214,8 +1215,7 @@
     <!-- Banner -->
     <style element="page[1]/section[1]|page[3]/section[1]">
       <selector path="" view="section frame">
-        <border-bottom preset="dark.blue.thin (Nuxeo default borders)"/>
-        <background preset="banner (Nuxeo default backgrounds)"/>
+        <font preset="default (Nuxeo default fonts)"/>
       </selector>
     </style>
     <!-- Logo -->
@@ -1225,55 +1225,10 @@
         <padding>0</padding>
       </selector>
     </style>
-    <!-- user services -->
-    <style
-      element="page[1]/section[1]/cell[2]/fragment[1]|page[3]/section[1]/cell[2]/fragment[1]" inherit="default buttons">
-      <selector path="div" view="nuxeo5 user services">
-        <font preset="default (Nuxeo default fonts)"/>
-        <color preset="white (Nuxeo psd colors)"/>
-        <margin>0</margin>
-        <padding>2px 2px 0px 0px</padding>
-        <line-height>185%</line-height>
-      </selector>
-      <selector path=".directoryFilter, .searchField" view="nuxeo5 user services">
-        <border>1px inset #666</border>
-        <background>url(/nuxeo/icons/search.gif) 2px 2px no-repeat #FFF</background>
-        <margin>0 5px 10px 0</margin>
-        <padding>3px 3px 3px 20px</padding>
-        <font-size>11px</font-size>
-      </selector>
-      <selector path="a, a:link, a:visited" view="nuxeo5 user services">
-        <text-decoration>none</text-decoration>
-      </selector>
-      <selector path="a:hover, a:active" view="nuxeo5 user services">
-        <text-decoration>underline</text-decoration>
-      </selector>
-      <selector
-        path=".userServices a, .userServices a:link, .userServices a:hover, .userServices a:visited, .userServices a:active, .userServices a:visited:hover" view="nuxeo5 user services">
-        <color preset="white (Nuxeo psd colors)"/>
-      </selector>
-      <selector path="img" view="nuxeo5 user services">
-        <margin-left>5px</margin-left>
-        <margin-right>2px</margin-right>
-        <vertical-align>middle</vertical-align>
-      </selector>
-      <selector path=".advancedSearchLink" view="nuxeo5 user services">
-        <margin>0 2px 0 0</margin>
-        <padding>0</padding>
-        <line-height>1%</line-height>
-      </selector>
-      <selector path=".userServices .button" view="nuxeo5 user services">
-        <margin-right>4px</margin-right>
-      </selector>
-      <selector path="form" view="nuxeo5 user services">
-        <margin>0</margin>
-        <padding>0</padding>
-      </selector>
-    </style>
     <!-- Left side -->
     <style element="page[1]/section[2]">
       <selector path="" view="section frame">
-        <background preset="shade (Nuxeo default backgrounds)"/>
+        <border-top>1px dotted gray</border-top>
       </selector>
     </style>
     <style element="page[1]/section[2]/cell[1]/fragment[1]">
@@ -1388,7 +1343,7 @@
       </selector>
       <selector path=".userClipboardTabs" view="nuxeo5 tree explorer">
         <font>normal 11px Verdana, sans-serif</font>
-        <background>url(/nuxeo/img/tabs/userclipboard/blue_pixel.gif) bottom left repeat-x</background>
+        <border-bottom>1px solid #0066cc</border-bottom>
         <width>100%</width>
         <margin>0</margin>
         <line-height>normal</line-height>
@@ -1467,8 +1422,8 @@
         <margin-right>4px</margin-right>
       </selector>
       <selector path=".clipboardFunctions" view="nuxeo5 clip board">
-        <border-top>1px dotted #999</border-top>
         <padding-top>10px</padding-top>
+        <border-top>1px dotted #999</border-top>
       </selector>
       <selector path=".clipboardFunction" view="nuxeo5 clip board">
         <padding>2px 2px 2px 2px</padding>
@@ -1522,7 +1477,7 @@
       </selector>
       <selector path=".userClipboardTabs" view="nuxeo5 clip board">
         <font>normal 11px Verdana, sans-serif</font>
-        <background>url(/nuxeo/img/tabs/userclipboard/blue_pixel.gif) bottom left repeat-x</background>
+        <border-bottom>1px solid #0066cc</border-bottom>
         <width>100%</width>
         <margin>0</margin>
         <line-height>normal</line-height>
@@ -1543,30 +1498,17 @@
     </style>
     <!-- Main cell -->
     <style element="page[1]/section[2]/cell[2]|page[2]/section[1]/cell[1]">
-      <selector path="" view="cell frame">
-        <background preset="shade (Nuxeo default backgrounds)"/>
-        <border-left preset="dark.blue.thin (Nuxeo default borders)"/>
-      </selector>
     </style>
     <style element="page[3]/section[2]/cell[1]">
-      <selector path="" view="cell frame">
-        <border-bottom preset="dark.blue.thin (Nuxeo default borders)"/>
-        <background preset="shade (Nuxeo default backgrounds)"/>
-      </selector>
     </style>
     <style element="page[3]/section[2]/cell[1]/fragment[1]" inherit="breadcrumbs style">
-      <selector path="">
+      <selector path="" view="nuxeo5 breadcrumbs">
         <padding>5px 22px</padding>
       </selector>
     </style>
-    <style element="page[1]/section[2]/cell[2]/fragment[1]" inherit="breadcrumbs style">
-    </style>
+    <style element="page[1]/section[2]/cell[2]/fragment[1]" inherit="breadcrumbs style"/>
     <!-- Footer -->
     <style element="page[1]/section[3]|page[3]/section[4]">
-      <selector path="" view="section frame">
-        <background preset="shade (Nuxeo default backgrounds)"/>
-        <border-top preset="dark.blue.thin (Nuxeo default borders)"/>
-      </selector>
     </style>
     <style element="page[1]/section[3]/cell[1]/fragment[1]|page[3]/section[4]/cell[1]/fragment[1]">
       <selector path="form, p" view="nuxeo5 footer">
@@ -1605,7 +1547,6 @@
         <padding>1px 0px 1px 0px</padding>
       </selector>
       <selector path=".langSubmit" view="nuxeo5 footer">
-        <background>url(/nuxeo/img/button_1.gif) 0 0 repeat-x #e3e6ea</background>
         <margin>9px 5px 0px 1px</margin>
         <color>#000</color>
         <border-style>solid</border-style>
@@ -1617,7 +1558,6 @@
       </selector>
       <selector path=".langSubmit:hover" view="nuxeo5 footer">
         <color>#fff</color>
-        <background>url(/nuxeo/img/button_2.gif) 0 0 repeat-x #3f89ef</background>
         <border-color>#0099ff #0066cc #0066cc #0099ff</border-color>
         <margin>9px 5px 0px 1px</margin>
         <font-size>11px</font-size>
@@ -1672,6 +1612,18 @@
       <selector path="div.syndicationButton div.syndicationLinks a" view="facelet region">
         <color>rgb(255, 255, 255)</color>
         <text-decoration>none</text-decoration>
+      </selector>
+    </style>
+    <style element="page[1]/section[1]/cell[3]/fragment[1]">
+      <selector path=".generalPages" view="nuxeo5 general pages">
+        <float>left</float>
+      </selector>
+    </style>
+    <style element="page[1]/section[1]/cell[4]"/>
+    <style element="page[3]/section[1]/cell[4]"/>
+    <style element="page[3]/section[1]/cell[3]/fragment[1]">
+      <selector path=".generalPages" view="nuxeo5 general pages">
+        <float>left</float>
       </selector>
     </style>
   </formats>

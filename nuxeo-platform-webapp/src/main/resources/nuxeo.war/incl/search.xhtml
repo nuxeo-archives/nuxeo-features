@@ -11,7 +11,7 @@
 
     <nxu:methodResult value="#{userServicesContext.getSearchEnabled()}"
       name="searchEnabled">
-
+    <span class="searchBlock">
       <h:inputText value="#{searchActions.simpleSearchKeywords}"
         size="15" class="directoryFilter" rendered="#{searchEnabled}"
         onkeydown="if (event.keyCode == 13) {Element.next(Element.next(this)).click();} else return true;" />
@@ -23,10 +23,10 @@
         rendered="#{searchEnabled}"
         value="#{messages['command.search']}" class="button" />
 
-      <div class="advancedSearchLink"><h:commandLink
+      <span class="advancedSearchLink"><h:commandLink
         action="#{searchActions.search}" rendered="#{searchEnabled}"
-        value="#{messages['command.advancedSearch']}" /></div>
-
+        value="#{messages['command.advancedSearch']}" /></span>
+    </span>
     </nxu:methodResult>
 
   </h:form>
