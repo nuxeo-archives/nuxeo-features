@@ -682,9 +682,7 @@ public class LDAPSession implements Session, EntrySource {
                         e);
             }
         }
-
         for (String fieldName : schemaFieldMap.keySet()) {
-
             Reference reference = directory.getReference(fieldName);
             if (reference != null) {
                 // reference resolution
@@ -718,6 +716,13 @@ public class LDAPSession implements Session, EntrySource {
                             entryId, fetchReferences));
                 }
             }
+        }
+        // check if the idAttribute was returned from the search. If not
+        // set it anyway.
+        String fieldId = directory.getFieldMapper().getDirectoryField(idAttribute);
+        Object obj = fieldMap.get(fieldId);
+        if(obj == null) {
+            fieldMap.put(fieldId, entryId);
         }
         return fieldMapToDocumentModel(fieldMap);
     }
