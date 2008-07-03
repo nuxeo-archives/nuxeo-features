@@ -46,8 +46,11 @@ public class CoreDocumentManagerBusinessDelegate implements Serializable {
 
     protected transient CoreSession documentManager;
 
+    protected LoginContext ctx;
+
     protected LoginContext login() throws LoginException {
-        return Framework.login();
+        ctx = Framework.login();
+        return ctx;
     }
 
     protected void logout(LoginContext ctx) throws LoginException {
