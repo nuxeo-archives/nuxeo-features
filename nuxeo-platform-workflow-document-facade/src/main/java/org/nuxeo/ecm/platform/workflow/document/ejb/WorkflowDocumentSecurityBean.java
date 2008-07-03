@@ -185,7 +185,22 @@ public class WorkflowDocumentSecurityBean extends
 
     public void removeACL(DocumentRef docRef, String pid)
             throws WorkflowDocumentSecurityException {
-        ACL acl = getACL(docRef, pid);
+        ACL acl = null;
+        try {
+            acl = getACL(docRef, pid);
+        } catch (Exception e) {
+            // Do understand why this error appends
+            // But documentManager fails
+            // Compute again to find documentManager
+            log.error("Could not retrieve ACL for document");
+            try {
+                documentManager = null;
+                acl = getACL(docRef, pid);
+            } catch (Exception acle) {
+                // TODO: handle exception
+                log.error("Impossible to compute documentManager again");
+            }
+        }
         if (acl != null) {
             try {
                 ACP docACP = getACP(docRef);
