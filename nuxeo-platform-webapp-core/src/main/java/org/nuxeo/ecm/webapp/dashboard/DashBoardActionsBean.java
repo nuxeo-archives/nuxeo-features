@@ -367,7 +367,6 @@ public class DashBoardActionsBean extends InputController implements
     @Remove
     @PermitAll
     public void destroy() {
-        log.debug("Removing Seam component...");
     }
 
     protected DocumentRef getDocumentRefForItem(String itemId) {
@@ -456,12 +455,10 @@ public class DashBoardActionsBean extends InputController implements
     }
 
     public DocumentModelList getUserDocuments() throws ClientException {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public DocumentModelList getUserWorkspaces() throws ClientException {
-        // TODO Auto-generated method stub
         return null;
     }
 
