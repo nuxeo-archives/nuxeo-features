@@ -213,25 +213,14 @@ public class DashBoardActionsBean extends InputController implements
             }
 
             Principal principal = documentManager.getPrincipal();
-
-            List<String> groupNames = new ArrayList<String>();
+            List<String> creators = new ArrayList<String>();
             if (principal instanceof NuxeoPrincipal) {
-                groupNames = ((NuxeoPrincipal) principal).getAllGroups();
+                creators = ((NuxeoPrincipal) principal).getAllGroups();
             }
-
+            creators.add(principal.getName());
             List<WMProcessInstance> procs = new ArrayList<WMProcessInstance>();
+            procs.addAll(wapi.getProcessInstanceForCreators(creators));
 
-            // Workflow started directly to the current user.
-            WMParticipant participant = new WMParticipantImpl(
-                    principal.getName());
-            WMProcessInstanceIterator procsIt = wapi.listProcessInstances(new WMFilterImpl(
-                    WorkflowConstants.WORKFLOW_CREATOR, WMFilter.EQ,
-                    participant.getName()));
-            while (procsIt.hasNext()) {
-                procs.add(procsIt.next());
-            }
-
-            procs.addAll(wapi.getProcessInstanceForGroup(groupNames));
             for (WMProcessInstance proc : procs) {
 
                 String pid = proc.getId();
@@ -257,8 +246,6 @@ public class DashBoardActionsBean extends InputController implements
                     documentProcessItems.add(item);
                 }
             }
-        } catch (WMWorkflowException we) {
-            throw EJBExceptionHandler.wrapException(we);
         } catch (ClientException ce) {
             throw EJBExceptionHandler.wrapException(ce);
         }
