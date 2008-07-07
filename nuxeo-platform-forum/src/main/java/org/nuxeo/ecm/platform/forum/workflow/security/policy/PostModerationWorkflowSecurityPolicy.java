@@ -87,6 +87,9 @@ public class PostModerationWorkflowSecurityPolicy extends
         return hasAction;
     }
 
+    public boolean selectThisItem(WMWorkItemInstance item) {
+        return true;
+    }
     public boolean canMoveDown(Principal participant, WMWorkItemInstance wi)
             throws WMWorkflowException {
         return false;
@@ -96,5 +99,6 @@ public class PostModerationWorkflowSecurityPolicy extends
             throws WMWorkflowException {
         return false;
     }
+
 
 }
