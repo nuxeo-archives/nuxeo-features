@@ -108,11 +108,10 @@ public class FileManageActionsBean extends InputController implements
     protected FileManager getFileManagerService() throws ClientException {
         if (fileManager == null) {
             try {
-                fileManager = Framework.getService(FileManager.class);
+                fileManager = Framework.getLocalService(FileManager.class);
             } catch (Exception e) {
                 log.error("Unable to get FileManager service " + e.getMessage());
-                throw new ClientException("Unable to get FileManager service "
-                        + e.getMessage());
+                throw new ClientException("Unable to get FileManager service ",e);
             }
         }
         return fileManager;
