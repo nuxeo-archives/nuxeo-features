@@ -113,7 +113,7 @@ public class PostActionBean extends InputController implements PostAction {
     @In(create = true)
     protected ThreadAction threadAction;
 
-    //NXP-1360 need it to invalidate Dashboard
+    // NXP-1360 need it to invalidate Dashboard
     @In(required = false)
     protected transient DashboardActions dashboardActions;
 
@@ -130,7 +130,6 @@ public class PostActionBean extends InputController implements PostAction {
     private Blob fileContent;
 
     static final String WRITE = "ReadWrite";
-
 
     @Destroy
     public void destroy() {
@@ -192,10 +191,11 @@ public class PostActionBean extends InputController implements PostAction {
         // this is the post we've just created
         dm = commentManagerActions.addComment(dm);
 
-        /*NXP-1262 display the message only when about to publish
-        facesMessages.add(FacesMessage.SEVERITY_INFO,
-                resourcesAccessor.getMessages().get(
-                        "label.comment.added.sucess"));*/
+        /*
+         * NXP-1262 display the message only when about to publish
+         * facesMessages.add(FacesMessage.SEVERITY_INFO,
+         * resourcesAccessor.getMessages().get( "label.comment.added.sucess"));
+         */
 
         boolean publish = false;
 
@@ -221,7 +221,7 @@ public class PostActionBean extends InputController implements PostAction {
 
         dm = documentManager.getDocument(dm.getRef());
         if (publish) {
-            //NXP-1262 display the message only when about to publish
+            // NXP-1262 display the message only when about to publish
             facesMessages.add(FacesMessage.SEVERITY_INFO,
                     resourcesAccessor.getMessages().get(
                             "label.comment.added.sucess"));
@@ -289,9 +289,9 @@ public class PostActionBean extends InputController implements PostAction {
             deletionModerated = true;
         }
         commentManagerActions.deleteComment(post.getRef().toString());
-        //NXP-1360 if moderation on
+        // NXP-1360 if moderation on
         if (deletionModerated) {
-            //NXP-1360 signal post was deleted, invalidate user dashboard items
+            // NXP-1360 signal post was deleted, invalidate user dashboard items
             if (dashboardActions != null) {
                 try {
                     dashboardActions.invalidateDashboardItems();
@@ -348,6 +348,8 @@ public class PostActionBean extends InputController implements PostAction {
 
             vars.put(ForumConstants.FORUM_MODERATORS_LIST,
                     threadAction.getModerators().toArray());
+
+            vars.put(WorkflowConstants.WORKFLOW_CREATOR, currentUser.getName());
 
             vars.put(WorkflowConstants.DOCUMENT_LOCATION_URI,
                     post.getRepositoryName());
@@ -425,7 +427,7 @@ public class PostActionBean extends InputController implements PostAction {
         // To force comment manager to reload posts
         Events.instance().raiseEvent(
                 org.nuxeo.ecm.webapp.helpers.EventNames.DOCUMENT_SELECTION_CHANGED);
-        //NXP-1360 signal post was approved, invalidate user dashboard items
+        // NXP-1360 signal post was approved, invalidate user dashboard items
         if (dashboardActions != null) {
             try {
                 dashboardActions.invalidateDashboardItems();
@@ -548,7 +550,8 @@ public class PostActionBean extends InputController implements PostAction {
         WAPI wapi = workflowBeansDelegate.getWAPIBean();
         Collection<WMWorkItemInstance> witems = wapi.getWorkItemsFor(
                 new WMParticipantImpl(currentUser.getName()), null);
-        WMWorkItemInstance witem = getWorkItemsForUserFrom(witems, post, currentUser.getName());
+        WMWorkItemInstance witem = getWorkItemsForUserFrom(witems, post,
+                currentUser.getName());
         if (witem == null) {
             // Group resolution.
             if (currentUser instanceof NuxeoPrincipal) {
@@ -581,7 +584,6 @@ public class PostActionBean extends InputController implements PostAction {
             weed = item.getId();
         }
 
-
         return weed;
     }
 
@@ -610,7 +612,7 @@ public class PostActionBean extends InputController implements PostAction {
         // To force comment manager to reload posts
         Events.instance().raiseEvent(
                 org.nuxeo.ecm.webapp.helpers.EventNames.DOCUMENT_SELECTION_CHANGED);
-        //NXP-1360 signal post was rejected, invalidate user dashboard items
+        // NXP-1360 signal post was rejected, invalidate user dashboard items
         if (dashboardActions != null) {
             try {
                 dashboardActions.invalidateDashboardItems();
