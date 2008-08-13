@@ -4,7 +4,9 @@ Bundle-Name: org.nuxeo.ecm.platform.search.nxcore
 Bundle-SymbolicName: org.nuxeo.ecm.platform.search.nxcore
 Bundle-Localization: plugin
 Bundle-Vendor: Nuxeo
-Export-Package: org.nuxeo.ecm.platform.search.api
+Bundle-Category: search
+Export-Package: org.nuxeo.ecm.core.search,
+ org.nuxeo.ecm.platform.search
 Require-Bundle: org.nuxeo.ecm.core.api,
   org.nuxeo.ecm.platform.search.api
 Nuxeo-Component: OSGI-INF/nxsearch-contrib.xml

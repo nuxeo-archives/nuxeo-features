@@ -54,8 +54,8 @@ import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.IndexableR
 import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.ResourceTypeDescriptor;
 import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.document.FulltextFieldDescriptor;
 import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.document.IndexableDocType;
-import org.nuxeo.ecm.core.search.service.SearchServiceImpl;
 import org.nuxeo.ecm.platform.search.ejb.local.SearchServiceLocal;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * Search service session bean.
@@ -76,6 +76,8 @@ public class SearchServiceBean implements SearchService {
     private static final long serialVersionUID = -589486174154627675L;
 
     private static final Log log = LogFactory.getLog(SearchServiceBean.class);
+    
+    public static final int DEFAULT_DOC_BATCH_SIZE = 1;
 
     private transient SearchService service;
 
@@ -84,11 +86,11 @@ public class SearchServiceBean implements SearchService {
 
     private SearchService getSearchService() {
         if (service == null) {
-            // NXSearch uses a direct access here since thus EJB has to be
-            // deployed along with the Nuxeo Runtime core component within the
-            // same JVM. Do not use platform service API to avoid for further
-            // lookup here.
-            service = NXSearch.getSearchService();
+            try {
+                service = (SearchService) Framework.getLocalService(SearchService.class);
+            } catch (Exception e) {
+                log.error("Cannot find core search service....");
+            }
         }
         return service;
     }
@@ -124,6 +126,7 @@ public class SearchServiceBean implements SearchService {
         if (getSearchService() != null) {
             // Set the search principal here.
             nativeQuery.setSearchPrincipal(getSearchPrincipal());
+            
             resultSet = getSearchService().searchQuery(nativeQuery, offset,
                     range);
         } else {
@@ -239,8 +242,9 @@ public class SearchServiceBean implements SearchService {
 
     public SearchPrincipal getSearchPrincipal(Principal principal) {
         SearchPrincipal sprincipal = null;
-        if (getSearchService() != null) {
-            sprincipal = getSearchService().getSearchPrincipal(principal);
+        SearchService searchService = getSearchService();
+        if (searchService != null) {
+            sprincipal = searchService.getSearchPrincipal(principal);
         } else {
             log.error("Cannot find core search service....");
         }
@@ -377,7 +381,7 @@ public class SearchServiceBean implements SearchService {
             return getSearchService().getIndexingDocBatchSize();
         } else {
             log.error("Cannot find core search service....");
-            return SearchServiceImpl.DEFAULT_DOC_BATCH_SIZE;
+            return DEFAULT_DOC_BATCH_SIZE;
         }
     }
 

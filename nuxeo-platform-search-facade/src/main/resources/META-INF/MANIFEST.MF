@@ -4,6 +4,7 @@ Bundle-Name: Nuxeo ECM Search facade
 Bundle-SymbolicName: org.nuxeo.ecm.platform.search.ejb;singleton:=true
 Bundle-Vendor: Nuxeo
 Eclipse-LazyStart: false
+Bundle-Category: search
 Nuxeo-Component: OSGI-INF/nxsearch-platform-contrib.xml
 Require-Bundle: org.nuxeo.ecm.platform.events.api,
- org.nuxeo.ecm.platform.search
+ org.nuxeo.ecm.platform.search.nxcore

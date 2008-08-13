@@ -1,9 +1,21 @@
-<component name="org.nuxeo.ecm.platform.audit.search.contrib">
+<component name="org.nuxeo.ecm.core.search.service.SearchServiceCoreImpl">
 
-  <extension target="org.nuxeo.ecm.core.search.service.SearchServiceImpl"
+  <!--extension target="org.nuxeo.ecm.core.search.service.SearchServiceImpl"
     point="resourceType">
     <resourceType name="audit"
       factoryClass="org.nuxeo.ecm.platform.audit.search.resources.indexing.AuditIndexableResourceFactory"/>
-  </extension>
+  </extension-->
+
+  <service>
+    <provide interface="org.nuxeo.ecm.core.search.api.client.SearchService" />
+  </service>
+
+  <documentation>
+    Core Search Service
+    @version 1.0
+    @author <a href="mailto:eionica@nuxeo.com">Eugen Ionica</a>
+  </documentation>
+
+  <implementation class="org.nuxeo.ecm.platform.search.SearchServiceCoreImpl" />
 
 </component>

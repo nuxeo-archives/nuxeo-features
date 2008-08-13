@@ -22,6 +22,8 @@ package org.nuxeo.ecm.core.search.api.client.search.results.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.query.sql.model.SQLQuery;
 import org.nuxeo.ecm.core.search.api.client.SearchException;
 import org.nuxeo.ecm.core.search.api.client.SearchService;
@@ -70,6 +72,27 @@ public class ResultSetImpl extends ArrayList<ResultItem> implements ResultSet {
             addAll(resultItems);
         }
     }
+    
+    // added constructed for core search 
+    public ResultSetImpl(SQLQuery query, 
+            SearchPrincipal principal, int offset, int range,
+            DocumentModelList list, int totalHits, int pageHits) {
+        this.query = query;
+        this.backendName = "core";
+        this.principal = principal;
+        this.offset = offset;
+        this.range = range;
+        this.totalHits = totalHits;
+        this.pageHits = pageHits;
+        if ( list != null ){
+            for ( DocumentModel doc : list) {
+                add(new CoreResultItem(doc));
+            }
+        }
+    }
+    
+    
+    
 
     public int getOffset() {
         return offset;

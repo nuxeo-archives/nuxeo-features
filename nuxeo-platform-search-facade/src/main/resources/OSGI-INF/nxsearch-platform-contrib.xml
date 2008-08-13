@@ -6,7 +6,7 @@
     @author <a href="mailto:ja@nuxeo.com">Julien Anguenot</a>
   </documentation>
 
-  <require>org.nuxeo.ecm.core.search.service.SearchServiceImpl</require>
+  <require>org.nuxeo.ecm.core.search.service.SearchServiceCoreImpl</require>
 
   <extension target="org.nuxeo.runtime.api.ServiceManagement"
         point="services">

@@ -84,12 +84,8 @@
     <module>nuxeo-platform-relations-search</module>
     <module>nuxeo-platform-scheduler-core</module>
     <module>nuxeo-platform-search-api</module>
-    <module>nuxeo-platform-search-compass-plugin</module>
-    <module>nuxeo-platform-search-core</module>
-    <module>nuxeo-platform-search-core-listener</module>
+    <module>nuxeo-platform-search-nxcore</module>
     <module>nuxeo-platform-search-facade</module>
-    <module>nuxeo-platform-search-test</module>
-    <module>nuxeo-platform-search-test-integration</module>
     <module>nuxeo-platform-syndication</module>
     <module>nuxeo-platform-transform-api</module>
     <module>nuxeo-platform-transform-core</module>
@@ -531,17 +527,7 @@
       </dependency>
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-search-compass-plugin</artifactId>
-        <version>${nuxeo.platform.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-search-core</artifactId>
-        <version>${nuxeo.platform.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-search-core-listener</artifactId>
+        <artifactId>nuxeo-platform-search-nxcore</artifactId>
         <version>${nuxeo.platform.version}</version>
       </dependency>
       <dependency>
@@ -904,12 +890,6 @@
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-platform-api-test</artifactId>
-        <version>${nuxeo.platform.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-search-test</artifactId>
         <version>${nuxeo.platform.version}</version>
         <scope>test</scope>
       </dependency>
