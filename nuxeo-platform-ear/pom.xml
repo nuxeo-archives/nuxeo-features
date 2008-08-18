@@ -16,6 +16,10 @@
     Nuxeo Enterprise Platform: The Nuxeo EAR application.
   </description>
 
+  <modules>
+    <module>src/main/assemble/resources</module>
+  </modules>  
+
   <dependencies>
     <dependency>
       <groupId>org.nuxeo.common</groupId>
