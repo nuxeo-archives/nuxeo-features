@@ -6,7 +6,7 @@
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
-      <directory>src/main/resources_common</directory>
+      <directory>../../resources_common</directory>
       <outputDirectory>/</outputDirectory>
       <useDefaultExcludes>true</useDefaultExcludes>
       <excludes>
@@ -14,7 +14,7 @@
       </excludes>
     </fileSet>
     <fileSet>
-      <directory>src/main/resources_web-stateless</directory>
+      <directory>../../resources_web-stateless</directory>
       <outputDirectory>/</outputDirectory>
       <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
