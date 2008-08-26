@@ -97,7 +97,7 @@ public interface Graph extends Serializable {
     void remove(List<Statement> statements);
 
     /**
-     * Returns all statements in the graph.
+     * Returns all statements in the graph whose subject is not blank.
      * <p>
      * If the graph has reification support, the statements properties are
      * retrieved too.
@@ -105,7 +105,15 @@ public interface Graph extends Serializable {
      * @return list of Statement instances
      */
     List<Statement> getStatements();
-
+    /**
+     * Returns all statements in the graph.
+     * <p>
+     * If the graph has reification support, the statements properties are
+     * retrieved too.
+     *
+     * @return list of Statement instances
+     */
+    List<Statement> getAllStatements();
     /**
      * Returns all statements in the graph matching the pattern.
      * <p>

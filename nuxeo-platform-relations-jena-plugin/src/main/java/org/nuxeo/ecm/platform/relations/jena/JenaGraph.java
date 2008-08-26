@@ -473,13 +473,22 @@ public class JenaGraph implements Graph {
      * @param jenaStatements jena statements list
      * @return NXRelations statements list
      */
-    private List<Statement> getNXRelationsStatements(Model graph,
+    private List<Statement> getNonAnonNXRelationsStatements(Model graph,
             List<com.hp.hpl.jena.rdf.model.Statement> jenaStatements) {
         List<Statement> nuxStmts = new ArrayList<Statement>();
         for (com.hp.hpl.jena.rdf.model.Statement jenaStmt : jenaStatements) {
             if (!jenaStmt.getSubject().isAnon()) {
                 nuxStmts.add(getNXRelationsStatement(graph, jenaStmt));
             }
+        }
+        return nuxStmts;
+    }
+
+    private List<Statement> getNXRelationsStatements(Model graph,
+            List<com.hp.hpl.jena.rdf.model.Statement> jenaStatements) {
+        List<Statement> nuxStmts = new ArrayList<Statement>();
+        for (com.hp.hpl.jena.rdf.model.Statement jenaStmt : jenaStatements) {
+            nuxStmts.add(getNXRelationsStatement(graph, jenaStmt));
         }
         return nuxStmts;
     }
@@ -640,6 +649,28 @@ public class JenaGraph implements Graph {
             graph = graphConnection.getGraph();
             graph.enterCriticalSection(Lock.READ);
             StmtIterator it = graph.listStatements();
+            return getNonAnonNXRelationsStatements(graph, it.toList());
+        } catch (Exception e) {
+            throw wrapException(e);
+        } finally {
+            if (graph != null) {
+                graph.leaveCriticalSection();
+            }
+            if (graphConnection != null) {
+                graphConnection.close();
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Statement> getAllStatements() {
+        Model graph = null;
+        GraphConnection graphConnection = null;
+        try {
+            graphConnection = openGraph();
+            graph = graphConnection.getGraph();
+            graph.enterCriticalSection(Lock.READ);
+            StmtIterator it = graph.listStatements();
             return getNXRelationsStatements(graph, it.toList());
         } catch (Exception e) {
             throw wrapException(e);
@@ -663,7 +694,7 @@ public class JenaGraph implements Graph {
             graph.enterCriticalSection(Lock.READ);
             SimpleSelector selector = getJenaSelector(graph, statement);
             StmtIterator it = graph.listStatements(selector);
-            return getNXRelationsStatements(graph, it.toList());
+            return getNonAnonNXRelationsStatements(graph, it.toList());
         } catch (Exception e) {
             throw wrapException(e);
         } finally {
@@ -716,7 +747,7 @@ public class JenaGraph implements Graph {
             SimpleSelector selector = getJenaSelector(graph, new StatementImpl(
                     subject, null, object));
             StmtIterator it = graph.listStatements(selector);
-            List<Statement> statements = getNXRelationsStatements(graph,
+            List<Statement> statements = getNonAnonNXRelationsStatements(graph,
                     it.toList());
             List<Node> res = new ArrayList<Node>();
             for (Statement stmt : statements) {

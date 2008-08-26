@@ -133,4 +133,8 @@ public class DummyGraphType implements Graph {
     public void remove(List<Statement> statements) {
     }
 
+    public List<Statement> getAllStatements() {
+        return null;
+    }
+
 }
