@@ -935,36 +935,7 @@ public class JenaGraph implements Graph {
             graphConnection = openGraph();
             graph = graphConnection.getGraph();
             graph.enterCriticalSection(Lock.READ);
-            // dunno why base and lang are inverted here
-            // DM: overcome com.hp.hpl.jena.rdf.model.impl.ModelCom impl bug -
-            // closes the stream
-            // create a temporary stream
-            // TODO : make a temp using hdd to avoid mem usage
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            int av = in.available();
-            while (av > 0) {
-                byte[] buf = new byte[av];
-                in.read(buf);
-                bos.write(buf);
-                av = in.available();
-            }
-
-            byte[] data = bos.toByteArray();
-            // remove trailing spaces at the end to avoid sax parse exception
-            int n = data.length - 1;
-            while (data[n] == ' ') {
-                n--;
-            }
-
-            log.warn("removed " + (data.length - n - 1) + " trailing spaces");
-
-            byte[] trimmed = new byte[n];
-            System.arraycopy(data, 0, trimmed, 0, n);
-
-            ByteArrayInputStream tis = new ByteArrayInputStream(trimmed);
-
-            graph.read(tis, base, lang);
-            // default to true
+            graph.read(in, base, lang);
             return true;
         } catch (Exception e) {
             throw wrapException(e);
