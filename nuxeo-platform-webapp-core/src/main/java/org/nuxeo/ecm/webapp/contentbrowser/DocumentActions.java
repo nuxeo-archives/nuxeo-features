@@ -120,5 +120,8 @@ public interface DocumentActions extends StatefulBaseLifeCycle,
      * @throws ClientException
      */
     boolean getCanUnpublish() throws ClientException;
+    
+    //Rux testing
+    String incrementMajor() throws ClientException;
 
 }

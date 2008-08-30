@@ -49,6 +49,7 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Transactional;
 import org.jboss.seam.annotations.WebRemote;
 import org.jboss.seam.core.Events;
+import org.nuxeo.common.collections.ScopeType;
 import org.nuxeo.common.utils.IdUtils;
 import org.nuxeo.common.utils.StringUtils;
 import org.nuxeo.ecm.core.api.Blob;
@@ -58,6 +59,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
 import org.nuxeo.ecm.core.api.event.CoreEventConstants;
+import org.nuxeo.ecm.core.api.facet.VersioningDocument;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.platform.actions.Action;
 import org.nuxeo.ecm.platform.ejb.EJBExceptionHandler;
@@ -76,9 +78,11 @@ import org.nuxeo.ecm.platform.url.api.DocumentLocation;
 import org.nuxeo.ecm.platform.url.api.DocumentView;
 import org.nuxeo.ecm.platform.url.codec.DocumentFileCodec;
 import org.nuxeo.ecm.platform.util.RepositoryLocation;
+import org.nuxeo.ecm.platform.versioning.api.VersioningActions;
 import org.nuxeo.ecm.webapp.action.DeleteActions;
 import org.nuxeo.ecm.webapp.base.InputController;
 import org.nuxeo.ecm.webapp.documentsLists.DocumentsListsManager;
+import org.nuxeo.ecm.webapp.helpers.EventManager;
 import org.nuxeo.ecm.webapp.helpers.EventNames;
 import org.nuxeo.ecm.webapp.pagination.ResultsProvidersCache;
 import org.nuxeo.runtime.api.Framework;
@@ -677,5 +681,38 @@ public class DocumentActionsBean extends InputController implements
         }
         return false;
     }
+    
+    //Rux testing versioning - indexing relation
+    public String incrementMajor() throws ClientException {
+        DocumentModel doc = navigationContext.getCurrentDocument();
+        doc.putContextData(ScopeType.REQUEST, VersioningActions.KEY_FOR_INC_OPTION,
+                VersioningActions.ACTION_INCREMENT_MAJOR);
+        doc.putContextData(ScopeType.REQUEST, VersioningDocument.CREATE_SNAPSHOT_ON_SAVE_KEY,
+                true);
+        doc = documentManager.saveDocument(doc);
+        documentManager.save();
+        EventManager.raiseEventsOnDocumentChange(doc);
+        facesMessages.add(FacesMessage.SEVERITY_INFO,
+                resourcesAccessor.getMessages().get("document_modified"),
+                resourcesAccessor.getMessages().get(doc.getType()));
+        return navigationContext.navigateToDocument(doc, "after-edit");
+    }
 
+    protected DocumentModel saveRecursiveNewVersion(DocumentModel doc) throws ClientException {
+        DocumentModelList children = documentManager.getChildren(doc.getRef());
+        if (children != null) {
+            for (DocumentModel child : children) {
+                saveRecursiveNewVersion(child);
+            }
+        }
+        doc.putContextData(ScopeType.REQUEST, VersioningActions.KEY_FOR_INC_OPTION,
+                VersioningActions.ACTION_INCREMENT_MAJOR);
+        doc.putContextData(ScopeType.REQUEST, VersioningDocument.CREATE_SNAPSHOT_ON_SAVE_KEY,
+                true);
+        doc = documentManager.saveDocument(doc);
+        documentManager.save();
+        EventManager.raiseEventsOnDocumentChange(doc);
+        navigationContext.updateDocumentContext(doc);
+        return doc;
+    }
 }
