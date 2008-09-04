@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -249,7 +250,9 @@ public class WAPIImpl implements WAPI {
         if (workflowEngine != null) {
             return workflowEngine.getWorkItemsFor(participant, state, firstResult, maxResult);
         } else {
-            return new ResultSlice<WMWorkItemInstance>(new ArrayList<WMWorkItemInstance>(), firstResult, maxResult, 0);
+            return new ResultSlice<WMWorkItemInstance>(
+                    Collections.<WMWorkItemInstance> emptyList(), firstResult,
+                    maxResult, 0);
         }
     }
 

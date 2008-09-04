@@ -32,13 +32,13 @@ import java.util.Collection;
  */
 public class ResultSlice<E> {
 
-    protected Collection<E> slice;
+    final public Collection<E> slice;
 
-    protected int firstResult;
+    final public int firstResult;
 
-    protected int maxResult;
+    final public int maxResult;
 
-    protected int totalResult;
+    final public int totalResult;
 
     public ResultSlice(Collection<E> slice, int firstResult, int maxResult,
             int totalResults) {
@@ -46,22 +46,6 @@ public class ResultSlice<E> {
         this.firstResult = firstResult;
         this.maxResult = maxResult;
         this.totalResult = totalResults;
-    }
-
-    public Collection<E> getSlice() {
-        return slice;
-    }
-
-    public int getFirstResult() {
-        return firstResult;
-    }
-
-    public int getMaxResult() {
-        return maxResult;
-    }
-
-    public int getTotalResult() {
-        return totalResult;
     }
 
 }

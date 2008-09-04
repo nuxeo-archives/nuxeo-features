@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -648,7 +649,7 @@ public class JbpmWorkflowEngine extends AbstractWorkflowEngine {
 
     public Collection<WMWorkItemInstance> getWorkItemsFor(
             List<WMParticipant> participants, String state) {
-        return getWorkItemsFor(participants, state, 0, -1).getSlice();
+        return getWorkItemsFor(participants, state, 0, -1).slice;
     }
 
     public ResultSlice<WMWorkItemInstance> getWorkItemsFor(
@@ -690,7 +691,7 @@ public class JbpmWorkflowEngine extends AbstractWorkflowEngine {
                 // scroll the results a to only collect elements of the required slice
                 ScrollableResults results = query.scroll();
                 if (results.setRowNumber(firstResult)) {
-                    objects = new ArrayList<Object[]>(maxResults);
+                    objects = new ArrayList<Object[]>(maxResults < 100 ? maxResults : 100);
                     for (int i=0; i<maxResults; i++) {
                         objects.add(results.get());
                         if (!results.next()) {
@@ -699,7 +700,7 @@ public class JbpmWorkflowEngine extends AbstractWorkflowEngine {
                     }
                 } else {
                     // no results at such position
-                    objects = new ArrayList<Object[]>();
+                    objects = Collections.emptyList();
                 }
                 // scroll till the end to fetch the total number of results
                 if (results.last()) {
