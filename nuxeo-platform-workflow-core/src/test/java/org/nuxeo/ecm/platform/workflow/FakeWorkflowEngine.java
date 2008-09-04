@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -273,6 +274,25 @@ public class FakeWorkflowEngine extends AbstractWorkflowEngine {
     public WMWorkItemIterator listWorkItems(WMFilter filter)
             throws WMWorkflowException {
         // Auto-generated method stub
+        return null;
+    }
+
+    public Collection<WMWorkItemInstance> getWorkItemsFor(
+            List<WMParticipant> participants, String state) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Collection<WMWorkItemInstance> getWorkItemsFor(
+            List<WMParticipant> participants, String state, int firstResult,
+            int maxResult) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Collection<WMProcessInstance> listProcessInstanceForCreators(
+            List<String> creators) {
+        // TODO Auto-generated method stub
         return null;
     }
 

@@ -168,6 +168,9 @@ public interface WAPI extends Serializable {
             String state) throws WMWorkflowException;
     Collection<WMWorkItemInstance> getWorkItemsFor(List<WMParticipant> participant,
             String state) throws WMWorkflowException;
+    ResultSlice<WMWorkItemInstance> getWorkItemsFor(List<WMParticipant> participant,
+            String state, int firstResult, int maxResult) throws WMWorkflowException;
+
     /**
      * Returns for a given workflow participant and for a given process instance
      * all work items in a given state.

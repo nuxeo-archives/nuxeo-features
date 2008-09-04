@@ -33,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.platform.workflow.NXWorkflow;
 import org.nuxeo.ecm.platform.workflow.api.WorkflowEngine;
+import org.nuxeo.ecm.platform.workflow.api.client.wfmc.ResultSlice;
 import org.nuxeo.ecm.platform.workflow.api.client.wfmc.WAPI;
 import org.nuxeo.ecm.platform.workflow.api.client.wfmc.WMActivityInstance;
 import org.nuxeo.ecm.platform.workflow.api.client.wfmc.WMFilter;
@@ -240,6 +241,18 @@ public class WAPIImpl implements WAPI {
 
         return workItems;
     }
+
+    public ResultSlice<WMWorkItemInstance> getWorkItemsFor(
+            List<WMParticipant> participant, String state, int firstResult,
+            int maxResult) throws WMWorkflowException {
+        WorkflowEngine workflowEngine = getDefaultEngine();
+        if (workflowEngine != null) {
+            return workflowEngine.getWorkItemsFor(participant, state, firstResult, maxResult);
+        } else {
+            return new ResultSlice<WMWorkItemInstance>(new ArrayList<WMWorkItemInstance>(), firstResult, maxResult, 0);
+        }
+    }
+
     public Collection<WMWorkItemInstance> getWorkItemsFor(String pid,
             String state, WMParticipant participant) throws WMWorkflowException {
 
