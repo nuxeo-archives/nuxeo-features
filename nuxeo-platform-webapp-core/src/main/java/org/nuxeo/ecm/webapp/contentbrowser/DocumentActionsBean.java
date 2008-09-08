@@ -707,8 +707,6 @@ public class DocumentActionsBean extends InputController implements
         }
         doc.putContextData(ScopeType.REQUEST, VersioningActions.KEY_FOR_INC_OPTION,
                 VersioningActions.ACTION_INCREMENT_MAJOR);
-        doc.putContextData(ScopeType.REQUEST, VersioningDocument.CREATE_SNAPSHOT_ON_SAVE_KEY,
-                true);
         doc = documentManager.saveDocument(doc);
         documentManager.save();
         EventManager.raiseEventsOnDocumentChange(doc);
