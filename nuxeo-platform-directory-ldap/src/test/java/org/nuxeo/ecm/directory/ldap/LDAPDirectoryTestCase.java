@@ -47,7 +47,7 @@ public abstract class LDAPDirectoryTestCase extends NXRuntimeTestCase {
 
     // change this flag to use an external LDAP directory instead of the
     // non networked default ApacheDS implementation
-    public boolean USE_EXTERNAL_TEST_LDAP_SERVER = true;
+    public boolean USE_EXTERNAL_TEST_LDAP_SERVER = false;
 
     // change this flag if your test server has support for dynamic groups
     // through the groupOfURLs objectclass, eg for OpenLDAP:
