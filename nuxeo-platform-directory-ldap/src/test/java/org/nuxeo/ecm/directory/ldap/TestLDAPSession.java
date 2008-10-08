@@ -279,6 +279,18 @@ public class TestLDAPSession extends LDAPDirectoryTestCase {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public void testGetEntryCaseSensitive() throws Exception {
+        Session session = getLDAPDirectory("userDirectory").getSession();
+        try {
+            assertNull(session.getEntry("administrator"));
+            assertNull(session.getEntry("aDministrator"));
+            assertNull(session.getEntry("User1"));
+        } finally {
+            session.close();
+        }
+    }
+
     public void testGetEntries() throws ClientException {
         Session session = getLDAPDirectory("userDirectory").getSession();
         try {
@@ -832,9 +844,21 @@ public class TestLDAPSession extends LDAPDirectoryTestCase {
             assertTrue(session.authenticate("user1", "user1"));
 
             assertFalse(session.authenticate("Administrator", "BAD password"));
+
+            // user Id is case sensitive in Nuxeo even though LDAP bind is not
+            assertFalse(session.authenticate("administrator", "Administrator"));
+            assertFalse(session.authenticate("User1", "user1"));
+
+            // password is naturally case sensitive
+            assertFalse(session.authenticate("Administrator", "administrator"));
+
+            // check LDAP escaping in password
             assertFalse(session.authenticate("user1", "*"));
 
+            // check that unexisting users cannot authenticate
             assertFalse(session.authenticate("NotExistingUser", "whatever"));
+
+            // check LDAP escaping in username and password
             assertFalse(session.authenticate("*", "*"));
 
             // ensure workaround to avoid anonymous binding is setup

@@ -264,6 +264,36 @@ public class LDAPSession implements Session, EntrySource {
             log.debug("More than one entry found for: " + id);
             throw new DirectoryException("more than one entry found for: " + id);
         }
+
+        // check that the case of the ID attribute match the requested id
+        // match since Nuxeo reference implementation is case sensitive w.r.t
+        // the ID of an entry
+        Attribute fetchedIdAttribute = result.getAttributes().get(idAttribute);
+        if (fetchedIdAttribute != null) {
+            String fetchedId;
+            try {
+                fetchedId = fetchedIdAttribute.get().toString();
+            } catch (NamingException e) {
+                throw new DirectoryException(e);
+            }
+            if (!id.equals(fetchedId)) {
+                if (log.isDebugEnabled()) {
+                    log.debug(String.format(
+                            "LDAPSession.getLdapEntry(%s): ID attribute '%s'"
+                                    + " does not match requested id '%s' [%s]",
+                            id, fetchedId, id, this));
+                }
+                return null;
+            }
+        } else {
+            // this should never happen since we precisely queried upon
+            // idAttribute meanwhile there exist LDAP server implementations or
+            // configurations that index attributes as defined in the DN but not
+            // part of the real entry attributes
+            log.warn(String.format(
+                    "could not check the case of null fetched ID attribute '%s' for entry '%s' [%s]",
+                    idAttribute, result.getNameInNamespace(), this));
+        }
         return result;
     }
 
@@ -337,8 +367,8 @@ public class LDAPSession implements Session, EntrySource {
 
                 if (log.isDebugEnabled()) {
                     log.debug(String.format(
-                            "LDAPSession.updateEntry(%s): LDAP modifyAttributes dn='%s' " +
-                            "mod_op='REMOVE_ATTRIBUTE' attr='%s' [%s]",
+                            "LDAPSession.updateEntry(%s): LDAP modifyAttributes dn='%s' "
+                                    + "mod_op='REMOVE_ATTRIBUTE' attr='%s' [%s]",
                             docModel, dn, attrsToDel, this));
                 }
                 dirContext.modifyAttributes(dn, DirContext.REMOVE_ATTRIBUTE,
@@ -346,8 +376,8 @@ public class LDAPSession implements Session, EntrySource {
 
                 if (log.isDebugEnabled()) {
                     log.debug(String.format(
-                            "LDAPSession.updateEntry(%s): LDAP modifyAttributes dn='%s' " +
-                            "mod_op='REPLACE_ATTRIBUTE' attr='%s' [%s]",
+                            "LDAPSession.updateEntry(%s): LDAP modifyAttributes dn='%s' "
+                                    + "mod_op='REPLACE_ATTRIBUTE' attr='%s' [%s]",
                             docModel, dn, attrs, this));
                 }
                 dirContext.modifyAttributes(dn, DirContext.REPLACE_ATTRIBUTE,
@@ -791,6 +821,11 @@ public class LDAPSession implements Session, EntrySource {
         if (password == null || "".equals(password.trim())) {
             // never use anonymous bind as a way to authenticate a user in Nuxeo
             // EP
+            if (log.isDebugEnabled()) {
+                log.debug(String.format(
+                        "LDAPSession.authenticate(%s, %s): null or empty password login is forbidden [%s]",
+                        username, password, this));
+            }
             return false;
         }
 
@@ -804,14 +839,22 @@ public class LDAPSession implements Session, EntrySource {
         }
         if (entry == null) {
             // no such user => authentication failed
+            if (log.isDebugEnabled()) {
+                log.debug(String.format(
+                        "LDAPSession.authenticate(%s, _hidden_password_): no such entry '%s' [%s]",
+                        username, username, this));
+            }
             return false;
         }
+
+        // get the DN of the entry and perform an LDAP bind request using the
+        // provided password
         String dn = entry.getNameInNamespace();
         Properties env = (Properties) directory.getContextProperties().clone();
         env.put(Context.SECURITY_PRINCIPAL, dn);
         env.put(Context.SECURITY_CREDENTIALS, password);
         try {
-            // creating a context does a bind
+            // creating a context does a LDAP bind
             log.debug(String.format("LDAP bind dn='%s'", dn));
             // noinspection ResultOfObjectAllocationIgnored
             new InitialDirContext(env);
