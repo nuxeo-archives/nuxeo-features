@@ -19,8 +19,6 @@
 
 package org.nuxeo.ecm.platform.search.ejb;
 
-import java.io.Serializable;
-
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJBException;
 import javax.ejb.MessageDriven;
@@ -33,12 +31,15 @@ import javax.security.auth.login.LoginContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.search.NXSearch;
 import org.nuxeo.ecm.core.search.api.client.SearchService;
 import org.nuxeo.ecm.core.search.api.events.IndexingEventConf;
+import org.nuxeo.ecm.core.search.api.indexingwrapper.DocumentModelIndexingWrapper;
 import org.nuxeo.ecm.core.search.threading.IndexingThreadPool;
 import org.nuxeo.ecm.platform.events.api.DocumentMessage;
 import org.nuxeo.ecm.platform.events.api.EventMessage;
+import org.nuxeo.ecm.platform.events.api.JMSConstant;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -60,13 +61,15 @@ import org.nuxeo.runtime.api.Framework;
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/NXPMessages"),
         @ActivationConfigProperty(propertyName = "providerAdapterJNDI", propertyValue = "java:/NXCoreEventsProvider"),
-        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge") })
+        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
+        @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = JMSConstant.NUXEO_MESSAGE_TYPE + " IN ('"
+                + JMSConstant.DOCUMENT_MESSAGE + "','" + JMSConstant.EVENT_MESSAGE + "')") })
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class SearchMessageListener implements MessageListener {
 
     private static final Log log = LogFactory.getLog(SearchMessageListener.class);
 
-    private transient SearchService service;
+    private SearchService service;
 
     private LoginContext loginCtx;
 
@@ -94,14 +97,6 @@ public class SearchMessageListener implements MessageListener {
 
         try {
             login();
-        } catch (Exception e) {
-            throw new EJBException(e);
-        }
-
-        // :XXX: deal with other events such as audit, relations, etc...
-
-        try {
-
             SearchService service = getSearchService();
 
             // Check if the search service is active
@@ -109,8 +104,8 @@ public class SearchMessageListener implements MessageListener {
                 return;
             }
 
-            Serializable obj = ((ObjectMessage) message).getObject();
-            if (!(obj instanceof DocumentMessage)) {
+            Object obj = ((ObjectMessage)message).getObject();
+            if(!(obj instanceof DocumentMessage)) {
                 return;
             }
             DocumentMessage doc = (DocumentMessage) obj;
@@ -119,8 +114,6 @@ public class SearchMessageListener implements MessageListener {
             Boolean duplicatedMessage = (Boolean) doc.getEventInfo().get(
                     EventMessage.DUPLICATED);
             if (duplicatedMessage != null && duplicatedMessage == true) {
-                log.debug("Message " + eventId
-                        + " is marked as duplicated, ignoring");
                 return;
             }
 
@@ -141,10 +134,11 @@ public class SearchMessageListener implements MessageListener {
                         + " is desactivated for indexing");
                 return;
             }
-
             boolean recursive = eventConf.isRecursive();
             String action = eventConf.getAction();
 
+            // get the wrapper if available
+            DocumentModel dm = doc.getAdapter(DocumentModelIndexingWrapper.class);
             if (IndexingEventConf.INDEX.equals(action)
                     || IndexingEventConf.RE_INDEX.equals(action)) {
 
@@ -152,21 +146,21 @@ public class SearchMessageListener implements MessageListener {
                 // For now only based on explicit registration of the doc type
                 // against the search service. (i.e : versus core type facet
                 // based)
-                if (service.getIndexableDocTypeFor(doc.getType()) == null) {
+                if (service.getIndexableDocTypeFor(dm.getType()) == null) {
                     return;
                 }
 
                 if (log.isDebugEnabled()) {
-                    log.debug("indexing " + doc.getPath());
+                    log.debug("indexing " + dm.getPath());
                 }
 
                 // Compute full text as well.
-                IndexingThreadPool.index(doc, recursive, true);
+                IndexingThreadPool.index(dm, recursive, true);
             } else if (IndexingEventConf.UN_INDEX.equals(action)) {
                 if (log.isDebugEnabled()) {
-                    log.debug("asynchronous unindexing " + doc.getPath());
+                    log.debug("asynchronous unindexing " + dm.getPath());
                 }
-                IndexingThreadPool.unindex(doc, recursive);// Compute
+                IndexingThreadPool.unindex(dm, recursive);// Compute
             }
         } catch (Exception e) {
             throw new EJBException(e);

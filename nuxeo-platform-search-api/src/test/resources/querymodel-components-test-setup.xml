@@ -18,6 +18,9 @@
     <doctype name="TestQuery" extends="Document">
       <schema name="querymodel_common" />
       <schema name="querymodel_test" />
+      <!-- override because the standard one references common and dublincore
+      which produce errors -->
+      <prefetch/>
     </doctype>
   </extension>
 
@@ -37,10 +40,28 @@
       </pattern>
       <sortable defaultSortColumn="dc:modified" defaultSortAscending="true" />
     </queryModel>
-    
+
     <queryModel name="statelessModelWithListParam">
       <pattern>
         SELECT * FROM Document WHERE ecm:primaryType IN ?
+      </pattern>
+    </queryModel>
+
+    <queryModel name="statelessModelWithBooleanParam">
+      <pattern>
+        SELECT * FROM Document WHERE ecm:booleanParameter = ?
+      </pattern>
+    </queryModel>
+
+    <queryModel name="statelessModelWithIntegerParam">
+      <pattern>
+        SELECT * FROM Document WHERE ecm:integerParameter = ?
+      </pattern>
+    </queryModel>
+
+    <queryModel name="statelessModelWithFloatParam">
+      <pattern>
+        SELECT * FROM Document WHERE ecm:floatParameter = ?
       </pattern>
     </queryModel>
 
@@ -98,6 +119,10 @@
           <field schema="querymodel_test" name="listfield"/>
         </predicate>
 
+        <predicate parameter="someint" operator="=">
+          <field schema="querymodel_test" name="intfield"/>
+        </predicate>
+
       </whereClause>
 
 
@@ -122,6 +147,25 @@
         <fixedPart>
         sp:specific LIKE 'foo' OR ecm:isProxy = 1
         </fixedPart>
+
+      </whereClause>
+    </queryModel>
+
+    <queryModel name="statefulModelWithSubClause" docType="TestQuery">
+
+      <whereClause>
+
+        <predicate parameter="intparameter" operator="=">
+          <field schema="querymodel_test" name="intfield"/>
+        </predicate>
+
+        <predicate type="subClause">
+          <field schema="querymodel_test" name="subclause"/>
+        </predicate>
+
+        <predicate parameter="textparameter" operator="=">
+          <field schema="querymodel_test" name="textfield" />
+        </predicate>
 
       </whereClause>
     </queryModel>

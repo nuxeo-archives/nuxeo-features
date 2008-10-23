@@ -34,6 +34,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.Filter;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.impl.FacetFilter;
+import org.nuxeo.ecm.core.query.sql.model.Literal;
 import org.nuxeo.runtime.model.RuntimeContext;
 
 @XObject(value = "queryModel")
@@ -77,7 +78,7 @@ public class QueryModelDescriptor {
     /**
      * used for stateless qm a sortable qm is one that does not have an ORDER BY
      * clause, so that a query with sortInfo can append them
-     * 
+     *
      * @deprecated - do not use an ORDER BY clause in the pattern, use
      *             defaultSortColumn and defaultSortAscending
      */
@@ -119,8 +120,7 @@ public class QueryModelDescriptor {
         return getQuery(model, null);
     }
 
-    public SortInfo getDefaultSortInfo(DocumentModel model)
-            throws ClientException {
+    public SortInfo getDefaultSortInfo(DocumentModel model) {
         if (isStateful()) {
             if (sortColumnField == null || sortAscendingField == null) {
                 return null;
@@ -176,23 +176,24 @@ public class QueryModelDescriptor {
     /**
      * Return the string literal in a form ready to embed in an NXQL statement.
      * TODO remove this once we work on org.nuxeo.core, v 1.4
-     * 
+     *
      * @param s
      * @return
      */
+    // TODO remove this once we work on org.nuxeo.core, v 1.4
     public static String prepareStringLiteral(String s) {
         return "'" + s.replaceAll("'", "\\\\'") + "'";
     }
 
     private static void appendQuotedStringList(StringBuilder queryBuilder,
             List<? extends Object> listParam) {
-        queryBuilder.append("(");
+        queryBuilder.append('(');
         List<String> quotedParam = new ArrayList<String>(listParam.size());
         for (int j = 0; j < listParam.size(); j++) {
             quotedParam.add(prepareStringLiteral(listParam.get(j).toString()));
         }
         queryBuilder.append(StringUtils.join(quotedParam, ", "));
-        queryBuilder.append(")");
+        queryBuilder.append(')');
     }
 
     @SuppressWarnings("unchecked")
@@ -219,10 +220,17 @@ public class QueryModelDescriptor {
                 } else if (params[i] instanceof List) {
                     appendQuotedStringList(queryBuilder,
                             (List<? extends Object>) params[i]);
+                } else if (params[i] instanceof Boolean) {
+                    boolean b = (Boolean) params[i];
+                    queryBuilder.append(b ? 1 : 0);
+                } else if (params[i] instanceof Number) {
+                    queryBuilder.append(params[i]);
+                } else if (params[i] instanceof Literal) {
+                    queryBuilder.append(params[i].toString());
                 } else {
                     String queryParam = params[i].toString();
-                    // TODO will escape everything as if it where a string
-                    // which is ok for dates but wrong for integers
+                    // this will escape everything as if it where a string
+                    // use a literal if you want to do your own custom stuff
                     // TODO replug escaper from SQLQueryParser
                     queryBuilder.append(prepareStringLiteral(queryParam));
                 }
@@ -290,9 +298,9 @@ public class QueryModelDescriptor {
      * Init the escaper object for stateful query models.
      * <p>
      * This is meant to be called at extension point contribution registration
-     * time
+     * time.
      * </p>
-     * 
+     *
      * @param context surrounding context, used to load the correct class.
      */
     public void initEscaper(RuntimeContext context) {

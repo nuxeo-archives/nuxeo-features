@@ -20,6 +20,7 @@
 package org.nuxeo.ecm.core.search.api.client.indexing.resources.document.schemas;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.nuxeo.ecm.core.schema.SchemaManager;
 import org.nuxeo.ecm.core.search.api.client.common.TypeManagerServiceDelegate;
@@ -32,17 +33,18 @@ import org.nuxeo.runtime.test.NXRuntimeTestCase;
  */
 public class TestDefaultSchemaFIeldDescriptorFactory extends NXRuntimeTestCase {
 
-    final DefaultSchemaFieldDescriptorsFactory factory = new DefaultSchemaFieldDescriptorsFactory();
-    private HashMap<String, IndexableFieldDescriptor> fields;
+    private final DefaultSchemaFieldDescriptorsFactory factory = new DefaultSchemaFieldDescriptorsFactory();
+    private Map<String, IndexableFieldDescriptor> fields;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        deployBundle("nuxeo-core-schema");
-        deployContrib("default-fieldfactory-components-test-setup.xml");
+        deployBundle("org.nuxeo.ecm.core.schema");
+        deployContrib("org.nuxeo.ecm.platform.search.api.tests",
+                "default-fieldfactory-components-test-setup.xml");
     }
 
-    public void testConfiguration() throws Exception {
+    public void testConfiguration() {
         SchemaManager typeManager = TypeManagerServiceDelegate.getRemoteTypeManagerService();
         assertNotNull(typeManager);
         assertNotNull(factory.getSchemaByPrefix("v"));
@@ -56,7 +58,7 @@ public class TestDefaultSchemaFIeldDescriptorFactory extends NXRuntimeTestCase {
         }
     }
 
-    public void testSimpleProperties() throws Exception {
+    public void testSimpleProperties() {
         loadFieldsFromSchema("various");
         IndexableFieldDescriptor field;
 
@@ -78,7 +80,7 @@ public class TestDefaultSchemaFIeldDescriptorFactory extends NXRuntimeTestCase {
         assertFalse(field.isMultiple());
     }
 
-    public void testListProperties() throws Exception {
+    public void testListProperties() {
         loadFieldsFromSchema("lists");
         IndexableFieldDescriptor field;
 
@@ -94,7 +96,7 @@ public class TestDefaultSchemaFIeldDescriptorFactory extends NXRuntimeTestCase {
         assertEquals("date", field.getIndexingType());
     }
 
-    public void testComplexProperty() throws Exception {
+    public void testComplexProperty() {
         loadFieldsFromSchema("complex");
 
         IndexableFieldDescriptor field;
