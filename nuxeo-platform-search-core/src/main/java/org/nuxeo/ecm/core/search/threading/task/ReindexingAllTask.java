@@ -1,47 +1,34 @@
 /**
  *
  */
-package org.nuxeo.ecm.core.search.threading;
+package org.nuxeo.ecm.core.search.threading.task;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.search.api.backend.indexing.resources.ResolvedResources;
+import org.nuxeo.ecm.core.api.DocumentRef;
 
 /**
  * @author <a href="mailto:ja@nuxeo.com">Julien Anguenot</a>
- *
+ * 
  */
-public class ReindexingAllTask extends IndexingTask {
+class ReindexingAllTask extends IndexingBrowseTask {
 
     private static final Log log = LogFactory.getLog(ReindexingAllTask.class);
 
     private static int DEFAULT_DOC_BATCH_SIZE = 50;
 
-    public ReindexingAllTask(DocumentModel dm, Boolean recursive) {
-        super(dm, recursive);
-    }
-
-    public ReindexingAllTask(DocumentModel dm, Boolean recursive,
-            boolean fulltext) {
-        super(dm, recursive, fulltext);
-    }
-
-    // XXX deal with that.
-    public ReindexingAllTask(ResolvedResources resources) {
-        super(resources);
+    public ReindexingAllTask(DocumentRef docRef, String repositoryName) {
+        super(docRef, repositoryName);
     }
 
     public void run() {
 
         final String errorMsg = "Reindexing all documents failed...";
 
-        // Init search service.
-        getSearchService();
-
         final int current_batch_size = searchService.getIndexingDocBatchSize();
 
         try {
+            log.debug("Reindexing all task started for document: " + docRef);
 
             // Increase the batch size for performance sake.
             searchService.setIndexingDocBatchSize(DEFAULT_DOC_BATCH_SIZE);
@@ -64,17 +51,40 @@ public class ReindexingAllTask extends IndexingTask {
             // batch size.
 
             // FIXME
-            //log.info("Flush remaining sessions...");
-            //searchService.saveAllSessions();
+            // log.info("Flush remaining sessions...");
+            // searchService.saveAllSessions();
+            log.debug("Reindexing all task done for document: " + docRef);
 
         } catch (InterruptedException e) {
             log.error(errorMsg, e);
-        //}
-        //catch (IndexingException e) {
-        //r    log.error(errorMsg, e);
+            // }
+            // catch (IndexingException e) {
+            // r log.error(errorMsg, e);
         } finally {
             searchService.setIndexingDocBatchSize(current_batch_size);
         }
 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof ReindexingAllTask) {
+            ReindexingAllTask task = (ReindexingAllTask) obj;
+            return docRef.equals(task.docRef)
+                    && repositoryName.equals(task.repositoryName);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 37 * result + (docRef == null ? 0 : docRef.hashCode());
+        result = 37 * result
+                + (repositoryName == null ? 0 : repositoryName.hashCode());
+        return result;
     }
 }
