@@ -67,7 +67,7 @@ public class SearchPrincipalImpl implements SearchPrincipal {
                 this.originalPrincipal = (Serializable)originalPrincipal;
             } else {
                 log.warn("Principal with name= "
-                        + originalPrincipal.getName()
+                        + ((Principal) originalPrincipal).getName()
                         + " is not serializble. Cannot store it on SearchPrincipal...");
             }
         }

@@ -77,6 +77,7 @@ public class TestSearchPageProvider extends NXRuntimeTestCase {
             return new FieldImpl(qname, StringType.INSTANCE,
                     StringType.INSTANCE);
         }
+
     }
 
     private ResultItem resultItem;
@@ -86,8 +87,8 @@ public class TestSearchPageProvider extends NXRuntimeTestCase {
         try {
             super.setUp();
             resultItem = new ResultItemImpl(buildResultItemMap(), "the_id");
-            deployBundle("nuxeo-core-schema");
-            deployBundle("nuxeo-core");
+            deployBundle("org.nuxeo.ecm.core.schema");
+            deployBundle("org.nuxeo.ecm.core");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,6 +120,7 @@ public class TestSearchPageProvider extends NXRuntimeTestCase {
                 Collections.EMPTY_LIST, 17, 10);
         SearchPageProvider provider = new SearchPageProvider(set);
         assertEquals(2, provider.getNumberOfPages());
+
     }
 
     @SuppressWarnings("unchecked")

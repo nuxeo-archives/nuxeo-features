@@ -27,14 +27,19 @@ import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.IndexableR
 
 /**
  * Base interface for indexable resources.
+ *
  * <p>
+ *
  * An indexable resource is a data source where to get data to index. For
  * instance, a Nuxeo core document is an example of resource. SQL, JPA,
  * Hibernate resources are as candidates.
- * <p>
+ *
+ * </p>
+ *
  * An indexable resource contains a set of indexable data.
  *
  * @author <a href="mailto:ja@nuxeo.com">Julien Anguenot</a>
+ *
  */
 public interface IndexableResource extends Serializable {
 
@@ -63,7 +68,7 @@ public interface IndexableResource extends Serializable {
     /**
      * Returns the value for a given indexable data name.
      *
-     * @param indexableDataName the actual indexable data name resource side.
+     * @param indexableDataName : the actual indexable data name resource side.
      *
      * @return a serializable object holding the value.
      * @throws IndexingException TODO
@@ -73,13 +78,12 @@ public interface IndexableResource extends Serializable {
 
     /**
      * Computes an {@link ACP} for the given resource.
-     * <p>
-     * The returned value applies to all the resources that may be
+     * <p>The returned value applies to all the resources that may be
      * associated with the present one in an {@link IndexableResources}.
      * Confidence in the validity of said value must be as strong as it gets.
      * The counterpart is that the caller must interpret <code>null</code>
      * return values as a lack of info from <strong>this</resource> and
-     * perform other computations.
+     * perform other computations.</p>
      *
      * @return the ACP
      */

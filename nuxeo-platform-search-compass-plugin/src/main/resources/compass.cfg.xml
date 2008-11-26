@@ -58,5 +58,9 @@
       <resource location="nxdocument.cpm.xml" />
     </mappings>
 
+    <settings>
+      <setting name="compass.transaction.lockTimeout" value="60"></setting>
+      <setting name="compass.transaction.commitTimeout" value="60"></setting>
+    </settings>
   </compass>
 </compass-core-config>

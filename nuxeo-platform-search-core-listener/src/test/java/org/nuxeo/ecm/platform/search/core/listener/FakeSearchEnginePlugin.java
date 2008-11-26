@@ -79,16 +79,22 @@ public class FakeSearchEnginePlugin extends AbstractSearchEngineBackend
     }
 
     public void clear() throws IndexingException {
+        // TODO Auto-generated method stub
     }
 
     public void closeSession(String sid) {
+        // TODO Auto-generated method stub
+
     }
 
     public SearchServiceSession createSession() {
+        // TODO Auto-generated method stub
         return null;
     }
 
     public void saveAllSessions() throws IndexingException {
+        // TODO Auto-generated method stub
+
     }
 
 }

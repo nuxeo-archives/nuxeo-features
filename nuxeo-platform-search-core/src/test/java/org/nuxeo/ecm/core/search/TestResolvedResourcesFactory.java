@@ -78,29 +78,47 @@ public class TestResolvedResourcesFactory extends RepositoryTestCase {
         super.setUp();
 
         //deploy("ServiceManagement.xml");
-        deploy("RepositoryManager.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "RepositoryManager.xml");
 
-        deploy("CoreService.xml");
-        deploy("TypeService.xml");
-        deploy("PolicyService.xml");
-        deploy("SecurityService.xml");
-        deploy("RepositoryService.xml");
-        deploy("test-CoreExtensions.xml");
-        deploy("CoreTestExtensions.xml");
-        deploy("DemoRepository.xml");
-        deploy("LifeCycleService.xml");
-        deploy("LifeCycleServiceExtensions.xml");
-        deploy("CoreEventListenerService.xml");
-        deploy("PlatformService.xml");
-        deploy("DefaultPlatform.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests", "CoreService.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests", "TypeService.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "PolicyService.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "SecurityService.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "RepositoryService.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "test-CoreExtensions.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "CoreTestExtensions.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "DemoRepository.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "LifeCycleService.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "LifeCycleServiceExtensions.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "CoreEventListenerService.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "PlatformService.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "DefaultPlatform.xml");
 
-        deploy("nxmimetype-bundle.xml");
-        deploy("nxtransform-framework.xml");
-        deploy("nxtransform-platform-contrib.xml");
-        deploy("nxtransform-plugins-bundle.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "nxmimetype-bundle.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "nxtransform-framework.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "nxtransform-platform-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "nxtransform-plugins-bundle.xml");
 
-        deploy("nxsearch-test-framework.xml");
-        deploy("nxsearch-test-contrib.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "nxsearch-test-framework.xml");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "nxsearch-test-contrib.xml");
 
         service = NXSearch.getSearchService();
         assertNotNull(service);
@@ -280,7 +298,7 @@ public class TestResolvedResourcesFactory extends RepositoryTestCase {
         dm.setProperty("dublincore", "title", "A document of my type");
 
         HashMap<String, Serializable> task;
-        List<HashMap<String, Serializable>> tasks = new ArrayList<HashMap<String, Serializable>>(2);
+        ArrayList<HashMap<String, Serializable>> tasks = new ArrayList<HashMap<String, Serializable>>(2);
         task = new HashMap<String, Serializable>();
         task.put("what", "eat");
         tasks.add(task);
@@ -476,7 +494,7 @@ public class TestResolvedResourcesFactory extends RepositoryTestCase {
 
         // Test doc resources metadata
 
-        docRes = oneRes;
+        docRes = (DocumentIndexableResource) oneRes;
         assertEquals(dm.getRef(), docRes.getDocRef());
         assertEquals(dm.getParentRef(), docRes.getDocParentRef());
         assertEquals(dm.getType(), docRes.getDocType());
@@ -487,6 +505,7 @@ public class TestResolvedResourcesFactory extends RepositoryTestCase {
         // assertEquals(dm.getRepositoryName(), docRes.getDocURL());
 
         oneRes.closeCoreSession();
+
     }
 
     public void testResolvedResourcesGeneration() throws Exception {
@@ -802,7 +821,8 @@ public class TestResolvedResourcesFactory extends RepositoryTestCase {
 
     public void testFullTextAll() throws Exception {
 
-        deploy("nxsearch-test-fulltext-all");
+        deployContrib("org.nuxeo.ecm.platform.search.tests",
+                "nxsearch-test-fulltext-all.xml");
         DocumentModel dm = createSampleMyDocument();
 
         // Generate aggregated indexable resources
@@ -840,7 +860,8 @@ public class TestResolvedResourcesFactory extends RepositoryTestCase {
         assertTrue(data.getTermVector().isEmpty());
         // note: no conversion available for text/html from here
         assertTextEquals("a b Indexable data Indexable description text/html ISO-8859-15 foo.pdf",
-                (String) data.getValue());
+                (String)data.getValue());
+
     }
 
     public void testFullTextAllOneResource() throws Exception {
@@ -991,11 +1012,15 @@ public class TestResolvedResourcesFactory extends RepositoryTestCase {
     }
 
     public void xtestReindexAll() throws Exception {
+
         final int NB_DOCS = 100;
+
         for (int i=0; i< NB_DOCS; i++) {
             createSampleFileTextPlain();
         }
+
         service.reindexAll("demo", "/", false);
+
     }
 
 }

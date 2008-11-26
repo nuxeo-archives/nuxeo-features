@@ -97,7 +97,8 @@ public class ResolvedResourcesFactory implements Serializable {
      * @param resource a document indexable resource.
      * @return a resolved data instance.
      */
-    private static ResolvedData computeFulltext(IndexableResources resources) {
+    private static ResolvedData computeFulltext(IndexableResources resources)
+            throws IndexingException {
 
         String value = "";
         String analyzer = "default";
@@ -282,11 +283,15 @@ public class ResolvedResourcesFactory implements Serializable {
 
         blob = null;
         return res;
+
     }
 
     public static ResolvedResources computeAggregatedResolvedResourcesFrom(
             IndexableResources resources, boolean fulltext)
             throws IndexingException {
+
+        boolean acpComputed = false;
+        boolean builtinComputed = false;
 
         List<ResolvedData> commonData = new ArrayList<ResolvedData>();
         if (fulltext && !resources.getIndexableResources().isEmpty()) {
@@ -296,8 +301,6 @@ public class ResolvedResourcesFactory implements Serializable {
         ACP acp = null;
         List<ResolvedResource> resolvedResources = new ArrayList<ResolvedResource>();
 
-        boolean acpComputed = false;
-        boolean builtinComputed = false;
         for (IndexableResource resource : resources.getIndexableResources()) {
 
             IndexableResourceConf conf = resource.getConfiguration();

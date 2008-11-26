@@ -63,7 +63,7 @@ public class ComposedNXQueryImpl extends AbstractQuery implements
     }
 
     public void parseAndUpdateNXQuery(String nxqlQueryStr) {
-        query = SQLQueryParser.parse(nxqlQueryStr);
+        this.query = SQLQueryParser.parse(nxqlQueryStr);
     }
 
 }

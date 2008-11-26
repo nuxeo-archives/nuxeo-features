@@ -20,7 +20,6 @@
 package org.nuxeo.ecm.core.search.api.client.indexing.resources.document.schemas;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.nuxeo.ecm.core.schema.SchemaManager;
 import org.nuxeo.ecm.core.search.api.client.common.TypeManagerServiceDelegate;
@@ -33,14 +32,15 @@ import org.nuxeo.runtime.test.NXRuntimeTestCase;
  */
 public class TestDefaultSchemaFIeldDescriptorFactory extends NXRuntimeTestCase {
 
-    private final DefaultSchemaFieldDescriptorsFactory factory = new DefaultSchemaFieldDescriptorsFactory();
-    private Map<String, IndexableFieldDescriptor> fields;
+    final DefaultSchemaFieldDescriptorsFactory factory = new DefaultSchemaFieldDescriptorsFactory();
+    private HashMap<String, IndexableFieldDescriptor> fields;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        deployBundle("nuxeo-core-schema");
-        deployContrib("default-fieldfactory-components-test-setup.xml");
+        deployBundle("org.nuxeo.ecm.core.schema");
+        deployContrib("org.nuxeo.ecm.platform.search.api.tests",
+                "default-fieldfactory-components-test-setup.xml");
     }
 
     public void testConfiguration() throws Exception {

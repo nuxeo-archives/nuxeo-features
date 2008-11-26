@@ -59,14 +59,14 @@ import org.nuxeo.ecm.platform.search.ejb.local.SearchServiceLocal;
 
 /**
  * Search service session bean.
- *
+ * 
  * <p>
  * This session bean expects the Nuxeo Runtime core search service available
  * locally (i.e : same JVM).
  * </p>
- *
+ * 
  * @author <a href="mailto:ja@nuxeo.com">Julien Anguenot</a>
- *
+ * 
  */
 @Stateless
 @Remote(SearchServiceRemote.class)
@@ -80,7 +80,7 @@ public class SearchServiceBean implements SearchService {
     private transient SearchService service;
 
     @Resource
-    transient EJBContext context;
+    EJBContext context;
 
     private SearchService getSearchService() {
         if (service == null) {
@@ -113,6 +113,14 @@ public class SearchServiceBean implements SearchService {
             throws IndexingException {
         if (getSearchService() != null) {
             getSearchService().index(sources, fulltext);
+        } else {
+            log.error("Cannot find core search service....");
+        }
+    }
+
+    public void unindex(DocumentModel dm) throws IndexingException {
+        if (getSearchService() != null) {
+            getSearchService().unindex(dm);
         } else {
             log.error("Cannot find core search service....");
         }
@@ -361,6 +369,7 @@ public class SearchServiceBean implements SearchService {
         } else {
             log.error("Cannot find core search service....");
         }
+
     }
 
     public SearchServiceSession openSession() {
@@ -458,4 +467,5 @@ public class SearchServiceBean implements SearchService {
             log.error("Cannot find core search service....");
         }
     }
+
 }

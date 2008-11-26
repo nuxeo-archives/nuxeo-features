@@ -153,6 +153,7 @@ public class DocumentIndexableResourceImpl extends
         if (dm instanceof DocumentModelImpl) {
             flags = dm.getFlags();
         }
+
     }
 
     public DocumentRef getDocRef() {
@@ -228,11 +229,14 @@ public class DocumentIndexableResourceImpl extends
 
             if (docRef != null) {
                 try {
-                    if (targetDoc != null) {
+                    if (targetDoc!=null)
+                    {
                         res = (Serializable) targetDoc.getProperty(schemaPrefix, fieldName);
-                    } else {
+                    }
+                    else
+                    {
                         res = (Serializable) getCoreSession().getDataModelField(
-                                docRef, schemaPrefix, fieldName);
+                            docRef, schemaPrefix, fieldName);
                     }
                     if (split.length > 2) {
                         res = extractComplexProperty(res, split[2]);

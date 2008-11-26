@@ -26,6 +26,7 @@ import java.util.List;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.SortInfo;
+import org.nuxeo.ecm.core.query.sql.model.DateLiteral;
 import org.nuxeo.ecm.core.repository.jcr.testing.RepositoryOSGITestCase;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModel;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModelService;
@@ -43,6 +44,12 @@ public class QueryModelTestCase extends RepositoryOSGITestCase {
     protected QueryModel statelessModelWithSort;
 
     private QueryModel statelessModelWithListParam;
+
+    private QueryModel statelessModelWithBooleanParam;
+
+    private QueryModel statelessModelWithIntegerParam;
+
+    private QueryModel statelessModelWithFloatParam;
 
     protected QueryModel statefulModel;
 
@@ -89,6 +96,16 @@ public class QueryModelTestCase extends RepositoryOSGITestCase {
         statelessModelWithListParam = new QueryModel(
                 service.getQueryModelDescriptor("statelessModelWithListParam"),
                 null);
+
+        statelessModelWithBooleanParam = new QueryModel(service.getQueryModelDescriptor("statelessModelWithBooleanParam"),
+                null);
+
+        statelessModelWithIntegerParam = new QueryModel(service.getQueryModelDescriptor("statelessModelWithIntegerParam"),
+                null);
+
+        statelessModelWithFloatParam = new QueryModel(service.getQueryModelDescriptor("statelessModelWithFloatParam"),
+                null);
+
     }
 
     protected QueryModel initializeStatefulQueryModel(
@@ -115,6 +132,18 @@ public class QueryModelTestCase extends RepositoryOSGITestCase {
             fail("Should have raised an exception since stateless models need a parameters array");
         } catch (ClientException e) {
         }
+
+    }
+
+    public void testStatelessQueryModelWithLiteral() throws ClientException {
+        QueryModelDescriptor descriptor = statelessModel.getDescriptor();
+        assertTrue(descriptor.isStateless());
+        assertFalse(descriptor.isStateful());
+        // GR stupid query (we don't care)
+        assertEquals(
+                "SELECT * FROM Document WHERE dc:contributors = DATE '2008-06-25' AND ecm:path STARTSWITH 'somelocation'",
+                descriptor.getQuery(new Object[] { new DateLiteral("2008-06-25", true),
+                        "somelocation" }));
     }
 
     // NXP-2059
@@ -150,6 +179,42 @@ public class QueryModelTestCase extends RepositoryOSGITestCase {
         assertEquals(query, descriptor.getQuery(new Object[] { typeArray }));
         typeList = Arrays.asList(typeArray);
         assertEquals(query, descriptor.getQuery(new Object[] { typeList }));
+
+    }
+
+    // NXP-2418
+    public void testStratelessModelWithBooleanParam() throws ClientException {
+        QueryModelDescriptor descriptor = statelessModelWithBooleanParam.getDescriptor();
+        assertTrue(descriptor.isStateless());
+        assertFalse(descriptor.isStateful());
+
+        // test with false boolean
+        String query = "SELECT * FROM Document WHERE ecm:booleanParameter = 0";
+        assertEquals(query, descriptor.getQuery(new Object[] { false }));
+
+        // test with true boolean
+        query = "SELECT * FROM Document WHERE ecm:booleanParameter = 1";
+        assertEquals(query, descriptor.getQuery(new Object[] { true }));
+    }
+
+    // NXP-2418
+    public void testStratelessModelWithIntegerParam() throws ClientException {
+        QueryModelDescriptor descriptor = statelessModelWithIntegerParam.getDescriptor();
+        assertTrue(descriptor.isStateless());
+        assertFalse(descriptor.isStateful());
+
+        String query = "SELECT * FROM Document WHERE ecm:integerParameter = 234";
+        assertEquals(query, descriptor.getQuery(new Object[] { 234 }));
+    }
+
+    // NXP-2418
+    public void testStratelessModelWithFloatParam() throws ClientException {
+        QueryModelDescriptor descriptor = statelessModelWithFloatParam.getDescriptor();
+        assertTrue(descriptor.isStateless());
+        assertFalse(descriptor.isStateful());
+
+        String query = "SELECT * FROM Document WHERE ecm:floatParameter = 123.4";
+        assertEquals(query, descriptor.getQuery(new Object[] { 123.4f }));
     }
 
     public void testSerialization() throws Exception {
@@ -365,6 +430,7 @@ public class QueryModelTestCase extends RepositoryOSGITestCase {
 
         assertEquals("SELECT * FROM Document",
                 descriptor.getQuery(documentModel2));
+
     }
 
     public void testStatefulQueryModelWithFixedPart() throws ClientException {

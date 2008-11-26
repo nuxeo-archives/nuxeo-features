@@ -75,7 +75,7 @@ public final class SearchServiceDelegate implements Serializable {
      *
      * @return a search service instance
      */
-    public static SearchService getLocalSearchService() {
+    public static SearchService getLocalSearchService() throws Exception {
         return Framework.getLocalService(SearchService.class);
     }
 
