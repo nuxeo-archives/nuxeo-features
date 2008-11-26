@@ -39,7 +39,6 @@ import org.nuxeo.ecm.core.search.api.indexingwrapper.DocumentModelIndexingWrappe
 import org.nuxeo.ecm.core.search.threading.IndexingThreadPool;
 import org.nuxeo.ecm.platform.events.api.DocumentMessage;
 import org.nuxeo.ecm.platform.events.api.EventMessage;
-import org.nuxeo.ecm.platform.events.api.JMSConstant;
 import org.nuxeo.runtime.api.Framework;
 
 /**
