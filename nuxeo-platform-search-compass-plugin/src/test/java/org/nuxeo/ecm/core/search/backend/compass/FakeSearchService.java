@@ -314,4 +314,7 @@ public class FakeSearchService implements SearchServiceInternals {
     public void clear(boolean newTxn) throws IndexingException {
     }
 
+    public void unindex(DocumentModel dm) throws IndexingException {
+    }
+
 }

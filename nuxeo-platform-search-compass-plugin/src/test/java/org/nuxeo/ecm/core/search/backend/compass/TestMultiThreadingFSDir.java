@@ -84,7 +84,7 @@ public class TestMultiThreadingFSDir extends NXRuntimeTestCase {
 
     public void testMultiThreading() throws Exception {
         ResolvedResources resources = SharedTestDataBuilder.makeAboutLifeAggregated();
-        IndexingThreadPool.setSearchService(service);
+        // IndexingThreadPool.setSearchService(service);
 
         final int NB_DOCS = 102;
 
