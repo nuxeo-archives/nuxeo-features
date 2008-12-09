@@ -5,7 +5,7 @@
   <parent>
     <artifactId>nuxeo-platform-parent</artifactId>
     <groupId>org.nuxeo.ecm.platform</groupId>
-    <version>5.2.0.m1-PATXT-SNAPSHOT</version>
+    <version>5.2.0.m1-PATXT-20081209</version>
   </parent>
 
   <artifactId>nuxeo-platform-io-client</artifactId>
