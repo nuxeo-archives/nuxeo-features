@@ -176,7 +176,11 @@ public final class DocumentModelFunctions implements LiveEditConstants {
     public static String iconPath(DocumentModel document) {
         String iconPath = "";
         if (document != null) {
-            iconPath = (String) document.getProperty("common", "icon");
+            try {
+                iconPath = (String) document.getProperty("common", "icon");
+            } catch (ClientException e) {
+                iconPath = null;
+            }
             if (iconPath == null || iconPath.length() == 0
                     || document.getType().equals("Workspace")) {
                 TypeInfo typeInfo = document.getAdapter(TypeInfo.class);
@@ -191,7 +195,11 @@ public final class DocumentModelFunctions implements LiveEditConstants {
     public static String iconExpandedPath(DocumentModel document) {
         String iconPath = "";
         if (document != null) {
-            iconPath = (String) document.getProperty("common", "icon-expanded");
+            try {
+                iconPath = (String) document.getProperty("common", "icon-expanded");
+            } catch (ClientException e) {
+                iconPath = null;
+            }
             if (iconPath == null || iconPath.length() == 0) {
                 TypeInfo typeInfo = document.getAdapter(TypeInfo.class);
                 if (typeInfo != null) {
@@ -228,7 +236,11 @@ public final class DocumentModelFunctions implements LiveEditConstants {
     public static String titleOrId(DocumentModel document) {
         String title = null;
         if (document != null) {
-            title = (String) document.getProperty("dublincore", "title");
+            try {
+                title = (String) document.getProperty("dublincore", "title");
+            } catch (ClientException e) {
+                title = null;
+            }
             if (title == null || title.length() == 0) {
                 title = document.getId();
             }
@@ -377,6 +389,38 @@ public final class DocumentModelFunctions implements LiveEditConstants {
         }
 
         return null;
+    }
+
+    public static String fileDescription(DocumentModel document,
+            String blobPropertyName, String filePropertyName) {
+        String fileInfo = "";
+        if (document != null) {
+            Long blobLength = null;
+            try {
+                Blob blob = (Blob) document.getPropertyValue(blobPropertyName);
+                if (blob != null) {
+                    blobLength = blob.getLength();
+                }
+            } catch (ClientException e) {
+                // no prop by that name with that type
+            }
+            String filename = null;
+            try {
+                filename = (String) document.getPropertyValue(filePropertyName);
+            } catch (ClientException e) {
+                // no prop by that name with that type
+            }
+            if (blobLength != null && filename != null) {
+                fileInfo = String.format("%s [%s]", filename,
+                        Functions.printFileSize(String.valueOf(blobLength)));
+            } else if (blobLength != null) {
+                fileInfo = String.format("[%s]",
+                        Functions.printFileSize(String.valueOf(blobLength)));
+            } else if (filename != null) {
+                fileInfo = filename;
+            }
+        }
+        return fileInfo;
     }
 
     /**

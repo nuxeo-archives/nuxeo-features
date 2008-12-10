@@ -28,12 +28,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.ClientRuntimeException;
 import org.nuxeo.ecm.core.api.DataModel;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.impl.DataModelImpl;
 import org.nuxeo.ecm.core.api.impl.DocumentModelImpl;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
+import org.nuxeo.ecm.core.api.model.PropertyException;
+import org.nuxeo.ecm.core.api.model.PropertyNotFoundException;
 import org.nuxeo.ecm.directory.DirectoryException;
 import org.nuxeo.ecm.directory.Session;
 
@@ -128,7 +132,12 @@ public class MemoryDirectorySession implements Session {
 
     public void updateEntry(DocumentModel docModel) throws DirectoryException {
         String id = docModel.getId();
-        DataModel dataModel = docModel.getDataModel(directory.schemaName);
+        DataModel dataModel;
+        try {
+            dataModel = docModel.getDataModel(directory.schemaName);
+        } catch (ClientException e) {
+            throw new DirectoryException(e);
+        }
 
         Map<String, Object> map = data.get(id);
         if (map == null) {
@@ -137,12 +146,20 @@ public class MemoryDirectorySession implements Session {
         }
 
         for (String fieldName : directory.schemaSet) {
-            if (!dataModel.isDirty(fieldName)
-                    || fieldName.equals(directory.idField)) {
+            try {
+                if (!dataModel.isDirty(fieldName)
+                        || fieldName.equals(directory.idField)) {
+                    continue;
+                }
+            } catch (PropertyNotFoundException e) {
                 continue;
             }
             // TODO references
-            map.put(fieldName, dataModel.getData(fieldName));
+            try {
+                map.put(fieldName, dataModel.getData(fieldName));
+            } catch (PropertyException e) {
+                throw new ClientRuntimeException(e);
+            }
         }
         dataModel.getDirtyFields().clear();
     }
@@ -261,7 +278,12 @@ public class MemoryDirectorySession implements Session {
         DocumentModelList l = query(filter, fulltext);
         List<String> results = new ArrayList<String>(l.size());
         for (DocumentModel doc : l) {
-            Object value = doc.getProperty(directory.schemaName, columnName);
+            Object value;
+            try {
+                value = doc.getProperty(directory.schemaName, columnName);
+            } catch (ClientException e) {
+                throw new DirectoryException(e);
+            }
             if (value != null) {
                 results.add(value.toString());
             } else {
