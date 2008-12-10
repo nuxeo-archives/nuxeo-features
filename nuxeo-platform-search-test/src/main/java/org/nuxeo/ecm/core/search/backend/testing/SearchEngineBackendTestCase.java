@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
-import org.nuxeo.ecm.core.api.ResultsProvider;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.core.query.sql.SQLQueryParser;
 import org.nuxeo.ecm.core.query.sql.model.SQLQuery;
 import org.nuxeo.ecm.core.search.api.backend.SearchEngineBackend;

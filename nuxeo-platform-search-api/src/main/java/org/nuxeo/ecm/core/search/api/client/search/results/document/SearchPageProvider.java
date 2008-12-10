@@ -35,11 +35,11 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.impl.DataModelImpl;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.impl.blob.StreamingBlob;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.core.schema.SchemaManager;
 import org.nuxeo.ecm.core.schema.TypeConstants;
 import org.nuxeo.ecm.core.schema.types.ComplexType;
@@ -62,7 +62,7 @@ import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.document.R
  * @author <a href="mailto:gracinet@nuxeo.com">Georges Racinet</a>
  *
  */
-public class SearchPageProvider implements PagedDocumentsProvider {
+public class SearchPageProvider implements ResultsProvider<DocumentModel> {
 
     private static final long serialVersionUID = 4391326971391218440L;
 

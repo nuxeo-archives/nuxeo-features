@@ -21,8 +21,8 @@ package org.nuxeo.ecm.platform.ui.web.api;
 
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.ResultsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.platform.ui.web.pagination.ResultsProviderFarmUserException;
 
 /**

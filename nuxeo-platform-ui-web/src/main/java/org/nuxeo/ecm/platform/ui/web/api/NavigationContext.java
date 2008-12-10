@@ -28,8 +28,8 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.ResultsProvider;
 import org.nuxeo.ecm.core.api.VersionModel;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.platform.ui.web.pathelements.PathElement;
 import org.nuxeo.ecm.platform.util.RepositoryLocation;
 
