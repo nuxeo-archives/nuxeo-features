@@ -27,7 +27,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
+import org.nuxeo.ecm.core.api.ResultsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModel;
@@ -63,17 +63,17 @@ public class DocumentChildrenSearchFarm extends InputController implements
     @In(create = true)
     private transient ResultsProvidersCache resultsProvidersCache;
 
-    public PagedDocumentsProvider getResultsProvider(String name)
+    public ResultsProvider<DocumentModel> getResultsProvider(String name)
             throws ClientException {
         return getResultsProvider(name, null);
     }
 
-    public PagedDocumentsProvider getResultsProvider(String name,
+    public ResultsProvider<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException {
         final DocumentModel currentDoc = navigationContext.getCurrentDocument();
 
         if (DocumentChildrenStdFarm.CHILDREN_BY_COREAPI.equals(name)) {
-            PagedDocumentsProvider provider = getChildrenResultsProviderQMPattern(name, currentDoc, sortInfo);
+            ResultsProvider<DocumentModel> provider = getChildrenResultsProviderQMPattern(name, currentDoc, sortInfo);
             provider.setName(name);
             return provider;
         } else {
@@ -90,7 +90,7 @@ public class DocumentChildrenSearchFarm extends InputController implements
      * @return
      * @throws ClientException
      */
-    private PagedDocumentsProvider getChildrenResultsProviderQMPattern(
+    private ResultsProvider<DocumentModel> getChildrenResultsProviderQMPattern(
             String queryModelName, DocumentModel parent, SortInfo sortInfo) throws ClientException {
 
         final String parentId = parent.getId();
@@ -100,7 +100,7 @@ public class DocumentChildrenSearchFarm extends InputController implements
         return getResultsProvider(queryModelName, params, sortInfo);
     }
 
-    private PagedDocumentsProvider getResultsProvider(String qmName,
+    private ResultsProvider<DocumentModel> getResultsProvider(String qmName,
             Object[] params, SortInfo sortInfo) throws ClientException {
         try {
             QueryModel qm = queryModelActions.get(qmName);
@@ -117,7 +117,7 @@ public class DocumentChildrenSearchFarm extends InputController implements
      * @param currentDoc
      * @throws ClientException
      */
-    protected PagedDocumentsProvider getChildrenResultsProviderQMPred(
+    protected ResultsProvider<DocumentModel> getChildrenResultsProviderQMPred(
             String queryModelName, DocumentModel currentDoc)
             throws ClientException {
         QueryModel qm = queryModelActions.get(queryModelName);

@@ -26,7 +26,6 @@ import javax.annotation.security.PermitAll;
 import org.jboss.seam.annotations.Destroy;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.platform.ui.web.model.SelectDataModel;
 
 public interface DeleteActions {
@@ -103,7 +102,7 @@ public interface DeleteActions {
 
     SelectDataModel getDeletedChildrenSelectModel() throws ClientException;
 
-    DocumentModelList getCurrentDocumentDeletedChildrenPage()
+    List<DocumentModel> getCurrentDocumentDeletedChildrenPage()
             throws ClientException;
 
     boolean isTrashManagementEnabled() throws ClientException;

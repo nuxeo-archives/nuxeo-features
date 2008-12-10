@@ -40,9 +40,9 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Observer;
+import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.annotations.web.RequestParameter;
-import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.contexts.Context;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -51,7 +51,7 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
+import org.nuxeo.ecm.core.api.ResultsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
@@ -416,7 +416,7 @@ public class DashBoardActionsBean extends InputController implements
         return "user_dashboard";
     }
 
-    public PagedDocumentsProvider getResultsProvider(String name,
+    public ResultsProvider<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException,
             ResultsProviderFarmUserException {
 
@@ -436,7 +436,7 @@ public class DashBoardActionsBean extends InputController implements
         } else {
             throw new ClientException("Unknown board: " + name);
         }
-        PagedDocumentsProvider provider;
+        ResultsProvider<DocumentModel> provider;
         try {
             provider = getQmDocuments(name, params, sortInfo);
         } catch (Exception e) {
@@ -449,12 +449,12 @@ public class DashBoardActionsBean extends InputController implements
         return provider;
     }
 
-    public PagedDocumentsProvider getResultsProvider(String name)
+    public ResultsProvider<DocumentModel> getResultsProvider(String name)
             throws ClientException, ResultsProviderFarmUserException {
         return getResultsProvider(name, null);
     }
 
-    protected PagedDocumentsProvider getQmDocuments(String qmName,
+    protected ResultsProvider<DocumentModel> getQmDocuments(String qmName,
             Object[] params, SortInfo sortInfo) throws ClientException {
         try {
             return queryModelActions.get(qmName).getResultsProvider(params,
@@ -473,7 +473,7 @@ public class DashBoardActionsBean extends InputController implements
         return view;
     }
 
-    public DocumentModelList getLastModifiedDocuments() throws ClientException {
+    public List<DocumentModel> getLastModifiedDocuments() throws ClientException {
         return resultsProvidersCache.get("DOMAIN_DOCUMENTS").getCurrentPage();
     }
 

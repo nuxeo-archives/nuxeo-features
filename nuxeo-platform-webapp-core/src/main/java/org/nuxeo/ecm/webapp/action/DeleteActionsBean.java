@@ -47,9 +47,8 @@ import org.nuxeo.common.utils.Path;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
+import org.nuxeo.ecm.core.api.ResultsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
@@ -99,10 +98,6 @@ public class DeleteActionsBean extends InputController implements
 
     private static final Log log = LogFactory.getLog(DeleteActionsBean.class);
 
-    private static final String DOC_REF = "ref";
-
-    private static final String WANTED_TRANSITION = "transition";
-
     private static final String DELETE_OUTCOME = "after_delete";
 
     private static final String DELETE_TRANSITION = "delete";
@@ -145,9 +140,9 @@ public class DeleteActionsBean extends InputController implements
 
     @Out(required = false)
     @Deprecated
-    private PagedDocumentsProvider resultsProvider;
+    private ResultsProvider<DocumentModel> resultsProvider;
 
-    private DocumentModelList currentDocumentChildren;
+    private List<DocumentModel> currentDocumentChildren;
 
     // end import
 
@@ -703,7 +698,7 @@ public class DeleteActionsBean extends InputController implements
     public SelectDataModel getDeletedChildrenSelectModel()
             throws ClientException {
 
-        DocumentModelList documents = getCurrentDocumentDeletedChildrenPage();
+        List<DocumentModel> documents = getCurrentDocumentDeletedChildrenPage();
         List<DocumentModel> selectedDocuments = documentsListsManager.getWorkingList(
                 DocumentsListsManager.CURRENT_DOCUMENT_TRASH_SELECTION);
         SelectDataModel model = new SelectDataModelImpl(
@@ -715,7 +710,7 @@ public class DeleteActionsBean extends InputController implements
         return model;
     }
 
-    public DocumentModelList getCurrentDocumentDeletedChildrenPage()
+    public List<DocumentModel> getCurrentDocumentDeletedChildrenPage()
             throws ClientException {
 
         if (documentManager == null) {
@@ -770,15 +765,15 @@ public class DeleteActionsBean extends InputController implements
     public void destroy() {
     }
 
-    public PagedDocumentsProvider getResultsProvider(String name)
+    public ResultsProvider<DocumentModel> getResultsProvider(String name)
             throws ClientException, ResultsProviderFarmUserException {
         return getResultsProvider(name, null);
     }
 
-    public PagedDocumentsProvider getResultsProvider(String name,
+    public ResultsProvider<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException,
             ResultsProviderFarmUserException {
-        PagedDocumentsProvider provider = null;
+        ResultsProvider<DocumentModel> provider = null;
 
         if (BOARD_USER_DELETED.equals(name)) {
             Object[] params = new Object[] { currentUser.getName() };
@@ -797,12 +792,12 @@ public class DeleteActionsBean extends InputController implements
         return provider;
     }
 
-    private PagedDocumentsProvider getResultsProviderForDeletedDocs(
+    private ResultsProvider<DocumentModel> getResultsProviderForDeletedDocs(
             String name, SortInfo sortInfo) throws ClientException {
         final DocumentModel currentDoc = navigationContext.getCurrentDocument();
 
         if (DELETED_CHILDREN_BY_COREAPI.equals(name)) {
-            PagedDocumentsProvider provider = getChildrenResultsProviderQMPattern(
+            ResultsProvider<DocumentModel> provider = getChildrenResultsProviderQMPattern(
                     name, currentDoc, sortInfo);
             provider.setName(name);
             return provider;
@@ -811,7 +806,7 @@ public class DeleteActionsBean extends InputController implements
         }
     }
 
-    protected PagedDocumentsProvider getQmDocuments(String qmName,
+    protected ResultsProvider<DocumentModel> getQmDocuments(String qmName,
             Object[] params, SortInfo sortInfo) throws ClientException {
         try {
             return queryModelActions.get(qmName).getResultsProvider(params,
@@ -831,7 +826,7 @@ public class DeleteActionsBean extends InputController implements
      * @return
      * @throws ClientException
      */
-    private PagedDocumentsProvider getChildrenResultsProviderQMPattern(
+    private ResultsProvider<DocumentModel> getChildrenResultsProviderQMPattern(
             String queryModelName, DocumentModel parent, SortInfo sortInfo)
             throws ClientException {
 
@@ -842,7 +837,7 @@ public class DeleteActionsBean extends InputController implements
         return getResultsProvider(queryModelName, params, sortInfo);
     }
 
-    private PagedDocumentsProvider getResultsProvider(String qmName,
+    private ResultsProvider<DocumentModel> getResultsProvider(String qmName,
             Object[] params, SortInfo sortInfo) throws ClientException {
         try {
             QueryModel qm = queryModelActions.get(qmName);

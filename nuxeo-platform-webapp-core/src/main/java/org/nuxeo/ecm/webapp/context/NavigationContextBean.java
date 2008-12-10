@@ -44,9 +44,9 @@ import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.Out;
+import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.annotations.web.RequestParameter;
-import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.contexts.Context;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.core.Events;
@@ -58,8 +58,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.IdRef;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
-import org.nuxeo.ecm.core.api.SortInfo;
+import org.nuxeo.ecm.core.api.ResultsProvider;
 import org.nuxeo.ecm.core.api.VersionModel;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.impl.FacetFilter;
@@ -74,7 +73,6 @@ import org.nuxeo.ecm.platform.types.Type;
 import org.nuxeo.ecm.platform.types.adapter.TypeInfo;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.ecm.platform.ui.web.api.UserAction;
-import org.nuxeo.ecm.platform.ui.web.pagination.ResultsProviderFarmUserException;
 import org.nuxeo.ecm.platform.ui.web.pathelements.ArchivedVersionsPathElement;
 import org.nuxeo.ecm.platform.ui.web.pathelements.DocumentPathElement;
 import org.nuxeo.ecm.platform.ui.web.pathelements.PathElement;
@@ -130,7 +128,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
 
     private DocumentModel currentSuperSpace;
 
-    private DocumentModelList currentDocumentChildren;
+    private  List<DocumentModel> currentDocumentChildren;
 
     private List<DocumentModel> currentDocumentParents;
 
@@ -156,7 +154,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
 
     @Out(required = false)
     @Deprecated
-    private PagedDocumentsProvider resultsProvider;
+    private ResultsProvider<DocumentModel> resultsProvider;
 
     @Create
     @PostActivate
@@ -292,7 +290,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
 
     // @Observer({ EventNames.CONTENT_ROOT_SELECTION_CHANGED,
     // EventNames.DOCUMENT_SELECTION_CHANGED })
-    public DocumentModelList getCurrentDocumentChildren()
+    public List<DocumentModel> getCurrentDocumentChildren()
             throws ClientException {
         final String logPrefix = "<getCurrentDocumentChildren> ";
 
@@ -315,7 +313,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
         return currentDocumentChildren;
     }
 
-    public PagedDocumentsProvider getCurrentResultsProvider() {
+    public ResultsProvider<DocumentModel> getCurrentResultsProvider() {
         return resultsProvider;
     }
 
@@ -323,7 +321,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
      * @see NavigationContext#setCurrentResultsProvider(PagedDocumentsProvider)
      */
     @Deprecated
-    public void setCurrentResultsProvider(PagedDocumentsProvider resultsProvider) {
+    public void setCurrentResultsProvider(ResultsProvider<DocumentModel> resultsProvider) {
         this.resultsProvider = resultsProvider;
     }
 
@@ -339,39 +337,19 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
     }
 
     @Deprecated
-    public DocumentModelList getCurrentDocumentChildrenPage()
+    public List<DocumentModel> getCurrentDocumentChildrenPage()
             throws ClientException {
         final String logPrefix = "<getCurrentDocumentChildrenPage> ";
-
-        // if (resultsProvider != null) {
-        // return resultsProvider.getCurrentPage();
-        // }
 
         if (documentManager == null) {
             log.error(logPrefix + "documentManager not initialized");
             return new DocumentModelListImpl();
         }
 
-        // FacetFilter facetFilter = new FacetFilter("HiddenInNavigation",
-        // false);
         try {
-            // DocumentModelIterator resultDocsIt =
-            // documentManager.getChildrenIterator(
-            // currentDocument.getRef(), null, SecurityConstants.READ,
-            // facetFilter);
-
-            //
-            // resultsProvider = new DocumentsPageProvider(resultDocsIt, 10);
-            // resultsProvider =
-            // documentChildrenFarm.getResultsProvider(DocumentChildrenStdFarm.CHILDREN_BY_COREAPI);
-
             ResultsProvidersCache resultsProvidersCache = (ResultsProvidersCache) Component.getInstance("resultsProvidersCache");
             resultsProvider = resultsProvidersCache.get(DocumentChildrenStdFarm.CHILDREN_BY_COREAPI);
-
             currentDocumentChildren = resultsProvider.getCurrentPage();
-
-            // logDocWithTitle(logPrefix + "Retrieved children for: ",
-            // currentDocument);
         } catch (Throwable t) {
             throw ClientException.wrap(t);
         }
@@ -583,7 +561,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
     }
 
     @Factory(value = "currentDocumentChildren", scope = EVENT)
-    public DocumentModelList factoryCurrentDocumentChildren()
+    public List<DocumentModel> factoryCurrentDocumentChildren()
             throws ClientException {
         return getCurrentDocumentChildren();
     }
@@ -1058,19 +1036,6 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
                 e.printStackTrace();
             }
         }
-    }
-
-    public PagedDocumentsProvider getResultsProvider(String name)
-            throws ClientException, ResultsProviderFarmUserException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public PagedDocumentsProvider getResultsProvider(String name,
-            SortInfo sortInfo) throws ClientException,
-            ResultsProviderFarmUserException {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

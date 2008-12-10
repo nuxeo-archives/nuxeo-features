@@ -56,10 +56,9 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.IdRef;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
+import org.nuxeo.ecm.core.api.ResultsProvider;
 import org.nuxeo.ecm.core.api.event.CoreEventConstants;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.platform.actions.Action;
@@ -460,7 +459,7 @@ public class DocumentActionsBean extends InputController implements
     public SelectDataModel getChildrenSelectModel() throws ClientException {
         // XXX : this proves that this method is called too many times
         // log.debug("Getter children select model");
-        DocumentModelList documents = navigationContext.getCurrentDocumentChildrenPage();
+        List<DocumentModel> documents = navigationContext.getCurrentDocumentChildrenPage();
         List<DocumentModel> selectedDocuments = documentsListsManager.getWorkingList(
                 DocumentsListsManager.CURRENT_DOCUMENT_SELECTION);
         SelectDataModel model = new SelectDataModelImpl(CHILDREN_DOCUMENT_LIST,
@@ -480,7 +479,7 @@ public class DocumentActionsBean extends InputController implements
             throws ClientException {
         // XXX : this proves that this method is called too many times
         // log.debug("Getter children select model");
-        DocumentModelList documents = navigationContext.getCurrentDocumentChildrenPage();
+        List<DocumentModel> documents = navigationContext.getCurrentDocumentChildrenPage();
         List<DocumentModel> selectedDocuments = documentsListsManager.getWorkingList(DocumentsListsManager.CURRENT_DOCUMENT_SECTION_SELECTION);
         SelectDataModel model = new SelectDataModelImpl(CHILDREN_DOCUMENT_LIST,
                 documents, selectedDocuments);
@@ -532,7 +531,7 @@ public class DocumentActionsBean extends InputController implements
     @WebRemote
     public String processSelectRow(String docRef, String providerName,
             String listName, Boolean selection) {
-        PagedDocumentsProvider provider;
+        ResultsProvider<DocumentModel> provider;
         try {
             provider = resultsProvidersCache.get(providerName);
         } catch (ClientException e) {
@@ -580,13 +579,13 @@ public class DocumentActionsBean extends InputController implements
     @WebRemote
     public String processSelectPage(String providerName, String listName,
             Boolean selection) {
-        PagedDocumentsProvider provider;
+        ResultsProvider<DocumentModel> provider;
         try {
             provider = resultsProvidersCache.get(providerName);
         } catch (ClientException e) {
             return handleError(e.getMessage());
         }
-        DocumentModelList documents = provider.getCurrentPage();
+        List<DocumentModel> documents = provider.getCurrentPage();
         String lName = (listName == null) ? DocumentsListsManager.CURRENT_DOCUMENT_SELECTION
                 : listName;
         if (selection) {
