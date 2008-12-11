@@ -46,7 +46,7 @@ import org.jboss.seam.faces.FacesMessages;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.SortInfo;
-import org.nuxeo.ecm.core.api.impl.EmptyResultsProvider;
+import org.nuxeo.ecm.core.api.provider.EmptyResultsProvider;
 import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.core.api.provider.ResultsProviderException;
 import org.nuxeo.ecm.platform.ui.web.api.ResultsProviderFarm;
