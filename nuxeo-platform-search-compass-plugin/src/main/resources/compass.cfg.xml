@@ -8,17 +8,17 @@
   <compass name="default">
 
     <connection>
-    <!-- IMPORTANT. This connection setting is a sample.
-    It will be overridden by the compass backend's extension point for
-    NXRuntime. To avoid overriding it the latest contribution to the
-    extension point should be:
 
-     <extension target="org.nuxeo.ecm.core.search.backend.compass.CompassBackend"
-             point="connection">
-      <default/>
-    </extension>
-     -->
+      <!-- IMPORTANT. This JDBC connection setting is a sample.
+      It will be overridden by the compass backend's extension point for
+      NXRuntime. To avoid overriding it the latest contribution to the
+      extension point should be:
 
+       <extension target="org.nuxeo.ecm.core.search.backend.compass.CompassBackend"
+               point="connection">
+        <default/>
+      </extension>
+      -->
       <jdbc managed="true"
         dialectClass="org.apache.lucene.store.jdbc.dialect.HSQLDialect"
         deleteMarkDeletedDelta="60000">
@@ -26,6 +26,12 @@
           <jndi lookup="java:/nxsearch-compass" />
         </dataSourceProvider>
       </jdbc>
+
+      <!-- Use RAM lock instead of FS base locks that tend to work slowly and
+           badly on windows based servers.
+           The following setup is not overriden by the previously mentionned
+           extension point contribution -->
+      <lockFactory type="singleinstance" />
     </connection>
 
     <transaction commitBeforeCompletion="true"
