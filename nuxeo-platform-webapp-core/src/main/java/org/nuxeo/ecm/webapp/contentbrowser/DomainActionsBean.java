@@ -40,7 +40,6 @@ import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.platform.ui.web.model.SelectDataModel;
 import org.nuxeo.ecm.platform.ui.web.model.impl.SelectDataModelImpl;
@@ -81,9 +80,9 @@ public class DomainActionsBean extends InputController implements DomainActions,
 
     // do not try to (un)serialize a list of ResultDocumentModel as it's
     // probably as they are fetched automatically if null
-    private transient DocumentModelList domains;
+    private transient List<DocumentModel> domains;
 
-    public DocumentModelList getDomains() throws ClientException {
+    public List<DocumentModel> getDomains() throws ClientException {
         if (domains == null) {
             try {
                 // TODO: OG: we currently use the search service instead of

@@ -37,8 +37,8 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModel;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModelService;
@@ -116,7 +116,7 @@ public class QueryModelActionsBean extends InputController implements
         return model;
     }
 
-    public PagedDocumentsProvider getResultsProvider(String queryModelName)
+    public ResultsProvider<DocumentModel> getResultsProvider(String queryModelName)
             throws ClientException, ResultsProviderFarmUserException {
         try {
             return getResultsProvider(queryModelName, null);
@@ -125,7 +125,7 @@ public class QueryModelActionsBean extends InputController implements
         }
     }
 
-    public PagedDocumentsProvider getResultsProvider(String queryModelName,
+    public ResultsProvider<DocumentModel> getResultsProvider(String queryModelName,
             SortInfo sortInfo) throws ClientException,
             ResultsProviderFarmUserException {
         QueryModel model = get(queryModelName);
@@ -140,7 +140,7 @@ public class QueryModelActionsBean extends InputController implements
         }
 
         try {
-            PagedDocumentsProvider provider = model.getResultsProvider(null,
+            ResultsProvider<DocumentModel> provider = model.getResultsProvider(null,
                     sortInfo);
             provider.setName(queryModelName);
             return provider;

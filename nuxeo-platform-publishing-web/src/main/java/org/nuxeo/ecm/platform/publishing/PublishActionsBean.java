@@ -42,6 +42,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Transactional;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.annotations.remoting.WebRemote;
 import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.core.Events;
@@ -64,6 +65,8 @@ import org.nuxeo.ecm.core.api.event.impl.CoreEventImpl;
 import org.nuxeo.ecm.core.api.facet.VersioningDocument;
 import org.nuxeo.ecm.core.api.impl.DocumentModelTreeImpl;
 import org.nuxeo.ecm.core.api.impl.DocumentModelTreeNodeComparator;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.provider.ResultsProviderException;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.core.schema.FacetNames;
 import org.nuxeo.ecm.core.schema.TypeService;
@@ -90,11 +93,10 @@ import org.nuxeo.ecm.webapp.helpers.ResourcesAccessor;
 import org.nuxeo.ecm.webapp.querymodel.QueryModelActions;
 import org.nuxeo.ecm.webapp.security.PrincipalListManager;
 import org.nuxeo.runtime.api.Framework;
-import org.jboss.seam.annotations.intercept.BypassInterceptors;
 
 /**
  * This Seam bean manages the publishing tab.
- *
+ * 
  * @author Narcis Paslaru
  * @author Florent Guillaume
  * @author Thierry Martins
@@ -227,13 +229,14 @@ public class PublishActionsBean implements PublishActions, Serializable {
 
         protected final DocumentModelTree sections;
 
-        public SelectionModelGetter() throws ClientException {
+        public SelectionModelGetter() throws ClientException,
+                ResultsProviderException {
             super(documentManager);
             DocumentModel doc = navigationContext.getCurrentDocument();
             this.currentDocRef = doc.getRef();
             this.currentParentRef = doc.getParentRef();
 
-            //Get the available sections, using the base session.
+            // Get the available sections, using the base session.
             getSectionRootTypes();
             getSectionTypes();
             sections = new DocumentModelTreeImpl();
@@ -288,18 +291,19 @@ public class PublishActionsBean implements PublishActions, Serializable {
         }
     }
 
-    protected void getSectionsSelectModel() throws ClientException {
+    protected void getSectionsSelectModel() throws ClientException,
+            ResultsProviderException {
         // get the section list from an unrestricted session
         new SelectionModelGetter().runUnrestricted();
     }
 
     private void accumulateAvailableSections(DocumentModelTree sections,
             String sectionRootPath, String sectionNameType)
-            throws ClientException {
+            throws ClientException, ResultsProviderException {
 
         Object[] params = { sectionRootPath, sectionNameType };
 
-        PagedDocumentsProvider sectionsProvider = null;
+        ResultsProvider<DocumentModel> sectionsProvider = null;
         try {
             sectionsProvider = queryModelActions.get(DOMAIN_SECTIONS).getResultsProvider(
                     params);
@@ -309,7 +313,7 @@ public class PublishActionsBean implements PublishActions, Serializable {
                     DOMAIN_SECTIONS), e);
         }
         sectionsProvider.rewind();
-        DocumentModelList mainSections = sectionsProvider.getCurrentPage();
+        List<DocumentModel> mainSections = sectionsProvider.getCurrentPage();
 
         while (sectionsProvider.isNextPageAvailable()) {
             mainSections.addAll(sectionsProvider.getNextPage());
@@ -404,8 +408,8 @@ public class PublishActionsBean implements PublishActions, Serializable {
         for (DocumentModelTreeNode section : selectedSections) {
             DocumentModel proxy = getPublishedInSection(docToPublish,
                     section.getDocument());
-            boolean moderation = proxy == null ||
-                    new PublishingTasks(proxy, currentUser).getPublishingWorkItem() != null;
+            boolean moderation = proxy == null
+                    || new PublishingTasks(proxy, currentUser).getPublishingWorkItem() != null;
             boolean candidate = false;
             if (proxy == null) {
                 candidate = true;
@@ -522,15 +526,16 @@ public class PublishActionsBean implements PublishActions, Serializable {
                     documentManager.publishDocument(doc, target);
                     nbPublishedDocs++;
                 } else {
-                    log.info("Attempted to publish non-publishable document " +
-                            doc.getTitle());
+                    log.info("Attempted to publish non-publishable document "
+                            + doc.getTitle());
                 }
             }
         }
 
         Object[] params = { nbPublishedDocs };
-        facesMessages.add(FacesMessage.SEVERITY_INFO, "#0 " +
-                resourcesAccessor.getMessages().get("n_published_docs"), params);
+        facesMessages.add(FacesMessage.SEVERITY_INFO, "#0 "
+                + resourcesAccessor.getMessages().get("n_published_docs"),
+                params);
 
         if (nbPublishedDocs < docs2Publish.size()) {
             facesMessages.add(FacesMessage.SEVERITY_WARN,
@@ -655,7 +660,7 @@ public class PublishActionsBean implements PublishActions, Serializable {
      */
     @WebRemote
     public String processRemoteSelectRowEvent(String docRef, Boolean selection)
-            throws ClientException {
+            throws ClientException, ResultsProviderException {
         log.debug("Selection processed  : " + docRef);
         List<SelectDataModelRow> sections = getSectionsModel().getRows();
 
@@ -687,8 +692,9 @@ public class PublishActionsBean implements PublishActions, Serializable {
     /*
      * Called by document_publish.xhtml
      */
-    @Factory(autoCreate=true,scope=ScopeType.EVENT, value="currentPublishingSectionsModel")
-    public SelectDataModel getSectionsModel() throws ClientException {
+    @Factory(autoCreate = true, scope = ScopeType.EVENT, value = "currentPublishingSectionsModel")
+    public SelectDataModel getSectionsModel() throws ClientException,
+            ResultsProviderException {
         if (sectionsModel == null) {
             getSectionsSelectModel();
         }
@@ -873,8 +879,8 @@ public class PublishActionsBean implements PublishActions, Serializable {
      * Called by section_clipboard.xhtml
      */
     public List<Action> getActionsForSectionSelection() {
-        return webActions.getUnfiltredActionsList(DocumentsListsManager.CURRENT_DOCUMENT_SECTION_SELECTION +
-                "_LIST");
+        return webActions.getUnfiltredActionsList(DocumentsListsManager.CURRENT_DOCUMENT_SECTION_SELECTION
+                + "_LIST");
     }
 
     protected PublishingService getPublishingService() throws ClientException {

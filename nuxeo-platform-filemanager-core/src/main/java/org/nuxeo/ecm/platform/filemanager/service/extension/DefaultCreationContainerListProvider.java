@@ -19,6 +19,8 @@
 
 package org.nuxeo.ecm.platform.filemanager.service.extension;
 
+import java.util.List;
+
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
@@ -63,7 +65,7 @@ public class DefaultCreationContainerListProvider extends
         // assume the QM is stateless
         QueryModel qm = new QueryModel(descriptor,
                 (NuxeoPrincipal) documentManager.getPrincipal());
-        DocumentModelList allContainers = qm.getDocuments(new Object[0]);
+        List<DocumentModel> allContainers = qm.getDocuments(new Object[0]);
         DocumentModelList filteredContainers = new DocumentModelListImpl();
         for (DocumentModel container : allContainers) {
             if (documentManager.hasPermission(container.getRef(),

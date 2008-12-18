@@ -49,8 +49,8 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.core.query.QueryParseException;
 import org.nuxeo.ecm.core.query.sql.SQLQueryParser;
 import org.nuxeo.ecm.core.search.api.client.IndexingException;
@@ -78,9 +78,9 @@ import org.nuxeo.ecm.webapp.querymodel.QueryModelActions;
 /**
  * Backing bean for search actions. Provides functions to perform a search based
  * on different query types, to retrieve results and handle selections.
- *
+ * 
  * @author DM
- *
+ * 
  */
 @Name("searchActions")
 @Scope(ScopeType.CONVERSATION)
@@ -222,7 +222,7 @@ public class SearchActionsBean extends InputController implements
     /**
      * A page can set searchType by simply specifying a 'searchType' request
      * parameter with value <code>KEYWORDS</code> or <code>NXQL</code>.
-     *
+     * 
      * @param type
      */
     @RequestParameter("searchType")
@@ -287,7 +287,7 @@ public class SearchActionsBean extends InputController implements
             }
 
             String page;
-            PagedDocumentsProvider resultsProvider;
+            ResultsProvider<DocumentModel> resultsProvider;
             if (searchTypeId == SearchType.NXQL) {
                 if (nxql == null) {
                     log.warn("Direct NXQL search: no nxql query "
@@ -296,7 +296,7 @@ public class SearchActionsBean extends InputController implements
                 }
                 log.debug("Query: " + nxql);
                 resultsProvidersCache.invalidate(PROV_NXQL);
-                resultsProvider = resultsProvidersCache.get(PROV_NXQL);
+                resultsProvider = (ResultsProvider<DocumentModel>) resultsProvidersCache.get(PROV_NXQL);
                 page = ACTION_PAGE_SEARCH_NXQL;
             } else if (searchTypeId == SearchType.FORM) {
                 String sortColumn = searchColumns.getSortColumn();
@@ -307,8 +307,8 @@ public class SearchActionsBean extends InputController implements
                 }
 
                 resultsProvidersCache.invalidate(QM_ADVANCED);
-                resultsProvider = resultsProvidersCache.get(QM_ADVANCED,
-                        sortInfo);
+                resultsProvider = (ResultsProvider<DocumentModel>) resultsProvidersCache.get(
+                        QM_ADVANCED, sortInfo);
                 page = ACTION_PAGE_SEARCH_ADVANCED;
             } else if (searchTypeId == SearchType.KEYWORDS) {
                 if (simpleSearchKeywords == null || simpleSearchKeywords == "") {
@@ -330,7 +330,7 @@ public class SearchActionsBean extends InputController implements
                     }
                 }
                 resultsProvidersCache.invalidate(QM_SIMPLE);
-                resultsProvider = resultsProvidersCache.get(QM_SIMPLE);
+                resultsProvider = (ResultsProvider<DocumentModel>) resultsProvidersCache.get(QM_SIMPLE);
                 page = ACTION_PAGE_SEARCH_SIMPLE;
             } else {
                 throw new ClientException("Unknown search type: "
@@ -361,7 +361,7 @@ public class SearchActionsBean extends InputController implements
     public List<DocumentModel> getResultDocuments(String providerName)
             throws ClientException {
 
-        PagedDocumentsProvider provider = resultsProvidersCache.get(providerName);
+        ResultsProvider<DocumentModel> provider = (ResultsProvider<DocumentModel>) resultsProvidersCache.get(providerName);
         if (provider == null) {
             log.warn("resultsProvider not available for getResultDocuments");
             return new ArrayList<DocumentModel>();
@@ -379,8 +379,7 @@ public class SearchActionsBean extends InputController implements
 
     public SelectDataModel getResultsSelectModel(String providerName)
             throws ClientException {
-        List<DocumentModel> selectedDocuments = documentsListsManager.getWorkingList(
-                DocumentsListsManager.CURRENT_DOCUMENT_SELECTION);
+        List<DocumentModel> selectedDocuments = documentsListsManager.getWorkingList(DocumentsListsManager.CURRENT_DOCUMENT_SELECTION);
         SelectDataModel model = new SelectDataModelImpl(SEARCH_DOCUMENT_LIST,
                 getResultDocuments(providerName), selectedDocuments);
         model.addSelectModelListener(this);
@@ -481,13 +480,13 @@ public class SearchActionsBean extends InputController implements
     /**
      * ResultsProviderFarm interface implementation.
      */
-    public PagedDocumentsProvider getResultsProvider(String name)
+    public ResultsProvider<DocumentModel> getResultsProvider(String name)
             throws ClientException, ResultsProviderFarmUserException {
         // SQLQueryParser + QueryParseException
         return getResultsProvider(name, null);
     }
 
-    public PagedDocumentsProvider getResultsProvider(String name,
+    public ResultsProvider<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException,
             ResultsProviderFarmUserException {
         // TODO param!
@@ -510,7 +509,7 @@ public class SearchActionsBean extends InputController implements
             case KEYWORDS:
                 Object[] sK = { simpleSearchKeywords };
                 QueryModel qm = queryModelActions.get(QM_SIMPLE);
-                PagedDocumentsProvider simpleProvider = qm.getResultsProvider(
+                ResultsProvider<DocumentModel> simpleProvider = qm.getResultsProvider(
                         sK, sortInfo);
                 simpleProvider.setName(name);
                 return simpleProvider;
@@ -529,7 +528,6 @@ public class SearchActionsBean extends InputController implements
     }
 
     @Observer(value = { org.nuxeo.ecm.webapp.helpers.EventNames.DOCUMENT_CHILDREN_CHANGED }, create = false)
-
     public void refreshCache() {
         // XXX invalidate both because no way to know in which list it appended
         resultsProvidersCache.invalidate(QM_SIMPLE);

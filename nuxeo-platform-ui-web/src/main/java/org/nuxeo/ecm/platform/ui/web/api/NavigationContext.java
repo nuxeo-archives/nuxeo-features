@@ -28,8 +28,8 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
 import org.nuxeo.ecm.core.api.VersionModel;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.platform.ui.web.pathelements.PathElement;
 import org.nuxeo.ecm.platform.util.RepositoryLocation;
 
@@ -49,7 +49,7 @@ import org.nuxeo.ecm.platform.util.RepositoryLocation;
  * Trees of DMs: no UI related structure.
  */
 @Remote
-public interface NavigationContext extends ResultsProviderFarm {
+public interface NavigationContext {
 
     /**
      * Callback for component initialization.
@@ -132,14 +132,14 @@ public interface NavigationContext extends ResultsProviderFarm {
     /**
      * Retrieves the documents contained in the current parent.
      */
-    DocumentModelList getCurrentDocumentChildren() throws ClientException;
+    List<DocumentModel> getCurrentDocumentChildren() throws ClientException;
 
     /**
      * @return list of children for the current document composing the current
      *         page
      * @throws ClientException
      */
-    DocumentModelList getCurrentDocumentChildrenPage() throws ClientException;
+    List<DocumentModel> getCurrentDocumentChildrenPage() throws ClientException;
 
     /**
      * @throws ClientException
@@ -361,7 +361,7 @@ public interface NavigationContext extends ResultsProviderFarm {
      * @return
      * @throws ClientException
      */
-    DocumentModelList factoryCurrentDocumentChildren() throws ClientException;
+    List<DocumentModel> factoryCurrentDocumentChildren() throws ClientException;
 
     /**
      * Gets current document for edition.
@@ -405,7 +405,7 @@ public interface NavigationContext extends ResultsProviderFarm {
      *
      * @param resultsProvider
      */
-    void setCurrentResultsProvider(PagedDocumentsProvider resultsProvider);
+    void setCurrentResultsProvider(ResultsProvider<DocumentModel> resultsProvider);
 
     /**
      * Invalidates children provider (temporarily).

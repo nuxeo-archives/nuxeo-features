@@ -21,6 +21,7 @@ package org.nuxeo.ecm.core.search.api.client.querymodel;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -29,11 +30,10 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.ClientRuntimeException;
 import org.nuxeo.ecm.core.api.DataModel;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.model.PropertyException;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.core.query.QueryParseException;
 import org.nuxeo.ecm.core.query.sql.SQLQueryParser;
 import org.nuxeo.ecm.core.search.api.client.SearchException;
@@ -110,12 +110,12 @@ public class QueryModel implements Serializable {
         return documentModel;
     }
 
-    public DocumentModelList getDocuments() throws ClientException,
+    public List<DocumentModel> getDocuments() throws ClientException,
             QueryException {
         return getDocuments(null);
     }
 
-    public DocumentModelList getDocuments(Object[] params)
+    public List<DocumentModel> getDocuments(Object[] params)
             throws ClientException, QueryException {
         return getResultsProvider(params).getCurrentPage();
     }
@@ -139,12 +139,12 @@ public class QueryModel implements Serializable {
         }
     }
 
-    public PagedDocumentsProvider getResultsProvider(Object[] params)
+    public ResultsProvider<DocumentModel> getResultsProvider(Object[] params)
             throws ClientException, QueryException {
         return getResultsProvider(params, null);
     }
 
-    public PagedDocumentsProvider getResultsProvider(Object[] params,
+    public ResultsProvider<DocumentModel> getResultsProvider(Object[] params,
             SortInfo sortInfo) throws ClientException, QueryException {
         lookupSearchService();
         checkDescriptor();

@@ -24,9 +24,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
+import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
 import org.nuxeo.ecm.core.query.sql.SQLQueryParser;
 import org.nuxeo.ecm.core.query.sql.model.SQLQuery;
 import org.nuxeo.ecm.core.search.api.backend.SearchEngineBackend;
@@ -396,8 +396,8 @@ public abstract class SearchEngineBackendTestCase extends NXRuntimeTestCase {
         assertFalse(results.isFirstPage());
 
         // check document model formation through wrapping in page provider
-        PagedDocumentsProvider provider = new SearchPageProvider(results);
-        DocumentModelList docModels = provider.getCurrentPage();
+        ResultsProvider<DocumentModel> provider = new SearchPageProvider(results);
+        List<DocumentModel> docModels = provider.getCurrentPage();
 
         assertEquals("Revelations", docModels.get(0).getProperty("dublincore",
                 "title"));

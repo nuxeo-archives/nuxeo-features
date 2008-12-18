@@ -21,6 +21,7 @@ package org.nuxeo.ecm.webapp.dashboard;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.Remove;
@@ -102,7 +103,7 @@ public interface DashboardActions extends Serializable, ResultsProviderFarm {
      * @return XXX
      * @throws ClientException
      */
-    DocumentModelList getLastModifiedDocuments() throws ClientException;
+    List<DocumentModel> getLastModifiedDocuments() throws ClientException;
 
     /**
      * Computes the list of workspaces the user has the right to see.

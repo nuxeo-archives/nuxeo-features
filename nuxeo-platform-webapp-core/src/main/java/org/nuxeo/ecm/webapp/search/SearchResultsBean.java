@@ -38,19 +38,19 @@ import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Observer;
-import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Transactional;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.annotations.remoting.WebRemote;
+import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.contexts.Context;
 import org.jboss.seam.contexts.Contexts;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
+import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.provider.ResultsProviderException;
 import org.nuxeo.ecm.platform.actions.Action;
 import org.nuxeo.ecm.platform.types.FieldWidget;
 import org.nuxeo.ecm.platform.ui.web.model.SelectDataModel;
@@ -103,7 +103,7 @@ public class SearchResultsBean extends InputController implements
     protected transient ClipboardActions clipboardActions;
 
     // Should never be access for read directly
-    protected transient PagedDocumentsProvider provider;
+    protected transient ResultsProvider<DocumentModel> provider;
 
     public void reset() {
         provider = null;
@@ -144,7 +144,7 @@ public class SearchResultsBean extends InputController implements
         return null;
     }
 
-    public PagedDocumentsProvider getProvider() throws ClientException {
+    public ResultsProvider<DocumentModel> getProvider() throws ClientException {
         if (providerName == null) {
             throw new ClientException("No provider name has been specified yet");
         }
@@ -154,7 +154,7 @@ public class SearchResultsBean extends InputController implements
     /**
      * Has the effect of setting the <code>providerName</code> field.
      */
-    public PagedDocumentsProvider getProvider(String providerName)
+    public ResultsProvider<DocumentModel> getProvider(String providerName)
             throws ClientException {
         provider = resultsProvidersCache.get(providerName);
         if (provider == null) {
@@ -282,12 +282,12 @@ public class SearchResultsBean extends InputController implements
         return getProvider().isSortable();
     }
 
-    public String downloadCSV() throws ClientException {
+    public String downloadCSV() throws ClientException, ResultsProviderException {
         try {
             if (newProviderName == null) {
                 throw new ClientException("providerName not set");
             }
-            PagedDocumentsProvider provider = getProvider(newProviderName);
+            ResultsProvider<DocumentModel> provider = getProvider(newProviderName);
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.setContentType("text/csv");
             response.setHeader("Content-Disposition",
@@ -320,7 +320,7 @@ public class SearchResultsBean extends InputController implements
             int currentPage = provider.getCurrentPageIndex();
             int pageCount = provider.getNumberOfPages();
             for (int page = 0; page < pageCount; page++) {
-                DocumentModelList docModelList = provider.getPage(page);
+                List<DocumentModel> docModelList = provider.getPage(page);
                 for (DocumentModel docModel : docModelList) {
                     String[] columns = new String[widgetList.size()];
                     i = 0;
