@@ -117,7 +117,7 @@ public class PublishActionsBean implements PublishActions, Serializable {
     private static final String DOMAIN_TYPE = "Domain";
 
     @In(create = true)
-    protected Principal currentUser;
+    protected transient Principal currentUser;
 
     @In(create = true)
     protected transient WebActions webActions;

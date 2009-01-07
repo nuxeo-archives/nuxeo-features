@@ -51,15 +51,11 @@ public class AuthenticationPluginDescriptor implements Serializable {
     @XNodeMap(value = "parameters/parameter", key = "@name", type = HashMap.class, componentType = String.class)
     Map<String, String> parameters = new HashMap<String, String>();
 
-    @XNode("statefull")
-     Boolean statefull = true;
+    @XNode("stateful")
+    Boolean stateful = true;
 
     public Class<NuxeoAuthenticationPlugin> getClassName() {
         return className;
-    }
-
-    public void setClassName(Class<NuxeoAuthenticationPlugin> className) {
-        this.className = className;
     }
 
     public Boolean getEnabled() {
@@ -82,10 +78,6 @@ public class AuthenticationPluginDescriptor implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Map<String, String> getParameters() {
         return parameters;
     }
@@ -98,15 +90,8 @@ public class AuthenticationPluginDescriptor implements Serializable {
         return needStartingURLSaving;
     }
 
-    public void setNeedStartingURLSaving(Boolean needStartingURLSaving) {
-        this.needStartingURLSaving = needStartingURLSaving;
+    public Boolean getStateful() {
+        return stateful;
     }
 
-    public Boolean getStatefull() {
-        return statefull;
-    }
-
-    public void setStatefull(Boolean statefull) {
-        this.statefull = statefull;
-    }
 }

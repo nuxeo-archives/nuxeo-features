@@ -59,7 +59,7 @@ public class IOAuditAdapter extends AbstractIOResourceAdapter {
 
     private static final long serialVersionUID = -3661302796286246086L;
 
-    Map<String, Serializable> properties;
+    private Map<String, Serializable> properties;
 
     /**
      * Should be overridden if IOLogEntryBase is subclassed.
@@ -73,7 +73,7 @@ public class IOAuditAdapter extends AbstractIOResourceAdapter {
 
     @Override
     public void setProperties(Map<String, Serializable> properties) {
-        throw new UnsupportedOperationException("not yet implemented");
+       ;
     }
 
     protected static CoreSession getCoreSession(String repo) throws ClientException {

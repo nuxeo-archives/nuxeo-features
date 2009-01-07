@@ -352,7 +352,6 @@ public class DocumentActionsBean extends InputController implements
         }
     }
 
-
     /**
      * Saves changes in current version and then create a new current one.
      */

@@ -28,14 +28,13 @@ import org.nuxeo.ecm.platform.io.api.IOManager;
 
 /**
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
- *
  */
 public class RemoteConfiguration extends AbstractIOConfiguration {
 
     private static final long serialVersionUID = 1L;
 
     protected transient IOManager manager;
-    protected Properties jndiEnv;
+    protected final Properties jndiEnv;
     protected String jndiName;
 
     public RemoteConfiguration(String jndiName, Properties jndiEnv) {
@@ -45,7 +44,7 @@ public class RemoteConfiguration extends AbstractIOConfiguration {
     public IOManager getManager() {
         if (manager == null) {
             try {
-                manager = (IOManager)new InitialContext(jndiEnv).lookup(jndiName);
+                manager = (IOManager) new InitialContext(jndiEnv).lookup(jndiName);
             } catch (NamingException e) {
                 e.printStackTrace(); // TODO throw exception
                 return null;

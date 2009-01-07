@@ -37,33 +37,29 @@ public class ExtendedInfoDescriptor implements Serializable {
     private static final long serialVersionUID = 5381693968565370680L;
 
     @XNode("@key")
-    protected String key;
+    private String key;
 
-    
     @XNode("@expression")
-    protected String expression;
+    private String expression;
 
     @XNode("@enabled")
-    protected Boolean enabled = true;
+    private Boolean enabled = true;
 
 
     public String getKey() {
         return key;
     }
 
-
     public void setKey(String value) {
-        this.key = value;
+        key = value;
     }
-
 
     public String getExpression() {
         return expression;
     }
 
-
     public void setExpression(String value) {
-        this.expression = value;
+        expression = value;
     }
 
     public Boolean getEnabled() {
@@ -76,12 +72,8 @@ public class ExtendedInfoDescriptor implements Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((key == null) ? 0 : key.hashCode());
-        return result;
+        return key == null ? 0 : key.hashCode();
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -105,11 +97,9 @@ public class ExtendedInfoDescriptor implements Serializable {
         return true;
     }
 
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
-   
-   
+
 }
