@@ -61,7 +61,7 @@ import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.VersionModel;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.impl.FacetFilter;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.core.query.sql.SQLQueryParser;
 import org.nuxeo.ecm.core.search.api.backend.indexing.resources.factory.BuiltinDocumentFields;
@@ -153,7 +153,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
 
     @Out(required = false)
     @Deprecated
-    private ResultsProvider<DocumentModel> resultsProvider;
+    private Pages<DocumentModel> resultsProvider;
 
     @Create
     @PostActivate
@@ -312,7 +312,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
         return currentDocumentChildren;
     }
 
-    public ResultsProvider<DocumentModel> getCurrentResultsProvider() {
+    public Pages<DocumentModel> getCurrentResultsProvider() {
         return resultsProvider;
     }
 
@@ -320,7 +320,7 @@ public class NavigationContextBean implements NavigationContextLocal, Serializab
      * @see NavigationContext#setCurrentResultsProvider(PagedDocumentsProvider)
      */
     @Deprecated
-    public void setCurrentResultsProvider(ResultsProvider<DocumentModel> resultsProvider) {
+    public void setCurrentResultsProvider(Pages<DocumentModel> resultsProvider) {
         this.resultsProvider = resultsProvider;
     }
 

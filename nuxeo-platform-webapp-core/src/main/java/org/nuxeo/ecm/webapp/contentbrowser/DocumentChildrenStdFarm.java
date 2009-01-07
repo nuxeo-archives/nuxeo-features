@@ -35,7 +35,7 @@ import org.nuxeo.ecm.core.api.impl.CompoundFilter;
 import org.nuxeo.ecm.core.api.impl.DocumentsPageProvider;
 import org.nuxeo.ecm.core.api.impl.FacetFilter;
 import org.nuxeo.ecm.core.api.impl.LifeCycleFilter;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.core.schema.FacetNames;
 import org.nuxeo.ecm.platform.ui.web.api.ResultsProviderFarm;
@@ -63,7 +63,7 @@ public class DocumentChildrenStdFarm extends InputController implements
     @In(create = true)
     private DocumentChildrenSearchFarm documentChildrenSearchFarm;
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name,
+    public Pages<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException {
 
         final DocumentModel currentDoc = navigationContext.getCurrentDocument();
@@ -72,7 +72,7 @@ public class DocumentChildrenStdFarm extends InputController implements
 
             final boolean browseViaSearch = currentDoc.hasFacet(FacetNames.BROWSE_VIA_SEARCH);
 
-            ResultsProvider<DocumentModel> provider;
+            Pages<DocumentModel> provider;
             if (browseViaSearch) {
                 provider = documentChildrenSearchFarm.getResultsProvider(name,
                         sortInfo);
@@ -87,7 +87,7 @@ public class DocumentChildrenStdFarm extends InputController implements
         }
     }
 
-    private ResultsProvider<DocumentModel> getResProviderForDocChildren(
+    private Pages<DocumentModel> getResProviderForDocChildren(
             DocumentRef docRef) throws ClientException {
         FacetFilter facetFilter = new FacetFilter(
                 FacetNames.HIDDEN_IN_NAVIGATION, false);
@@ -99,7 +99,7 @@ public class DocumentChildrenStdFarm extends InputController implements
         return new DocumentsPageProvider(resultDocsIt, 10);
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name)
+    public Pages<DocumentModel> getResultsProvider(String name)
             throws ClientException, ResultsProviderFarmUserException {
         return getResultsProvider(name, null);
     }

@@ -22,8 +22,8 @@ package org.nuxeo.ecm.webapp.pagination;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.SortInfo;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
-import org.nuxeo.ecm.core.api.provider.ResultsProviderException;
+import org.nuxeo.ecm.core.api.pagination.Pages;
+import org.nuxeo.ecm.core.api.pagination.PaginationException;
 import org.nuxeo.ecm.platform.ui.web.api.SortNotSupportedException;
 
 /**
@@ -44,7 +44,7 @@ public interface ResultsProvidersCache {
      * @throws ClientException
      * @throws SortNotSupportedException
      */
-    ResultsProvider<DocumentModel> get(String name) throws ClientException;
+    Pages<DocumentModel> get(String name) throws ClientException;
 
     /**
      * Gets a named results provider.
@@ -53,9 +53,9 @@ public interface ResultsProvidersCache {
      *
      * @throws ClientException
      * @throws SortNotSupportedException
-     * @throws ResultsProviderException 
+     * @throws PaginationException 
      */
-    ResultsProvider<DocumentModel> get(String name, SortInfo sortInfo)
+    Pages<DocumentModel> get(String name, SortInfo sortInfo)
         throws ClientException, SortNotSupportedException;
 
     /**

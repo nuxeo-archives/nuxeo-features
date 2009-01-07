@@ -29,7 +29,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.VersionModel;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.platform.ui.web.pathelements.PathElement;
 import org.nuxeo.ecm.platform.util.RepositoryLocation;
 
@@ -405,7 +405,7 @@ public interface NavigationContext {
      *
      * @param resultsProvider
      */
-    void setCurrentResultsProvider(ResultsProvider<DocumentModel> resultsProvider);
+    void setCurrentResultsProvider(Pages<DocumentModel> resultsProvider);
 
     /**
      * Invalidates children provider (temporarily).

@@ -49,8 +49,8 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.SortInfo;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
-import org.nuxeo.ecm.core.api.provider.ResultsProviderException;
+import org.nuxeo.ecm.core.api.pagination.Pages;
+import org.nuxeo.ecm.core.api.pagination.PaginationException;
 import org.nuxeo.ecm.platform.actions.Action;
 import org.nuxeo.ecm.platform.types.FieldWidget;
 import org.nuxeo.ecm.platform.ui.web.model.SelectDataModel;
@@ -103,7 +103,7 @@ public class SearchResultsBean extends InputController implements
     protected transient ClipboardActions clipboardActions;
 
     // Should never be access for read directly
-    protected transient ResultsProvider<DocumentModel> provider;
+    protected transient Pages<DocumentModel> provider;
 
     public void reset() {
         provider = null;
@@ -144,7 +144,7 @@ public class SearchResultsBean extends InputController implements
         return null;
     }
 
-    public ResultsProvider<DocumentModel> getProvider() throws ClientException {
+    public Pages<DocumentModel> getProvider() throws ClientException {
         if (providerName == null) {
             throw new ClientException("No provider name has been specified yet");
         }
@@ -154,7 +154,7 @@ public class SearchResultsBean extends InputController implements
     /**
      * Has the effect of setting the <code>providerName</code> field.
      */
-    public ResultsProvider<DocumentModel> getProvider(String providerName)
+    public Pages<DocumentModel> getProvider(String providerName)
             throws ClientException {
         provider = resultsProvidersCache.get(providerName);
         if (provider == null) {
@@ -282,12 +282,12 @@ public class SearchResultsBean extends InputController implements
         return getProvider().isSortable();
     }
 
-    public String downloadCSV() throws ClientException, ResultsProviderException {
+    public String downloadCSV() throws ClientException, PaginationException {
         try {
             if (newProviderName == null) {
                 throw new ClientException("providerName not set");
             }
-            ResultsProvider<DocumentModel> provider = getProvider(newProviderName);
+            Pages<DocumentModel> provider = getProvider(newProviderName);
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.setContentType("text/csv");
             response.setHeader("Content-Disposition",

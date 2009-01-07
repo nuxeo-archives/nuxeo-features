@@ -177,8 +177,8 @@ public class TestSearchPageProvider extends NXRuntimeTestCase {
         assertEquals(0, provider.getCurrentPageIndex());
         assertEquals(0, provider.getCurrentPageOffset());
         assertEquals(0, provider.getCurrentPageSize());
-        provider.rewind();
-        provider.last();
+        provider.firstPage();
+        provider.lastPage();
         // GR this could be discussed. I mostly want to
         // check that no exception is thrown
         assertEquals(1, provider.getNumberOfPages());

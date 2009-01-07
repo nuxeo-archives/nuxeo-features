@@ -59,7 +59,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.event.CoreEventConstants;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.platform.actions.Action;
 import org.nuxeo.ecm.platform.types.Type;
@@ -530,7 +530,7 @@ public class DocumentActionsBean extends InputController implements
     @WebRemote
     public String processSelectRow(String docRef, String providerName,
             String listName, Boolean selection) {
-        ResultsProvider<DocumentModel> provider;
+        Pages<DocumentModel> provider;
         try {
             provider = resultsProvidersCache.get(providerName);
         } catch (ClientException e) {
@@ -578,7 +578,7 @@ public class DocumentActionsBean extends InputController implements
     @WebRemote
     public String processSelectPage(String providerName, String listName,
             Boolean selection) {
-        ResultsProvider<DocumentModel> provider;
+        Pages<DocumentModel> provider;
         try {
             provider = resultsProvidersCache.get(providerName);
         } catch (ClientException e) {

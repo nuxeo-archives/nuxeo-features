@@ -39,7 +39,7 @@ import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.impl.DataModelImpl;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.impl.blob.StreamingBlob;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.schema.SchemaManager;
 import org.nuxeo.ecm.core.schema.TypeConstants;
 import org.nuxeo.ecm.core.schema.types.ComplexType;
@@ -62,7 +62,7 @@ import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.document.R
  * @author <a href="mailto:gracinet@nuxeo.com">Georges Racinet</a>
  *
  */
-public class SearchPageProvider implements ResultsProvider<DocumentModel> {
+public class SearchPageProvider implements Pages<DocumentModel> {
 
     // to be used by the blob filter to transform maps into blob instances
 
@@ -201,7 +201,7 @@ public class SearchPageProvider implements ResultsProvider<DocumentModel> {
     }
 
     public DocumentModelList getNextPage() {
-        next();
+        nextPage();
         return getCurrentPage();
     }
 
@@ -241,24 +241,24 @@ public class SearchPageProvider implements ResultsProvider<DocumentModel> {
         return query;
     }
 
-    public void last() {
+    public void lastPage() {
         goToPage(getNumberOfPages() - 1);
     }
 
-    public void next() {
+    public void nextPage() {
         if (isNextPageAvailable()) {
             goToPage(getCurrentPageIndex() + 1);
         }
     }
 
-    public void previous() {
+    public void previousPage() {
         int i = getCurrentPageIndex();
         if (i > 0) {
             goToPage(i - 1);
         }
     }
 
-    public void rewind() {
+    public void firstPage() {
         goToPage(0);
     }
 

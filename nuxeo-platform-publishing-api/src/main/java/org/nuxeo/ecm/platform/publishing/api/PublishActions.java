@@ -29,7 +29,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentModelTreeNode;
-import org.nuxeo.ecm.core.api.provider.ResultsProviderException;
+import org.nuxeo.ecm.core.api.pagination.PaginationException;
 import org.nuxeo.ecm.platform.actions.Action;
 import org.nuxeo.ecm.platform.ui.web.model.SelectDataModel;
 import org.nuxeo.ecm.platform.ui.web.model.SelectDataModelListener;
@@ -61,9 +61,9 @@ public interface PublishActions extends SelectDataModelListener {
      *
      * @return
      * @throws ClientException
-     * @throws ResultsProviderException 
+     * @throws PaginationException 
      */
-    SelectDataModel getSectionsModel() throws ClientException, ResultsProviderException;
+    SelectDataModel getSectionsModel() throws ClientException, PaginationException;
 
     /**
      * Retrieves all visible proxies for this document.
@@ -162,7 +162,7 @@ public interface PublishActions extends SelectDataModelListener {
     @WebRemote
     // XXX shouldn't be here : Seam remoting bug
     String processRemoteSelectRowEvent(String docRef, Boolean selection)
-            throws ClientException, ResultsProviderException;
+            throws ClientException, PaginationException;
 
     /**
      * Returns the list of available web actions for the currently selected

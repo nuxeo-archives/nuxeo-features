@@ -22,7 +22,7 @@ package org.nuxeo.ecm.platform.ui.web.api;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.SortInfo;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.platform.ui.web.pagination.ResultsProviderFarmUserException;
 
 /**
@@ -46,7 +46,7 @@ public interface ResultsProviderFarm {
      */
     // TODO: remake an distinction between malformed queries and internal errors
     // in the process/server that honors them
-    ResultsProvider<DocumentModel> getResultsProvider(String name)
+    Pages<DocumentModel> getResultsProvider(String name)
                 throws ClientException, ResultsProviderFarmUserException;
 
     /**
@@ -58,7 +58,7 @@ public interface ResultsProviderFarm {
      * @throws ResultsProviderFarmUserException
      * @throws SortNotSupportedException if the provider cannot sort the result
      */
-    ResultsProvider<DocumentModel> getResultsProvider(String name, SortInfo sortInfo)
+    Pages<DocumentModel> getResultsProvider(String name, SortInfo sortInfo)
             throws ClientException, ResultsProviderFarmUserException;
 
 }

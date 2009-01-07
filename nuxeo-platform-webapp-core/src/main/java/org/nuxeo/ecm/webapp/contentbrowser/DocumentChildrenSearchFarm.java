@@ -28,7 +28,7 @@ import org.jboss.seam.annotations.Scope;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.SortInfo;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModel;
 import org.nuxeo.ecm.platform.ui.web.api.ResultsProviderFarm;
@@ -63,17 +63,17 @@ public class DocumentChildrenSearchFarm extends InputController implements
     @In(create = true)
     private transient ResultsProvidersCache resultsProvidersCache;
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name)
+    public Pages<DocumentModel> getResultsProvider(String name)
             throws ClientException {
         return getResultsProvider(name, null);
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name,
+    public Pages<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException {
         final DocumentModel currentDoc = navigationContext.getCurrentDocument();
 
         if (DocumentChildrenStdFarm.CHILDREN_BY_COREAPI.equals(name)) {
-            ResultsProvider<DocumentModel> provider = getChildrenResultsProviderQMPattern(name, currentDoc, sortInfo);
+            Pages<DocumentModel> provider = getChildrenResultsProviderQMPattern(name, currentDoc, sortInfo);
             provider.setName(name);
             return provider;
         } else {
@@ -84,7 +84,7 @@ public class DocumentChildrenSearchFarm extends InputController implements
     /**
      * Usable with a queryModel that defines a pattern NXQL.
      */
-    private ResultsProvider<DocumentModel> getChildrenResultsProviderQMPattern(
+    private Pages<DocumentModel> getChildrenResultsProviderQMPattern(
             String queryModelName, DocumentModel parent, SortInfo sortInfo) throws ClientException {
 
         final String parentId = parent.getId();
@@ -92,7 +92,7 @@ public class DocumentChildrenSearchFarm extends InputController implements
         return getResultsProvider(queryModelName, params, sortInfo);
     }
 
-    private ResultsProvider<DocumentModel> getResultsProvider(String qmName,
+    private Pages<DocumentModel> getResultsProvider(String qmName,
             Object[] params, SortInfo sortInfo) throws ClientException {
         try {
             QueryModel qm = queryModelActions.get(qmName);
@@ -106,7 +106,7 @@ public class DocumentChildrenSearchFarm extends InputController implements
     /**
      * Usable with a queryModel that defines a WhereClause with predicates.
      */
-    protected ResultsProvider<DocumentModel> getChildrenResultsProviderQMPred(
+    protected Pages<DocumentModel> getChildrenResultsProviderQMPred(
             String queryModelName, DocumentModel currentDoc)
             throws ClientException {
         QueryModel qm = queryModelActions.get(queryModelName);

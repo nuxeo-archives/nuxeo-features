@@ -50,7 +50,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.SortInfo;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.query.QueryParseException;
 import org.nuxeo.ecm.core.query.sql.SQLQueryParser;
 import org.nuxeo.ecm.core.search.api.client.IndexingException;
@@ -287,7 +287,7 @@ public class SearchActionsBean extends InputController implements
             }
 
             String page;
-            ResultsProvider<DocumentModel> resultsProvider;
+            Pages<DocumentModel> resultsProvider;
             if (searchTypeId == SearchType.NXQL) {
                 if (nxql == null) {
                     log.warn("Direct NXQL search: no nxql query "
@@ -296,7 +296,7 @@ public class SearchActionsBean extends InputController implements
                 }
                 log.debug("Query: " + nxql);
                 resultsProvidersCache.invalidate(PROV_NXQL);
-                resultsProvider = (ResultsProvider<DocumentModel>) resultsProvidersCache.get(PROV_NXQL);
+                resultsProvider = (Pages<DocumentModel>) resultsProvidersCache.get(PROV_NXQL);
                 page = ACTION_PAGE_SEARCH_NXQL;
             } else if (searchTypeId == SearchType.FORM) {
                 String sortColumn = searchColumns.getSortColumn();
@@ -307,7 +307,7 @@ public class SearchActionsBean extends InputController implements
                 }
 
                 resultsProvidersCache.invalidate(QM_ADVANCED);
-                resultsProvider = (ResultsProvider<DocumentModel>) resultsProvidersCache.get(
+                resultsProvider = (Pages<DocumentModel>) resultsProvidersCache.get(
                         QM_ADVANCED, sortInfo);
                 page = ACTION_PAGE_SEARCH_ADVANCED;
             } else if (searchTypeId == SearchType.KEYWORDS) {
@@ -330,7 +330,7 @@ public class SearchActionsBean extends InputController implements
                     }
                 }
                 resultsProvidersCache.invalidate(QM_SIMPLE);
-                resultsProvider = (ResultsProvider<DocumentModel>) resultsProvidersCache.get(QM_SIMPLE);
+                resultsProvider = (Pages<DocumentModel>) resultsProvidersCache.get(QM_SIMPLE);
                 page = ACTION_PAGE_SEARCH_SIMPLE;
             } else {
                 throw new ClientException("Unknown search type: "
@@ -361,7 +361,7 @@ public class SearchActionsBean extends InputController implements
     public List<DocumentModel> getResultDocuments(String providerName)
             throws ClientException {
 
-        ResultsProvider<DocumentModel> provider = (ResultsProvider<DocumentModel>) resultsProvidersCache.get(providerName);
+        Pages<DocumentModel> provider = (Pages<DocumentModel>) resultsProvidersCache.get(providerName);
         if (provider == null) {
             log.warn("resultsProvider not available for getResultDocuments");
             return new ArrayList<DocumentModel>();
@@ -480,13 +480,13 @@ public class SearchActionsBean extends InputController implements
     /**
      * ResultsProviderFarm interface implementation.
      */
-    public ResultsProvider<DocumentModel> getResultsProvider(String name)
+    public Pages<DocumentModel> getResultsProvider(String name)
             throws ClientException, ResultsProviderFarmUserException {
         // SQLQueryParser + QueryParseException
         return getResultsProvider(name, null);
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name,
+    public Pages<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException,
             ResultsProviderFarmUserException {
         // TODO param!
@@ -509,7 +509,7 @@ public class SearchActionsBean extends InputController implements
             case KEYWORDS:
                 Object[] sK = { simpleSearchKeywords };
                 QueryModel qm = queryModelActions.get(QM_SIMPLE);
-                ResultsProvider<DocumentModel> simpleProvider = qm.getResultsProvider(
+                Pages<DocumentModel> simpleProvider = qm.getResultsProvider(
                         sK, sortInfo);
                 simpleProvider.setName(name);
                 return simpleProvider;

@@ -65,8 +65,8 @@ import org.nuxeo.ecm.core.api.event.impl.CoreEventImpl;
 import org.nuxeo.ecm.core.api.facet.VersioningDocument;
 import org.nuxeo.ecm.core.api.impl.DocumentModelTreeImpl;
 import org.nuxeo.ecm.core.api.impl.DocumentModelTreeNodeComparator;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
-import org.nuxeo.ecm.core.api.provider.ResultsProviderException;
+import org.nuxeo.ecm.core.api.pagination.Pages;
+import org.nuxeo.ecm.core.api.pagination.PaginationException;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.core.schema.FacetNames;
 import org.nuxeo.ecm.core.schema.TypeService;
@@ -230,7 +230,7 @@ public class PublishActionsBean implements PublishActions, Serializable {
         protected final DocumentModelTree sections;
 
         public SelectionModelGetter() throws ClientException,
-                ResultsProviderException {
+                PaginationException {
             super(documentManager);
             DocumentModel doc = navigationContext.getCurrentDocument();
             this.currentDocRef = doc.getRef();
@@ -292,18 +292,18 @@ public class PublishActionsBean implements PublishActions, Serializable {
     }
 
     protected void getSectionsSelectModel() throws ClientException,
-            ResultsProviderException {
+            PaginationException {
         // get the section list from an unrestricted session
         new SelectionModelGetter().runUnrestricted();
     }
 
     private void accumulateAvailableSections(DocumentModelTree sections,
             String sectionRootPath, String sectionNameType)
-            throws ClientException, ResultsProviderException {
+            throws ClientException, PaginationException {
 
         Object[] params = { sectionRootPath, sectionNameType };
 
-        ResultsProvider<DocumentModel> sectionsProvider = null;
+        Pages<DocumentModel> sectionsProvider = null;
         try {
             sectionsProvider = queryModelActions.get(DOMAIN_SECTIONS).getResultsProvider(
                     params);
@@ -312,7 +312,7 @@ public class PublishActionsBean implements PublishActions, Serializable {
                     + "Check the \"%s\" QueryModel configuration",
                     DOMAIN_SECTIONS), e);
         }
-        sectionsProvider.rewind();
+        sectionsProvider.firstPage();
         List<DocumentModel> mainSections = sectionsProvider.getCurrentPage();
 
         while (sectionsProvider.isNextPageAvailable()) {
@@ -660,7 +660,7 @@ public class PublishActionsBean implements PublishActions, Serializable {
      */
     @WebRemote
     public String processRemoteSelectRowEvent(String docRef, Boolean selection)
-            throws ClientException, ResultsProviderException {
+            throws ClientException, PaginationException {
         log.debug("Selection processed  : " + docRef);
         List<SelectDataModelRow> sections = getSectionsModel().getRows();
 
@@ -694,7 +694,7 @@ public class PublishActionsBean implements PublishActions, Serializable {
      */
     @Factory(autoCreate = true, scope = ScopeType.EVENT, value = "currentPublishingSectionsModel")
     public SelectDataModel getSectionsModel() throws ClientException,
-            ResultsProviderException {
+            PaginationException {
         if (sectionsModel == null) {
             getSectionsSelectModel();
         }

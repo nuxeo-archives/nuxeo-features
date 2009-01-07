@@ -46,9 +46,9 @@ import org.jboss.seam.faces.FacesMessages;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.SortInfo;
-import org.nuxeo.ecm.core.api.provider.EmptyResultsProvider;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
-import org.nuxeo.ecm.core.api.provider.ResultsProviderException;
+import org.nuxeo.ecm.core.api.pagination.EmptyPages;
+import org.nuxeo.ecm.core.api.pagination.Pages;
+import org.nuxeo.ecm.core.api.pagination.PaginationException;
 import org.nuxeo.ecm.platform.ui.web.api.ResultsProviderFarm;
 import org.nuxeo.ecm.platform.ui.web.api.SortNotSupportedException;
 import org.nuxeo.ecm.platform.ui.web.pagination.ResultsProviderFarmUserException;
@@ -86,7 +86,7 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
     @In(create = true)
     protected transient ResourcesAccessor resourcesAccessor;
 
-    private transient Map<String, ResultsProvider<DocumentModel>> resultsProvidersCache;
+    private transient Map<String, Pages<DocumentModel>> resultsProvidersCache;
 
     /**
      * Used to indicate that providers have already been refreshed within this
@@ -115,7 +115,7 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
     private void initCache() {
         if (resultsProvidersCache == null) {
             log.debug("Constructing a new, empty cache");
-            resultsProvidersCache = new HashMap<String, ResultsProvider<DocumentModel>>();
+            resultsProvidersCache = new HashMap<String, Pages<DocumentModel>>();
         }
     }
 
@@ -123,7 +123,7 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
      * API
      */
 
-    public ResultsProvider<DocumentModel> get(String name) throws ClientException {
+    public Pages<DocumentModel> get(String name) throws ClientException {
         try {
             return get(name, null);
         } catch (SortNotSupportedException e) {
@@ -131,10 +131,10 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
         }
     }
 
-    public ResultsProvider<DocumentModel> get(String name, SortInfo sortInfo)
+    public Pages<DocumentModel> get(String name, SortInfo sortInfo)
             throws ClientException, SortNotSupportedException {
         PhaseId lifeCycleId = FacesLifecycle.getPhaseId();
-        ResultsProvider<DocumentModel> provider = resultsProvidersCache.get(name);
+        Pages<DocumentModel> provider = resultsProvidersCache.get(name);
         if (cleanProviders == null) {
             cleanProviders = new HashSet<String>();
         }
@@ -167,7 +167,7 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
                         facesMessages.add(FacesMessage.SEVERITY_WARN,
                                 resourcesAccessor.getMessages().get("feedback.search.invalid"));
                     }
-                    resultsProvidersCache.put(name, new EmptyResultsProvider<DocumentModel>());
+                    resultsProvidersCache.put(name, new EmptyPages<DocumentModel>());
                     return resultsProvidersCache.get(name);
                 }
             }
@@ -183,7 +183,7 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
                 }
                 try {
                     provider.refresh();
-                } catch (ResultsProviderException e) {
+                } catch (PaginationException e) {
                     // BBB
                     throw new ClientException(e);
                 }
@@ -200,7 +200,7 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
      * @return the empty provider
      * @throws ClientException
      */
-    protected ResultsProvider<DocumentModel> getEmptyResultsProvider(String name) throws ClientException {
+    protected Pages<DocumentModel> getEmptyResultsProvider(String name) throws ClientException {
         ResultsProviderFarm farm = getProviderFarmFor(name);
 
         // Using reflection to maintain BBB.
@@ -210,16 +210,16 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
         try {
             method = farm.getClass().getMethod("getEmptyResultsProvider", String.class);
         } catch (SecurityException e) {
-            return new EmptyResultsProvider<DocumentModel>();
+            return new EmptyPages<DocumentModel>();
         } catch (NoSuchMethodException e) {
             log.warn(farm.getClass().getName() +" will have to " +
                     "implement getEmptyResultsProvider() for Nuxeo 5.2");
-            return new EmptyResultsProvider<DocumentModel>();
+            return new EmptyPages<DocumentModel>();
         }
         try {
-            return  (ResultsProvider<DocumentModel>) method.invoke(farm, name);
+            return  (Pages<DocumentModel>) method.invoke(farm, name);
         } catch (Exception e) {
-            return new EmptyResultsProvider<DocumentModel>();
+            return new EmptyPages<DocumentModel>();
         }
     }
 
@@ -252,7 +252,7 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
         String numberOfPagesStr;
         // GR TODO just there so that it stops breaking te stuff
         int numberOfPages = 10;
-        if (numberOfPages == ResultsProvider.UNKNOWN_SIZE) {
+        if (numberOfPages == Pages.UNKNOWN_SIZE) {
             numberOfPagesStr = "unknown";
         } else {
             numberOfPagesStr = Integer.toString(numberOfPages);

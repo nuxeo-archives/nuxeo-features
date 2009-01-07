@@ -50,7 +50,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModel;
@@ -130,7 +130,7 @@ public class DeleteActionsBean extends InputController implements
 
     @Out(required = false)
     @Deprecated
-    private ResultsProvider<DocumentModel> resultsProvider;
+    private Pages<DocumentModel> resultsProvider;
 
     private List<DocumentModel> currentDocumentChildren;
 
@@ -764,15 +764,15 @@ public class DeleteActionsBean extends InputController implements
     public void destroy() {
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name)
+    public Pages<DocumentModel> getResultsProvider(String name)
             throws ClientException, ResultsProviderFarmUserException {
         return getResultsProvider(name, null);
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name,
+    public Pages<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException,
             ResultsProviderFarmUserException {
-        ResultsProvider<DocumentModel> provider = null;
+        Pages<DocumentModel> provider = null;
 
         if (BOARD_USER_DELETED.equals(name)) {
             Object[] params = { currentUser.getName() };
@@ -791,12 +791,12 @@ public class DeleteActionsBean extends InputController implements
         return provider;
     }
 
-    private ResultsProvider<DocumentModel> getResultsProviderForDeletedDocs(
+    private Pages<DocumentModel> getResultsProviderForDeletedDocs(
             String name, SortInfo sortInfo) throws ClientException {
         final DocumentModel currentDoc = navigationContext.getCurrentDocument();
 
         if (DELETED_CHILDREN_BY_COREAPI.equals(name)) {
-            ResultsProvider<DocumentModel> provider = getChildrenResultsProviderQMPattern(
+            Pages<DocumentModel> provider = getChildrenResultsProviderQMPattern(
                     name, currentDoc, sortInfo);
             provider.setName(name);
             return provider;
@@ -805,7 +805,7 @@ public class DeleteActionsBean extends InputController implements
         }
     }
 
-    protected ResultsProvider<DocumentModel> getQmDocuments(String qmName,
+    protected Pages<DocumentModel> getQmDocuments(String qmName,
             Object[] params, SortInfo sortInfo) throws ClientException {
         try {
             return queryModelActions.get(qmName).getResultsProvider(params,
@@ -819,7 +819,7 @@ public class DeleteActionsBean extends InputController implements
     /**
      * Usable with a queryModel that defines a pattern NXQL.
      */
-    private ResultsProvider<DocumentModel> getChildrenResultsProviderQMPattern(
+    private Pages<DocumentModel> getChildrenResultsProviderQMPattern(
             String queryModelName, DocumentModel parent, SortInfo sortInfo)
             throws ClientException {
 
@@ -828,7 +828,7 @@ public class DeleteActionsBean extends InputController implements
         return getResultsProvider(queryModelName, params, sortInfo);
     }
 
-    private ResultsProvider<DocumentModel> getResultsProvider(String qmName,
+    private Pages<DocumentModel> getResultsProvider(String qmName,
             Object[] params, SortInfo sortInfo) throws ClientException {
         try {
             QueryModel qm = queryModelActions.get(qmName);

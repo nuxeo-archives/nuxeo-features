@@ -53,7 +53,7 @@ import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.ecm.platform.ui.web.api.WebActions;
@@ -416,7 +416,7 @@ public class DashBoardActionsBean extends InputController implements
         return "user_dashboard";
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name,
+    public Pages<DocumentModel> getResultsProvider(String name,
             SortInfo sortInfo) throws ClientException,
             ResultsProviderFarmUserException {
 
@@ -436,7 +436,7 @@ public class DashBoardActionsBean extends InputController implements
         } else {
             throw new ClientException("Unknown board: " + name);
         }
-        ResultsProvider<DocumentModel> provider;
+        Pages<DocumentModel> provider;
         try {
             provider = getQmDocuments(name, params, sortInfo);
         } catch (Exception e) {
@@ -449,12 +449,12 @@ public class DashBoardActionsBean extends InputController implements
         return provider;
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(String name)
+    public Pages<DocumentModel> getResultsProvider(String name)
             throws ClientException, ResultsProviderFarmUserException {
         return getResultsProvider(name, null);
     }
 
-    protected ResultsProvider<DocumentModel> getQmDocuments(String qmName,
+    protected Pages<DocumentModel> getQmDocuments(String qmName,
             Object[] params, SortInfo sortInfo) throws ClientException {
         try {
             return queryModelActions.get(qmName).getResultsProvider(params,

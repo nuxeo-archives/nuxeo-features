@@ -33,7 +33,7 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.model.PropertyException;
-import org.nuxeo.ecm.core.api.provider.ResultsProvider;
+import org.nuxeo.ecm.core.api.pagination.Pages;
 import org.nuxeo.ecm.core.query.QueryParseException;
 import org.nuxeo.ecm.core.query.sql.SQLQueryParser;
 import org.nuxeo.ecm.core.search.api.client.SearchException;
@@ -139,12 +139,12 @@ public class QueryModel implements Serializable {
         }
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(Object[] params)
+    public Pages<DocumentModel> getResultsProvider(Object[] params)
             throws ClientException, QueryException {
         return getResultsProvider(params, null);
     }
 
-    public ResultsProvider<DocumentModel> getResultsProvider(Object[] params,
+    public Pages<DocumentModel> getResultsProvider(Object[] params,
             SortInfo sortInfo) throws ClientException, QueryException {
         lookupSearchService();
         checkDescriptor();
