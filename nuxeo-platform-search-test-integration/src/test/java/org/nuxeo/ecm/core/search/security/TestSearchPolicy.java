@@ -39,7 +39,7 @@ import org.nuxeo.ecm.core.search.api.client.indexing.resources.factory.Indexable
 import org.nuxeo.ecm.core.search.api.client.query.ComposedNXQuery;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchPageProvider;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
 import org.nuxeo.ecm.core.search.transaction.Transactions;
 import org.nuxeo.runtime.api.Framework;
 
@@ -91,7 +91,7 @@ public class TestSearchPolicy extends RepositoryOSGITestCase {
         super.tearDown();
     }
 
-    private SearchPageProvider query(String query, Principal principal)
+    private SearchResultPages query(String query, Principal principal)
             throws Exception {
         SQLQuery nxqlQuery = SQLQueryParser.parse(query);
         ComposedNXQuery composedQuery = new ComposedNXQueryImpl(nxqlQuery);
@@ -99,7 +99,7 @@ public class TestSearchPolicy extends RepositoryOSGITestCase {
             composedQuery.setSearchPrincipal(sservice.getSearchPrincipal(principal));
         }
         ResultSet rs = sservice.searchQuery(composedQuery, 0, 100);
-        return new SearchPageProvider(rs);
+        return new SearchResultPages(rs);
     }
 
     private DocumentModel createSampleFile() throws Exception {
@@ -139,7 +139,7 @@ public class TestSearchPolicy extends RepositoryOSGITestCase {
 
         // search for a word occurring in the title field
         String query = "SELECT * FROM Document WHERE ecm:fulltext = 'title'";
-        SearchPageProvider spp = query(query, null);
+        SearchResultPages spp = query(query, null);
         assertEquals(1, spp.getResultsCount());
 
         DocumentModel result = spp.getCurrentPage().get(0);

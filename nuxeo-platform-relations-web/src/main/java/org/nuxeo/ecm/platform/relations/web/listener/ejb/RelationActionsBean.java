@@ -62,7 +62,7 @@ import org.nuxeo.ecm.core.search.api.client.query.ComposedNXQuery;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchPageProvider;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
 import org.nuxeo.ecm.platform.events.api.DocumentMessage;
 import org.nuxeo.ecm.platform.events.api.DocumentMessageProducer;
 import org.nuxeo.ecm.platform.events.api.DocumentMessageProducerException;
@@ -554,7 +554,7 @@ public class RelationActionsBean  extends DocumentContextBoundActionBean impleme
             SearchService searchService = SearchServiceDelegate.getRemoteSearchService();
             ResultSet queryResults = searchService.searchQuery(cQuery, 0, 100);
             if (queryResults != null) {
-                SearchPageProvider provider = new SearchPageProvider(
+                SearchResultPages provider = new SearchResultPages(
                         queryResults);
                 resultDocuments = provider.getCurrentPage();
             }

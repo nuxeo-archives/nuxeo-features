@@ -42,7 +42,7 @@ import org.nuxeo.ecm.core.search.api.client.query.ComposedNXQuery;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchPageProvider;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
 import org.nuxeo.ecm.webapp.base.InputController;
 
 /**
@@ -101,7 +101,7 @@ public class EditorLinkActionsBean extends InputController implements EditorLink
             final ResultSet queryResults = searchService.searchQuery(
                     composedQuery, 0, 100);
             if (queryResults != null) {
-                final SearchPageProvider provider = new SearchPageProvider(
+                final SearchResultPages provider = new SearchResultPages(
                         queryResults);
                 resultDocuments = provider.getCurrentPage();
             }

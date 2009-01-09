@@ -45,7 +45,7 @@ import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.querymodel.descriptor.FieldDescriptor;
 import org.nuxeo.ecm.core.search.api.client.querymodel.descriptor.QueryModelDescriptor;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchPageProvider;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
 import org.nuxeo.runtime.api.Framework;
 
 public class QueryModel implements Serializable {
@@ -171,7 +171,7 @@ public class QueryModel implements Serializable {
             ResultSet resultSet = searchService.searchQuery(
                     new ComposedNXQueryImpl(SQLQueryParser.parse(query),
                             principal), 0, getMaxForSearch());
-            return new SearchPageProvider(resultSet, isSortable(), sortInfo,
+            return new SearchResultPages(resultSet, isSortable(), sortInfo,
                     query);
         } catch (Exception e) {
             // re-run the query without sort parameters
@@ -186,7 +186,7 @@ public class QueryModel implements Serializable {
                 ResultSet resultSet = searchService.searchQuery(
                         new ComposedNXQueryImpl(SQLQueryParser.parse(query),
                                 principal), 0, getMaxForSearch());
-                return new SearchPageProvider(resultSet, isSortable(), null,
+                return new SearchResultPages(resultSet, isSortable(), null,
                         query);
             } catch (SearchException e2) {
                 throw new ClientException(String.format(

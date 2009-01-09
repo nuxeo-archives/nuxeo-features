@@ -40,7 +40,7 @@ import org.nuxeo.ecm.core.search.api.client.indexing.resources.document.impl.Doc
 import org.nuxeo.ecm.core.search.api.client.indexing.resources.factory.IndexableResourcesFactory;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchPageProvider;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
 import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.IndexableResourceConf;
 import org.nuxeo.ecm.core.search.transaction.Transactions;
 import org.nuxeo.runtime.api.Framework;
@@ -94,11 +94,11 @@ public class TestSearchServiceIntegration extends RepositoryOSGITestCase {
         super.tearDown();
     }
 
-    private SearchPageProvider query(String query) throws Exception {
+    private SearchResultPages query(String query) throws Exception {
         SQLQuery nxqlQuery = SQLQueryParser.parse(query);
         ResultSet rs = sservice.searchQuery(new ComposedNXQueryImpl(nxqlQuery),
                 0, 100);
-        return new SearchPageProvider(rs);
+        return new SearchResultPages(rs);
     }
 
     private static Blob getSampleTextBlob() {
@@ -156,7 +156,7 @@ public class TestSearchServiceIntegration extends RepositoryOSGITestCase {
         DocumentRef docRef = createSampleFile().getRef();
 
         // search for a word occurring in the title field
-        SearchPageProvider spp = query("SELECT * FROM Document WHERE ecm:fulltext = 'title'");
+        SearchResultPages spp = query("SELECT * FROM Document WHERE ecm:fulltext = 'title'");
         assertEquals(1, spp.getResultsCount());
         assertEquals(docRef, spp.getCurrentPage().get(0).getRef());
 
@@ -177,7 +177,7 @@ public class TestSearchServiceIntegration extends RepositoryOSGITestCase {
         DocumentRef docRef = createSampleFile().getRef();
 
         // search for a word occurring in the title field
-        SearchPageProvider spp = query("SELECT * FROM Document WHERE ecm:fulltext = 'title'");
+        SearchResultPages spp = query("SELECT * FROM Document WHERE ecm:fulltext = 'title'");
         assertEquals(1, spp.getResultsCount());
 
         DocumentModel result = spp.getCurrentPage().get(0);

@@ -60,7 +60,7 @@ import org.nuxeo.ecm.core.search.api.client.common.SearchServiceDelegate;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModel;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchPageProvider;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
 import org.nuxeo.ecm.platform.actions.Action;
 import org.nuxeo.ecm.platform.ui.web.api.SortNotSupportedException;
 import org.nuxeo.ecm.platform.ui.web.model.SelectDataModel;
@@ -337,8 +337,8 @@ public class SearchActionsBean extends InputController implements
                         + searchTypeId);
             }
 
-            if (resultsProvider instanceof SearchPageProvider) {
-                String lastQuery = ((SearchPageProvider) resultsProvider).getQuery();
+            if (resultsProvider instanceof SearchResultPages) {
+                String lastQuery = ((SearchResultPages) resultsProvider).getQuery();
                 conversationContext.set("search.lastQuery", lastQuery);
             } else {
                 conversationContext.set("search.lastQuery", null);
@@ -501,7 +501,7 @@ public class SearchActionsBean extends InputController implements
                 ComposedNXQueryImpl query = new ComposedNXQueryImpl(
                         SQLQueryParser.parse(nxql),
                         service.getSearchPrincipal(currentUser));
-                SearchPageProvider nxqlProvider = new SearchPageProvider(
+                SearchResultPages nxqlProvider = new SearchResultPages(
                         service.searchQuery(query, 0, maxResultsCount), false,
                         null, nxql);
                 nxqlProvider.setName(name);

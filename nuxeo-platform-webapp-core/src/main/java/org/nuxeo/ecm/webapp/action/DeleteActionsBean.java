@@ -39,7 +39,6 @@ import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.core.Events;
 import org.jboss.seam.faces.FacesMessages;
@@ -127,10 +126,6 @@ public class DeleteActionsBean extends InputController implements
     // Imported from Navigation context - used to get the deleted sub-documents
     @In(create = true)
     private transient ResultsProvidersCache resultsProvidersCache;
-
-    @Out(required = false)
-    @Deprecated
-    private Pages<DocumentModel> resultsProvider;
 
     private List<DocumentModel> currentDocumentChildren;
 
@@ -718,12 +713,9 @@ public class DeleteActionsBean extends InputController implements
         }
 
         try {
-
             resultsProvidersCache.invalidate(DELETED_CHILDREN_BY_COREAPI);
-
-            resultsProvider = resultsProvidersCache.get(DELETED_CHILDREN_BY_COREAPI);
-
-            currentDocumentChildren = resultsProvider.getCurrentPage();
+            currentDocumentChildren = resultsProvidersCache.get(
+                    DELETED_CHILDREN_BY_COREAPI).getCurrentPage();
 
         } catch (Throwable t) {
             throw ClientException.wrap(t);

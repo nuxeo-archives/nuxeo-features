@@ -31,7 +31,7 @@ import org.nuxeo.ecm.core.search.api.client.SearchService;
 import org.nuxeo.ecm.core.search.api.client.query.ComposedNXQuery;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchPageProvider;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
 import org.nuxeo.ecm.platform.ui.web.tag.fn.DocumentModelFunctions;
 import org.nuxeo.ecm.platform.ui.web.util.BaseURL;
 import org.nuxeo.runtime.api.Framework;
@@ -91,7 +91,7 @@ public class OpenSearchRestlet extends BaseNuxeoRestlet {
                             "SELECT * FROM Document WHERE ecm:fulltext LIKE '%s' ORDER BY dc:modified DESC",
                             keywords));
             ResultSet resultSet = searchService.searchQuery(query, 0, 10);
-            SearchPageProvider pageProvider = new SearchPageProvider(resultSet);
+            SearchResultPages pageProvider = new SearchResultPages(resultSet);
             DocumentModelList documents = pageProvider.getCurrentPage();
 
             // build the RSS 2.0 response document holding the results

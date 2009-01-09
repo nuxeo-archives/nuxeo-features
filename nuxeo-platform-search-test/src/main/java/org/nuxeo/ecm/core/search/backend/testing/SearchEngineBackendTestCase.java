@@ -40,7 +40,7 @@ import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.query.impl.SearchPrincipalImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultItem;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchPageProvider;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
 import org.nuxeo.ecm.core.search.api.internals.SearchServiceInternals;
 import org.nuxeo.runtime.test.NXRuntimeTestCase;
 
@@ -396,7 +396,7 @@ public abstract class SearchEngineBackendTestCase extends NXRuntimeTestCase {
         assertFalse(results.isFirstPage());
 
         // check document model formation through wrapping in page provider
-        Pages<DocumentModel> provider = new SearchPageProvider(results);
+        Pages<DocumentModel> provider = new SearchResultPages(results);
         List<DocumentModel> docModels = provider.getCurrentPage();
 
         assertEquals("Revelations", docModels.get(0).getProperty("dublincore",

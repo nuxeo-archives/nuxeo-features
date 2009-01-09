@@ -62,7 +62,7 @@ import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.document.R
  * @author <a href="mailto:gracinet@nuxeo.com">Georges Racinet</a>
  *
  */
-public class SearchPageProvider implements Pages<DocumentModel> {
+public class SearchResultPages implements Pages<DocumentModel> {
 
     // to be used by the blob filter to transform maps into blob instances
 
@@ -80,7 +80,7 @@ public class SearchPageProvider implements Pages<DocumentModel> {
 
     private static final long serialVersionUID = 4391326971391218440L;
 
-    private static final Log log = LogFactory.getLog(SearchPageProvider.class);
+    private static final Log log = LogFactory.getLog(SearchResultPages.class);
 
     private static final DocumentModelList EMPTY = new DocumentModelListImpl();
 
@@ -121,7 +121,7 @@ public class SearchPageProvider implements Pages<DocumentModel> {
      * @param sortInfo the sorting info or null if the resultset is not sorted
      * @param query the query that produced this result. will succeed.
      */
-    public SearchPageProvider(ResultSet set, boolean sortable,
+    public SearchResultPages(ResultSet set, boolean sortable,
             SortInfo sortInfo, String query) {
         searchResults = set;
         this.sortInfo = sortInfo;
@@ -137,7 +137,7 @@ public class SearchPageProvider implements Pages<DocumentModel> {
      *
      * @param set
      */
-    public SearchPageProvider(ResultSet set) {
+    public SearchResultPages(ResultSet set) {
         this(set, false, null, null);
     }
 
