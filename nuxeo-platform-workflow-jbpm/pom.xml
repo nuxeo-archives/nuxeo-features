@@ -10,6 +10,7 @@
 
   <artifactId>nuxeo-platform-workflow-jbpm</artifactId>
   <name>Nuxeo Workflow Service - JBoss jBPM engine plugin</name>
+  <version>5.1.7-20090113</version>
   <description>Nuxeo Enterprise Platform: workflow engine implementation
     for the Workflow Service using JBoss jBPM. This is the reference
     implementation of BPM engine beckends for the Workflow Service.</description>
