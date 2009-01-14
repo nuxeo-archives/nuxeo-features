@@ -35,4 +35,61 @@
     </dependency>
   </dependencies>
 
+  <scm>
+    <connection>scm:hg:http://hg.nuxeo.org/nuxeo</connection>
+    <developerConnection>scm:hg:https://hg.nuxeo.org/nuxeo</developerConnection>
+    <url>http://hg.nuxeo.org/nuxeo/</url>
+  </scm>
+
+  <repositories>
+    <repository>
+      <id>public</id>
+      <url>http://maven.nuxeo.org/public</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>public-snapshot</id>
+      <url>http://maven.nuxeo.org/public-snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <site>
+      <id>maven-website</id>
+      <url>scpexe://gironde.nuxeo.com/home/mavenweb/site/</url>
+    </site>
+    <repository>
+      <id>nuxeo-release</id>
+      <url>scpexe://amour.nuxeo.com/home/nexus/repositories/nuxeo-release</url>
+    </repository>
+    <snapshotRepository>
+      <id>nuxeo-snapshot</id>
+      <url>scpexe://amour.nuxeo.com/home/nexus/repositories/nuxeo-snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>public</id>
+      <url>http://maven.nuxeo.org/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+    <pluginRepository>
+      <id>public-snapshot</id>
+      <url>http://maven.nuxeo.org/public-snapshot</url>
+      <name>Nuxeo virtual snapshot repository</name>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories> 
+ 
+
 </project>
