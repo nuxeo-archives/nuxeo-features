@@ -31,7 +31,7 @@ import org.nuxeo.ecm.core.search.api.client.SearchService;
 import org.nuxeo.ecm.core.search.api.client.query.ComposedNXQuery;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.pagination.SearchResultPages;
 import org.nuxeo.ecm.platform.ui.web.tag.fn.DocumentModelFunctions;
 import org.nuxeo.ecm.platform.ui.web.util.BaseURL;
 import org.nuxeo.runtime.api.Framework;

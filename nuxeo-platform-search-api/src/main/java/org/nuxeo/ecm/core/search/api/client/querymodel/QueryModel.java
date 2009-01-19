@@ -45,7 +45,7 @@ import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.querymodel.descriptor.FieldDescriptor;
 import org.nuxeo.ecm.core.search.api.client.querymodel.descriptor.QueryModelDescriptor;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.pagination.SearchResultPages;
 import org.nuxeo.runtime.api.Framework;
 
 public class QueryModel implements Serializable {

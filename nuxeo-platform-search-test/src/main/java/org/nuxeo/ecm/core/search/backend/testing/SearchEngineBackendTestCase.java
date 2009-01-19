@@ -40,7 +40,7 @@ import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.query.impl.SearchPrincipalImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultItem;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.pagination.SearchResultPages;
 import org.nuxeo.ecm.core.search.api.internals.SearchServiceInternals;
 import org.nuxeo.runtime.test.NXRuntimeTestCase;
 

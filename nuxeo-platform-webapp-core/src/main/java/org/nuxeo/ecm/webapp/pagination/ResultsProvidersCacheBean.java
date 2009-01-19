@@ -167,7 +167,7 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
                         facesMessages.add(FacesMessage.SEVERITY_WARN,
                                 resourcesAccessor.getMessages().get("feedback.search.invalid"));
                     }
-                    resultsProvidersCache.put(name, new EmptyPages<DocumentModel>());
+                    resultsProvidersCache.put(name, new EmptyPages<DocumentModel>(name));
                     return resultsProvidersCache.get(name);
                 }
             }
@@ -210,16 +210,16 @@ public class ResultsProvidersCacheBean implements ResultsProvidersCache, Seriali
         try {
             method = farm.getClass().getMethod("getEmptyResultsProvider", String.class);
         } catch (SecurityException e) {
-            return new EmptyPages<DocumentModel>();
+            return new EmptyPages<DocumentModel>(name);
         } catch (NoSuchMethodException e) {
             log.warn(farm.getClass().getName() +" will have to " +
                     "implement getEmptyResultsProvider() for Nuxeo 5.2");
-            return new EmptyPages<DocumentModel>();
+            return new EmptyPages<DocumentModel>(name);
         }
         try {
             return  (Pages<DocumentModel>) method.invoke(farm, name);
         } catch (Exception e) {
-            return new EmptyPages<DocumentModel>();
+            return new EmptyPages<DocumentModel>(name);
         }
     }
 

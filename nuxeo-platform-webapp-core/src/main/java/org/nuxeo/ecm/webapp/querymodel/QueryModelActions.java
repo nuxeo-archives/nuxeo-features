@@ -26,18 +26,21 @@ import org.nuxeo.ecm.platform.ui.web.api.ResultsProviderFarm;
 
 /**
  * Action listener dedicated to the session management QueryModels.
- *
- * <p>QueryModels are non
- * persistent structures to build advanced NXQueries by incrementally editing
- * fields of a model that will be translated into search criteria once the
- * search is actually performed.</p>
- *
- * <p>This bean extends {@link ResultsProviderFarm} for <emph>stateful</emph>
- * Query Models <emph>only</emph>. Stateless models have to be handled by \]
- * another farm, which typically would still call the present bean to get the
- * QueryModel instance.</p>
- *
- *
+ * 
+ * <p>
+ * QueryModels are non persistent structures to build advanced NXQueries by
+ * incrementally editing fields of a model that will be translated into search
+ * criteria once the search is actually performed.
+ * </p>
+ * 
+ * <p>
+ * This bean extends {@link ResultsProviderFarm} for <emph>stateful</emph> Query
+ * Models <emph>only</emph>. Stateless models have to be handled by \] another
+ * farm, which typically would still call the present bean to get the QueryModel
+ * instance.
+ * </p>
+ * 
+ * 
  * @author Olivier Grisel (ogrisel@nuxeo.com)
  */
 
@@ -47,7 +50,7 @@ public interface QueryModelActions extends ResultsProviderFarm {
 
     /**
      * Obtain a scoped instance of QueryModel.
-     *
+     * 
      * @param queryModelName
      * @return the
      * @throws ClientException
@@ -56,36 +59,45 @@ public interface QueryModelActions extends ResultsProviderFarm {
 
     /**
      * Save the specified <strong>stateful</strong> QueryModel.
-     * <p>This is equivalent to the other signature, with saveSession set to True</p>
-     *
+     * <p>
+     * This is equivalent to the other signature, with saveSession set to True
+     * </p>
+     * 
      * @since 5.2
      * @param queryModelName
      * @param parentPath The path of parent folder to save into
      * @param name The local name to use.
      * @return The saved query model.
      * @throws ClientException forwarding from the Core, stateless QueryModel,
-     *         if QueryModel has already been persisted
+     *             if QueryModel has already been persisted
      */
-    QueryModel persist(String queryModelName, String parentPath, String name) throws ClientException;
+    QueryModel persist(String queryModelName, String parentPath, String name)
+            throws ClientException;
 
     /**
      * Save the specified <strong>stateful</strong> QueryModel.
-     *
-     * <p>The DocumentModel instance that backs the QueryModel is saved
-     * in the CoreSession available in Seam's context. Necessary updates
-     * are performed. The returned QueryModel instance is identical to the
-     * one obtained by a subsequent call to {@see get}. </p>
-     * <p>Further document operations, e.g., modifications, for this QueryModel
-     * can be done on the DocumentModel instance directly, but CoreSession methods
+     * 
+     * <p>
+     * The DocumentModel instance that backs the QueryModel is saved in the
+     * CoreSession available in Seam's context. Necessary updates are performed.
+     * The returned QueryModel instance is identical to the one obtained by a
+     * subsequent call to {@see get}.
+     * </p>
+     * <p>
+     * Further document operations, e.g., modifications, for this QueryModel can
+     * be done on the DocumentModel instance directly, but CoreSession methods
      * returning a new DocumentModel instance must be followed by a call to
      * {@see load} and dependent objects (page providers, etc.) must be updated
-     * as well</p>
-     * <p>It is not possible to call again this method on the same QueryModel, to
-     * avoid consistency problems at the DocumentModel level. Therefore
-     * If one wants to save a QueryModel, then change and eventually save it to
-     * a different target in Nuxeo Core, one <strong>must</strong> call the
-     * {@see reset} method before performing the changes.</p>
-     *
+     * as well
+     * </p>
+     * <p>
+     * It is not possible to call again this method on the same QueryModel, to
+     * avoid consistency problems at the DocumentModel level. Therefore If one
+     * wants to save a QueryModel, then change and eventually save it to a
+     * different target in Nuxeo Core, one <strong>must</strong> call the {@see
+     * reset} method before performing the changes.
+     * </p>
+     * 
      * @since 5.2
      * @param queryModelName
      * @param parentPath The path of parent folder to save into
@@ -93,25 +105,32 @@ public interface QueryModelActions extends ResultsProviderFarm {
      * @param saveSession if true, the Core Session is saved
      * @return The saved query model.
      * @throws ClientException forwarding from the Core, stateless QueryModel,
-     *         if QueryModel has already been persisted
+     *             if QueryModel has already been persisted
      */
-    QueryModel persist(String queryModelName, String parentPath, String name, boolean saveSession) throws ClientException;
+    QueryModel persist(String queryModelName, String parentPath, String name,
+            boolean saveSession) throws ClientException;
 
     /**
      * Load a stateful QueryModel from the specified DocumentRef.
-     * <p>The queryModelChanged event is thrown, meaning in particular that
-     * {@link ResultsProviderCache} invalidation is performed.</p>
+     * <p>
+     * The queryModelChanged event is thrown, meaning in particular that
+     * {@link ResultsProviderCache} invalidation is performed.
+     * </p>
+     * 
      * @since 5.2
      * @param queryModelName
      * @param ref
      * @return The loaded QueryModel instance.
-     * @throws ClientException if qm is not stateful, document could not be retrieved.
+     * @throws ClientException if qm is not stateful, document could not be
+     *             retrieved.
      */
-    QueryModel load(String queryModelName, DocumentRef ref) throws ClientException;
+    QueryModel load(String queryModelName, DocumentRef ref)
+            throws ClientException;
 
     /**
      * Tell if the DocumentModel behind the specified QueryModel has been
      * persisted in Nuxeo Core.
+     * 
      * @since 5.2
      * @param queryModelName The query model name
      */
@@ -119,10 +138,10 @@ public interface QueryModelActions extends ResultsProviderFarm {
 
     /**
      * Reset the specified QueryModel.
-     * <p>Start over with a fresh,
-     * transient DocumentModel instance.
+     * <p>
+     * Start over with a fresh, transient DocumentModel instance.
      * </p>
-     *
+     * 
      * @param queryModelName
      * @throws ClientException
      */
@@ -130,7 +149,7 @@ public interface QueryModelActions extends ResultsProviderFarm {
 
     /**
      * Observer on seam event to perform some necessary invalidations
-     *
+     * 
      * @param qm the query model that's been changed
      * @throws ClientException
      */

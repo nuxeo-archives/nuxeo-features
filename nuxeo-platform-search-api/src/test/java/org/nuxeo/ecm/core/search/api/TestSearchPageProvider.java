@@ -37,7 +37,7 @@ import org.nuxeo.ecm.core.schema.types.primitives.StringType;
 import org.nuxeo.ecm.core.search.api.backend.indexing.resources.factory.BuiltinDocumentFields;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultItem;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.pagination.SearchResultPages;
 import org.nuxeo.ecm.core.search.api.client.search.results.impl.ResultItemImpl;
 import org.nuxeo.ecm.core.search.api.client.search.results.impl.ResultSetImpl;
 import org.nuxeo.runtime.test.NXRuntimeTestCase;

@@ -60,7 +60,7 @@ import org.nuxeo.ecm.core.search.api.client.common.SearchServiceDelegate;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModel;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.pagination.SearchResultPages;
 import org.nuxeo.ecm.platform.actions.Action;
 import org.nuxeo.ecm.platform.ui.web.api.SortNotSupportedException;
 import org.nuxeo.ecm.platform.ui.web.model.SelectDataModel;

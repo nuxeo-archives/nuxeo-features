@@ -43,11 +43,12 @@ public interface ResultsProviderFarm {
      * @param name the name of the ResultsProvider instance to create
      * @return a PagedDocumentsProvider
      * @throws ClientException
+     * @throws Exception 
      */
     // TODO: remake an distinction between malformed queries and internal errors
     // in the process/server that honors them
     Pages<DocumentModel> getResultsProvider(String name)
-                throws ClientException, ResultsProviderFarmUserException;
+                throws ClientException, ResultsProviderFarmUserException, Exception;
 
     /**
      *
@@ -56,9 +57,10 @@ public interface ResultsProviderFarm {
      * @return a PagedDocumentsProvider
      * @throws ClientException
      * @throws ResultsProviderFarmUserException
+     * @throws Exception 
      * @throws SortNotSupportedException if the provider cannot sort the result
      */
     Pages<DocumentModel> getResultsProvider(String name, SortInfo sortInfo)
-            throws ClientException, ResultsProviderFarmUserException;
+            throws ClientException, ResultsProviderFarmUserException, Exception;
 
 }

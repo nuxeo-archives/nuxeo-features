@@ -29,7 +29,6 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.pagination.Pages;
-import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModel;
 import org.nuxeo.ecm.platform.ui.web.api.ResultsProviderFarm;
 import org.nuxeo.ecm.webapp.base.InputController;
@@ -97,7 +96,7 @@ public class DocumentChildrenSearchFarm extends InputController implements
         try {
             QueryModel qm = queryModelActions.get(qmName);
             return qm.getResultsProvider(params, sortInfo);
-        } catch (QueryException e) {
+        } catch (Exception e) {
             throw new ClientException(String.format("Invalid search query. "
                     + "Check the '%s' QueryModel configuration", qmName), e);
         }
@@ -108,7 +107,7 @@ public class DocumentChildrenSearchFarm extends InputController implements
      */
     protected Pages<DocumentModel> getChildrenResultsProviderQMPred(
             String queryModelName, DocumentModel currentDoc)
-            throws ClientException {
+            throws Exception {
         QueryModel qm = queryModelActions.get(queryModelName);
         if (qm == null) {
             throw new ClientException("no QueryModel registered under name: "

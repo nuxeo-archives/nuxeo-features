@@ -31,6 +31,11 @@ import org.nuxeo.runtime.model.DefaultComponent;
 
 public class QueryModelService extends DefaultComponent {
 
+    /**
+     * @deprecated use Framework.getService(QueryModelService.class) instead of
+     *             NAME based lookup
+     */
+    @Deprecated
     public static final String NAME = "org.nuxeo.ecm.core.search.api.client.querymodel.QueryModelService";
 
     private static final Log log = LogFactory.getLog(QueryModelService.class);

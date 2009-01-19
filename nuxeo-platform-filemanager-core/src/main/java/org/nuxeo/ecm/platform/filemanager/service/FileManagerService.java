@@ -52,7 +52,7 @@ import org.nuxeo.ecm.core.search.api.client.SearchService;
 import org.nuxeo.ecm.core.search.api.client.common.SearchServiceDelegate;
 import org.nuxeo.ecm.core.search.api.client.query.QueryException;
 import org.nuxeo.ecm.core.search.api.client.query.impl.ComposedNXQueryImpl;
-import org.nuxeo.ecm.core.search.api.client.search.results.document.SearchResultPages;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.pagination.SearchResultPages;
 import org.nuxeo.ecm.platform.filemanager.api.FileManager;
 import org.nuxeo.ecm.platform.filemanager.api.FileManagerPermissionException;
 import org.nuxeo.ecm.platform.filemanager.service.extension.CreationContainerListProvider;

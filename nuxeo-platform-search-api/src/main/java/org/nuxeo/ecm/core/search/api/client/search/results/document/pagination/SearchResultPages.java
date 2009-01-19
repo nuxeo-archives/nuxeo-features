@@ -17,7 +17,7 @@
  * $Id$
  */
 
-package org.nuxeo.ecm.core.search.api.client.search.results.document;
+package org.nuxeo.ecm.core.search.api.client.search.results.document.pagination;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,6 +53,7 @@ import org.nuxeo.ecm.core.search.api.client.common.SearchServiceDelegate;
 import org.nuxeo.ecm.core.search.api.client.common.TypeManagerServiceDelegate;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultItem;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
+import org.nuxeo.ecm.core.search.api.client.search.results.document.ExtendedStringSource;
 import org.nuxeo.ecm.core.search.api.client.search.results.document.impl.ResultDocumentModel;
 import org.nuxeo.ecm.core.search.api.client.search.results.impl.DocumentModelResultItem;
 import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.IndexableResourceConf;

@@ -117,7 +117,7 @@ public class QueryModelActionsBean extends InputController implements
     }
 
     public Pages<DocumentModel> getResultsProvider(String queryModelName)
-            throws ClientException, ResultsProviderFarmUserException {
+            throws Exception, ResultsProviderFarmUserException {
         try {
             return getResultsProvider(queryModelName, null);
         } catch (SortNotSupportedException e) {
@@ -126,7 +126,7 @@ public class QueryModelActionsBean extends InputController implements
     }
 
     public Pages<DocumentModel> getResultsProvider(String queryModelName,
-            SortInfo sortInfo) throws ClientException,
+            SortInfo sortInfo) throws Exception,
             ResultsProviderFarmUserException {
         QueryModel model = get(queryModelName);
         QueryModelDescriptor descriptor = model.getDescriptor();
@@ -155,10 +155,16 @@ public class QueryModelActionsBean extends InputController implements
         resultsProvidersCache.invalidate(qm.getDescriptor().getName());
     }
 
-    protected QueryModelDescriptor getQueryModelDescriptor(String descriptorName) {
+    protected QueryModelDescriptor getQueryModelDescriptor(String descriptorName)
+            throws ClientException {
         if (queryModelService == null) {
-            queryModelService = (QueryModelService) Framework.getRuntime().getComponent(
-                    QueryModelService.NAME);
+            try {
+                queryModelService = (QueryModelService) Framework.getService(QueryModelService.class);
+            } catch (Exception e) {
+                // wrap into ClientException only to preserve backward
+                // compatibility
+                throw ClientException.wrap(e);
+            }
         }
         return queryModelService.getQueryModelDescriptor(descriptorName);
     }
@@ -202,7 +208,8 @@ public class QueryModelActionsBean extends InputController implements
         if (!isInitialized()) {
             throw new ClientException("Need a Core Session");
         }
-        QueryModel qm = new QueryModel(descriptor, documentManager.getDocument(ref),
+        QueryModel qm = new QueryModel(descriptor,
+                documentManager.getDocument(ref),
                 (NuxeoPrincipal) documentManager.getPrincipal());
         queryModels.put(queryModelName, qm);
         Events.instance().raiseEvent(EventNames.QUERY_MODEL_CHANGED, qm);
