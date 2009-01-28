@@ -30,6 +30,8 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.DocumentSecurityException;
+import org.nuxeo.ecm.core.api.impl.DocumentModelImpl;
 import org.nuxeo.ecm.core.api.impl.UserPrincipal;
 import org.nuxeo.ecm.core.api.repository.Repository;
 import org.nuxeo.ecm.core.api.repository.RepositoryManager;
@@ -157,6 +159,13 @@ public class CoreSearchBackend extends AbstractSearchEngineBackend {
         for (DocumentModel doc : documentModelList) {
             if (doc == null) {
                 log.error("Got null document from query: " + query);
+                continue;
+            }
+            // detach the document so that we can use it beyond the session
+            try {
+                ((DocumentModelImpl) doc).detach(true);
+            } catch (DocumentSecurityException e) {
+                // no access to the document (why?)
                 continue;
             }
             resultItems.add(new DocumentModelResultItem(doc));
