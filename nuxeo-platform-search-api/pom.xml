@@ -12,19 +12,27 @@
   <name>Nuxeo Search Service - API</name>
   <description>Nuxeo Enterprise Platform: API for the Indexing and Search
     Service.</description>
+  <version>5.1.6.1-SNAPSHOT</version>
+
+  <properties>
+    <nuxeo.core.version.patched>1.4.3.1-SNAPSHOT</nuxeo.core.version.patched>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-api</artifactId>
+      <version>${nuxeo.core.version.patched}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core</artifactId>
+      <version>${nuxeo.core.version.patched}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-query</artifactId>
+      <version>${nuxeo.core.version.patched}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>

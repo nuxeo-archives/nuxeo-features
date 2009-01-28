@@ -14,6 +14,7 @@
     Nuxeo Enterprise Platform: WebApp Core. This is the base of the Web UI for
     Nuxeo EP.
   </description>
+  <version>5.1.6.1-SNAPSHOT</version>
 
   <dependencies>
     <dependency>
@@ -23,10 +24,12 @@
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-api</artifactId>
+      <version>${nuxeo.core.version.patched}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-query</artifactId>
+      <version>${nuxeo.core.version.patched}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
@@ -106,6 +109,7 @@
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-platform-search-api</artifactId>
+      <version>${version}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
@@ -230,5 +234,6 @@
     <nuxeo-platform-webapp-core-artifact.name>
       ${pom.artifactId}-${pom.version}.jar
     </nuxeo-platform-webapp-core-artifact.name>
+    <nuxeo.core.version.patched>1.4.3.1-SNAPSHOT</nuxeo.core.version.patched>
   </properties>
 </project>
