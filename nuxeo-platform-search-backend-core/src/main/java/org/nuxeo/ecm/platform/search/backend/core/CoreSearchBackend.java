@@ -37,7 +37,6 @@ import org.nuxeo.ecm.core.api.repository.Repository;
 import org.nuxeo.ecm.core.api.repository.RepositoryManager;
 import org.nuxeo.ecm.core.query.sql.model.SQLQuery;
 import org.nuxeo.ecm.core.search.api.backend.impl.AbstractSearchEngineBackend;
-import org.nuxeo.ecm.core.search.api.backend.indexing.resources.ResolvedResource;
 import org.nuxeo.ecm.core.search.api.backend.indexing.resources.ResolvedResources;
 import org.nuxeo.ecm.core.search.api.client.IndexingException;
 import org.nuxeo.ecm.core.search.api.client.SearchException;
@@ -51,7 +50,6 @@ import org.nuxeo.ecm.core.search.api.client.search.results.ResultItem;
 import org.nuxeo.ecm.core.search.api.client.search.results.ResultSet;
 import org.nuxeo.ecm.core.search.api.client.search.results.impl.DocumentModelResultItem;
 import org.nuxeo.ecm.core.search.api.client.search.results.impl.ResultSetImpl;
-import org.nuxeo.ecm.core.search.api.indexing.resources.configuration.document.ResourceType;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -84,16 +82,8 @@ public class CoreSearchBackend extends AbstractSearchEngineBackend {
         throw new UnsupportedOperationException();
     }
 
-    public void index(ResolvedResources resources) throws IndexingException {
-        for (ResolvedResource resource : resources.getIndexableResolvedResources()) {
-            String type = resource.getConfiguration().getName();
-            if (type.equals(ResourceType.SCHEMA)) {
-                // ignore stuff that the core knows how to index
-                continue;
-            }
-            throw new IndexingException("Cannot index resource of type: " +
-                    type);
-        }
+    public void index(ResolvedResources resources) {
+        // ignore indexing
     }
 
     public void deleteAggregatedResources(String key) {
@@ -149,13 +139,12 @@ public class CoreSearchBackend extends AbstractSearchEngineBackend {
     protected static ResultSet searchQuery(SQLQuery sqlQuery, int offset,
             int limit, CoreSession session, SearchPrincipal searchPrincipal)
             throws ClientException {
-        // TODO record the orignal query in sqlQuery instead of calling toString
         String query = sqlQuery.toString();
-        int max = limit == 0 ? 0 : offset + limit;
-        DocumentModelList documentModelList = session.query(query, max);
-        int size = documentModelList.size();
-        int pageHits = size - offset;
-        List<ResultItem> resultItems = new ArrayList<ResultItem>(size);
+        DocumentModelList documentModelList = session.query(query, null, limit,
+                offset, true);
+        int totalHits = (int) documentModelList.totalSize();
+        int pageHits = documentModelList.size();
+        List<ResultItem> resultItems = new ArrayList<ResultItem>(pageHits);
         for (DocumentModel doc : documentModelList) {
             if (doc == null) {
                 log.error("Got null document from query: " + query);
@@ -171,7 +160,7 @@ public class CoreSearchBackend extends AbstractSearchEngineBackend {
             resultItems.add(new DocumentModelResultItem(doc));
         }
         return new ResultSetImpl(sqlQuery, "core", searchPrincipal, offset,
-                limit, resultItems, size, pageHits);
+                limit, resultItems, totalHits, pageHits);
     }
 
     protected static Serializable getPrincipal(SearchPrincipal searchPrincipal) {
