@@ -105,7 +105,7 @@ public class SearchPageProvider implements PagedDocumentsProvider {
     // has the current page changed since last time it has been built
     private boolean pageChanged = false;
 
-    private SchemaManager typeManager;
+    private transient SchemaManager typeManager;
 
     private static final Map<String, String> prefix2SchemaNameCache = new HashMap<String, String>();
 
