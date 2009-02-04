@@ -9,6 +9,7 @@
   </parent>
 
   <artifactId>nuxeo-platform-search-api</artifactId>
+  <version>5.2.0.m4.1</version>
   <name>Nuxeo Search Service - API</name>
   <description>Nuxeo Enterprise Platform: API for the Indexing and Search
     Service.</description>
