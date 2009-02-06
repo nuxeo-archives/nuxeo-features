@@ -9,7 +9,7 @@
 
   <artifactId>nuxeo-platform-mimetype-core</artifactId>
   <name>Nuxeo MimeType Service - Core</name>
-  <version>5.1.6-20090206</version>
+  <version>5.1.6.1-20090206</version>
   <description>Nuxeo Enterprise Platform: MimeType Service Core.</description>
 
   <dependencies>
