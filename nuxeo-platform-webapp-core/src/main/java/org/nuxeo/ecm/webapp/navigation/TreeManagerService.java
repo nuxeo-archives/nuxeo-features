@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2006-2007 Nuxeo SAS (http://nuxeo.com/) and contributors.
+ * (C) Copyright 2006-2008 Nuxeo SAS (http://nuxeo.com/) and contributors.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser General Public License
@@ -12,32 +12,43 @@
  * Lesser General Public License for more details.
  *
  * Contributors:
- *     Nuxeo - initial API and implementation
- *
- * $Id$
+ *     Florent Bonnet
+ *     Florent Guillaume
  */
 
 package org.nuxeo.ecm.webapp.navigation;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.nuxeo.ecm.core.search.api.client.querymodel.QueryModelService;
+import org.nuxeo.ecm.core.search.api.client.querymodel.descriptor.QueryModelDescriptor;
+import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.model.ComponentName;
 import org.nuxeo.runtime.model.DefaultComponent;
 import org.nuxeo.runtime.model.Extension;
 
 /**
- * @author Florent BONNET
- *
+ * @author Florent Bonnet
+ * @author Florent Guillaume
  */
 public class TreeManagerService extends DefaultComponent {
 
-    public static final ComponentName NAME =
-        new ComponentName("org.nuxeo.ecm.ui.util.treemanagermanagment.TreeManagerService");
+    public static final ComponentName NAME = new ComponentName(
+            "org.nuxeo.ecm.ui.util.treemanagermanagment.TreeManagerService");
 
     private static final Log log = LogFactory.getLog(TreeManagerService.class);
 
     private static TreeManagerPluginExtension treePlugin;
+
     private static DocumentFilter treeFilter;
+
+    /**
+     * Leaf filter. If not null and it accepts, then the doc is assumed to be a
+     * leaf and have no children.
+     */
+    private static DocumentFilter leafFilter;
 
     public TreeManagerService() {
         setupTreeFilter(null);
@@ -48,31 +59,45 @@ public class TreeManagerService extends DefaultComponent {
             // init default filter
             // show section // don't show files
             treeFilter = new DocumentFilterImpl(true, false);
+            leafFilter = null;
             return;
         }
 
         // Built-in filter
         String filterClass = treePlugin.getFilterClassName();
-        if (filterClass == null || filterClass.equals("")) {
-            if (treePlugin.getExcludedTypes() == null
-                    || treePlugin.getExcludedTypes().isEmpty()) {
-                treeFilter = new DocumentFilterImpl(treePlugin.getShowSection(),
-                        treePlugin.getShowFiles());
-            } else {
-                treeFilter = new TypeBasedDocumentFilter(treePlugin.getShowSection(),
-                        treePlugin.getShowFiles(), treePlugin.getExcludedTypes());
+        if (filterClass != null && !filterClass.equals("")) {
+            // custom filter
+            try {
+                treeFilter = (DocumentFilter) extension.getContext().loadClass(
+                        filterClass).newInstance();
+            } catch (Throwable e) {
+                log.error(e);
+                treeFilter = new DocumentFilterImpl(
+                        treePlugin.getShowSection(), treePlugin.getShowFiles());
             }
-            return;
+        } else {
+            // standard filter: sections, files, excluded types
+            List<String> excludedTypes = treePlugin.getExcludedTypes();
+            if (excludedTypes == null || excludedTypes.isEmpty()) {
+                treeFilter = new DocumentFilterImpl(
+                        treePlugin.getShowSection(), treePlugin.getShowFiles());
+            } else {
+                treeFilter = new TypeBasedDocumentFilter(
+                        treePlugin.getShowSection(), treePlugin.getShowFiles(),
+                        excludedTypes);
+            }
         }
 
-        // custom filter
-        try {
-            treeFilter = (DocumentFilter) extension.getContext().loadClass(filterClass).newInstance();
-        } catch (Throwable e) {
-            treeFilter = new DocumentFilterImpl(treePlugin.getShowSection(), treePlugin.getShowFiles());
+        String leafFilterClass = treePlugin.getLeafFilterClassName();
+        if (leafFilterClass != null && !leafFilterClass.equals("")) {
+            try {
+                leafFilter = (DocumentFilter) extension.getContext().loadClass(
+                        leafFilterClass).newInstance();
+            } catch (Throwable e) {
+                log.error(e, e);
+            }
         }
     }
-
 
     @Override
     public void registerExtension(Extension extension) throws Exception {
@@ -84,7 +109,8 @@ public class TreeManagerService extends DefaultComponent {
         }
     }
 
-    private void register(Extension extension, TreeManagerPluginExtension pluginExtension) {
+    private void register(Extension extension,
+            TreeManagerPluginExtension pluginExtension) {
         treePlugin = pluginExtension;
         setupTreeFilter(extension);
     }
@@ -95,9 +121,7 @@ public class TreeManagerService extends DefaultComponent {
     }
 
     /**
-     * Use getDocumentFilter() instead.
-     *
-     * @return
+     * @deprecated use getDocumentFilter() instead
      */
     @Deprecated
     public static Boolean showFiles() {
@@ -105,9 +129,7 @@ public class TreeManagerService extends DefaultComponent {
     }
 
     /**
-     * Use getDocumentFilter() instead.
-     *
-     * @return
+     * @deprecated use getDocumentFilter() instead
      */
     @Deprecated
     public static Boolean showSection() {
@@ -119,6 +141,22 @@ public class TreeManagerService extends DefaultComponent {
             setupTreeFilter(null);
         }
         return treeFilter;
+    }
+
+    public static DocumentFilter getLeafFilter() {
+        if (treeFilter == null) { // not a typo
+            setupTreeFilter(null);
+        }
+        return leafFilter;
+    }
+
+    public static String getQueryModelName() {
+
+        // XXX: explain the following!
+        if (treeFilter == null) { // not a typo
+            setupTreeFilter(null);
+        }
+        return treePlugin == null ? null : treePlugin.getQueryModelName();
     }
 
 }

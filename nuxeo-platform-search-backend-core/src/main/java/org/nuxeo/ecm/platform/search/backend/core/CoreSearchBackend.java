@@ -143,22 +143,18 @@ public class CoreSearchBackend extends AbstractSearchEngineBackend {
         DocumentModelList documentModelList = session.query(query, null, limit,
                 offset, true);
         int totalHits = (int) documentModelList.totalSize();
-        int pageHits = documentModelList.size();
-        List<ResultItem> resultItems = new ArrayList<ResultItem>(pageHits);
+        List<ResultItem> resultItems = new ArrayList<ResultItem>(
+                documentModelList.size());
         for (DocumentModel doc : documentModelList) {
             if (doc == null) {
                 log.error("Got null document from query: " + query);
                 continue;
             }
             // detach the document so that we can use it beyond the session
-            try {
-                ((DocumentModelImpl) doc).detach(true);
-            } catch (DocumentSecurityException e) {
-                // no access to the document (why?)
-                continue;
-            }
+            ((DocumentModelImpl) doc).detach(true);
             resultItems.add(new DocumentModelResultItem(doc));
         }
+        int pageHits = resultItems.size();
         return new ResultSetImpl(sqlQuery, "core", searchPrincipal, offset,
                 limit, resultItems, totalHits, pageHits);
     }

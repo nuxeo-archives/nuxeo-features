@@ -12,7 +12,7 @@
   <name>Nuxeo Search Service - API</name>
   <description>Nuxeo Enterprise Platform: API for the Indexing and Search
     Service.</description>
-  <version>5.1.6.1-20090203</version>
+  <version>5.1.6.1-20090212</version>
 
   <properties>
     <nuxeo.core.version.patched>1.4.3.1-20090203</nuxeo.core.version.patched>

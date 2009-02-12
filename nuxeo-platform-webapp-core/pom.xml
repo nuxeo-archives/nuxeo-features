@@ -14,7 +14,7 @@
     Nuxeo Enterprise Platform: WebApp Core. This is the base of the Web UI for
     Nuxeo EP.
   </description>
-  <version>5.1.6.1-20090203</version>
+  <version>5.1.6.1-20090212</version>
 
   <dependencies>
     <dependency>

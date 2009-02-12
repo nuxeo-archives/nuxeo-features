@@ -11,7 +11,7 @@
   <artifactId>nuxeo-platform-search-backend-core</artifactId>
   <name>Nuxeo Core Search Backend</name>
   <description>Nuxeo Enterprise Platform: Nuxeo Core Search Backend.</description>
-  <version>5.1.6.1-20090203</version>
+  <version>5.1.6.1-20090212</version>
 
   <dependencies>
     <dependency>
