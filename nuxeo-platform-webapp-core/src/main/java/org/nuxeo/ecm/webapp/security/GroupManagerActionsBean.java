@@ -91,19 +91,19 @@ public class GroupManagerActionsBean extends InputController implements
     transient CoreSession documentManager;
 
     @DataModel("groupList")
-    List<NuxeoGroup> groups;
+    protected List<NuxeoGroup> groups;
 
     @DataModelSelection("groupList")
-    NuxeoGroup selectedGroup;
+    protected NuxeoGroup selectedGroup;
 
     @In(required = false)
-    NuxeoGroupImpl newGroup;
+    protected NuxeoGroupImpl newGroup;
 
     @In(create = true)
-    PrincipalListManager principalListManager;
+    protected PrincipalListManager principalListManager;
 
     // private boolean principalIsAdmin;
-    private NuxeoPrincipal principal;
+    protected NuxeoPrincipal principal;
 
     protected String groupListingMode;
 
