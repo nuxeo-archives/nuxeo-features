@@ -649,6 +649,9 @@
         <row>
           <widget>useCaptcha</widget>
         </row>
+        <row>
+          <widget>moderationType</widget>
+        </row>
       </rows>
 
       <widget name="name" type="text">
@@ -727,6 +730,18 @@
         <fields>
           <field>webc:useCaptcha</field>
         </fields>
+      </widget>
+      
+      <widget name="moderationType" type="template">
+        <translated>true</translated>
+        <fields>
+          <field>webc:moderationType</field>
+        </fields>
+        <properties mode="any">
+          <property name="template">
+            /widgets/moderation_type_widget_template.xhtml
+          </property>
+        </properties>
       </widget>
 
     </layout>
