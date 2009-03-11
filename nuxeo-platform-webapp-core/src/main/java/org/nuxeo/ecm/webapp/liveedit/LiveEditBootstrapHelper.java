@@ -360,6 +360,7 @@ public class LiveEditBootstrapHelper implements Serializable, LiveEditConstants 
             addTextElement(templateDocInfo, docSchemaNameTag, templateSchema);
             addTextElement(templateDocInfo, docFieldNameTag, templateBlobField);
             addTextElement(templateDocInfo, docBlobFieldNameTag, templateBlobField);
+            addTextElement(templateDocInfo, docfileNameTag, templateBlobField);
             docFieldPathT = templateDocInfo.addElement(docfieldPathTag);
             docBlobFieldPathT = templateDocInfo.addElement(docBlobFieldPathTag);
             if (templateSchema != null && templateBlobField != null) {
