@@ -11,23 +11,27 @@
   <artifactId>nuxeo-platform-search-backend-core</artifactId>
   <name>Nuxeo Core Search Backend</name>
   <description>Nuxeo Enterprise Platform: Nuxeo Core Search Backend.</description>
-  <version>5.1.6.1-20090203</version>
+  <version>5.1.6.1-SNAPSHOT</version>
+
+  <properties>
+    <org.nuxeo.core.version>1.4.3.1-SNAPSHOT</org.nuxeo.core.version>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-query</artifactId>
-      <version>1.4.3.1-20090203</version>
+      <version>${org.nuxeo.core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-api</artifactId>
-      <version>1.4.3.1-20090203</version>
+      <version>${org.nuxeo.core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core</artifactId>
-      <version>1.4.3.1-20090203</version>
+      <version>${org.nuxeo.core.version}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
@@ -47,7 +51,7 @@
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-storage-sql</artifactId>
-      <version>1.4.3.1-20090203</version>
+      <version>${org.nuxeo.core.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

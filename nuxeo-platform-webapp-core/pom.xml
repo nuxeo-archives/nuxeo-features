@@ -14,7 +14,16 @@
     Nuxeo Enterprise Platform: WebApp Core. This is the base of the Web UI for
     Nuxeo EP.
   </description>
-  <version>5.1.6.1-20090203</version>
+  <version>5.1.6.1-SNAPSHOT</version>
+
+  <!-- this is used (the above build section also)
+    to replace jboss.ws:di endpoint impl location in web.xml -->
+  <properties>
+    <nuxeo-platform-webapp-core-artifact.name>
+      ${pom.artifactId}-${pom.version}.jar
+    </nuxeo-platform-webapp-core-artifact.name>
+    <nuxeo.core.version.patched>1.4.3.1-SNAPSHOT</nuxeo.core.version.patched>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -228,12 +237,4 @@
     </resources>
   </build>
 
-  <!-- this is used (the above build section also)
-    to replace jboss.ws:di endpoint impl location in web.xml -->
-  <properties>
-    <nuxeo-platform-webapp-core-artifact.name>
-      ${pom.artifactId}-${pom.version}.jar
-    </nuxeo-platform-webapp-core-artifact.name>
-    <nuxeo.core.version.patched>1.4.3.1-20090203</nuxeo.core.version.patched>
-  </properties>
 </project>
