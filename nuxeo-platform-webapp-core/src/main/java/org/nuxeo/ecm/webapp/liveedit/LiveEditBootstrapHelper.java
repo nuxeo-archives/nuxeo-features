@@ -231,6 +231,7 @@ public class LiveEditBootstrapHelper implements Serializable, LiveEditConstants 
             DocumentModel doc = null;
             DocumentModel templateDoc = null;
             String filename = null;
+            String templateFilename = null;
             if (ACTION_EDIT_DOCUMENT.equals(action)) {
                 // fetch the document to edit to get its mimetype and document
                 // type
@@ -277,6 +278,11 @@ public class LiveEditBootstrapHelper implements Serializable, LiveEditConstants 
                 }
                 mimetype = blob.getMimeType();
                 // leave docType from the request query parameter
+                if (filenamePropertyName != null) {
+                    templateFilename = (String) templateDoc.getPropertyValue(filenamePropertyName);
+                } else {
+                    templateFilename = (String) templateDoc.getProperty(schema, filenameField);
+                }
             } else {
                 throw new ClientException(
                         String.format(
@@ -337,7 +343,7 @@ public class LiveEditBootstrapHelper implements Serializable, LiveEditConstants 
             addTextElement(docInfo, docTypeTag, docType);
             addTextElement(docInfo, docMimetypeTag, mimetype);
             addTextElement(docInfo, docFileExtensionTag,
-                    getFileExtension(mimetype));
+                    getFileExtension(mimetype, filename));
 
             Element docIsVersionT = docInfo.addElement(docIsVersionTag);
             Element docIsLockedT = docInfo.addElement(docIsLockedTag);
@@ -360,7 +366,7 @@ public class LiveEditBootstrapHelper implements Serializable, LiveEditConstants 
             addTextElement(templateDocInfo, docSchemaNameTag, templateSchema);
             addTextElement(templateDocInfo, docFieldNameTag, templateBlobField);
             addTextElement(templateDocInfo, docBlobFieldNameTag, templateBlobField);
-            addTextElement(templateDocInfo, docfileNameTag, templateBlobField);
+            addTextElement(templateDocInfo, docfileNameTag, templateFilename);
             docFieldPathT = templateDocInfo.addElement(docfieldPathTag);
             docBlobFieldPathT = templateDocInfo.addElement(docBlobFieldPathTag);
             if (templateSchema != null && templateBlobField != null) {
@@ -369,7 +375,7 @@ public class LiveEditBootstrapHelper implements Serializable, LiveEditConstants 
             }
             addTextElement(templateDocInfo, docMimetypeTag, mimetype);
             addTextElement(templateDocInfo, docFileExtensionTag,
-                    getFileExtension(mimetype));
+                    getFileExtension(mimetype, templateFilename));
 
             // Browser request related informations
             Element requestInfo = root.addElement(requestInfoTag);
@@ -440,6 +446,37 @@ public class LiveEditBootstrapHelper implements Serializable, LiveEditConstants 
             if (templateSession != null && templateSession != documentManager) {
                 CoreInstance.getInstance().close(templateSession);
             }
+        }
+    }
+
+    protected String getFileNameExtension(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        String[] filenameSplitted = filename.split("\\.");
+        
+        if (filenameSplitted.length >1) {
+            return filenameSplitted[filenameSplitted.length - 1];
+        }
+        return null;
+    }
+    
+    protected String getFileExtension(String mimetype, String filename) throws Exception {
+        if (mimetype == null) {
+            return null;
+        }
+        String filenameExtension = getFileNameExtension(filename);
+        
+        MimetypeRegistry mimetypeRegistry = Framework.getService(MimetypeRegistry.class);
+        List<String> extensions = mimetypeRegistry.getExtensionsFromMimetypeName(mimetype);
+        if (extensions != null && !extensions.isEmpty()) {
+            if (extensions.contains(filenameExtension)) {
+                return filenameExtension;
+            } else {
+                return extensions.get(0);
+            }
+        } else {
+            return null;
         }
     }
 
