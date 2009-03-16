@@ -11,10 +11,10 @@
   <artifactId>nuxeo-platform-search-backend-core</artifactId>
   <name>Nuxeo Core Search Backend</name>
   <description>Nuxeo Enterprise Platform: Nuxeo Core Search Backend.</description>
-  <version>5.1.6.1-SNAPSHOT</version>
+  <version>5.1.6.1-20090316</version>
 
   <properties>
-    <nuxeo.core.version.patched>1.4.3.1-SNAPSHOT</nuxeo.core.version.patched>
+    <nuxeo.core.version.patched>1.4.3.1-20090303</nuxeo.core.version.patched>
   </properties>
 
   <dependencies>
