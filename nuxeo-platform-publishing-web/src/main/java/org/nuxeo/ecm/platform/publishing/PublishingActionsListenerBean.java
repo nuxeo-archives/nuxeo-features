@@ -24,7 +24,6 @@ import static org.jboss.seam.ScopeType.CONVERSATION;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.ejb.PostActivate;
@@ -47,23 +46,25 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.IdRef;
-import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.core.api.repository.Repository;
 import org.nuxeo.ecm.core.api.repository.RepositoryManager;
+import org.nuxeo.ecm.platform.ec.notification.service.NotificationServiceHelper;
 import org.nuxeo.ecm.platform.publishing.api.PublishActions;
 import org.nuxeo.ecm.platform.publishing.api.PublishingActionsListener;
 import org.nuxeo.ecm.platform.publishing.api.PublishingException;
 import org.nuxeo.ecm.platform.publishing.workflow.PublishingConstants;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.ecm.platform.ui.web.api.WebActions;
+import org.nuxeo.ecm.platform.url.DocumentLocationImpl;
+import org.nuxeo.ecm.platform.url.DocumentViewImpl;
+import org.nuxeo.ecm.platform.url.api.DocumentLocation;
+import org.nuxeo.ecm.platform.url.api.DocumentView;
+import org.nuxeo.ecm.platform.url.api.DocumentViewCodecManager;
 import org.nuxeo.ecm.platform.workflow.api.client.delegate.WAPIBusinessDelegate;
 import org.nuxeo.ecm.platform.workflow.api.client.events.EventNames;
 import org.nuxeo.ecm.platform.workflow.api.client.wfmc.WAPI;
-import org.nuxeo.ecm.platform.workflow.api.client.wfmc.WMProcessInstance;
 import org.nuxeo.ecm.platform.workflow.api.client.wfmc.WMWorkItemInstance;
-import org.nuxeo.ecm.platform.workflow.api.client.wfmc.WMWorkItemState;
 import org.nuxeo.ecm.platform.workflow.api.client.wfmc.WMWorkflowException;
-import org.nuxeo.ecm.platform.workflow.api.common.WorkflowConstants;
 import org.nuxeo.ecm.platform.workflow.document.api.ejb.delegate.WorkflowDocumentRelationBusinessDelegate;
 import org.nuxeo.ecm.webapp.base.InputController;
 import org.nuxeo.ecm.webapp.dashboard.DashboardActions;
@@ -165,7 +166,8 @@ public class PublishingActionsListenerBean extends InputController implements
 
     public String publishDocument() throws PublishingException {
         try {
-            WMWorkItemInstance wi = getPublishingWorkItem();
+            PublishingTasks tasks = new PublishingTasks(navigationContext.getCurrentDocument(), currentUser);
+            WMWorkItemInstance wi = tasks.getPublishingWorkItem();
             if (wi == null) {
                 throw new PublishingException(
                         "No publishing task found for user="
@@ -214,6 +216,7 @@ public class PublishingActionsListenerBean extends InputController implements
             eventInfo.put("targetSection", section.getName());
             eventInfo.put("proxy", currentDocument);
             eventInfo.put("sectionPath", section.getPathAsString());
+            eventInfo.put("proxyUrl", PublishHelper.getUrlFromDocument(currentDocument));
             notifyEvent(
                     org.nuxeo.ecm.webapp.helpers.EventNames.DOCUMENT_PUBLICATION_APPROVED,
                     eventInfo, rejectPublishingComment, sourceDocument);
@@ -267,7 +270,8 @@ public class PublishingActionsListenerBean extends InputController implements
         }
 
         try {
-            WMWorkItemInstance wi = getPublishingWorkItem();
+            PublishingTasks tasks = new PublishingTasks(navigationContext.getCurrentDocument(), currentUser);
+            WMWorkItemInstance wi = tasks.getPublishingWorkItem();
             if (wi == null) {
                 throw new PublishingException(
                         "No publishing task found for user="
@@ -351,61 +355,7 @@ public class PublishingActionsListenerBean extends InputController implements
         return view;
     }
 
-    protected WMWorkItemInstance getPublishingWorkItem()
-            throws PublishingException {
-        WMWorkItemInstance workItem = null;
 
-        DocumentModel dm = getCurrentDocument();
-
-        try {
-            String[] pids = wfDocRelBD.getWorkflowDocument().getWorkflowInstanceIdsFor(
-                    dm.getRef());
-            for (String pid : pids) {
-
-                // Check we are on the right process.
-                WMProcessInstance pi = wapi.getProcessInstanceById(pid,
-                        WorkflowConstants.WORKFLOW_INSTANCE_STATUS_ACTIVE);
-                if (!pi.getName().equals(
-                        PublishingConstants.WORKFLOW_DEFINITION_NAME)) {
-                    continue;
-                }
-
-                // Now that we are check if this guy has a task.
-                boolean found = false;
-                for (WMWorkItemInstance wi : wapi.listWorkItems(pid,
-                        WMWorkItemState.WORKFLOW_TASK_STATE_STARTED)) {
-                    if (wi.getParticipantName().equals(currentUser.getName())) {
-                        workItem = wi;
-                        found = true;
-                        break;
-                    }
-                    // Try group resolution
-                    if (currentUser instanceof NuxeoPrincipal) {
-                        List<String> groupNames = ((NuxeoPrincipal) currentUser).getAllGroups();
-                        for (String groupName : groupNames) {
-                            if (wi.getParticipantName().equals(groupName)) {
-                                workItem = wi;
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (found) {
-                        break;
-                    }
-
-                }
-
-                if (found) {
-                    break;
-                }
-
-            }
-        } catch (Exception e) {
-            throw new PublishingException(e);
-        }
-        return workItem;
-    }
 
     protected DocumentModel getCurrentDocument() {
         return navigationContext.getCurrentDocument();
@@ -430,7 +380,8 @@ public class PublishingActionsListenerBean extends InputController implements
     public boolean canManagePublishing() throws PublishingException {
         // Current document is a proxy and the current user has a publishing
         // task.
-        return isProxy() && getPublishingWorkItem() != null;
+        PublishingTasks tasks = new PublishingTasks(navigationContext.getCurrentDocument(), currentUser);
+        return isProxy() && tasks.getPublishingWorkItem() != null;
     }
 
     public String getRejectPublishingComment() {
@@ -446,5 +397,4 @@ public class PublishingActionsListenerBean extends InputController implements
         publishActions.notifyEvent(eventId, infoMap, comment, null,
                 documentModel);
     }
-
 }

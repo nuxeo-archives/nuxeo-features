@@ -87,8 +87,6 @@ public class PublishingListener implements MessageListener {
 
     private WAPI wapi;
 
-    private WorkflowDocumentSecurityManager secuManager;
-
     private WorkflowDocumentSecurityPolicyManager secuPolicyManager;
 
     private PublishingService publishingService;
@@ -110,10 +108,7 @@ public class PublishingListener implements MessageListener {
 
     private WorkflowDocumentSecurityManager getSecuManager(String repoName)
             throws Exception {
-        if (secuManager == null) {
-            secuManager = new WorkflowDocumentSecurityBusinessDelegate().getWorkflowSecurityManager(repoName);
-        }
-        return secuManager;
+        return new WorkflowDocumentSecurityBusinessDelegate().getWorkflowSecurityManager(repoName);
     }
 
     private WorkflowDocumentSecurityPolicyManager getSecuPolicyManager()
@@ -140,7 +135,7 @@ public class PublishingListener implements MessageListener {
 
     private void moderate(DocumentMessage msg) throws Exception {
 
-        log.info("Moderation will occur for dm=" + msg.getPathAsString());
+        log.debug("Moderation will occur for dm=" + msg.getPathAsString());
 
         // Start actual publishing workflow.
         WAPI wapi = getWAPI();
@@ -173,8 +168,7 @@ public class PublishingListener implements MessageListener {
         WMProcessInstance pi = activity.getProcessInstance();
         WorkflowDocumentSecurityManager workflowSecurityManager = getSecuManager(msg.getRepositoryName());
         WorkflowDocumentSecurityPolicyManager secuPolicyManager = getSecuPolicyManager();
-        WorkflowDocumentSecurityPolicy policy = secuPolicyManager.getWorkflowDocumentSecurityPolicyFor(
-                activity.getProcessInstance().getName());
+        WorkflowDocumentSecurityPolicy policy = secuPolicyManager.getWorkflowDocumentSecurityPolicyFor(activity.getProcessInstance().getName());
         if (policy != null) {
             List<UserEntry> userEntries = policy.getRules(pi.getId(), null);
             workflowSecurityManager.setRules(msg.getRef(), userEntries,
