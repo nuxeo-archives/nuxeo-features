@@ -14,7 +14,7 @@
     Nuxeo Enterprise Platform: WebApp Core. This is the base of the Web UI for
     Nuxeo EP.
   </description>
-  <version>5.1.6.1-SNAPSHOT</version>
+  <version>5.1.6.1-20090323</version>
 
   <!-- this is used (the above build section also)
     to replace jboss.ws:di endpoint impl location in web.xml -->
@@ -22,7 +22,9 @@
     <nuxeo-platform-webapp-core-artifact.name>
       ${pom.artifactId}-${pom.version}.jar
     </nuxeo-platform-webapp-core-artifact.name>
-    <nuxeo.core.version.patched>1.4.3.1-SNAPSHOT</nuxeo.core.version.patched>
+    <nuxeo.core.version.patched>1.4.3.1-20090323</nuxeo.core.version.patched>
+    <org.nuxeo.platform.search.api>5.1.6.1-20090212</org.nuxeo.platform.search.api>
+    <org.nuxeo.core.query.version>1.4.3.1-20090303</org.nuxeo.core.query.version>
   </properties>
 
   <dependencies>
@@ -38,7 +40,7 @@
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
       <artifactId>nuxeo-core-query</artifactId>
-      <version>${nuxeo.core.version.patched}</version>
+      <version>${org.nuxeo.core.query.version}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
@@ -118,7 +120,7 @@
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
       <artifactId>nuxeo-platform-search-api</artifactId>
-      <version>${version}</version>
+      <version>${org.nuxeo.platform.search.api}</version>
     </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.platform</groupId>
