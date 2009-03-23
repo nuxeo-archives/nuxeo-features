@@ -42,6 +42,8 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class VersioningDocumentAdapter implements VersioningDocument {
 
+    public static final String IS_VERSION_HAS_BEEN_PUBLISHED_SCHEMA = "uid:is_version_published";
+
     private static final Log log = LogFactory.getLog(VersioningDocumentAdapter.class);
 
     private DocumentModel doc;
@@ -168,5 +170,31 @@ public class VersioningDocumentAdapter implements VersioningDocument {
                 }
             }
         }
+    }
+
+    public Boolean isVersionHasBeenPublished() throws DocumentException {
+        final Object propVal = doc.getProperty(DocumentModelUtils.getSchemaName(IS_VERSION_HAS_BEEN_PUBLISHED_SCHEMA),
+                DocumentModelUtils.getFieldName(IS_VERSION_HAS_BEEN_PUBLISHED_SCHEMA));
+
+        Boolean is_version_published = false;
+        if (null == propVal) {
+            // versions not initialized
+            // could be the case that defaultMajorVersion & defaultMajorVersion
+            // are not correctly specifying the properties names for versioning
+            log.warn("Versioning field not initialized (property: " + IS_VERSION_HAS_BEEN_PUBLISHED_SCHEMA
+                    + ") for doc: " + doc.getTitle());
+        } else {
+            if (!(propVal instanceof Boolean)) {
+                throw new DocumentException("Property " + IS_VERSION_HAS_BEEN_PUBLISHED_SCHEMA
+                        + " should be of type Boolean");
+            }
+            is_version_published = (Boolean) propVal;
+        }
+        return is_version_published;
+    }
+
+    public void setVersionHasBeenPublished(Boolean value) {
+        doc.setProperty(DocumentModelUtils.getSchemaName(IS_VERSION_HAS_BEEN_PUBLISHED_SCHEMA),
+                DocumentModelUtils.getFieldName(IS_VERSION_HAS_BEEN_PUBLISHED_SCHEMA), value);
     }
 }
