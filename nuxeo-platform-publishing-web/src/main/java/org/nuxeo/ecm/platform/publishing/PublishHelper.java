@@ -12,22 +12,22 @@ import org.nuxeo.ecm.platform.url.api.DocumentViewCodecManager;
 import org.nuxeo.runtime.api.Framework;
 
 public final class PublishHelper {
-	
-	private static final Log log = LogFactory.getLog(PublishingActionsListenerBean.class);
-	private static DocumentViewCodecManager docLocator;
-	
-	public static String getUrlFromDocument(DocumentModel doc)
-    {
-    	DocumentLocation docLoc = new DocumentLocationImpl(
+
+    private static final Log log = LogFactory.getLog(PublishingActionsListenerBean.class);
+
+    private static DocumentViewCodecManager docLocator;
+
+    public static String getUrlFromDocument(DocumentModel doc) {
+        DocumentLocation docLoc = new DocumentLocationImpl(
                 doc.getRepositoryName(), doc.getRef());
         DocumentView docView = new DocumentViewImpl(docLoc);
         docView.setViewId("view_documents");
         return getDocLocator().getUrlFromDocumentView(
-                        docView,
-                        true,
-                        NotificationServiceHelper.getNotificationService().getServerUrlPrefix());
+                docView,
+                true,
+                NotificationServiceHelper.getNotificationService().getServerUrlPrefix());
     }
-    
+
     private static DocumentViewCodecManager getDocLocator() {
         if (docLocator == null) {
             try {
