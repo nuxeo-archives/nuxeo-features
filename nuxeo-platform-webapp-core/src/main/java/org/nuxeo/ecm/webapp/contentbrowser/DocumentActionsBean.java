@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2006-2007 Nuxeo SAS (http://nuxeo.com/) and contributors.
+ * (C) Copyright 2006-2009 Nuxeo SA (http://nuxeo.com/) and contributors.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser General Public License
@@ -85,7 +85,7 @@ import org.nuxeo.runtime.api.Framework;
 
 /**
  * @author <a href="mailto:rcaraghin@nuxeo.com">Razvan Caraghin</a>
- *
+ * @author M.-A. Darche
  */
 @Name("documentActions")
 @Scope(CONVERSATION)
@@ -469,15 +469,20 @@ public class DocumentActionsBean extends InputController implements
         return saveDocument(changeableDocument);
     }
 
+    @RequestParameter
+    protected String parentDocumentPath;
+
     public String saveDocument(DocumentModel newDocument)
             throws ClientException {
         try {
-            String parentPath;
-            if (currentDocument == null) {
-                // creating item at the root
-                parentPath = documentManager.getRootDocument().getPathAsString();
-            } else {
-                parentPath = navigationContext.getCurrentDocument().getPathAsString();
+
+            if (parentDocumentPath == null) {
+                if (currentDocument == null) {
+                    // creating item at the root
+                    parentDocumentPath = documentManager.getRootDocument().getPathAsString();
+                } else {
+                    parentDocumentPath = navigationContext.getCurrentDocument().getPathAsString();
+                }
             }
 
             String title = (String) newDocument.getProperty("dublincore",
@@ -487,7 +492,7 @@ public class DocumentActionsBean extends InputController implements
             }
             String name = IdUtils.generateId(title);
             // set parent path and name for document model
-            newDocument.setPathInfo(parentPath, name);
+            newDocument.setPathInfo(parentDocumentPath, name);
 
             setDocumentIconPath(newDocument);
 

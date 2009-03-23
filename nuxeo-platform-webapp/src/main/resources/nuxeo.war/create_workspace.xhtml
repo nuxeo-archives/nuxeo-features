@@ -22,7 +22,9 @@
     <ui:include src="/incl/message_banner.xhtml" />
     <h:form enctype="multipart/form-data">
       <c:if test="#{!empty documentActions.changeableDocumentType.layout}">
-        <ui:include src="/incl/document_editor.xhtml" />
+        <ui:include src="/incl/document_editor.xhtml">
+          <ui:param name="hideVersioningPanel" value="true"/>
+        </ui:include>
       </c:if>
       <c:if test="#{empty documentActions.changeableDocumentType.layout}">
         <nxl:documentLayout mode="create" value="#{changeableDocument}" />
@@ -39,6 +41,7 @@
         </h:selectOneMenu>
       </f:subview>
       <p class="buttonsGadget">
+        <input type="hidden" name="parentDocumentPath" value="#{currentDocument.pathAsString}" />
         <h:commandButton type="submit" class="button" value="#{messages['command.create']}"
           action="#{documentTemplatesActions.createDocumentFromTemplate}" />
         <h:commandButton class="button" value="#{messages['command.cancel']}"
