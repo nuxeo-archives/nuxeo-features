@@ -3,6 +3,11 @@
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
   xmlns:nxu="http://nuxeo.org/nxweb/util">
+  
+<!-- cpriceputu@nuxeo.com fix for input file content clear -->
+		<script type="text/javascript"
+			src="#{baseURL}scripts/contextKeeper.js" > </script>
+		<!-- cpriceputu@nuxeo.com fix for input file content clear -->
 
 <nxu:methodResult name="hasFiles" value="#{currentDocument.hasSchema('files')}">
   <h:form enctype="multipart/form-data" rendered="#{hasFiles}">
@@ -18,6 +23,8 @@
             <h:panelGrid columns="2">
               <a4j:commandLink immediate="true"
                 actionListener="#{editableListBean.performAction}"
+                onclick="removeFromKeeper(#{model.rowIndex});"
+                oncomplete="onSubmitComeback();"
                 reRender="geideForm" bypassUpdates="true">
                 <h:graphicImage value="/icons/action_delete.gif" />
                 <f:param name="for" value="files" />
@@ -38,6 +45,7 @@
 
         <a4j:commandLink immediate="true"
           actionListener="#{editableListBean.performAction}"
+           oncomplete="onSubmitComeback();" onclick="onSubmitForm();"
           reRender="geideForm">
           <f:param name="for" value="files" />
           <f:param name="type" value="add" />
