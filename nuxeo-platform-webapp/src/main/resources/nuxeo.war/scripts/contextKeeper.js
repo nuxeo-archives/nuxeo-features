@@ -143,7 +143,7 @@ function gather()
 }
 
 // Used on add button(onclick) to save the file inputs
-function onSubmitForm() {
+function onAddFile() {
 	try {
 		gather();
 	} catch (e) {
@@ -152,7 +152,7 @@ function onSubmitForm() {
 }
 
 // User on add button(oncomplete) to restore file input values
-function onSubmitComeback() {
+function onReturnAnswer() {
 	try {
 		replaceAllInputs();
 	} catch (e) {
