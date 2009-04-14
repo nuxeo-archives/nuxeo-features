@@ -21,8 +21,11 @@ package org.nuxeo.ecm.platform.ui.web.tag.fn;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -34,6 +37,10 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.runtime.api.Framework;
+
+import com.sun.tools.javac.code.Attribute.Array;
+
+import sun.security.action.GetBooleanAction;
 
 /**
  * Util functions.
@@ -118,6 +125,40 @@ public final class Functions {
         }
         return StringUtils.join(collection.iterator(), separator);
     }
+    
+    /**
+     * Can be used in order to produce something like that "Julien, Alain , Thierry et Marc-Aurèle" where ' , ' and ' et ' is the final one.
+     * @param collection
+     * @param separator
+     * @param finalDelimiter
+     * @return
+     */
+    public static String joinCollectionWithFinalDelimiter(Collection<Object> collection, String separator, String finalSeparator) {
+    	return joinArrayWithFinalDelimiter(collection.toArray(), separator, finalSeparator);
+    }
+    
+    public static String joinArrayWithFinalDelimiter(Object[] collection, String separator, String finalSeparator) {
+        if (collection == null) {
+            return null;
+        }
+        StringBuffer result = new StringBuffer();
+        int i=0;
+        for (Object object : collection) {
+        	result.append(object);
+        	if(++i == collection.length-1)
+        		separator = finalSeparator;
+        	if(i != collection.length)
+        		result.append(separator);
+		}
+        
+        return result.toString();
+    }
+    
+    public static void main(String[] args) {
+    	Object [] tab = new String[]{"Alain","Thierry","Julien","Marc-Aurèle"};
+    	System.out.println(tab.getClass());
+		System.out.println(joinArrayWithFinalDelimiter(new String[]{"Alain","Thierry","Julien","Marc-Aurèle"}, " , ", " et "));
+	}
 
     public static String concat(String s1, String s2) {
         return s1 + s2;
@@ -230,6 +271,14 @@ public final class Functions {
 
         // return the date pattern
         return format.toPattern();
+    }
+    
+    public static String formatDateUsingBasicFormatter(Date date) {
+    	return formatDate(date,basicDateFormater());
+    }
+    
+    public static String formatDate(Date date,String format) {
+    	return new SimpleDateFormat(format).format(date);
     }
 
     // method to format date in the standard short format

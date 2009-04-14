@@ -179,6 +179,10 @@ public class WebActionsBean implements WebActionsLocal, Serializable {
         }
         return tabsActionsList;
     }
+    
+    public Action getTabAction(String actionId) {
+    	return actionManager.getAction(actionId);
+    }
 
     @Factory(value = "subTabsActionsList", scope = EVENT)
     public List<Action> getSubTabsList() {

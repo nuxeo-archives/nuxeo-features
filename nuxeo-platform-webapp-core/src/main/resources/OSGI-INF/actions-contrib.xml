@@ -184,7 +184,7 @@
       <filter-id>not_folder</filter-id>
     </action>
 
-    <action id="TAB_EDIT" link="/incl/tabs/document_edit.xhtml" enabled="true"
+    <action id="TAB_EDIT" link="/incl/tabs/document_edit.xhtml" enabled="false"
       order="20" label="action.view.edit" icon="/icons/file.gif">
       <category>VIEW_ACTION_LIST</category>
       <filter-id>edit</filter-id>
@@ -200,14 +200,14 @@
     </action>
 
     <action id="TAB_METADATA_VIEW"
-      link="/incl/tabs/document_metadata_view.xhtml" enabled="true" order="30"
+      link="/incl/tabs/document_metadata_view.xhtml" enabled="false" order="30"
       label="action.view.metadata" icon="/icons/file.gif">
       <category>VIEW_ACTION_LIST</category>
       <filter-id>cannotEdit</filter-id>
     </action>
 
     <action id="TAB_METADATA_EDIT" order="40"
-      link="/incl/tabs/document_metadata_edit.xhtml" enabled="true"
+      link="/incl/tabs/edit_document_and_metadata.xhtml" enabled="true"
       label="action.view.metadata" icon="/icons/file.gif">
       <category>VIEW_ACTION_LIST</category>
       <filter-id>metadata_edit</filter-id>
@@ -215,9 +215,9 @@
     </action>
 
     <action id="TAB_FILES_VIEW" link="/incl/tabs/document_files_view.xhtml"
-      order="42" label="action.view.files">
+      order="42" label="action.view.files" enabled="false">
       <category>VIEW_ACTION_LIST</category>
-      <filter-id>cannotEdit</filter-id>
+      <filter-id>edit</filter-id>
       <filter-id>hasAttachedFiles</filter-id>
     </action>
 

@@ -3,183 +3,137 @@
   xmlns:f="http://java.sun.com/jsf/core"
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
   xmlns:nxdir="http://nuxeo.org/nxdirectory"
   xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+  xmlns:nxd="http://nuxeo.org/nxweb/document"
   xmlns:nxh="http://nuxeo.org/nxweb/html"
   xmlns:nxl="http://nuxeo.org/nxforms/layout"
   xmlns:nxu="http://nuxeo.org/nxweb/util">
 
 <script src="scripts/infoPopup.js"></script>
 
-<h3><h:outputText
-  value="#{messages['label.content.header.documentProperties']}" /></h3>
-
 <h:form id="document_view">
+<h:outputFormat value="#{messages['label.resum.intro.created']}" >
+   <f:param value="#{currentDocument.dc.creator}"/>
+   <f:param value="#{nxu:formatDateUsingBasicFormatter(currentDocument.dc.created)}"/>
+   <f:param value="\'#{messages[currentDocument.currentLifeCycleState]}\'"/>
+</h:outputFormat>
+<h:outputFormat value=" #{messages['label.resum.intro.contributor']}" rendered="#{fn:length(currentDocument.dc.contributors) == 1}" >
+   <f:param value="#{currentDocument.dc.creator}"/>
+</h:outputFormat>
 
-  <a4j:outputPanel >
-    <ui:include src="/incl/lock_details.xhtml" />
-  </a4j:outputPanel>
+<c:set var="andLabel" value=" #{messages['label.and']} " scope="page" />
 
-  <c:if test="#{empty currentDocumentType.layout}">
-    <nxl:documentLayout mode="view" value="#{currentDocument}" />
-  </c:if>
+<div>
+<h:outputFormat value=" #{messages['label.resum.intro.contributors']}" rendered="#{fn:length(currentDocument.dc.contributors) != 1}" >
+   <f:param value="#{nxu:joinArrayWithFinalDelimiter(currentDocument.dc.contributors,', ',andLabel)}"/>
+</h:outputFormat>
+<nxu:methodResult name="versionable" value="#{currentDocument.hasFacet('Versionable')}">
+  <h:outputFormat value=" #{messages['label.resum.intro.modifiedAndVersion']}" rendered="#{versionable}" >
+    <f:param value="#{nxu:formatDateUsingBasicFormatter(currentDocument.dublincore.modified)}"/>
+    <f:param value="#{currentDocumentVersionInfo.versionLabel}"/>
+  </h:outputFormat>
+  <h:outputFormat value=" #{messages['label.resum.intro.modified']}" rendered="#{!versionable}">
+    <f:param value="#{nxu:formatDateUsingBasicFormatter(currentDocument.dublincore.modified)}"/>
+  </h:outputFormat>
+</nxu:methodResult>
+</div>
+<div>
+<h:panelGroup rendered="${!empty lockActions.currentDocLockDetails}">
+  <h:outputFormat value="#{messages['label.resum.intro.locked']} ">
+    <f:param value="${lockActions.currentDocLockDetails['document.locker']}"/>
+  </h:outputFormat>
 
-  <h:dataTable var="field" value="#{currentDocumentType.layout}"
-    rendered="#{!empty currentDocumentType.layout}"
-    class="dataInput" columnClasses="labelColumn, fieldColumn">
-    <h:column>
-      <h:outputText value="#{messages[field.displayLabel]}" />
-    </h:column>
-
-    <h:column>
-
-      <h:outputText value="#{currentDocument[field.schemaName][field.fieldName]}"
-        rendered="${field.jsfComponent=='h:inputText'}" />
-
-      <h:outputText value="#{currentDocument[field.schemaName][field.fieldName]}"
-        rendered="${field.jsfComponent=='h:inputTextarea'}" />
-
-      <h:outputText
-        rendered="#{field.jsfComponent=='t:inputFileUpload' and currentDocument[field.schemaName][field.fieldName] != null}">
-        <h:outputText rendered="false">
-          XXX AT: get rid of hardcoded file name references using a custom multi-component
-        </h:outputText>
-        <nxh:outputLink
-          value="#{nxd:fileUrl('downloadFile', currentDocument, field.fullName, currentDocument.file.filename)}">
-          <nxh:graphicImage value="#{nxd:fileIconPath(currentDocument[field.schemaName][field.fieldName])}"
-            rendered="#{! empty nxd:fileIconPath(currentDocument[field.schemaName][field.fieldName])}"
-            title="#{nxd:fileDescription(currentDocument, 'file:content', 'file:filename')}"
-            alt="#{nxd:fileDescription(currentDocument, 'file:content', 'file:filename')}"/>
-          <nxh:outputText value="#{currentDocument.file.filename}" />
-        </nxh:outputLink>
+  <h:commandLink value="#{messages['command.unlock']}"
+        action="#{lockActions.unlockCurrentDocument}"
+        rendered="#{lockActions.canUnlockCurrentDoc}" />
+</h:panelGroup>
+<h:panelGroup rendered="${empty lockActions.currentDocLockDetails}">
+  <h:commandLink value="#{messages['command.lock']}"
+        action="#{lockActions.lockCurrentDocument}"
+        rendered="#{lockActions.canLockCurrentDoc}" />
+</h:panelGroup>
+</div>
+<div>
+<nxu:methodResult name="commentable" value="#{currentDocument.hasFacet('Commentable')}">
+<h:panelGroup rendered="#{commentable and (documentThreadedComments.size > 0)}">
+<!--<nxh:commandLink value="#{documentThreadedComments.size}" action="#{navigationContext.navigateToDocumentWithView(currentDocument,comment_tab_actions.id)}"/>-->
+<nxd:restDocumentLink document="#{currentDocument}" tab="view_comments" >
+	<h:outputText value="#{documentThreadedComments.size}"/>
+</nxd:restDocumentLink>
+<h:outputText value=" #{messages['label.resum.intro.comments']}"/>
+</h:panelGroup>
+</nxu:methodResult>
+</div>
 
 
-
-
-
-
+<h3><h:outputText value="#{messages['label.description']}" /></h3>
+<h:outputText value="#{currentDocument.dc.description}" />
+<nxu:methodResult name="hasFileFacet" value="#{currentDocument.hasSchema('file')}">
+<h:panelGroup rendered="#{hasFileFacet}">
+<h3><h:outputText value="#{messages['action.view.content']}" /></h3>
+<h:outputText value="#{messages['label.resum.download']} "/>
+<nxh:outputLink value="#{nxd:fileUrl('downloadFile', currentDocument, field.fullName, currentDocument.file.filename)}"><h:outputText value="#{currentDocument.file.filename}"/></nxh:outputLink>
       <c:if test="#{conversionActions.pdfConverterAvailability.available}">
         <nxu:methodResult name="hasPDFCapabilities" value="#{conversionActions.isFileExportableToPDF(field.fullName)}">
           <h:panelGroup rendered="#{hasPDFCapabilities}">
-            <h:outputText value=" | " />
+            <h:outputText value=" #{messages['label.resum.download.other']} "/>
             <h:commandLink action="#{conversionActions.generatePdfFile}">
               <f:param name="fileFieldFullName" value="#{field.fullName}" />
               <f:param name="filename" value="#{currentDocument.file.filename}" />
-              <h:outputText value="#{messages['label.document.generatePdf']}" />
+              <h:outputText value="#{messages['label.resum.download.pdf']}"/>
             </h:commandLink>
           </h:panelGroup>
         </nxu:methodResult>
       </c:if>
-     <c:if test="#{!conversionActions.pdfConverterAvailability.available}">
-       <h:outputText value=" | " />
-       <h:outputText value="#{messages['label.document.generatePdf']}" />
-       <img src="icons/info.gif" onclick="showInfoMessagePopup('conversionInfoPopup')"/>
-     </c:if>
-
-        <nxu:methodResult name="isLiveEditable"
-          value="#{liveEditHelper.isCurrentDocumentLiveEditable(field.schemaName, field.fieldName)}">
-          <h:panelGroup rendered="#{isLiveEditable}">
-            <h:outputText value=" | " />
-            <h:outputLink
-              value="#{nxd:liveEditUrl(changeableDocument, field.schemaName, field.fieldName, 'filename')}">
-              <h:outputText value="#{messages['label.document.directEdit']}" />
-            </h:outputLink>
-            <h:outputText value=" | " />
-            <h:outputLink
-              value="#{nxd:liveCreateFromTemplateUrl(changeableDocument, field.schemaName, field.fieldName, 'File', 'file', 'content','filename')}">
-              <h:outputText value="#{messages['label.document.directCreateFromTemplate']}" />
-            </h:outputLink>
-
-          </h:panelGroup>
-        </nxu:methodResult>
-
-      </h:outputText>
-
-      <h:outputText value="#{currentDocument[field.schemaName][field.fieldName]}"
-        rendered="${field.jsfComponent=='nxu:editor'}" escape="false" />
-
-      <h:outputText value="#{currentDocument[field.schemaName][field.fieldName]}"
-        rendered="${field.jsfComponent=='t:inputCalendar'}">
-        <f:convertDateTime pattern="#{nxu:basicDateFormater()}"
-          timeZone="#{timeZone}" />
-      </h:outputText>
-
-      <nxdir:directoryEntryOutput
-        value="#{currentDocument[field.schemaName][field.fieldName]}"
-        directoryName="#{field.directory}"
-        rendered="${field.jsfComponent=='nxdir:selectOneListbox'}" />
-
-      <nxu:dataList
-          var="item"
-          value="#{currentDocument[field.schemaName][field.fieldName]}"
-          layout="simple"
-          rendered="${field.jsfComponent=='nxdir:selectManyListbox'}">
-        <div>
-          <nxdir:directoryEntryOutput
-            value="#{item}"
-            directoryName="#{field.directory}" />
-        </div>
-      </nxu:dataList>
-
-    </h:column>
-  </h:dataTable>
-
-<h3><h:outputText
-  value="#{messages['label.workflow.lifeCycleInformation']}" /></h3>
-
-<h:panelGrid columns="2" styleClass="dataInput"
-  columnClasses="labelColumn, fieldColumn">
-  <h:outputText value="#{messages['label.workflow.lifeCyclePolicy']}" />
-  <h:outputText value="${messages[currentDocument.lifeCyclePolicy]}" />
-  <h:outputText
-    value="#{messages['label.workflow.currentLifeCycleState']}" />
-  <h:outputText value="${messages[currentDocument.currentLifeCycleState]}" />
-  <c:if test="#{deleteActions.trashManagementEnabled}">
-    <h:outputText/>
-    <h:commandButton type="submit" value="#{messages['command.undeleteDocs']}"
-      styleClass="button" action="#{deleteActions.restoreCurrentDocument}"
-      rendered="#{deleteActions.canRestoreCurrentDoc}" />
-  </c:if>
-</h:panelGrid>
-
-<nxu:methodResult name="versionable" value="#{currentDocument.hasFacet('Versionable')}">
-<h3><h:outputText
-  value="#{messages['label.versioning.documentVersioning']}"
-  rendered="#{versionable}"/></h3>
-<h:panelGrid columns="2" styleClass="dataInput"
-  columnClasses="labelColumn, fieldColumn"
-  rendered="#{versionable}">
-  <h:outputText value="#{messages['label.versioning.currentVersion']}"
-    rendered="#{currentDocumentVersionInfo.available}"/>
-  <h:panelGroup>
-    <nxh:outputText value="#{currentDocumentVersionInfo.versionLabel}" />
-  </h:panelGroup>
-</h:panelGrid>
+</h:panelGroup>
 </nxu:methodResult>
-
- <c:if test="#{!conversionActions.pdfConverterAvailability.available}">
-   <div id="conversionInfoPopup" style="display:none">
-   <h2>
-   <h:outputText
-      value="#{messages['heading.error.pdf.openOffice']}" />
-   </h2>
-   <textarea readonly="readonly" cols="80" rows="3">
-    <h:outputText
-      value="#{messages['message.error.pdf.openOffice']}" />
-   </textarea>
-   <br/>
-   <h:commandLink action="pdf_generation_error"><h:outputText value="#{messages['label.pdf.openOffice.setup']}" /></h:commandLink><br/>
-   <h:outputText value="#{messages['label.pdf.openOffice.error']}" /><br/>
-   <textarea readonly="readonly" cols="80" rows="2">
-     <h:outputText value="#{conversionActions.pdfConverterAvailability.errorMessage}"></h:outputText>
-   </textarea><br/>
-   <h:commandLink action="#{conversionActions.reCheckConverterAvailability}"><h:outputText value="#{messages['label.pdf.openOffice.refresh']}" /></h:commandLink>
-   </div>
- </c:if>
-
-
-<ui:include src="/incl/document_publishing_actions.xhtml" />
-
+<nxd:restDocumentLink document="#{currentDocument}" tab="TAB_METADATA_EDIT" >
+	<h:outputText value=" [#{ messages['label.resum.edit']}] "/>
+</nxd:restDocumentLink>
 </h:form>
+<div>
+<nxu:methodResult name="hasFilesFacet" value="#{currentDocument.hasSchema('files')}">
+<h:panelGroup rendered="#{hasFilesFacet  and (!empty currentDocument.files.files)}">
+<h:outputText value=" #{messages['label.resum.download.attachments']} "/>
+<ui:include src="/incl/tabs/document_files_view.xhtml"/>
+</h:panelGroup>
+</nxu:methodResult>
+</div>
+<BR/>
+	<div class="foldableBox">
+      <h3 class="unfolded">
+        <a href="#nologo" onclick="return toggleBox(this)">
+          <h:outputText value="#{messages['label.resum.rank.title']}"/>
+        </a>
+      </h3>
+      <div class="boxBody">
+        <ui:include src="/resum/rank.xhtml" />
+      </div>
+    </div>
+    
+    <div class="foldableBox">
+      <h3 class="unfolded">
+        <a href="#nologo" onclick="return toggleBox(this)">
+          <h:outputText value="#{messages['label.resum.links.title']}"/>
+        </a>
+      </h3>
+      <div class="boxBody">
+        <ui:include src="/resum/links.xhtml" />
+      </div>
+    </div>
+    
+    <div class="foldableBox">
+      <h3 class="folded">
+        <a href="#nologo" onclick="return toggleBox(this)">
+          <h:outputText value="#{messages['label.resum.characteristics.title']}"/>
+        </a>
+      </h3>
+      <div class="boxBody" style="display: none">
+        <ui:include src="/resum/characteristics.xhtml" />
+      </div>
+    </div>
+
 
 </div>

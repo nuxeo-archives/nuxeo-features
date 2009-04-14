@@ -1,0 +1,38 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:nxthemes="http://nuxeo.org/nxthemes"
+  xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:c="http://java.sun.com/jstl/core">
+<f:subview>
+  <c:set var="andLabel" value=" #{messages['label.and']} " scope="page" />
+  <table id="rank_table">
+  	<tr>
+      <td><h:outputText value="#{messages['label.dublincore.coverage']} : "/></td>
+      <td><h:outputText value="#{currentDocument.dc.coverage}"/></td>
+    </tr>
+    <tr>
+      <td><h:outputText value="#{messages['label.dublincore.subjects']} : "/></td>
+      <td><h:outputText value="#{nxu:joinArrayWithFinalDelimiter(currentDocument.dc.subjects,', ',andLabel)}"/></td>
+    </tr>
+  </table>
+  <c:set var="selectedSections" value="#{publishActions.getPublishingInfo().toArray()}" scope="page" />
+  
+  <h:panelGroup rendered="#{!empty selectedSections}">
+  <h:outputText value="#{messages['label.resum.publication']} : "/>
+  <nxu:dataTable id="dataTable" value="#{selectedSections}" var="proxy"
+      styleClass="dataOutput">
+      <!-- id and selection -->
+      <nxu:column>
+        <h:outputText value="#{proxy.section.path}"/>
+      </nxu:column>
+      <nxu:column>
+        <h:outputText value="#{proxy.proxyVersion}"/>
+      </nxu:column>
+      </nxu:dataTable>
+    </h:panelGroup>
+    <h:outputText value="#{messages['label.resum.publication.none']}" rendered="#{empty selectedSections}"/>
+  </f:subview>
+
+</div>
