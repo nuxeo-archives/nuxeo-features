@@ -57,8 +57,10 @@
       <template>widgets/last_comments.ftl</template>
     </view>
     <view name="Minisite Contextual" template-engine="freemarker">
+      <element-type>fragment</element-type>
       <format-type>widget</format-type>
-      <template>widgets/contextual.ftl</template>
+      <model-type>contextual-links item</model-type>
+      <template>widgets/minisite/contextual.xml</template>
     </view>
     <view name="Minisite Tree" template-engine="freemarker">
       <format-type>widget</format-type>
@@ -146,6 +148,27 @@
     <palette name="Sites backgrounds" src="themes/palettes/sites-backgrounds.properties" category="background" />
     <palette name="Sites fonts" src="themes/palettes/sites-fonts.properties" category="font" />
   </extension>
+
+  <extension target="org.nuxeo.theme.services.ThemeService"
+    point="models">
+    <model name="contextual-links">
+      <class>org.nuxeo.webengine.sites.models.ContextualLinkListModel</class>
+      <contains>contextual-links item</contains>
+    </model>
+    <model name="contextual-links item">
+      <class>org.nuxeo.webengine.sites.models.ContextualLinkModel</class>
+      <contains>contextual-links item</contains>
+    </model>
+  </extension>
+
+  <extension target="org.nuxeo.theme.services.ThemeService"
+    point="fragments">
+     <fragment name="Contextual Links">
+       <class>org.nuxeo.webengine.sites.fragments.ContextualLinkFragment</class>
+       <model-type>contextual-links</model-type>
+       <dynamic>true</dynamic>
+     </fragment>
+   </extension>
 
 
 </component>
