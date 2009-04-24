@@ -59,7 +59,7 @@
     <view name="Minisite Contextual" template-engine="freemarker">
       <element-type>fragment</element-type>
       <format-type>widget</format-type>
-      <model-type>contextual-links item</model-type>
+      <model-type>contextual-links</model-type>
       <template>widgets/minisite/contextual.xml</template>
     </view>
     <view name="Minisite Tree" template-engine="freemarker">
