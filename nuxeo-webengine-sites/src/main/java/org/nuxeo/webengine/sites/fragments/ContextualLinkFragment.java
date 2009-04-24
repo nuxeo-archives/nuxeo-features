@@ -21,7 +21,7 @@ public class ContextualLinkFragment extends AbstractFragment {
         ContextualLinkListModel model = new ContextualLinkListModel();
         WebContext ctx = WebEngine.getActiveContext();
         CoreSession session = ctx.getCoreSession();
-        DocumentModel doc = (DocumentModel) ctx.getTargetObject();
+        DocumentModel doc = ctx.getTargetObject().getAdapter(DocumentModel.class);
         List<Object> objects = null;
         try {
             objects = SiteUtils.getContextualLinks(session, doc);
