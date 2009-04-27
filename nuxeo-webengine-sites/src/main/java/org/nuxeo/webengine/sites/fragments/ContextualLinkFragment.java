@@ -19,23 +19,25 @@ public class ContextualLinkFragment extends AbstractFragment {
     @Override
     public Model getModel() throws ModelException {
         ContextualLinkListModel model = new ContextualLinkListModel();
-        WebContext ctx = WebEngine.getActiveContext();
-        CoreSession session = ctx.getCoreSession();
-        DocumentModel doc = ctx.getTargetObject().getAdapter(DocumentModel.class);
-        List<Object> objects = null;
-        try {
-            objects = SiteUtils.getContextualLinks(session, doc);
-        } catch (Exception e) {
-            throw new ModelException(e);
-        }
-        for (Object linkObject : objects) {
-            Map<String, String> mapLink = (Map<String, String>)linkObject;
-            ContextualLinkModel linkModel = new ContextualLinkModel(
-                    mapLink.get("title"), mapLink.get("description"), mapLink.get("link"));
-            model.addItem(linkModel);
-        }
-
+        model.addItem(new ContextualLinkModel("title", "descr", "http://link"));
         return model;
+//        WebContext ctx = WebEngine.getActiveContext();
+//        CoreSession session = ctx.getCoreSession();
+//        DocumentModel doc = ctx.getTargetObject().getAdapter(DocumentModel.class);
+//        List<Object> objects = null;
+//        try {
+//            objects = SiteUtils.getContextualLinks(session, doc);
+//        } catch (Exception e) {
+//            throw new ModelException(e);
+//        }
+//        for (Object linkObject : objects) {
+//            Map<String, String> mapLink = (Map<String, String>)linkObject;
+//            ContextualLinkModel linkModel = new ContextualLinkModel(
+//                    mapLink.get("title"), mapLink.get("description"), mapLink.get("link"));
+//            model.addItem(linkModel);
+//        }
+//
+//        return model;
     }
 
 }

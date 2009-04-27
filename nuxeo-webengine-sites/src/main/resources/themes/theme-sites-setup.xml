@@ -27,7 +27,7 @@
           <fragment type="generic fragment" />
         </cell>
         <cell>
-          <fragment type="generic fragment" />
+          <fragment type="Contextual Links" />
           <fragment type="generic fragment" />
         </cell>
       </section>
@@ -65,7 +65,7 @@
           <fragment type="generic fragment" />
         </cell>
         <cell>
-          <fragment type="generic fragment" />
+          <fragment type="Contextual Links" />
           <fragment type="generic fragment" />
         </cell>
       </section>
@@ -88,7 +88,7 @@
         </cell>
         <cell>
           <cell>
-            <fragment type="generic fragment" />
+            <fragment type="Contextual Links" />
           </cell>
         </cell>
       </section>
@@ -104,10 +104,25 @@
     <defaultBody />
     <defaultSrc />
   </properties>
+  <properties element="page[2]/section[2]/cell[2]/fragment[2]">
+    <name/>
+    <defaultBody/>
+    <defaultSrc/>
+  </properties>
   <properties element="page[3]/section[2]/cell[2]/fragment[1]">
     <name>content</name>
     <defaultBody />
     <defaultSrc />
+  </properties>
+  <properties element="page[3]/section[2]/cell[2]/fragment[2]">
+    <name/>
+    <defaultBody/>
+    <defaultSrc/>
+  </properties>
+  <properties element="page[3]/section[2]/cell[2]/fragment[3]">
+    <name/>
+    <defaultBody/>
+    <defaultSrc/>
   </properties>
   <properties element="page[4]/section[2]/cell[2]/fragment[1]">
     <name>content</name>

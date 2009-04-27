@@ -133,22 +133,6 @@
 
 
   </extension>
-  <!-- themes -->
-  <extension target="org.nuxeo.theme.services.ThemeService"
-    point="themes">
-    <theme>
-      <src>
-        themes/theme-sites-setup.xml
-      </src>
-    </theme>
-  </extension>
-  <!-- Palettes -->
-  <extension target="org.nuxeo.theme.services.ThemeService" point="presets">
-    <palette name="Sites borders" src="themes/palettes/sites-borders.properties" category="border" />
-    <palette name="Sites backgrounds" src="themes/palettes/sites-backgrounds.properties" category="background" />
-    <palette name="Sites fonts" src="themes/palettes/sites-fonts.properties" category="font" />
-  </extension>
-
   <extension target="org.nuxeo.theme.services.ThemeService"
     point="models">
     <model name="contextual-links">
@@ -169,6 +153,22 @@
        <dynamic>true</dynamic>
      </fragment>
    </extension>
+
+  <!-- themes -->
+  <extension target="org.nuxeo.theme.services.ThemeService"
+    point="themes">
+    <theme>
+      <src>
+        themes/theme-sites-setup.xml
+      </src>
+    </theme>
+  </extension>
+  <!-- Palettes -->
+  <extension target="org.nuxeo.theme.services.ThemeService" point="presets">
+    <palette name="Sites borders" src="themes/palettes/sites-borders.properties" category="border" />
+    <palette name="Sites backgrounds" src="themes/palettes/sites-backgrounds.properties" category="background" />
+    <palette name="Sites fonts" src="themes/palettes/sites-fonts.properties" category="font" />
+  </extension>
 
 
 </component>
