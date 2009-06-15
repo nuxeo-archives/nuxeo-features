@@ -15,14 +15,6 @@
 
 package org.nuxeo.ecm.platform.tag.persistence;
 
-import static org.nuxeo.ecm.platform.tag.entity.TaggingConstants.TAGGING_TABLE_COLUMN_AUTHOR;
-import static org.nuxeo.ecm.platform.tag.entity.TaggingConstants.TAGGING_TABLE_COLUMN_CREATION_DATE;
-import static org.nuxeo.ecm.platform.tag.entity.TaggingConstants.TAGGING_TABLE_COLUMN_DOCUMENT_ID;
-import static org.nuxeo.ecm.platform.tag.entity.TaggingConstants.TAGGING_TABLE_COLUMN_ID;
-import static org.nuxeo.ecm.platform.tag.entity.TaggingConstants.TAGGING_TABLE_COLUMN_IS_PRIVATE;
-import static org.nuxeo.ecm.platform.tag.entity.TaggingConstants.TAGGING_TABLE_COLUMN_TAG_ID;
-import static org.nuxeo.ecm.platform.tag.entity.TaggingConstants.TAGGING_TABLE_NAME;
-
 import java.sql.Types;
 import java.util.Properties;
 
@@ -37,6 +29,7 @@ import org.hibernate.ejb.Ejb3Configuration;
 import org.nuxeo.ecm.platform.tag.entity.DublincoreEntity;
 import org.nuxeo.ecm.platform.tag.entity.HierarchyEntity;
 import org.nuxeo.ecm.platform.tag.entity.TagEntity;
+import org.nuxeo.ecm.platform.tag.entity.TaggingConstants;
 import org.nuxeo.ecm.platform.tag.entity.TaggingEntity;
 import org.nuxeo.ecm.platform.tag.sql.Column;
 import org.nuxeo.ecm.platform.tag.sql.Table;
@@ -59,10 +52,10 @@ public class TagPersistenceProvider {
     }
 
     public static final TagPersistenceProvider getInstance() {
-        if (_instance == null) {
-            _instance = new TagPersistenceProvider();
+        if (TagPersistenceProvider._instance == null) {
+            TagPersistenceProvider._instance = new TagPersistenceProvider();
         }
-        return _instance;
+        return TagPersistenceProvider._instance;
     }
 
     private Properties getProperties() {
@@ -70,13 +63,11 @@ public class TagPersistenceProvider {
             properties = new Properties();
             properties.put("tagservice.isTagServiceInNuxeo", "true");
             properties.put("hibernate.show_sql", "true"); // true to debug
-            properties.put("hibernate.connection.driver_class", "org.h2.Driver");
-            properties.put("hibernate.connection.username", "sa");
-            properties.put("hibernate.connection.password", "");
-            properties.put("hibernate.connection.url",
-                    "jdbc:h2:${jboss.server.data.dir}/h2/nuxeo");
-            properties.put("hibernate.dialect",
-                    "org.hibernate.dialect.H2Dialect");
+            properties.put("hibernate.connection.driver_class", "org.postgresql.Driver");
+            properties.put("hibernate.connection.username", "nuxeo");
+            properties.put("hibernate.connection.password", "hidden");
+            properties.put("hibernate.connection.url","jdbc:postgresql://localhost:5432/nuxeo");
+            properties.put("hibernate.dialect","org.hibernate.dialect.PostgreSQLDialect");
         }
         return properties;
     }
@@ -86,7 +77,7 @@ public class TagPersistenceProvider {
      * an application-managed entity manager.
      */
     protected void openPersistenceUnit() throws MappingException,
-            HibernateException {
+    HibernateException {
         try {
             Ejb3Configuration cfg = new Ejb3Configuration();
             cfg.configure("tagservice-hibernate.cfg.xml");
@@ -114,7 +105,7 @@ public class TagPersistenceProvider {
             emf.close();
         }
         emf = null;
-        _instance = null;
+        TagPersistenceProvider._instance = null;
     }
 
     /**
@@ -124,7 +115,7 @@ public class TagPersistenceProvider {
      * @return
      */
     public EntityManager getEntityManager(Properties properties) {
-        if (emf == null || !emf.isOpen()) {
+        if ((emf == null) || !emf.isOpen()) {
             if (null == properties) {
                 properties = getProperties();
             }
@@ -186,20 +177,20 @@ public class TagPersistenceProvider {
     }
 
     private String getCreateSql(Dialect dialect) {
-        Table table = new Table(TAGGING_TABLE_NAME);
-        Column column = new Column(TAGGING_TABLE_COLUMN_ID, Types.VARCHAR);
+        Table table = new Table(TaggingConstants.TAGGING_TABLE_NAME);
+        Column column = new Column(TaggingConstants.TAGGING_TABLE_COLUMN_ID, Types.VARCHAR);
         column.setPrimary(true);
         column.setNullable(false);
         table.addColumn(column);
-        column = new Column(TAGGING_TABLE_COLUMN_TAG_ID, Types.CLOB);
+        column = new Column(TaggingConstants.TAGGING_TABLE_COLUMN_TAG_ID, Types.CLOB);
         table.addColumn(column);
-        column = new Column(TAGGING_TABLE_COLUMN_AUTHOR, Types.VARCHAR);
+        column = new Column(TaggingConstants.TAGGING_TABLE_COLUMN_AUTHOR, Types.VARCHAR);
         table.addColumn(column);
-        column = new Column(TAGGING_TABLE_COLUMN_DOCUMENT_ID, Types.CLOB);
+        column = new Column(TaggingConstants.TAGGING_TABLE_COLUMN_DOCUMENT_ID, Types.CLOB);
         table.addColumn(column);
-        column = new Column(TAGGING_TABLE_COLUMN_CREATION_DATE, Types.DATE);
+        column = new Column(TaggingConstants.TAGGING_TABLE_COLUMN_CREATION_DATE, Types.DATE);
         table.addColumn(column);
-        column = new Column(TAGGING_TABLE_COLUMN_IS_PRIVATE, Types.BOOLEAN);
+        column = new Column(TaggingConstants.TAGGING_TABLE_COLUMN_IS_PRIVATE, Types.BOOLEAN);
         table.addColumn(column);
         return table.getCreateSql(dialect);
     }

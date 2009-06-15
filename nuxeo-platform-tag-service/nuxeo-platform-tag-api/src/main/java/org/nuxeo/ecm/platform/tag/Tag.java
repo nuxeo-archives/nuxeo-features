@@ -20,9 +20,11 @@ import java.io.Serializable;
 /**
  * Simple class holder for transfer of the Tag id and Label together. It is
  * usually obtained from a query and handled to the caller.
+ * 
  * @author rux
- *
- */public class Tag implements Serializable {
+ * 
+ */
+public class Tag implements Serializable {
 
     private static final long serialVersionUID = -323612876570705842L;
 
@@ -30,11 +32,16 @@ import java.io.Serializable;
      * Tag ID.
      */
     public String tagId;
-    
+
     /**
      * Tag Label.
      */
     public String tagLabel;
+
+    /**
+     * Current user can modify tag (delete) it
+     */
+    public boolean canModify;
 
     public Tag(String tagId, String tagLabel) {
         super();
@@ -43,6 +50,30 @@ import java.io.Serializable;
     }
 
     public Tag() {
+    }
+
+    public String getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(String tagId) {
+        this.tagId = tagId;
+    }
+
+    public String getTagLabel() {
+        return tagLabel;
+    }
+
+    public void setTagLabel(String tagLabel) {
+        this.tagLabel = tagLabel;
+    }
+
+    public boolean isCanModify() {
+        return canModify;
+    }
+
+    public void setCanModify(boolean canModify) {
+        this.canModify = canModify;
     }
 
 }
