@@ -15,8 +15,6 @@
 
 package org.nuxeo.ecm.platform.tag.persistence;
 
-import static org.nuxeo.ecm.platform.tag.entity.TaggingConstants.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,12 +26,14 @@ import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.platform.tag.Tag;
 import org.nuxeo.ecm.platform.tag.WeightedTag;
 import org.nuxeo.ecm.platform.tag.entity.DublincoreEntity;
 import org.nuxeo.ecm.platform.tag.entity.TagEntity;
+import org.nuxeo.ecm.platform.tag.entity.TaggingConstants;
 import org.nuxeo.ecm.platform.tag.entity.TaggingEntity;
 
 /**
@@ -52,7 +52,7 @@ public class TaggingProvider {
     private final TagPersistenceProvider tagPersistenceProvider = TagPersistenceProvider.getInstance();
 
     private TaggingProvider() {
-        this.em = tagPersistenceProvider.getEntityManager(null);
+        em = tagPersistenceProvider.getEntityManager(null);
         tagPersistenceProvider.createTableTagging(em);
     }
 
@@ -77,8 +77,8 @@ public class TaggingProvider {
      *            persisted
      */
     public void addTagging(TaggingEntity tagging) {
-        if (log.isDebugEnabled()) {
-            log.debug("addTagging() with tagging " + tagging.toString());
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("addTagging() with tagging " + tagging.toString());
         }
         try {
             if (!em.getTransaction().isActive()) {
@@ -136,8 +136,8 @@ public class TaggingProvider {
      *            entries that will be persisted
      */
     public void addTaggingEntries(List<TaggingEntity> taggings) {
-        if (log.isDebugEnabled()) {
-            log.debug("addTaggingEntries() for " + taggings.size() + " entries");
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("addTaggingEntries() for " + taggings.size() + " entries");
         }
         for (TaggingEntity taggin : taggings) {
             addTagging(taggin);
@@ -154,13 +154,13 @@ public class TaggingProvider {
      */
     @SuppressWarnings("unchecked")
     public List<Tag> listTagsForDocument(String docId, String userName) {
-        if (log.isDebugEnabled()) {
-            log.debug("listTagsForDocument() with Id " + docId);
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("listTagsForDocument() with Id " + docId);
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("targetId", docId);
         params.put("userName", userName);
-        List<Object[]> queryResults = doNamedQuery(LIST_TAGS_FOR_DOCUMENT,
+        List<Object[]> queryResults = doNamedQuery(TaggingConstants.LIST_TAGS_FOR_DOCUMENT,
                 params);
         List<Tag> listTagsForDocument = new ArrayList<Tag>();
         for (Object[] queryResult : queryResults) {
@@ -179,7 +179,7 @@ public class TaggingProvider {
      */
     public String getTaggingId(String docId, String tagLabel, String author) {
         final String query = "SELECT tg.id FROM Tagging tg JOIN tg.targetDocument doc JOIN tg.tag tag"
-                + " WHERE doc.id = ?1 AND tag.label = ?2 AND tg.author = ?3";
+            + " WHERE doc.id = ?1 AND tag.label = ?2 AND tg.author = ?3";
 
         List<String> authors = doQuery(query, docId, tagLabel, author);
 
@@ -196,14 +196,14 @@ public class TaggingProvider {
      */
     @SuppressWarnings("unchecked")
     public List<Tag> listTagsForDocumentAndUser(String docId, String userName) {
-        if (log.isDebugEnabled()) {
-            log.debug("listTagsForDocumentAndUser() with Id " + docId);
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("listTagsForDocumentAndUser() with Id " + docId);
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("targetId", docId);
         params.put("userName", userName);
         List<Object[]> queryResults = doNamedQuery(
-                LIST_TAGS_FOR_DOCUMENT_AND_USER, params);
+                TaggingConstants.LIST_TAGS_FOR_DOCUMENT_AND_USER, params);
         List<Tag> listTagsForDocument = new ArrayList<Tag>();
         for (Object[] queryResult : queryResults) {
             listTagsForDocument.add(new Tag(queryResult[0].toString(),
@@ -222,14 +222,14 @@ public class TaggingProvider {
      * @return how many times a tag was applied on a document by different users
      */
     public Long getVoteTag(String docId, String tagId, String userName) {
-        if (log.isDebugEnabled()) {
-            log.debug("getVoteTag() for " + docId + " and " + tagId);
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("getVoteTag() for " + docId + " and " + tagId);
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("targetId", docId);
         params.put("userName", userName);
         params.put("tagId", tagId);
-        return (Long) doNamedQuerySingle(GET_VOTE_TAG, params);
+        return (Long) doNamedQuerySingle(TaggingConstants.GET_VOTE_TAG, params);
     }
 
     /**
@@ -245,13 +245,13 @@ public class TaggingProvider {
      * @return true in case the deleting was successful or false otherwise.
      */
     public boolean removeTagging(String docId, String tagId, String userName) {
-        if (log.isDebugEnabled()) {
-            log.debug("removeTagging() with targetId " + docId + " and tagId "
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("removeTagging() with targetId " + docId + " and tagId "
                     + tagId);
         }
         if (!em.getTransaction().isActive()) {
             em.getTransaction().begin();
-            Query query = em.createNamedQuery(REMOVE_TAGGING);
+            Query query = em.createNamedQuery(TaggingConstants.REMOVE_TAGGING);
             query.setParameter("targetId", docId);
             query.setParameter("tagId", tagId);
             query.setParameter("userName", userName);
@@ -275,8 +275,8 @@ public class TaggingProvider {
      * @return true in case the deleting was successful or false otherwise.
      */
     public void removeAllTagging(String docId, String tagId) {
-        if (log.isDebugEnabled()) {
-            log.debug("removeTagging() with targetId " + docId + " and tagId "
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("removeTagging() with targetId " + docId + " and tagId "
                     + tagId);
         }
         if (!em.getTransaction().isActive()) {
@@ -295,15 +295,15 @@ public class TaggingProvider {
     }
 
     public TagEntity getTagById(String tagId) {
-        if (log.isDebugEnabled()) {
-            log.debug("getTagById() with id " + tagId);
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("getTagById() with id " + tagId);
         }
         return em.find(TagEntity.class, tagId);
     }
 
     public DublincoreEntity getDcById(String docId) {
-        if (log.isDebugEnabled()) {
-            log.debug("getDcById() with id " + docId);
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("getDcById() with id " + docId);
         }
         return em.find(DublincoreEntity.class, docId);
     }
@@ -322,14 +322,14 @@ public class TaggingProvider {
     @SuppressWarnings("unchecked")
     public List<WeightedTag> getPopularCloud(DocumentModelList documents,
             String userName) {
-        if (log.isDebugEnabled()) {
-            log.debug("getPopularTag() for " + documents.size() + " documents");
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("getPopularTag() for " + documents.size() + " documents");
         }
         int count = 1;
         StringBuilder sb = new StringBuilder(
                 "SELECT tag.id, tag.label, COUNT(DISTINCT tg.targetDocument.id) FROM Tagging tg "
-                        + "JOIN tg.tag tag JOIN tag.hierarchy h JOIN h.dublincore dc "
-                        + "WHERE tg.targetDocument.id IN ( ");
+                + "JOIN tg.tag tag JOIN tag.hierarchy h JOIN h.dublincore dc "
+                + "WHERE tg.targetDocument.id IN ( ");
         List<String> params = new LinkedList<String>();
         for (DocumentModel document : documents) {
             params.add(document.getId());
@@ -349,7 +349,7 @@ public class TaggingProvider {
         sb.append(") GROUP BY tag.id , tag.label");
         params.add(userName);
         params.add(userName);
-        List<Object[]> queryResults = (List<Object[]>) doQuery(sb.toString(),
+        List<Object[]> queryResults = doQuery(sb.toString(),
                 params);
         List<WeightedTag> ret = new ArrayList<WeightedTag>();
         for (Object[] queryResult : queryResults) {
@@ -369,13 +369,13 @@ public class TaggingProvider {
      */
     @SuppressWarnings("unchecked")
     public List<String> getDocumentsForTag(String tagId, String userName) {
-        if (log.isDebugEnabled()) {
-            log.debug("getDocumentsForTag() with Id " + tagId);
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("getDocumentsForTag() with Id " + tagId);
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userName", userName);
         params.put("tagId", tagId);
-        List<Object> queryResults = doNamedQuery(LIST_DOCUMENTS_FOR_TAG, params);
+        List<Object> queryResults = doNamedQuery(TaggingConstants.LIST_DOCUMENTS_FOR_TAG, params);
         List<String> ret = new ArrayList<String>();
         for (Object queryResult : queryResults) {
             ret.add(queryResult.toString());
@@ -392,15 +392,15 @@ public class TaggingProvider {
      * @return
      */
     public boolean existTagging(String tagId, String docId, String userName) {
-        if (log.isDebugEnabled()) {
-            log.debug("existTagging() with " + tagId + ", " + docId + ", "
+        if (TaggingProvider.log.isDebugEnabled()) {
+            TaggingProvider.log.debug("existTagging() with " + tagId + ", " + docId + ", "
                     + userName);
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("docId", docId);
         params.put("userName", userName);
         params.put("tagId", tagId);
-        Long result = (Long) doNamedQuerySingle(GET_TAGGING, params);
+        Long result = (Long) doNamedQuerySingle(TaggingConstants.GET_TAGGING, params);
         return result > 0;
     }
 }
