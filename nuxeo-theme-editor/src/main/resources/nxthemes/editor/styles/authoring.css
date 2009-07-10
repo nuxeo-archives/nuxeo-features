@@ -51,7 +51,7 @@ ins.model, ins.view, ins.controller {
   border: 1px solid #333;
   background: #fff;
   color: #000;
-  z-index: 10;
+  z-index: 40;
   width: 135px;
   padding: 2px;
   -moz-border-radius: 3px;
@@ -187,7 +187,7 @@ html, body {
   height: 100%;
 }
 
-/* Top header */
+/* Header */
 #nxthemesHeader {
   background: #fff url(${basePath}/skin/nxthemes-editor/img/header-bg.png) top left
     repeat-x;
@@ -196,42 +196,89 @@ html, body {
   z-index: 10;
   top: 0;
   left: 0;
-  height: 80px;
+  height: 35px;
   width: 100%;
 }
 
-#nxthemesTopButtons {
-  position: absolute;
-  top: 7px;
-  left: 4px;
-}
-
-#nxthemesPerspectiveSelector {
-  position: absolute;
-  top: 8px;
-  right: 4px;
-}
-
-#nxthemesThemeSelector {
-  position: absolute;
-  top: 8px;
-  right: 270px;
-}
-
+/* Main area */
 #nxthemesCanvasArea {
   padding: 0;
   position: absolute;
   z-index: 1;
-  top: 110px;
+  top: 35px;
   min-height:100%;
   width: 100%;
 }
 
-/* Page selector tabs */
-#nxthemesPageSelectorArea {
-  position: absolute;
-  top: 35px;
+/* Footer */
+
+#nxthemesPageSelector {
+  position: fixed;
+  z-index: 10;
+  bottom: 18px;
+  left: 0;
+  height: 18px;
   width: 100%;
+  background: url(${basePath}/skin/nxthemes-editor/img/page-selector-bg.png) repeat-x;
+}
+
+#nxthemesStatusBar {
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  left: 0;
+  height: 18px;
+  width: 100%;	
+  color: #000;
+  font: 12px Arial, sans-serif;
+  background: url(${basePath}/skin/nxthemes-editor/img/status-bar-bg.png) repeat-x;
+}
+
+#nxthemesStatusMessage {
+  padding: 2px 4px;
+  font-weight: bold;
+}
+
+#nxthemesCanvasModeArea {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 1px;
+}
+
+#nxthemesEditorInfo {
+  position: absolute;
+  right: 4px;
+  top: 0;
+  padding: 1px;
+  font:  11px bold Arial, sans-serif;
+  color: #666;
+}
+
+#nxthemesMainButtons {
+  margin: 8px;
+}
+	
+#nxthemesPerspectiveSelector {
+  float: left;
+  padding: 1px;
+  margin-left: 10px;
+}
+	
+/* Theme selector drop-down list */
+#nxthemesThemeSelector {
+  float: left;
+  padding: 1px;
+  margin-left: 70px;
+  padding: 1px;
+  font: 12px Arial, sans-serif;
+  color: #fff;
+}
+
+#nxthemesThemeSelector select {
+  font: 11px Arial, sans-serif;
+  border: 1px solid #000;
+  width: 150px;
 }
 
 
@@ -247,17 +294,6 @@ html, body {
   width: 180px;
 }
 
-/* Theme selector drop-down list */
-.nxthemesThemeSelector {
-  font: 12px Arial, sans-serif;
-  color: #fff;
-}
-
-.nxthemesThemeSelector select {
-  font: 11px Arial, sans-serif;
-  border: 1px solid #000;
-  width: 150px;
-}
 
 .nxthemesAreaStyle {
   text-align: center !important;
@@ -305,15 +341,6 @@ html, body {
   background-image: url(${basePath}/skin/nxthemes-editor/img/area-style-border-right.png);
 }
 
-
-/* canvas mode */
-#nxthemesCanvasModeArea {
-  position: absolute;
-  top: 54px;
-  right: 0;
-  background-color: #fff;
-  padding: 4px 10px;
-}
 
 div.nxthemesButtonSelector {
   font: 11px Arial, sans-serif;
@@ -588,56 +615,62 @@ div.nxthemesEditorFrame {
 .nxthemesPageTabs {
   font: 12px Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  padding-top: 20px;
-  padding-left: 15px;
-  border-bottom: 1px solid #999;
 }
 
+.nxthemesPageTabs div.themeName {
+  float: left;
+  padding: 3px;
+  margin-left: 4px;
+  color: #fff;
+  font-weight: bold;
+}
+	
 .nxthemesPageTabs ul {
+  list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.nxthemesPageTabs li {
-  float: left;
-  margin-bottom: -1px;
-  margin-left: 3px;
-  padding: 0 0 0 14px;
-  background-image: url(${basePath}/skin/nxthemes-editor/img/page-tab.png);
-  background-position: 0 -28px;
+.nxthemesPageTabs ul li.first {
+  margin-left: 4px;
 }
 
-.nxthemesPageTabs li.selected {
-  background-position: 0 0;
-  border-bottom: 1px dotted #eee;
+.nxthemesPageTabs ul li {
+  float: left;
+  display: block;
+  height: 17px;
+  padding-right: 25px;
+  margin-left: -15px;
+  position: relative;
+  background: url(${basePath}/skin/nxthemes-editor/img/bottom-tabs.png) 100% 0 no-repeat;
+  white-space: nowrap;
+}
+
+.nxthemesPageTabs ul span {
+  height: 17px;
+  line-height: 17px;
+  padding-left: 20px;
+  background: url(${basePath}/skin/nxthemes-editor/img/bottom-tabs.png) 0 -34px no-repeat;
+  display: block;
+}
+
+.nxthemesPageTabs ul li.selected {
+  z-index: 1;
+  height: 17px;
+  background: url(${basePath}/skin/nxthemes-editor/img/bottom-tabs.png) 100% -17px no-repeat;
+}
+
+.nxthemesPageTabs ul li.selected span {
+  background: url(${basePath}/skin/nxthemes-editor/img/bottom-tabs.png) 0 -17px no-repeat;
+}
+
+.nxthemesPageTabs ul a {
+  color: #000;
+  text-decoration: none;
 }
 
 .nxthemesPageTabs li.default a {
-  text-decoration: underline !important;
-}
-
-.nxthemesPageTabs li a {
-  display: block;
-  padding: 2px 14px 0 0;
-  background-image: url(${basePath}/skin/nxthemes-editor/img/page-tab.png);
-  background-position: 100% -28px;
-  color: #444 !important;
-}
-
-.nxthemesPageTabs li:hover a {
-  color: #000 !important;
-  background-position: 100% 0;
-}
-
-.nxthemesPageTabs li:hover {
-  background-position: 0 0;
-}
-
-.nxthemesPageTabs li.selected a {
-  background-position: 100% 0;
-  font-weight: normal;
-  color: #000 !important;
+  font-style: italic;
 }
 
 .nxthemesPageTabs img {
@@ -765,20 +798,6 @@ div.nxthemesEditorFrame {
   font: 0.8em Arial;
 }
 
-#nxthemesStatusMessage {
-  position: absolute;
-  z-index: 150;
-  padding: 7px 28px;
-  top: 2px;
-  right: 2px;
-  color: #000;
-  font: 12px Arial, sans-serif;
-  background-color: #ff9;
-  background-image: url(${basePath}/skin/nxthemes-editor/img/info.png);
-  background-repeat: no-repeat;
-  background-position: 7px 6px;
-  border: 2px solid #000;
-}
 
 /* layout */
 .nxthemesSizer {
@@ -892,9 +911,9 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
   font:  12px Arial, sans-serif;
 }
 
-#nxthemesThemeManager, #nxthemesPresetManager, #nxthemesStyleManager {
+.nxthemesScreen {
   position: absolute;
-  top: 80px;
+  top: 60px;
   left: 0;
   right: 0;
   background-color: #fff;
@@ -1124,15 +1143,6 @@ img.nxthemesAlignSection:hover {
 
 #nxthemesWaitAnimation img {
   vertical-align: bottom;
-}
-
-#nxthemesEditorInfo {
-  position: absolute;
-  top: 38px;
-  right: 10px;
-  padding: 0 4px;
-  font:  11px bold Arial, sans-serif;
-  color: #999;
 }
 
 #nxthemesElementPadding {

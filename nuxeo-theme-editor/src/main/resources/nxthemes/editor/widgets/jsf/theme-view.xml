@@ -21,31 +21,22 @@
     <div id="nxthemesHeader">
 
       <div id="nxthemesTopButtons">
-
-        <nxthemes:button identifier="edit canvas"
-          link="javascript:NXThemesEditor.editCanvas()"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/edit canvas" label="Refresh theme" />
      
-        <nxthemes:button identifier="manage presets"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/manage presets" label="Presets" />
-
-        <nxthemes:button identifier="manage styles"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/manage styles" label="Styles" />
-                
         <nxthemes:button identifier="manage themes"
           controlledBy="editor buttons"
-          switchTo="editor perspectives/manage themes" label="Manage themes" />
-        
+          switchTo="editor perspectives/manage themes" label="Theme manager" />
+
+        <nxthemes:button identifier="manage palettes"
+          controlledBy="editor buttons"
+          switchTo="editor perspectives/manage palettes" label="Palette manager" />
+                   
         <nxthemes:button identifier="save changes"
           link="javascript:NXThemesEditor.saveChanges()"
           label="Save changes" />
           
         <nxthemes:button identifier="exit"
           link="javascript:NXThemesEditor.exit()"
-          label="Exit" />
+          label="Exit editor" />
       </div>
 
       <!--  theme selector -->

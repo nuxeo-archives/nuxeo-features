@@ -64,14 +64,21 @@ public class Main extends ModuleRoot {
   }
 
   @GET
+  @Path("presetLibrary")
+  public Object renderPresetLibrary(@QueryParam("org.nuxeo.theme.application.path") String path) {
+    return getTemplate("presetLibrary.ftl").arg(           
+            "presets", getPresetGroups()).arg(
+            "selected_preset_group", getSelectedPresetGroup())
+  }
+  
+  @GET
   @Path("presetManager")
   public Object renderPresetManager(@QueryParam("org.nuxeo.theme.application.path") String path) {
     return getTemplate("presetManager.ftl").arg(
-            "current_theme_name", getCurrentThemeName(path)).arg(            
-            "preset_groups", getPresetGroups()).arg(
-            "preset_manager_mode", getPresetManagerMode()).arg(         
-            "selected_preset_group", getSelectedPresetGroup())
-  }
+            "current_theme_name", getCurrentThemeName(path)).arg(
+            "presets", getPresetGroups()).arg(
+            "selected_preset_group", getSelectedPresetGroup()) 
+   }
   
   @GET
   @Path("styleManager")
@@ -90,9 +97,17 @@ public class Main extends ModuleRoot {
   }  
   
   @GET
+  @Path("themeBrowser")
+  public Object renderThemeBrowser(@QueryParam("org.nuxeo.theme.application.path") String path) {
+    return getTemplate("themeBrowser.ftl").arg(
+            "current_theme_name", getCurrentThemeName(path))     
+  }
+  
+  @GET
   @Path("themeManager")
   public Object renderThemeManager(@QueryParam("org.nuxeo.theme.application.path") String path) {
     return getTemplate("themeManager.ftl").arg(
+            "theme_manager_mode", getThemeManagerMode()).arg(
             "current_theme_name", getCurrentThemeName(path))     
   }
 
@@ -771,6 +786,14 @@ public class Main extends ModuleRoot {
   }
   
   @POST
+  @Path("select_theme_manager_mode")
+  public void selectThemeManagerMode() {
+      FormData form = ctx.getForm()
+      String mode = form.getString("mode")        
+      SessionManager.setThemeManagerMode(mode)
+  }
+  
+  @POST
   @Path("update_element_description")
   public void updateElementDescription() {
       FormData form = ctx.getForm()
@@ -1362,6 +1385,10 @@ public class Main extends ModuleRoot {
       return SessionManager.getStyleManagerMode()
   }
   
+  public static String getThemeManagerMode() {
+      return SessionManager.getThemeManagerMode()
+  }
+  
   public static List<String> getUnidentifiedPresetNames(String themeName) {
       return PresetManager.getUnidentifiedPresetNames(themeName)
   }
@@ -1442,12 +1469,17 @@ public class Main extends ModuleRoot {
       return pages
     }
 
+    boolean first = true;
     for (PageElement page : ThemeManager.getPagesOf(currentTheme)) {
       String pageName = page.getName()
       String link = String.format("%s/%s", currentThemeName, pageName)
       String className = pageName.equals(currentPageName) ? "selected" : ""
       if (defaultPageName.equals(pageName)) {
         className += " default"
+      }
+      if (first) {
+        className += " first"
+        first = false
       }
       pages.add(new PageInfo(pageName, link, className))
     }

@@ -696,8 +696,7 @@ NXThemesEditor.addPage = function(themeName) {
 };
 
 NXThemesEditor.switchToCanvas = function() {
-    NXThemes.getControllerById('editor buttons').select('edit canvas');
-    NXThemes.getControllerById('editor perspectives').switchTo('edit canvas');
+    NXThemes.getControllerById('editor perspectives').switchTo('canvas editor');
 };
 
 NXThemesEditor.editCanvas = function() {
@@ -1898,6 +1897,30 @@ NXThemesFragmentFactory.selectView = function(view) {
          },
          onSuccess: function(r) {
         	 NXThemes.getViewById("fragment factory").refresh();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }         
+    });
+};
+
+//THEME MANAGER
+
+if (typeof NXThemesThemeManager == "undefined") {
+	NXThemesThemeManager = {
+    };
+}
+
+NXThemesThemeManager.setEditMode = function(mode) {
+    var url = nxthemesBasePath + "/nxthemes-editor/select_theme_manager_mode"; 
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             mode: mode
+         },
+         onSuccess: function(req) {
+        	 NXThemes.getViewById("theme manager").refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;

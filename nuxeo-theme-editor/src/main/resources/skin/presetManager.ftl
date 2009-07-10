@@ -5,65 +5,12 @@
 <!-- preset menu -->
 <@nxthemes_view resource="preset-menu.json" />     
       
-<div id="nxthemesPresetManager">
-
-<div class="nxthemesButtonSelector" style="float: right; padding: 11px 5px 12px 0;">
-  <#if preset_manager_mode == 'by theme'>            
-      <a href="javascript:void(0)" onclick="NXThemesPresetManager.setEditMode('by palette')">By palette</a>
-      <a href="javascript:void(0)" class="selected">By theme</a>
-  <#else>
-      <a href="javascript:void(0)" class="selected">By palette</a>
-      <a href="javascript:void(0)" onclick="NXThemesPresetManager.setEditMode('by theme')">By theme</a>
-  </#if>
-</div>
-
-<h1 class="nxthemesEditor">Manage presets</h1>
-
 <a onclick="NXThemesEditor.editCanvas()" class="nxthemesBack">Back to canvas</a>
+      
+<div id="nxthemesPresetManager" class="nxthemesScreen">
 
 <table cellpadding="0" cellspacing="0" style="width: 100%"><tr>
 <td style="vertical-align: top; width: 200px; padding-right: 5px;">
-
-<#if preset_manager_mode == 'by theme'>
-
-<h3 class="nxthemesEditor">THEMES</h3>
-<ul class="nxthemesSelector">
-<#list themes as theme>
-<li <#if theme.name = current_theme_name>class="selected"</#if>><a href="javascript:void(0)" 
-  onclick="NXThemesEditor.selectTheme('${theme.name}', 'preset manager')">
-  <#if theme.customized>
-    <img src="${skinPath}/img/customized-theme-16.png" width="16" height="16" />
-  <#else>
-    <#if theme.xmlConfigured>
-      <img src="${skinPath}/img/theme-16.png" width="16" height="16" />
-    </#if>
-    <#if theme.custom>
-      <img src="${skinPath}/img/custom-theme-16.png" width="16" height="16" />
-    </#if>
-  </#if>
-  ${theme.name} <span style="font-size: 11px; font-style: italic; overflow: hidden">(${theme.src})</span></a></li>
-</#list>
-</ul>
-
-<#else>
-
-<h3 class="nxthemesEditor">PALETTES</h3>
-<ul class="nxthemesSelector">
-<#list preset_groups as group>
-<li <#if group = selected_preset_group>class="selected"</#if>><a href="javascript:void(0)" 
-  onclick="NXThemesPresetManager.selectPresetGroup('${group}')">
-  <img src="${skinPath}/img/palette-16.png" width="16" height="16" />
-  ${group}</a></li>
-</#list>
-</ul>
-</#if>
-
-</td>
-<td style="padding-left: 10px; vertical-align: top;">
-
-<#if preset_manager_mode == 'by theme'>
-
-<h2 class="nxthemesEditor" style="text-transform: uppercase">${current_theme_name}</h2>
 
 <#assign presets = This.getCustomPresets(current_theme_name)>
 
@@ -266,66 +213,6 @@ ${preset_info.preview}
 </#if>
         
 </table>
-
-</#if>
-
-
-<#else>
-
-
-<#if selected_preset_group>
-<!-- Palettes -->
-
-<h2 class="nxthemesEditor" style="text-transform: uppercase">${selected_preset_group}</h2>
-
-<table cellspacing="2" cellpadding="2" style="width: 100%">
-<#assign count = 0 /> 
-<#assign row = 1 /> 
-
-<#list This.getGlobalPresets(selected_preset_group) as preset_info>
-<#assign row = (count % 10) +1 /> 
-
-  <#if row == 0>
-    <tr>
-  </#if>
-<td class="preset">
-
-<div class="preview" title="${preset_info.value}">
-<ins class="model">
-  {"id": "preset_${group}_${preset_info.name}",
-   "type": "preset",
-   "data": {
-     "id": "${preset_info.id}",   
-     "group": "${selected_preset_group}",
-     "name": "${preset_info.name}",
-     "editable": false,
-     "copyable": true,
-     "pastable": false,
-     "deletable": false
-     }
-  }
-</ins>
-${preset_info.preview}</div>
-<div class="name">${preset_info.name}</div>
-
-</td>
-
-  <#if row == 10>
-    </tr>
-  </#if>
-  
-  <#assign count = count + 1/>
-</#list>
-
-<#if row < 10>
-  <#list row..9 as i>
-      <td></td>
-  </#list>
-  </tr>
-</#if>
-        
-</table>
-</#if>
 
 </#if>
 
