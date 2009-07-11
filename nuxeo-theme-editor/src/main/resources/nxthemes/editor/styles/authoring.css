@@ -251,8 +251,21 @@ html, body {
   right: 4px;
   top: 0;
   padding: 1px;
-  font:  11px bold Arial, sans-serif;
+  font:  12px Arial, sans-serif;
   color: #666;
+}
+
+#nxthemesWaitAnimation {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  padding: 1px;
+  font:  11px bold Arial, sans-serif;
+  color: #333;
+}
+
+#nxthemesWaitAnimation img {
+  vertical-align: bottom;
 }
 
 #nxthemesMainButtons {
@@ -633,6 +646,10 @@ div.nxthemesEditorFrame {
 
 .nxthemesPageTabs ul li.first {
   margin-left: 4px;
+}
+
+.nxthemesPageTabs ul li.first span {
+    background: url(${basePath}/skin/nxthemes-editor/img/bottom-tabs.png) no-repeat;
 }
 
 .nxthemesPageTabs ul li {
@@ -1130,20 +1147,6 @@ img.nxthemesAlignSection:hover {
   padding: 30px;
 }
 
-#nxthemesWaitAnimation {
-  position: absolute;
-  top: 38px;
-  right: 5px;
-  padding: 0;
-  font:  12px Arial, sans-serif;
-  color: #666;
-  text-transform: uppercase;  
-  background-color: #fff;
-}
-
-#nxthemesWaitAnimation img {
-  vertical-align: bottom;
-}
 
 #nxthemesElementPadding {
   left: 100px;

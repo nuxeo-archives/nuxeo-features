@@ -14,6 +14,8 @@
 
 package org.nuxeo.theme.editor;
 
+import java.util.List;
+
 import org.nuxeo.ecm.webengine.WebEngine;
 import org.nuxeo.ecm.webengine.session.AbstractComponent;
 import org.nuxeo.ecm.webengine.session.UserSession;
@@ -37,6 +39,8 @@ public class SessionManager extends AbstractComponent {
     private static final String CLIPBOARD_PRESET_ID = "org.nuxeo.theme.editor.clipboard_preset";
     private static final String SELECTED_FRAGMENT_TYPE = "org.nuxeo.theme.editor.fragment_type";
     private static final String SELECTED_FRAGMENT_VIEW = "org.nuxeo.theme.editor.fragment_view";
+    private static final String WORKSPACE_THEMES = "org.nuxeo.theme.editor.workspace_themes";
+    
 
     private static UserSession getUserSession() {
         return WebEngine.getActiveContext().getUserSession();
@@ -160,6 +164,15 @@ public class SessionManager extends AbstractComponent {
 
     public static synchronized String getFragmentView() {
         return (String) getUserSession().get(SELECTED_FRAGMENT_VIEW);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static synchronized List<ThemeInfo> getWorkspaceThemes() {
+        return (List<ThemeInfo>) getUserSession().get(WORKSPACE_THEMES);
+    }
+    
+    public static synchronized void setWorkspaceThemes(List<ThemeInfo> themes) {
+        getUserSession().put(WORKSPACE_THEMES, themes);
     }
 
 }

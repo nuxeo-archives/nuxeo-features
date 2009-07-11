@@ -46,7 +46,7 @@ public class Main extends ModuleRoot {
     public Object renderThemeSelector(@QueryParam("org.nuxeo.theme.application.path") String path) {
       return getTemplate("themeSelector.ftl").arg(
               "current_theme_name", getCurrentThemeName(path)).arg(
-              "themes", getThemes(path))
+              "themes", getWorkspaceThemes())
     }
 
   @GET
@@ -100,6 +100,7 @@ public class Main extends ModuleRoot {
   @Path("themeBrowser")
   public Object renderThemeBrowser(@QueryParam("org.nuxeo.theme.application.path") String path) {
     return getTemplate("themeBrowser.ftl").arg(
+            "workspace_themes", getWorkspaceThemes()).arg(
             "current_theme_name", getCurrentThemeName(path))     
   }
   
@@ -955,6 +956,15 @@ public class Main extends ModuleRoot {
       }          
   }
   
+  @POST
+  @Path("add_theme_to_workspace")
+  public void addThemeToWorkspace() {
+      FormData form = ctx.getForm()
+      String name = form.getString("name")
+      def themes = getWorkspaceThemes()
+      themes.add(new ThemeInfo(name, name))
+      setWorkspaceThemes(themes)
+  }
   
   /* API */
    
@@ -1499,9 +1509,24 @@ public class Main extends ModuleRoot {
     }
     return themes
   }
-
+    
   public static ThemeManager getThemeManager() {
       return Manager.getThemeManager()
+  }
+  
+  public static List<ThemeInfo> getWorkspaceThemes() {
+      def themes = SessionManager.getWorkspaceThemes()
+      if (themes == null) {
+          return []
+      }
+      return themes
+  }
+  
+  public static void setWorkspaceThemes(themes) {
+      SessionManager.setWorkspaceThemes(themes)
+  }
+  
+  public static void removeThemeFromWorkspace(String name) {
   }
   
 }

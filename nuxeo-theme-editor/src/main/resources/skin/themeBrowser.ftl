@@ -5,11 +5,15 @@
 
   <a onclick="NXThemesEditor.editCanvas()" class="nxthemesBack">Back to canvas</a>
 
+  <table style="width: 100%">
+  <tr>
+  <td style="vertical-align: top; width: 50%; overflow: scroll">
+  
   <#assign themes=themeManager.getThemeDescriptors()>
   <ul class="nxthemesSelector">
   <#list themes as theme>
-  <li <#if theme.name = current_theme_name>class="selected"</#if>><a href="javascript:void(0)" 
-    onclick="NXThemesEditor.selectTheme('${theme.name}', 'theme manager')">
+  <li><a href="javascript:void(0)" 
+    onclick="NXThemesEditor.addThemeToWorkspace('${theme.name}', 'theme browser')">
     <#if theme.customized>
       <img src="${skinPath}/img/customized-theme-16.png" width="16" height="16" />
     <#else>
@@ -24,14 +28,18 @@
   </#list>
   </ul>
 
-  <form action="javascript:void(0)" style="margin-top: 20px">
-    <div>
-      <button onclick="javascript:NXThemesEditor.addTheme()">
-      <img src="${skinPath}/img/add-theme-16.png" width="16" height="16" />
-      Create a new theme</button>
-    </div>
-  </form>
-
+  </td>
+  <td style="vertical-align: top; width: 50%; overflow: scroll">
+  
+  <ul class="nxthemesSelector">
+    <#list workspace_themes as theme>
+      <li><a href="javascript:void(0)"><img src="${skinPath}/img/theme-16.png" width="16" height="16" /> ${theme.name}</a></li>
+    </#list>
+  </ul>
+  
+  </td>
+  </tr>
+  </table>
 </div>
 
 </div>
