@@ -248,10 +248,10 @@ html, body {
 
 #nxthemesEditorInfo {
   position: absolute;
-  right: 4px;
-  top: 0;
-  padding: 1px;
-  font:  12px Arial, sans-serif;
+  right: 6px;
+  top: 2px;
+  padding: 0;
+  font:  11px Arial, sans-serif;
   color: #666;
 }
 

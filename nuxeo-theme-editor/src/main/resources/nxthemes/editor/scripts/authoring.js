@@ -629,7 +629,7 @@ NXThemesEditor.switchTheme = function(info) {
     NXThemesEditor.refreshCanvas();
 };
 
-NXThemesEditor.addThemeToWorkspace = function(name) {
+NXThemesEditor.addThemeToWorkspace = function(name, viewId) {
     var url = nxthemesBasePath + "/nxthemes-editor/add_theme_to_workspace"; 
     new Ajax.Request(url, {
          method: 'post',
@@ -646,6 +646,25 @@ NXThemesEditor.addThemeToWorkspace = function(name) {
          }         
     });
 };
+
+NXThemesEditor.removeThemeFromWorkspace = function(name, viewId) {
+    var url = nxthemesBasePath + "/nxthemes-editor/remove_theme_from_workspace"; 
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             name: name
+         },          
+         onSuccess: function(r) {
+             NXThemes.getViewById(viewId).refresh();
+        	 NXThemes.getViewById('theme selector').refresh();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }         
+    });
+};
+
 
 NXThemesEditor.switchPage = function(info) {
     var target = Event.element(info);

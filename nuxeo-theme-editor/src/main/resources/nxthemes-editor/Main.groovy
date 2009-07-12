@@ -46,7 +46,7 @@ public class Main extends ModuleRoot {
     public Object renderThemeSelector(@QueryParam("org.nuxeo.theme.application.path") String path) {
       return getTemplate("themeSelector.ftl").arg(
               "current_theme_name", getCurrentThemeName(path)).arg(
-              "themes", getWorkspaceThemes())
+              "themes", getWorkspaceThemes(path))
     }
 
   @GET
@@ -99,8 +99,19 @@ public class Main extends ModuleRoot {
   @GET
   @Path("themeBrowser")
   public Object renderThemeBrowser(@QueryParam("org.nuxeo.theme.application.path") String path) {
+    def availableThemes = []
+    def workspaceThemes =  SessionManager.getWorkspaceThemes()
+    if (workspaceThemes == null) {
+        workspaceThemes = []
+    }
+    for (ThemeInfo theme : themeManager.getThemeDescriptors()) {
+        if (!workspaceThemes.contains(theme.getName())) {
+            availableThemes.add(theme)
+        }
+    }
     return getTemplate("themeBrowser.ftl").arg(
-            "workspace_themes", getWorkspaceThemes()).arg(
+            "available_themes", availableThemes).arg(
+            "workspace_themes", workspaceThemes).arg(
             "current_theme_name", getCurrentThemeName(path))     
   }
   
@@ -961,11 +972,30 @@ public class Main extends ModuleRoot {
   public void addThemeToWorkspace() {
       FormData form = ctx.getForm()
       String name = form.getString("name")
-      def themes = getWorkspaceThemes()
-      themes.add(new ThemeInfo(name, name))
-      setWorkspaceThemes(themes)
+      def themes = SessionManager.getWorkspaceThemes()
+      if (themes == null) {
+          themes = []
+      }
+      if (! themes.contains(name)) {
+          themes.add(name)
+      }
+      SessionManager.setWorkspaceThemes(themes)
   }
   
+  @POST
+  @Path("remove_theme_from_workspace")
+  public void removeThemeFromWorkspace() {
+      FormData form = ctx.getForm()
+      String name = form.getString("name")
+      def themes = SessionManager.getWorkspaceThemes()
+      if (themes == null) {
+          themes = []
+      }
+      if (themes.contains(name)) {
+          themes.remove(name)
+      }
+      SessionManager.setWorkspaceThemes(themes)
+  }  
   /* API */
    
   public static ThemeDescriptor getThemeDescriptor(String themeName) {
@@ -1514,20 +1544,18 @@ public class Main extends ModuleRoot {
       return Manager.getThemeManager()
   }
   
-  public static List<ThemeInfo> getWorkspaceThemes() {
-      def themes = SessionManager.getWorkspaceThemes()
-      if (themes == null) {
+  public static List<ThemeInfo> getWorkspaceThemes(String path) {
+      def themes = []
+      def workspaceThemes = SessionManager.getWorkspaceThemes()
+      if (workspaceThemes == null) {
           return []
+      }
+      for (String name : workspaceThemes) {
+          themes.add(new ThemeInfo(name, name))
       }
       return themes
   }
-  
-  public static void setWorkspaceThemes(themes) {
-      SessionManager.setWorkspaceThemes(themes)
-  }
-  
-  public static void removeThemeFromWorkspace(String name) {
-  }
+
   
 }
 
