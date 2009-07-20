@@ -44,9 +44,7 @@ public class Main extends ModuleRoot {
     @GET
     @Path("themeSelector")
     public Object renderThemeSelector(@QueryParam("org.nuxeo.theme.application.path") String path) {
-      return getTemplate("themeSelector.ftl").arg(
-              "current_theme_name", getCurrentThemeName(path)).arg(
-              "themes", getWorkspaceThemes(path))
+      return getTemplate("themeSelector.ftl").arg("themes", getWorkspaceThemes(path))
     }
 
   @GET
@@ -100,19 +98,19 @@ public class Main extends ModuleRoot {
   @Path("themeBrowser")
   public Object renderThemeBrowser(@QueryParam("org.nuxeo.theme.application.path") String path) {
     def availableThemes = []
-    def workspaceThemes =  SessionManager.getWorkspaceThemes()
-    if (workspaceThemes == null) {
-        workspaceThemes = []
+    def workspaceThemes =  getWorkspaceThemes(path)
+    def workspaceThemeNames =  []
+    for (ThemeInfo theme : workspaceThemes) {
+        workspaceThemeNames.add(theme.getName())
     }
     for (ThemeInfo theme : themeManager.getThemeDescriptors()) {
-        if (!workspaceThemes.contains(theme.getName())) {
+        if (!workspaceThemeNames.contains(theme.getName())) {
             availableThemes.add(theme)
         }
     }
     return getTemplate("themeBrowser.ftl").arg(
             "available_themes", availableThemes).arg(
-            "workspace_themes", workspaceThemes).arg(
-            "current_theme_name", getCurrentThemeName(path))     
+            "workspace_themes", getWorkspaceThemes(path))
   }
   
   @GET
@@ -1528,14 +1526,12 @@ public class Main extends ModuleRoot {
   
   public static List<ThemeInfo> getThemes(applicationPath) {
     def themes = []
-    String defaultTheme = getDefaultTheme(applicationPath)
-    String defaultThemeName = defaultTheme.split("/")[0]
-    String defaultPageName = defaultTheme.split("/")[1]
+    String defaultPageName = "default"
     String currentThemeName = getCurrentThemeName(applicationPath)
     String templateEngine = getTemplateEngine(applicationPath)
     for (name in ThemeManager.getThemeNames(templateEngine)) {
       String path = String.format("%s/%s", name, defaultPageName)
-      themes.add(new ThemeInfo(name, path))
+      themes.add(new ThemeInfo(name, path, name == currentThemeName))
     }
     return themes
   }
@@ -1544,18 +1540,22 @@ public class Main extends ModuleRoot {
       return Manager.getThemeManager()
   }
   
-  public static List<ThemeInfo> getWorkspaceThemes(String path) {
+  public static List<ThemeInfo> getWorkspaceThemes(path) {
       def themes = []
+      String currentThemeName = getCurrentThemeName(path)
       def workspaceThemes = SessionManager.getWorkspaceThemes()
       if (workspaceThemes == null) {
-          return []
+          workspaceThemes = []
+      }
+      if (!workspaceThemes.contains(currentThemeName)) {
+          workspaceThemes.add(currentThemeName)
       }
       for (String name : workspaceThemes) {
-          themes.add(new ThemeInfo(name, name))
+          String pagePath = String.format("%s/default", name)
+          themes.add(new ThemeInfo(name, pagePath, name == currentThemeName))
       }
       return themes
   }
 
-  
 }
 

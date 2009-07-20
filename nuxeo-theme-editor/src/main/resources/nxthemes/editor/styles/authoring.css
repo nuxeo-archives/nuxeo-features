@@ -294,6 +294,9 @@ html, body {
   width: 150px;
 }
 
+#nxthemesThemeSelector option.selected {
+  font-style: italic;
+}
 
 /* Perspective selector drop-down list */
 .nxthemesPerspectiveSelector {
@@ -1014,11 +1017,28 @@ ul.nxthemesSelector li a:hover {
   color: #000;
 }
 
+ul.nxthemesSelector li a span.info {
+  visibility: hidden;
+}
+
+ul.nxthemesSelector li a:hover span.info {
+  font-weight: bold;
+  visibility: visible;
+}
+
 ul.nxthemesSelector li.selected a {
   background-color: #eee;
   border: 1px solid #ccc;
 }
 
+ul.nxthemesSelector li.disabled a {
+  color: #999;
+  font-style: italic;
+}
+
+ul.nxthemesSelector li.disabled a:hover span.info {
+  visibility: hidden;
+}
 ul.nxthemesSelector img {
   border: none;
   vertical-align: middle;	
