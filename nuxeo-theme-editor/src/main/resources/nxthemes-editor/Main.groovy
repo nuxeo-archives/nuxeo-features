@@ -65,7 +65,7 @@ public class Main extends ModuleRoot {
   @Path("presetLibrary")
   public Object renderPresetLibrary(@QueryParam("org.nuxeo.theme.application.path") String path) {
     return getTemplate("presetLibrary.ftl").arg(           
-            "presets", getPresetGroups()).arg(
+            "preset_groups", getPresetGroups()).arg(
             "selected_preset_group", getSelectedPresetGroup())
   }
   

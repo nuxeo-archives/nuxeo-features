@@ -16,22 +16,18 @@
     <div id="nxthemesHeader">
 
       <div id="nxthemesMainButtons">
-      
-        <@nxthemes_button identifier="theme_browser"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/theme browser"
-          label="Themes" />
                                       
-        <@nxthemes_button identifier="preset_catalog"
+        <@nxthemes_button identifier="preset_library"
           controlledBy="editor buttons"
-          switchTo="editor perspectives/preset catalog"
-          label="Presets" />
+          switchTo="editor perspectives/preset library"
+          label="Preset library" />
 
         <@nxthemes_button identifier="context_actions"
           classNames="dropList"
           controlledBy="editor buttons"
           switchTo="editor perspectives/context actions"
-          label="Actions" />    
+          label="Actions" />
+         
 
       </div>
 
@@ -53,15 +49,13 @@
           classNames="dropList"
           controlledBy="editor buttons"
           switchTo="editor perspectives/view modes"
-          label="View" />     
-
+          label="View" />      
+          
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
           label="Quit" />
 
       </div>
-
-
 
     </div>
 
@@ -132,7 +126,7 @@
       controlledBy="editor perspectives"
       visibleInPerspectives="theme browser" />
       
-    <!-- preset bank -->
+    <!-- preset library -->
     <@nxthemes_panel identifier="preset library"
       url="${basePath}/nxthemes-editor/presetLibrary"
       controlledBy="editor perspectives"

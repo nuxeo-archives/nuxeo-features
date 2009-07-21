@@ -608,9 +608,12 @@ NXThemesEditor.deleteElement = function(info) {
 };
 
 NXThemesEditor.selectTheme = function(name, viewId) {
-    if (name !== null) {
+    if (name) {
         NXThemes.setCookie("nxthemes.theme", name);
         NXThemes.getViewById(viewId).refresh();
+    } else {
+       	NXThemes.getControllerById('editor perspectives').switchTo('theme browser');
+    	NXThemes.expireCookie("nxthemes.theme");
     }
 };
 
@@ -1164,7 +1167,7 @@ NXThemesPresetManager.selectPresetGroup = function(group) {
              group: group
          },
          onSuccess: function(r) {
-        	 NXThemes.getViewById("preset manager").refresh();
+        	 NXThemes.getViewById("preset library").refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;

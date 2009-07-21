@@ -1,14 +1,15 @@
-<div>
-<#assign themeManager=This.getThemeManager()>
+<div id="nxthemesPresetLibrary" class="nxthemesPresets nxthemesScreen">
 
 <!-- preset menu -->
 <@nxthemes_view resource="preset-menu.json" />     
-      
-<a onclick="NXThemesEditor.editCanvas()" class="nxthemesBack">Back to canvas</a>
-      
-<div id="nxthemesPresetBank" class="nxthemesScreen">
 
-<table cellpadding="0" cellspacing="0" style="width: 100%"><tr>
+<table style="width: 100%;" cellpadding="3" cellspacing="2">
+  <tr>
+    <th style="text-align: left; width: 25%; background-color: #999; color: #fff">Library</th>
+    <th style="text-align: left; width: 75%; background-color: #999; color: #fff">Presets</th>
+  </tr>
+
+<tr>
 <td style="vertical-align: top; width: 200px; padding-right: 5px;">
 
 <ul class="nxthemesSelector">
@@ -77,7 +78,8 @@ ${preset_info.preview}</div>
 
 </td></tr></table>
 
+  <button style="border: 1px solid #ccc; margin-top: 10px" onclick="NXThemesEditor.editCanvas()">DONE</button>
+  
 </div>
 
-</div>
 
