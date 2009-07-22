@@ -282,7 +282,7 @@ html, body {
 #nxthemesThemeSelector {
   float: left;
   padding: 1px;
-  margin-left: 70px;
+  margin-left: 20px;
   padding: 1px;
   font: 12px Arial, sans-serif;
   color: #fff;
@@ -1484,7 +1484,7 @@ table.fragmentFactory td {
 
 
 .nxthemesDropDownMenu {
-  background-color: #f3f0f0;
+  background-color: #efefef;
   -moz-border-radius: 13px;
   -webkit-border-radius: 13px;
   border-radius: 13px;
@@ -1504,8 +1504,13 @@ table.fragmentFactory td {
   padding: 4px 0;
 }
 
+.nxthemesDropDownMenu li.selected {
+  font-weight: bold;
+}
+
 .nxthemesDropDownMenu li a {
    color: #000;
    font: 12px Arial, sans-serif;
    text-decoration: none;
+   display: block;
 }

@@ -1,4 +1,4 @@
-<div class="nxthemesPageTabs">
+<div id="nxthemesPageSelector" class="nxthemesPageTabs">
   <div class="themeName">${current_theme_name}/ </div>
   <ul>
     <#list pages as page>

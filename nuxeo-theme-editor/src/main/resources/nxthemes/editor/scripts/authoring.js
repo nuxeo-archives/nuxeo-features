@@ -40,11 +40,9 @@ NXThemesEditor.dehighlightSaveButton = function() {
 	NXThemes.getViewById("save changes").dehighlight();
 };
 
-NXThemesEditor.setCanvasMode =  function(info) {
-    var target = Event.element(info);
-    var mode = target.getAttribute("name");
+NXThemesEditor.setViewMode =  function(mode) {
     NXThemes.setCookie("nxthemes.mode", mode);
-    NXThemes.getViewById("canvas mode selector").refresh();
+    NXThemesEditor.hide('nxthemesViewModes')
     NXThemesEditor.refreshCanvas();
 };
 
@@ -1113,7 +1111,6 @@ NXThemes.addActions({
     'select perspective': NXThemesEditor.selectPerspective,
     'switch theme': NXThemesEditor.switchTheme,
     'switch page': NXThemesEditor.switchPage,
-    'set canvas mode': NXThemesEditor.setCanvasMode,
     'set size': NXThemesEditor.setSize,
     'add section': NXThemesEditor.addSection,
     'align section left': NXThemesEditor.alignSectionLeft,

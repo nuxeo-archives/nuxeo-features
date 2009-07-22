@@ -120,6 +120,12 @@ public class Main extends ModuleRoot {
   }
   
   @GET
+  @Path("viewModes")
+  public Object renderViewModes(@QueryParam("org.nuxeo.theme.application.path") String path) {
+    return getTemplate("viewModes.ftl")
+  }
+   
+  @GET
   @Path("themeBrowserActions")
   public Object renderThemeBrowserActions(@QueryParam("org.nuxeo.theme.application.path") String path) {
     return getTemplate("themeBrowserActions.ftl")

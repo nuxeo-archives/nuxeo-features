@@ -53,17 +53,17 @@
         controlledBy="editor perspectives,perspective selector"
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
-      <div style="position: absolute; right: 10px; top: 7px">
-
-        <@nxthemes_button identifier="view modes"
-          classNames="dropList"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/view modes"
-          label="View" />
+      <!-- view modes -->
+      <@nxthemes_panel identifier="view modes"
+        url="${basePath}/nxthemes-editor/viewModes"
+        controlledBy="editor perspectives"
+        visibleInPerspectives="canvas editor" />
           
+      <div style="position: absolute; right: 10px; top: 7px">
+               
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
-          label="Quit" />
+          label="Quit" />  
 
       </div>
 
@@ -93,13 +93,11 @@
       
 
       <!--  page selector -->
-      <div id="nxthemesPageSelector">
       <@nxthemes_panel identifier="page selector"
         url="${basePath}/nxthemes-editor/pageSelector"
         controlledBy="editor perspectives,page switcher"
         visibleInPerspectives="canvas editor,padding editor" />
-      </div>
-      
+
       <!--  Status message -->
       <div id="nxthemesStatusBar">
       
@@ -180,7 +178,7 @@
       controlledBy="editor perspectives,style manager actions"
       visibleInPerspectives="style manager" />
 
-    <!--  fragment factory -->
+    <!-- fragment factory -->
     <@nxthemes_panel identifier="fragment factory"
       url="${basePath}/nxthemes-editor/fragmentFactory"
       controlledBy="editor perspectives"
