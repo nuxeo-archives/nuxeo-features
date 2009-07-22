@@ -1481,3 +1481,31 @@ table.fragmentFactory td {
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
 }
+
+
+.nxthemesDropDownMenu {
+  background-color: #f3f0f0;
+  -moz-border-radius: 13px;
+  -webkit-border-radius: 13px;
+  border-radius: 13px;
+  border-width: 1px 2px 2px 1px;
+  border-style: solid;
+  border-color: #000;
+  padding: 4px 15px;
+}
+
+.nxthemesDropDownMenu ul {
+  margin: 0;
+  padding: 0;
+}
+
+.nxthemesDropDownMenu li {
+  list-style: none;
+  padding: 4px 0;
+}
+
+.nxthemesDropDownMenu li a {
+   color: #000;
+   font: 12px Arial, sans-serif;
+   text-decoration: none;
+}

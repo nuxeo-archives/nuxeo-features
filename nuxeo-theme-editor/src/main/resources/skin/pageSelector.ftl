@@ -1,5 +1,5 @@
 <div class="nxthemesPageTabs">
-  <div class="themeName">${current_theme_name}</div>
+  <div class="themeName">${current_theme_name}/ </div>
   <ul>
     <#list pages as page>
       <li class='${page.className}'><span><a class="switcher" href="javascript:void(0)"

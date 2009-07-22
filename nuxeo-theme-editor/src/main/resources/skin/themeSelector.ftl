@@ -6,7 +6,7 @@
       <option <#if theme.selected> selected="selected" class="selected"</#if> 
       value="${theme.path}">${theme.name}</option>
     </#list>
-    <option value="">More themes ...</option>
+    <option value="" style="border-top: 1px solid #999; margin-top: 3px;">More themes ...</option>
   </select>
   </form>
 </div>

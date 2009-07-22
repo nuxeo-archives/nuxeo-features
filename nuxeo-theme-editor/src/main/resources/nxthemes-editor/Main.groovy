@@ -112,6 +112,18 @@ public class Main extends ModuleRoot {
             "available_themes", availableThemes).arg(
             "workspace_themes", getWorkspaceThemes(path))
   }
+
+  @GET
+  @Path("themeActions")
+  public Object renderThemeActions(@QueryParam("org.nuxeo.theme.application.path") String path) {
+    return getTemplate("themeActions.ftl")
+  }
+  
+  @GET
+  @Path("themeBrowserActions")
+  public Object renderThemeBrowserActions(@QueryParam("org.nuxeo.theme.application.path") String path) {
+    return getTemplate("themeBrowserActions.ftl")
+  }
   
   @GET
   @Path("themeManager")

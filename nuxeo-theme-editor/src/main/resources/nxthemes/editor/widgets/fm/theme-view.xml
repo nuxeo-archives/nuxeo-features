@@ -16,32 +16,42 @@
     <div id="nxthemesHeader">
 
       <div id="nxthemesMainButtons">
-                                      
+            
+        <@nxthemes_button identifier="canvas_editor"
+          controlledBy="editor buttons"
+          switchTo="editor perspectives/canvas editor"
+          label="Canvas" />
+                                                
         <@nxthemes_button identifier="preset_library"
           controlledBy="editor buttons"
           switchTo="editor perspectives/preset library"
           label="Preset library" />
 
-        <@nxthemes_button identifier="context_actions"
-          classNames="dropList"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/context actions"
-          label="Actions" />
-         
+        <!-- theme actions -->
+        <@nxthemes_panel identifier="theme actions"
+          url="${basePath}/nxthemes-editor/themeActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="canvas editor" />
 
+        <!-- theme browser actions -->
+        <@nxthemes_panel identifier="theme browser actions"
+          url="${basePath}/nxthemes-editor/themeBrowserActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="theme browser" />
+          
       </div>
 
       <!--  theme selector -->
       <@nxthemes_panel identifier="theme selector"
         url="${basePath}/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
-        visibleInPerspectives="canvas editor,padding editor,context actions" />
+        visibleInPerspectives="canvas editor,padding editor" />
         
       <!--  perspective selector -->
       <@nxthemes_panel identifier="perspective selector"
         url="${basePath}/nxthemes-editor/perspectiveSelector"
         controlledBy="editor perspectives,perspective selector"
-        visibleInPerspectives="add fragments,canvas editor,padding editor,context actions" />
+        visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
       <div style="position: absolute; right: 10px; top: 7px">
 
@@ -49,7 +59,7 @@
           classNames="dropList"
           controlledBy="editor buttons"
           switchTo="editor perspectives/view modes"
-          label="View" />      
+          label="View" />
           
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
@@ -175,7 +185,6 @@
       url="${basePath}/nxthemes-editor/fragmentFactory"
       controlledBy="editor perspectives"
       visibleInPerspectives="fragment factory" />
-
 
 </body>
 

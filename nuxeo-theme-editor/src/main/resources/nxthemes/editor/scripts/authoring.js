@@ -1084,6 +1084,14 @@ NXThemesEditor.refreshCanvas = function() {
     NXThemes.getViewById("canvas area").refresh();
 };
 
+NXThemesEditor.show = function(id) {
+	$(id).show();
+};
+
+NXThemesEditor.hide = function(id) {
+	$(id).hide();
+};
+
 
 // Initialization
 
