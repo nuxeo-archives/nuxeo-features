@@ -235,8 +235,10 @@ html, body {
 }
 
 #nxthemesStatusMessage {
-  padding: 2px 4px;
-  font-weight: bold;
+  padding: 3px 7px;
+  font: bold 11px Arial;
+  background-color: #ffc;
+  color: #333;
 }
 
 #nxthemesCanvasModeArea {
@@ -1504,8 +1506,8 @@ table.fragmentFactory td {
   padding: 4px 0;
 }
 
-.nxthemesDropDownMenu li.selected {
-  font-weight: bold;
+.nxthemesDropDownMenu li.selected a {
+  font-weight: bold !important;
 }
 
 .nxthemesDropDownMenu li a {

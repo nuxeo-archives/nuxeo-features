@@ -7,7 +7,7 @@ if (typeof NXThemesEditor == "undefined") {
           var box = $("nxthemesStatusMessage");
           box.innerHTML = msg;
           box.show();
-          NXThemes.Effects.get('fadeout')(box, {delay: 1700});
+          NXThemes.Effects.get('fadeout')(box, {delay: 10000});
         },
         isLowerCase: function(s) {
           for (var i = 0; i < s.length; i= i+1) {
@@ -42,7 +42,7 @@ NXThemesEditor.dehighlightSaveButton = function() {
 
 NXThemesEditor.setViewMode =  function(mode) {
     NXThemes.setCookie("nxthemes.mode", mode);
-    NXThemesEditor.hide('nxthemesViewModes')
+    NXThemes.getViewById("view modes").refresh();
     NXThemesEditor.refreshCanvas();
 };
 

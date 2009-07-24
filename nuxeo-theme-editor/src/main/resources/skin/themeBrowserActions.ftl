@@ -8,7 +8,7 @@
 <div id="nxthemesThemeBrowserActions"
   style="position:relative; left: 0; width: 150px; top: 10px; z-index: 2; display: none"> 
   <ul class="nxthemesDropDownMenu">
-    <li><a href="javascript:void(0)" onclick="javascript:NXThemes.customizeTheme('')">Create theme</a></li>
+    <li><a href="javascript:void(0)" onclick="NXThemesEditor.addTheme()">Create theme</a></li>
   </ul>
 </div>
 </div>

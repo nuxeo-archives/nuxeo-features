@@ -9,10 +9,15 @@
 <div id="nxthemesThemeActions" 
   style="position: relative; left: 0; width: 150px; top: 10px; z-index: 2; display: none"> 
   <ul class="nxthemesDropDownMenu">
-    <li><a href="javascript:void(0)" onclick="javascript:NXThemes.customizeTheme('')">Save theme</a></li>
-    <li><a href="javascript:void(0)" onclick="javascript:NXThemes.customizeTheme('')">Customize theme</a></li>    
-    <li><a href="javascript:void(0)" onclick="javascript:NXThemes.customizeTheme('')">Download theme (as XML)</a></li>
-    <li><a href="javascript:void(0)" onclick="javascript:NXThemes.customizeTheme('')">Close theme</a></li>
+    <#if theme.saveable><li><a href="javascript:void(0)" onclick="NXThemesEditor.saveTheme('${theme.src}', 2)">Save theme</a></li></#if>
+    <#if theme.exportable>
+      <li><a href="javascript:void(0)" onclick="onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src}&amp;download=1&amp;indent=2'">Download theme (as XML)</a></li>  
+      <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src}'">Show theme (as XML)</a></li>
+    </#if>
+    <#if theme.repairable><li><a href="javascript:void(0)" onclick="NXThemesEditor.repairTheme('${theme.src}')">Repair theme</a></li></#if>
+    <#if theme.reloadable><li><a href="javascript:void(0)" onclick="NXThemesEditor.loadTheme('${theme.src}')">Restore theme</a></li></#if>
+    <#if theme.custom><li><a href="javascript:void(0)" onclick="NXThemesEditor.deleteTheme('${theme.src}')>Delete theme</a></li></#if>
+    <li><a href="javascript:void(0)" onclick="javascript:NXThemes.closeTheme('${theme.src}')">Close theme</a></li>
   </ul>
 </div>
 </div>

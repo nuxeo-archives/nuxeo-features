@@ -116,7 +116,10 @@ public class Main extends ModuleRoot {
   @GET
   @Path("themeActions")
   public Object renderThemeActions(@QueryParam("org.nuxeo.theme.application.path") String path) {
-    return getTemplate("themeActions.ftl")
+    String currentThemeName = getCurrentThemeName(path)
+    String templateEngine = getTemplateEngine(path)
+    ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(templateEngine, currentThemeName)
+    return getTemplate("themeActions.ftl").arg("theme", currentThemeDef) 
   }
   
   @GET
