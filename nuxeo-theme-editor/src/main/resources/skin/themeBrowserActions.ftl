@@ -1,6 +1,6 @@
 
 <div style="float: left; width: 150px">
-<@nxthemes_button identifier="preset_library_actions"
+<@nxthemes_button identifier="theme_browser_actions"
   classNames="dropList"
   link="javascript:NXThemesEditor.show('nxthemesPresetLibraryActions')"
   label="Actions" />

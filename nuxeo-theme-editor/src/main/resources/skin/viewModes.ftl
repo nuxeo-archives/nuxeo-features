@@ -3,8 +3,7 @@
 <div style="float: left; width: 150px; margin-left: 10px;">
 <@nxthemes_button identifier="view modes"
   classNames="dropList"
-  controlledBy="editor buttons"
-  link="javascript:NXThemesEditor.show('nxthemesViewModes')"
+  hover="NXThemesEditor.show('nxthemesViewModes')"
   label="View" />
           
 <div id="nxthemesViewModes" style="position: relative; right: 0; width: 150px; top: 10px; z-index: 2; display: none"> 
