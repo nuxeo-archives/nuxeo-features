@@ -1082,12 +1082,17 @@ NXThemesEditor.refreshCanvas = function() {
     NXThemes.getViewById("canvas area").refresh();
 };
 
-NXThemesEditor.show = function(id) {
-	$(id).show();
+NXThemesEditor.showMenu = function(id) {
+	var menu = $(id)
+	menu.show();
+	menu.observe("mouseleave", NXThemesEditor.hideMenu.bindAsEventListener(this, id));
+	menu.observe("mouseup", NXThemesEditor.hideMenu.bindAsEventListener(this, id));
 };
 
-NXThemesEditor.hide = function(id) {
-	$(id).hide();
+NXThemesEditor.hideMenu = function(e, id) {
+	var menu = $(id)
+	menu.hide();
+	menu.stopObserving();
 };
 
 

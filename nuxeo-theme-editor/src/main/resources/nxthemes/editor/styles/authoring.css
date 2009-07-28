@@ -237,7 +237,6 @@ html, body {
 #nxthemesStatusMessage {
   padding: 3px 7px;
   font: bold 11px Arial;
-  background-color: #ffc;
   color: #333;
 }
 
@@ -1485,15 +1484,16 @@ table.fragmentFactory td {
 }
 
 
+
 .nxthemesDropDownMenu {
-  background-color: #fcfcfc;
+  background-color: #f0f0f0;
   -moz-border-radius: 13px;
   -webkit-border-radius: 13px;
   border-radius: 13px;
   border-width: 1px 2px 2px 1px;
   border-style: solid;
   border-color: #000;
-  padding: 4px 15px;
+  padding: 6px 6px;
 }
 
 .nxthemesDropDownMenu ul {
@@ -1503,7 +1503,7 @@ table.fragmentFactory td {
 
 .nxthemesDropDownMenu li {
   list-style: none;
-  padding: 4px 0;
+
 }
 
 .nxthemesDropDownMenu li.selected a {
@@ -1511,8 +1511,16 @@ table.fragmentFactory td {
 }
 
 .nxthemesDropDownMenu li a {
-   color: #000;
-   font: 12px Arial, sans-serif;
-   text-decoration: none;
-   display: block;
+  color: #000;
+  font: 11px Arial, sans-serif;
+  text-decoration: none;
+  display: block;
+  padding: 4px 5px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.nxthemesDropDownMenu li a:hover {
+  background-color: #ddd;
 }

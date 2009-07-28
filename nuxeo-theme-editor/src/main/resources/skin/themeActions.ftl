@@ -2,7 +2,7 @@
 <div style="float: left; width: 150px">
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"
-  hover="NXThemesEditor.show('nxthemesThemeActions')"
+  hover="NXThemesEditor.showMenu('nxthemesThemeActions')"
   label="Actions" />
           
 <div id="nxthemesThemeActions"  
