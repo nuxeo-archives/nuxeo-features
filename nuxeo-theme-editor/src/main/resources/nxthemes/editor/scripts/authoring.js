@@ -31,15 +31,6 @@ if (typeof NXThemesEditor == "undefined") {
 
 }
 
-NXThemesEditor.highlightSaveButton = function() {
-	NXThemes.getViewById("save changes").highlight();
-};
-
-
-NXThemesEditor.dehighlightSaveButton = function() {
-	NXThemes.getViewById("save changes").dehighlight();
-};
-
 NXThemesEditor.setViewMode =  function(mode) {
     NXThemes.setCookie("nxthemes.mode", mode);
     NXThemes.getViewById("view modes").refresh();
@@ -984,9 +975,8 @@ NXThemesEditor.repairTheme = function(src) {
     	     src: src
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("theme manager").refresh();
-             NXThemesEditor.writeMessage("Theme cleaned up.");
+             NXThemesEditor.writeMessage("Theme repaired.");
          },
          onFailure: function(r) {
              NXThemes.getViewById("theme manager").refresh();
@@ -1008,7 +998,6 @@ NXThemesEditor.loadTheme = function(src) {
              src: src
          },
          onSuccess: function(r) {
-           NXThemesEditor.dehighlightSaveButton();
            NXThemes.getViewById("theme manager").refresh();
            NXThemesEditor.writeMessage("Theme loaded.");
          },
@@ -1069,7 +1058,6 @@ NXThemesEditor.saveChanges = function() {
          method: 'post',
          onSuccess: function(r) {
            NXThemesEditor.writeMessage("Changes saved.");
-           NXThemesEditor.dehighlightSaveButton();
          },
          onFailure: function(r) {
            var text = r.responseText;
@@ -1206,7 +1194,6 @@ NXThemesPresetManager.editPreset = function(info) {
            value: value
        },
        onSuccess: function(r) {
-    	   NXThemesEditor.highlightSaveButton();
            NXThemes.getViewById("preset manager").refresh();
        },
        onFailure: function(r) {
@@ -1232,7 +1219,6 @@ NXThemesPresetManager.renamePreset = function(info) {
            new_name: newName
        },
        onSuccess: function(r) {
-    	   NXThemesEditor.highlightSaveButton();
            NXThemes.getViewById("preset manager").refresh();
        },
        onFailure: function(r) {
@@ -1277,7 +1263,6 @@ NXThemesPresetManager.pastePreset = function(info) {
            preset_name: presetName
        },
        onSuccess: function(r) {
-    	   NXThemesEditor.highlightSaveButton();
            NXThemes.getViewById("preset manager").refresh();
        },
        onFailure: function(r) {
@@ -1301,7 +1286,6 @@ NXThemesPresetManager.deletePreset = function(info) {
            preset_name: presetName
        },
        onSuccess: function(r) {
-    	   NXThemesEditor.highlightSaveButton();
            NXThemes.getViewById("preset manager").refresh();
        },
        onFailure: function(r) {
@@ -1330,7 +1314,6 @@ NXThemesPresetManager.setPresetCategory = function(info) {
              category: category
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("preset manager").refresh();
          },
          onFailure: function(r) {
@@ -1355,7 +1338,6 @@ NXThemesPresetManager.addMissingPreset = function(themeName, presetName) {
              value: presetValue
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("preset manager").refresh();
          },
          onFailure: function(r) {
@@ -1381,7 +1363,6 @@ NXThemesPresetManager.convertValueToPreset = function(themeName, category, prese
              value: presetValue
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("preset manager").refresh();
          },
          onFailure: function(r) {
@@ -1513,7 +1494,6 @@ NXThemesStyleEditor.createStyle = function() {
     new Ajax.Request(url, {
          method: 'post',
          onSuccess: function(r) {
-    	     NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("element style").refresh();
              NXThemesEditor.writeMessage("New style created.");
          },
@@ -1677,7 +1657,6 @@ NXThemesStyleEditor.makeElementUseNamedStyle = function(select) {
          method: 'post',
          parameters: parameters,
          onSuccess: function(req) {
-    	     NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("element style").refresh();
          },
          onFailure: function(r) {
@@ -1705,7 +1684,6 @@ NXThemesStyleEditor.createNamedStyle = function(id, currentThemeName) {
              theme_name: currentThemeName
          },
          onSuccess: function(req) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("element style").refresh();
          },
          onFailure: function(r) {
@@ -1729,7 +1707,6 @@ NXThemesStyleEditor.deleteNamedStyle = function(id, currentThemeName, styleName)
              theme_name: currentThemeName
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("element style").refresh();
          },
          onFailure: function(r) {
@@ -1836,7 +1813,6 @@ NXThemesStyleManager.deleteUnusedStyleView = function(info) {
              style_uid: styleUid
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("style manager").refresh();
          },
          onFailure: function(r) {
@@ -1883,7 +1859,6 @@ NXThemesStyleManager.updateNamedStyleCSS = function(form) {
              'css_source': css_source
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
         	 NXThemes.getViewById("style manager").refresh();
          },
          onFailure: function(r) {
