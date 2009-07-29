@@ -455,9 +455,7 @@ public class Editor {
 
         final String themeName = ThemeManager.getThemeOf(element).getName();
         Manager.getThemeManager().themeModified(themeName);
-
         Manager.getThemeManager().stylesModified(themeName);
-
     }
 
     public static void alignElement(Element element, String position) {

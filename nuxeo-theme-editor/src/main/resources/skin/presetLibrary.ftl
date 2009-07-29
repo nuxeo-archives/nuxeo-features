@@ -78,7 +78,7 @@ ${preset_info.preview}</div>
 
 </td></tr></table>
 
-  <button style="border: 1px solid #ccc; margin-top: 10px" onclick="NXThemesEditor.editCanvas()">DONE</button>
+  <button class="nxthemesRoundButton" style="margin-top: 10px" onclick="NXThemesEditor.editCanvas()">DONE</button>
   
 </div>
 

@@ -92,7 +92,6 @@ NXThemesEditor.addFragment = function(typeName, destId) {
              dest_id: destId
          },
          onSuccess: function(r) {
-             NXThemesEditor.highlightSaveButton();
              NXThemesEditor.editCanvas();
          },
          onFailure: function(r) {
@@ -112,7 +111,7 @@ NXThemesEditor.editElement = function(info) {
              'id': id
          },
          onSuccess: function(r) {
-             NXThemes.getControllerById("editor perspectives").switchTo("edit element");
+             NXThemes.getControllerById("editor perspectives").switchTo("element editor");
              NXThemes.getViewById("element editor tabs").switchTo("element editor perspectives/edit properties");             
          },
          onFailure: function(r) {
@@ -131,7 +130,7 @@ NXThemesEditor.insertFragment = function(info) {
              'id': id
          },
          onSuccess: function(r) {
-             NXThemes.getControllerById("editor perspectives").switchTo("add fragments");
+             NXThemes.getControllerById("editor perspectives").switchTo("fragment factory");
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -150,7 +149,7 @@ NXThemesEditor.changeElementStyle = function(info) {
              'id': id
          },
          onSuccess: function(r) {
-             NXThemes.getControllerById("editor perspectives").switchTo("edit element");
+             NXThemes.getControllerById("editor perspectives").switchTo("element editor");
              NXThemes.getViewById("element editor tabs").switchTo("element editor perspectives/edit style");
          },
          onFailure: function(r) {
@@ -181,7 +180,6 @@ NXThemesEditor.setSize = function(info) {
              'width': width
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -215,7 +213,6 @@ NXThemesEditor.updateElementProperties = function(info) {
              property_map: propertyMap.toJSON()
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("element properties").refresh();
              NXThemesEditor.writeMessage("Properties updated.");
          },
@@ -250,7 +247,6 @@ NXThemesEditor.updateElementWidget = function(info) {
              'view_name': viewName
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.writeMessage("Widget changed.");
          },
          onFailure: function(r) {
@@ -286,7 +282,6 @@ NXThemesEditor.updateElementDescription = function(info) {
              'description': description
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.writeMessage("Description changed.");
          },
          onFailure: function(r) {
@@ -325,7 +320,6 @@ NXThemesEditor.updateElementStyle = function() {
              property_map: propertyMap.toJSON()
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesStyleEditor.refreshCssPreview();
              NXThemesEditor.writeMessage("Style updated.");
          },
@@ -359,7 +353,6 @@ NXThemesEditor.updateElementStyleCss = function() {
              css_source: cssSource
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesStyleEditor.refreshCssPreview();
              NXThemesEditor.writeMessage("Style updated.");
          },
@@ -395,7 +388,6 @@ NXThemesEditor.setElementVisibility = function(info) {
              'perspectives': perspectives
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById("element visibility").refresh();
              NXThemesEditor.writeMessage("Visibility changed.");
          },
@@ -459,7 +451,6 @@ NXThemesEditor.splitElement = function(info) {
              id: id
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -503,7 +494,6 @@ NXThemesEditor.updateElementPadding = function(info) {
              property_map: propertyMap.toJSON()
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -528,7 +518,6 @@ NXThemesEditor.alignElement = function(info) {
              position: position
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -547,7 +536,6 @@ NXThemesEditor.duplicateElement = function(info) {
              id: id
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -566,7 +554,6 @@ NXThemesEditor.pasteElement = function(info) {
              dest_id: destId
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
              NXThemesEditor.writeMessage("Element pasted.");
          },
@@ -586,7 +573,6 @@ NXThemesEditor.deleteElement = function(info) {
              id: id
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -752,7 +738,6 @@ NXThemesEditor.addPreset = function(themeName, category, view_id) {
              category: category
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById(view_id).refresh();
          },
          onFailure: function(r) {
@@ -777,7 +762,6 @@ NXThemesEditor.editPreset = function(themeName, presetName, value, view_id) {
              value: value
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getViewById(view_id).refresh();
          },
          onFailure: function(r) {
@@ -797,7 +781,6 @@ NXThemesEditor.addSection = function(info) {
              id: id
          },         
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -818,7 +801,6 @@ NXThemesEditor.alignSection = function(info, position) {
              position: position
          }, 
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -871,7 +853,6 @@ NXThemesEditor.setAreaStyle = function(info) {
              category: category
          },          
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemes.getControllerById('area style perspectives').switchTo('style chooser');
          },
          onFailure: function(r) {
@@ -901,7 +882,6 @@ NXThemesEditor.updateAreaStyle = function(value) {
              value: value
          }, 
          onSuccess: function(r) {
-        	 NXThemesEditor.highlightSaveButton();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {

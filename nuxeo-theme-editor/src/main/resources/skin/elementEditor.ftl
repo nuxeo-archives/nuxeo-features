@@ -1,4 +1,3 @@
-<div>
 
 <!--  Style picker -->
 <@nxthemes_panel identifier="style picker"
@@ -6,7 +5,7 @@
   controlledBy="style editor perspectives,toolbox mover"
   visibleInPerspectives="style picker" />
 
-<div id="nxthemesElementEditor">
+<div id="nxthemesElementEditor" class="nxthemesScreen">
 
 <@nxthemes_controller resource="element-form-actions.json" />
 <@nxthemes_controller resource="element-editor-perspectives.json" />
