@@ -1483,17 +1483,15 @@ table.fragmentFactory td {
   border-right: 1px solid #ccc;
 }
 
-
 .nxthemesDropDownMenu {
-  background-color: #f6f6f6;
-  opacity: 0.97;
+  background-color: #f0f0f0;
   -moz-border-radius: 13px;
   -webkit-border-radius: 13px;
   border-radius: 13px;
-  border-width: 1px;
+  border-width: 1px 2px 2px 1px;
   border-style: solid;
-  border-color: #666;
-  padding: 5px 9px;
+  border-color: #000;
+  padding: 6px 8px;
 }
 
 .nxthemesDropDownMenu ul {
@@ -1512,16 +1510,25 @@ table.fragmentFactory td {
 
 .nxthemesDropDownMenu li a {
   color: #000;
-  font: 11px Arial, sans-serif;
+  font: 12px Arial, sans-serif;
   text-decoration: none;
   display: block;
-  padding: 3px 5px;
+  padding: 4px 5px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  margin: 1px 0;
 }
 
 .nxthemesDropDownMenu li a:hover {
   background-color: #ddd;
+}
+
+.nxthemesRoundButton {
+  border: 1px solid #999;
+  background-color: #ddd;
+  cursor: pointer;
+  padding: 0px 8px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
