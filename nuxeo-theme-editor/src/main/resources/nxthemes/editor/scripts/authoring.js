@@ -37,20 +37,31 @@ NXThemesEditor.setViewMode =  function(mode) {
     NXThemesEditor.refreshCanvas();
 };
 
-NXThemesEditor.deletePage = function(info) {
-    var id =  info.target.getAttribute('id');
-    if (id === null) {
-      return;
+NXThemesEditor.deletePage = function(pagePath) {
+    var ok = confirm("Deleting page, are you sure?");
+    if (!ok) {
+        return;
     }
-    var element_id = id.substr(4);
-    var url = nxthemesBasePath + "/nxthemes-editor/delete_element";
+    var i = pagePath.indexOf('/');
+    if (i <= 0) {
+    	return;
+    }
+    var pageName = pagePath.substr(i+1);
+    if (pageName == "default") {
+    	window.alert("Cannot delete the default page");
+    	return;
+    }
+    var themeName = pagePath.substr(0, i);
+    var url = nxthemesBasePath + "/nxthemes-editor/delete_page";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
-             id: element_id
+             page_path: pagePath
          },
          onSuccess: function(r) {
-             NXThemes.getViewById("theme selector").refresh();
+        	 NXThemesEditor.selectTheme(themeName + "/default");
+             NXThemes.getViewById("page selector").refresh();
+             NXThemes.getViewById("theme actions").refresh();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -74,7 +85,6 @@ NXThemesEditor.moveElement = function(info) {
          },
          onSuccess: function(r) {
              NXThemesEditor.refreshCanvas();
-             NXThemesEditor.highlightSaveButton();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -582,10 +592,9 @@ NXThemesEditor.deleteElement = function(info) {
     });
 };
 
-NXThemesEditor.selectTheme = function(name, viewId) {
+NXThemesEditor.selectTheme = function(name) {
     if (name) {
         NXThemes.setCookie("nxthemes.theme", name);
-        NXThemes.getViewById(viewId).refresh();
     } else {
        	NXThemes.getControllerById('editor perspectives').switchTo('theme browser');
     	NXThemes.expireCookie("nxthemes.theme");
@@ -602,7 +611,8 @@ NXThemesEditor.selectPerspective = function(info) {
 NXThemesEditor.switchTheme = function(info) {
     var form = Event.findElement(info, "form");
     var name = Form.findFirstElement(form).getValue();
-    NXThemesEditor.selectTheme(name, "theme selector");
+    NXThemesEditor.selectTheme(name);
+    NXThemes.getViewById("theme selector").refresh();
     NXThemes.getViewById("page selector").refresh();
     NXThemesEditor.refreshCanvas();
 };
@@ -648,7 +658,9 @@ NXThemesEditor.switchPage = function(info) {
     var target = Event.element(info);
     var name = target.getAttribute("name");
     if (name !== null) {
-        NXThemesEditor.selectTheme(name, "page selector");
+        NXThemesEditor.selectTheme(name);
+        NXThemes.getViewById("page selector").refresh();
+        NXThemes.getViewById("theme actions").refresh();
         NXThemesEditor.refreshCanvas();
     }
 };
@@ -671,7 +683,8 @@ NXThemesEditor.addTheme = function() {
          },
          onSuccess: function(r) {
              var text = r.responseText;
-             NXThemesEditor.selectTheme(text, "theme selector");
+             NXThemesEditor.selectTheme(text);
+             NXThemes.getViewById("page selector").refresh();
              NXThemes.getViewById("theme manager").refresh();
          },
          onFailure: function(r) {
@@ -699,8 +712,9 @@ NXThemesEditor.addPage = function(themeName) {
          },
          onSuccess: function(r) {
              var text = r.responseText;
-             NXThemesEditor.highlightSaveButton();
-             NXThemesEditor.selectTheme(text, "page selector");
+             NXThemesEditor.selectTheme(text);
+             NXThemes.getViewById("page selector").refresh();
+             NXThemes.getViewById("theme actions").refresh();
              NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
@@ -1092,7 +1106,6 @@ NXThemes.addActions({
     'align element': NXThemesEditor.alignElement,
     'split element': NXThemesEditor.splitElement,
     'set element padding': NXThemesEditor.setElementPadding,
-    'delete page': NXThemesEditor.deletePage,
     'set element widget': NXThemesEditor.setElementWidget,
     'set area style': NXThemesEditor.setAreaStyle,
     'change element style': NXThemesEditor.changeElementStyle,

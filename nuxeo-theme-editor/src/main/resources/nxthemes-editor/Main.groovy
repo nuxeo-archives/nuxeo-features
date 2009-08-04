@@ -119,7 +119,7 @@ public class Main extends ModuleRoot {
     String currentThemeName = getCurrentThemeName(path)
     String templateEngine = getTemplateEngine(path)
     ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(templateEngine, currentThemeName)
-    return getTemplate("themeActions.ftl").arg("theme", currentThemeDef) 
+    return getTemplate("themeActions.ftl").arg("theme", currentThemeDef).arg("current_page_path", getCurrentPagePath(path)) 
   }
   
   @GET
@@ -636,7 +636,7 @@ public class Main extends ModuleRoot {
 	      Editor.deletePreset(themeName, presetName)
       } catch (Exception e) {
           throw new ThemeEditorException(e.getMessage(), e)
-      }           
+      }
   }
   
   @POST
@@ -731,6 +731,18 @@ public class Main extends ModuleRoot {
       String src = form.getString("src")      
       try {
           Editor.deleteTheme(src)
+      } catch (Exception e) {
+          throw new ThemeEditorException(e.getMessage(), e)
+      }
+  }
+  
+  @POST
+  @Path("delete_page")
+  public void deletePage() {
+      FormData form = ctx.getForm()
+      String pagePath = form.getString("page_path")      
+      try {
+          Editor.deletePage(pagePath)
       } catch (Exception e) {
           throw new ThemeEditorException(e.getMessage(), e)
       }
@@ -1498,13 +1510,18 @@ public class Main extends ModuleRoot {
     return ThemeManager.getDefaultTheme(applicationPath)
   }
 
+  public static String getCurrentPagePath(applicationPath) {
+      String defaultTheme = getDefaultTheme(applicationPath)
+      def ctx = WebEngine.getActiveContext()
+      String currentPagePath = ctx.getCookie("nxthemes.theme")
+      if (currentPagePath == null) {
+        currentPagePath = defaultTheme
+      }
+      return currentPagePath
+  }    
+      
   public static String getCurrentThemeName(applicationPath) {
-    String defaultTheme = getDefaultTheme(applicationPath)
-    def ctx = WebEngine.getActiveContext()
-    String currentPagePath = ctx.getCookie("nxthemes.theme")
-    if (currentPagePath == null) {
-      currentPagePath = defaultTheme
-    }
+    String currentPagePath = getCurrentPagePath(applicationPath)
     return currentPagePath.split("/")[0]
   }
 

@@ -1,6 +1,6 @@
 <#assign view_mode = Context.getCookie("nxthemes.mode", "wysiwyg") />
 
-<div style="float: left; width: 150px; margin-left: 10px;">
+<div style="float: left; margin-right: 10px;">
 <@nxthemes_button identifier="view modes"
   classNames="dropList"
   hover="NXThemesEditor.showMenu('nxthemesViewModes')"

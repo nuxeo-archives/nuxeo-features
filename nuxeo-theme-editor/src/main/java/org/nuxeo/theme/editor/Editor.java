@@ -244,6 +244,12 @@ public class Editor {
         themeManager.deleteTheme(src);
     }
 
+    public static void deletePage(String pagePath) throws ThemeIOException,
+            ThemeException {
+        ThemeManager themeManager = Manager.getThemeManager();
+        themeManager.deletePage(pagePath);
+    }
+
     public static void saveChanges() throws ThemeIOException, ThemeException {
         ThemeManager themeManager = Manager.getThemeManager();
         boolean ok = false;
