@@ -38,7 +38,7 @@
           url="${basePath}/nxthemes-editor/themeBrowserActions"
           controlledBy="editor perspectives"
           visibleInPerspectives="theme browser" />
-          
+                  
       </div>
 
       <!--  theme selector -->
@@ -58,7 +58,7 @@
         url="${basePath}/nxthemes-editor/viewModes"
         controlledBy="editor perspectives"
         visibleInPerspectives="canvas editor" />
-          
+
       <div style="position: absolute; right: 10px; top: 7px">
                
         <@nxthemes_button identifier="quit"
