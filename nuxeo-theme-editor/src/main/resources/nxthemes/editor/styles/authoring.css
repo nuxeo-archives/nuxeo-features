@@ -208,6 +208,7 @@ html, body {
   top: 35px;
   min-height:100%;
   width: 100%;
+  background: url(/skin/nxthemes-editor/img/canvas-bg.png);
 }
 
 /* Footer */
@@ -933,13 +934,16 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 
 .nxthemesScreen {
   position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
+  top: 45px;
+  left: 10px;
+  right: 10px;
   background-color: #fff;
-  padding: 0 20px;
+  padding: 10px;
   font-family: Arial, sans-serif;
   z-index: 1;
+  border-width: 1px 2px 2px 1px;
+  border-style: solid;
+  border-color: #333;
 }
 
 .nxthemesPresets div.name {
