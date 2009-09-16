@@ -14,7 +14,7 @@
       <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src}'">Show source XML</a></li>
     </#if>
     <#if theme.repairable><li><a href="javascript:void(0)" onclick="NXThemesEditor.repairTheme('${theme.src}')">Repair theme</a></li></#if>
-    <#if theme.reloadable><li><a href="javascript:void(0)" onclick="NXThemesEditor.loadTheme('${theme.src}')">Restore theme</a></li></#if>
+    <#if theme.reloadable><li><a href="javascript:void(0)" onclick="NXThemesEditor.loadTheme('${theme.src}')">Restore theme from source</a></li></#if>
     <li><a href="javascript:void(0)" onclick="NXThemesEditor.deletePage('${current_page_path}')">Delete this page</a></li> 
     <#if theme.custom><li><a href="javascript:void(0)" onclick="NXThemesEditor.deleteTheme('${theme.src}')">Delete theme</a></li></#if>
   </ul>

@@ -1,3 +1,4 @@
+<div>
 
 <!--  Style picker -->
 <@nxthemes_panel identifier="style picker"
@@ -11,6 +12,8 @@
 <@nxthemes_controller resource="element-editor-perspectives.json" />
 <@nxthemes_controller resource="style-editor-perspectives.json" />
 <@nxthemes_controller resource="style-editor-actions.json" />
+
+<h1 class="nxthemesEditor">Element editor</h1>
 
 <#if selected_element>
 
@@ -59,8 +62,6 @@
 </#if>
 
 </div>
-
-<button class="nxthemesRoundButton" style="margin-top: 20px" onclick="NXThemesEditor.editCanvas()">DONE</button>
 
 </div>
 

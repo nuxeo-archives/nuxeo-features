@@ -1,4 +1,8 @@
+<div>
+
 <div id="nxthemesFragmentFactory" class="nxthemesScreen">
+
+<h1 class="nxthemesEditor">Add fragment</h1>
 
 <#if selected_element_id>
 
@@ -49,5 +53,7 @@
   <em>Cannot find the container to insert a fragment into.</em>
 </p>
 </#if>
+
+</div>
 
 </div>
