@@ -149,6 +149,10 @@ NXThemesEditor.insertFragment = function(info) {
     });
 };
 
+NXThemesEditor.manageStyles = function() {
+    NXThemes.getControllerById("editor perspectives").switchTo('style manager');
+};
+
 NXThemesEditor.changeElementStyle = function(info) {
     var id = info.target.getAttribute('id');
     var url = nxthemesBasePath + "/nxthemes-editor/select_element";
@@ -685,7 +689,6 @@ NXThemesEditor.addTheme = function() {
              var text = r.responseText;
              NXThemesEditor.selectTheme(text);
              NXThemes.getViewById("page selector").refresh();
-             NXThemes.getViewById("theme manager").refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -969,11 +972,9 @@ NXThemesEditor.repairTheme = function(src) {
     	     src: src
          },
          onSuccess: function(r) {
-             NXThemes.getViewById("theme manager").refresh();
              NXThemesEditor.writeMessage("Theme repaired.");
          },
          onFailure: function(r) {
-             NXThemes.getViewById("theme manager").refresh();
              var text = r.responseText;
              window.alert(text);
          }         
@@ -992,11 +993,9 @@ NXThemesEditor.loadTheme = function(src) {
              src: src
          },
          onSuccess: function(r) {
-           NXThemes.getViewById("theme manager").refresh();
            NXThemesEditor.writeMessage("Theme loaded.");
          },
          onFailure: function(r) {
-           NXThemes.getViewById("theme manager").refresh();
            var text = r.responseText;
            window.alert(text);
          }          
@@ -1012,11 +1011,9 @@ NXThemesEditor.saveTheme = function(src, indent) {
              indent: indent
          },
          onSuccess: function(r) {
-           NXThemes.getViewById("theme manager").refresh();
            NXThemesEditor.writeMessage("Theme saved.");
          },
          onFailure: function(r) {
-           NXThemes.getViewById("theme manager").refresh();
            var text = r.responseText;
            window.alert(text);
          }              
@@ -1035,11 +1032,9 @@ NXThemesEditor.deleteTheme = function(src) {
              src: src
          },
          onSuccess: function(r) {
-           NXThemes.getViewById("theme manager").refresh();
            NXThemesEditor.writeMessage("Theme deleted.");
          },
          onFailure: function(r) {
-           NXThemes.getViewById("theme manager").refresh();
            var text = r.responseText;
            window.alert(text);
          }              
@@ -1923,29 +1918,6 @@ NXThemesFragmentFactory.selectView = function(view) {
     });
 };
 
-//THEME MANAGER
-
-if (typeof NXThemesThemeManager == "undefined") {
-	NXThemesThemeManager = {
-    };
-}
-
-NXThemesThemeManager.setEditMode = function(mode) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_theme_manager_mode"; 
-    new Ajax.Request(url, {
-         method: 'post',
-         parameters: {
-             mode: mode
-         },
-         onSuccess: function(req) {
-        	 NXThemes.getViewById("theme manager").refresh();
-         },
-         onFailure: function(r) {
-             var text = r.responseText;
-             window.alert(text);
-         }         
-    });
-};
 
 
 

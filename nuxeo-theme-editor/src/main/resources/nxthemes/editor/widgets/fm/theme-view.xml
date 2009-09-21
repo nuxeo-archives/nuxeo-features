@@ -16,12 +16,7 @@
     <div id="nxthemesHeader">
 
       <div id="nxthemesMainButtons">
-            
-        <@nxthemes_button identifier="canvas_editor"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/canvas editor"
-          label="Canvas" />
-                                                
+                
         <@nxthemes_button identifier="preset_library"
           controlledBy="editor buttons"
           switchTo="editor perspectives/preset library"
@@ -61,6 +56,11 @@
 
       <div style="position: absolute; right: 10px; top: 7px">
                
+        <@nxthemes_button identifier="canvas_editor"
+          controlledBy="editor buttons"
+          switchTo="editor perspectives/canvas editor"
+          label="Canvas" />
+                                            
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
           label="Quit" />  

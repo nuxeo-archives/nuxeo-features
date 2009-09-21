@@ -1,5 +1,7 @@
 <div id="nxthemesPresetLibrary" class="nxthemesPresets nxthemesScreen">
 
+<h1 class="nxthemesEditor">Preset library</h1>
+
 <!-- preset menu -->
 <@nxthemes_view resource="preset-menu.json" />     
 

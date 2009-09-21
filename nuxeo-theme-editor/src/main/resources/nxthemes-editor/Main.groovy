@@ -848,15 +848,7 @@ public class Main extends ModuleRoot {
       String mode = form.getString("mode")        
       SessionManager.setStyleManagerMode(mode)
   }
-  
-  @POST
-  @Path("select_theme_manager_mode")
-  public void selectThemeManagerMode() {
-      FormData form = ctx.getForm()
-      String mode = form.getString("mode")        
-      SessionManager.setThemeManagerMode(mode)
-  }
-  
+    
   @POST
   @Path("update_element_description")
   public void updateElementDescription() {
