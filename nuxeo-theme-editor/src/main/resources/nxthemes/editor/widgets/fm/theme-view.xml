@@ -59,7 +59,7 @@
         <@nxthemes_button identifier="canvas_editor"
           controlledBy="editor buttons"
           switchTo="editor perspectives/canvas editor"
-          label="Canvas" />
+          label="Refresh" />
                                             
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
