@@ -24,19 +24,22 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.seam.international.LocaleSelector;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.impl.blob.ByteArrayBlob;
 import org.nuxeo.ecm.platform.preview.adapter.BlobPostProcessor;
 
 /**
  * @author <a href="mailto:troger@nuxeo.com">Thomas Roger</a>
- *
+ * 
  */
 public class AnnotationBlobPostProcessor implements BlobPostProcessor {
 
     private static final Log log = LogFactory.getLog(AnnotationBlobPostProcessor.class);
 
     protected static final int BUFFER_SIZE = 4096 * 16;
+
+    protected static final String GWT_LOCALE = "<meta name=\"gwt:property\" content=\"locale=%s\" />";
 
     protected static final String ANNOTATION_MODULE_JS = "<script type=\"text/javascript\" src='/nuxeo/org.nuxeo.ecm.platform.annotations.gwt.AnnotationFrameModule/org.nuxeo.ecm.platform.annotations.gwt.AnnotationFrameModule.nocache.js'></script>";
 
@@ -53,6 +56,12 @@ public class AnnotationBlobPostProcessor implements BlobPostProcessor {
                     | Pattern.DOTALL);
 
     public Blob process(Blob blob) {
+        String mimetype = blob.getMimeType();
+        if (mimetype == null || !mimetype.startsWith("text/")) {
+            // blob does not carry HTML payload hence there is no need to try to
+            // inject HTML metadata
+            return blob;
+        }
         try {
             String encoding = null;
             if (blob.getEncoding() == null) {
@@ -86,11 +95,16 @@ public class AnnotationBlobPostProcessor implements BlobPostProcessor {
     }
 
     protected String addAnnotationModule(String blob) {
+        LocaleSelector localeSelector = LocaleSelector.instance();
         StringBuilder sb = new StringBuilder();
         Matcher m = headPattern.matcher(blob);
         if (m.matches()) {
             sb.append(m.group(1));
             sb.append(m.group(2));
+            if (localeSelector != null) {
+                sb.append(String.format(GWT_LOCALE,
+                        localeSelector.getLocaleString()));
+            }
             sb.append(INTERNET_EXPLORER_RANGE_JS);
             sb.append(ANNOTATION_MODULE_JS);
             sb.append(m.group(3));
@@ -100,6 +114,10 @@ public class AnnotationBlobPostProcessor implements BlobPostProcessor {
                 sb.append(m.group(1));
                 sb.append(m.group(2));
                 sb.append("<head>");
+                if (localeSelector != null) {
+                    sb.append(String.format(GWT_LOCALE,
+                            localeSelector.getLocaleString()));
+                }
                 sb.append(INTERNET_EXPLORER_RANGE_JS);
                 sb.append(ANNOTATION_MODULE_JS);
                 sb.append("</head>");
