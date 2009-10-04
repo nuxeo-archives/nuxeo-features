@@ -6,7 +6,7 @@
   controlledBy="style editor perspectives,toolbox mover"
   visibleInPerspectives="style picker" />
 
-<div id="nxthemesElementEditor" class="nxthemesScreen">
+<div id="nxthemesElementEditor">
 
 <@nxthemes_controller resource="element-form-actions.json" />
 <@nxthemes_controller resource="element-editor-perspectives.json" />
@@ -14,6 +14,8 @@
 <@nxthemes_controller resource="style-editor-actions.json" />
 
 <h1 class="nxthemesEditor">Element editor</h1>
+
+<a onclick="NXThemesEditor.editCanvas()" class="nxthemesBack">Back to canvas</a>
 
 <#if selected_element>
 

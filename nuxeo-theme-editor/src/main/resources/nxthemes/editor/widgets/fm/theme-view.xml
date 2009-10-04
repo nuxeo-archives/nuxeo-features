@@ -22,12 +22,6 @@
           switchTo="editor perspectives/preset library"
           label="Preset library" />
 
-        <!-- theme actions -->
-        <@nxthemes_panel identifier="theme actions"
-          url="${basePath}/nxthemes-editor/themeActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor" />
-
         <!-- theme browser actions -->
         <@nxthemes_panel identifier="theme browser actions"
           url="${basePath}/nxthemes-editor/themeBrowserActions"
@@ -48,26 +42,32 @@
         controlledBy="editor perspectives,perspective selector"
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
-      <!-- view modes -->
-      <@nxthemes_panel identifier="view modes"
-        url="${basePath}/nxthemes-editor/viewModes"
-        controlledBy="editor perspectives"
-        visibleInPerspectives="canvas editor" />
 
       <div style="position: absolute; right: 10px; top: 7px">
-               
-        <@nxthemes_button identifier="canvas_editor"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/canvas editor"
-          label="Refresh" />
-                                            
+                                                          
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
           label="Quit" />  
 
       </div>
+    
+      <div id="nxthemesLocalButtons">
+               
+        <!-- theme actions -->
+        <@nxthemes_panel identifier="theme actions"
+          url="${basePath}/nxthemes-editor/themeActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="canvas editor" />
+
+        <!-- view modes -->
+        <@nxthemes_panel identifier="view modes"
+          url="${basePath}/nxthemes-editor/viewModes"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="canvas editor" />
+        </div>
 
     </div>
+
 
     <div id="nxthemesEditorArea">
 

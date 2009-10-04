@@ -1,12 +1,11 @@
 <div id="nxthemesThemeSelector">
-  <form action="javascript:void(0)">
+  <form class="nxthemesThemeSelector" action="javascript:void(0)">
   <label>Theme:</label>
   <select id="theme">
-    <#list themes as theme>
-      <option <#if theme.selected> selected="selected" class="selected"</#if> 
-      value="${theme.path}">${theme.name}</option>
-    </#list>
-    <option value="" style="border-top: 1px solid #999; margin-top: 3px; font-weight: bold">More themes ...</option>
+  <#list themes as theme>
+    <option <#if theme.name = current_theme_name>selected="selected"</#if>
+     value="${theme.path}">${theme.name}</option>
+  </#list>
   </select>
   </form>
 </div>

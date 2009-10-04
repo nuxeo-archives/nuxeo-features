@@ -95,7 +95,6 @@
       <nxthemes:controller resource="context-menu-actions.json" />
       <nxthemes:controller resource="toggle-context-menu.json" />
       <nxthemes:view resource="context-menu.json" />
-      
 
       <!--  page selector -->
       <nxthemes:panel identifier="page selector"
