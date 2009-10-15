@@ -26,6 +26,7 @@ import org.nuxeo.ecm.platform.annotations.gwt.client.configuration.WebConfigurat
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -39,10 +40,31 @@ public class AnnotationModule implements EntryPoint {
 
     private WebConfiguration webConfiguration;
 
+    /**
+     * This is the entry point method.
+     */
     public void onModuleLoad() {
+        waitForDocumentUrlRegistered();
+    }
+
+    private void waitForDocumentUrlRegistered() {
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                if (isDocumentUrlRegistered()) {
+                    loadModule();
+                } else {
+                    schedule(200);
+                }
+            }
+        };
+        timer.schedule(200);
+    }
+
+    public void loadModule() {
         fixXMLHttpRequest();
         webConfigurationService = GWT.create(WebConfigurationService.class);
-        String url = Window.Location.getHref();
+        String url = getWindowUrl();
         webConfigurationService.getWebConfiguration(url,
                 new AsyncCallback<WebConfiguration>() {
                     public void onFailure(Throwable throwable) {
@@ -73,4 +95,18 @@ public class AnnotationModule implements EntryPoint {
         }
     }-*/;
 
+    private native boolean isDocumentUrlRegistered() /*-{
+        if (top['documentUrlRegistered']) {
+            return top['documentUrlRegistered'];
+        }
+        return false;
+    }-*/;
+
+    private native String getWindowUrl() /*-{
+       alert('Parent>' + top['documentUrl']);
+       if (typeof top['documentUrl'] != "undefined") {
+           return top['documentUrl'];
+       }
+       return $wnd.location.href;
+    }-*/;
 }

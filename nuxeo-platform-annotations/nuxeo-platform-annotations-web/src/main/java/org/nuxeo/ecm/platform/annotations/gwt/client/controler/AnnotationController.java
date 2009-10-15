@@ -223,6 +223,10 @@ public class AnnotationController {
         return top['annoteaServerUrl'];
     }-*/;
 
+    public native String getDocumentUrl() /*-{
+        return top['documentUrl'];
+    }-*/;
+
     public Annotation getNewAnnotation() {
         return model.getNewAnnotation();
     }
@@ -237,6 +241,10 @@ public class AnnotationController {
     }
 
     public String getTopWindowUrl() {
+        String url = getDocumentUrl();
+        if(url != null && url.length() > 0) {
+            return getDocumentUrl();
+        }
         if (onFrame) {
             return getParentWindowUrl();
         } else {

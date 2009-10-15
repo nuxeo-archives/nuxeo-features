@@ -87,6 +87,10 @@ public class AnnotationFrameModule implements EntryPoint {
     }-*/;
 
     private native String getParentWindowUrl() /*-{
+        alert('Frame>' + top['documentUrl']);
+        if (typeof top['documentUrl'] != "undefined") {
+            return top['documentUrl'];
+        }
         return $wnd.parent.location.href;
     }-*/;
 

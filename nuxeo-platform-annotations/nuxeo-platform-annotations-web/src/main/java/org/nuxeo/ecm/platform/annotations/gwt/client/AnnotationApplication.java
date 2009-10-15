@@ -53,6 +53,8 @@ public class AnnotationApplication {
         BaseElement baseElement = document.getElementsByTagName("base").getItem(
                 0).cast();
         registerBaseHref(baseElement.getHref());
+        registerDocumentUrl(annotationConfiguration.getDocumentUrl());
+        notifyDocumentUrlRegistered();
         registerAnnoteaServerUrl(annotationConfiguration.getAnnoteaServerUrl());
         notifyAnnoteaServerUrlRegistered();
 
@@ -103,4 +105,11 @@ public class AnnotationApplication {
         top['annoteaServerUrlRegistered'] = true;
     }-*/;
 
+    private static native void registerDocumentUrl(String documentUrl) /*-{
+        top['documentUrl'] = documentUrl;
+    }-*/;
+
+    private static native void notifyDocumentUrlRegistered() /*-{
+        top['documentUrlRegistered'] = true;
+    }-*/;
 }
