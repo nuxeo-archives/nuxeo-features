@@ -15,7 +15,7 @@
  *     Peter Di Lorenzo
  */
 
-package org.nuxeo.ecm.platform.video.extension;
+package org.nuxeo.ecm.platform.audio.extension;
 
 import java.io.IOException;
 
@@ -32,22 +32,22 @@ import org.nuxeo.ecm.platform.types.Type;
 import org.nuxeo.ecm.platform.types.TypeManager;
 
 /**
- * This class will create a Document of type "Video" from the uploaded file, if the uploaded file
+ * This class will create a Document of type "Audio" from the uploaded file, if the uploaded file
  * matches any of the mime types listed in the filemanager-plugins.xml file.
  * 
  * If an existing document with the same title is found, it will overwrite it and increment the 
  * version number if the overwrite flag is set to true;
- * Otherwise, it will generate a new title and create a new Document of type Video with that title. 
+ * Otherwise, it will generate a new title and create a new Document of type Audio with that title. 
  * 
  */
-public class VideoImporter extends AbstractFileImporter {
+public class AudioImporter extends AbstractFileImporter {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
-    private static final Log log = LogFactory.getLog(VideoImporter.class);
+    private static final Log log = LogFactory.getLog(AudioImporter.class);
 	
-	public static final String VIDEO_TYPE = "Video";
+	public static final String AUDIO_TYPE = "Audio";
 
 	public DocumentModel create(CoreSession documentManager, Blob content,
 			String path, boolean overwrite, String fullname,
@@ -75,13 +75,13 @@ public class VideoImporter extends AbstractFileImporter {
 			// Creating an unique identifier
 			String docId = IdUtils.generateId(title);
 
-			docModel = documentManager.createDocumentModel(path, docId, VIDEO_TYPE);
-	         // update known attributes, format is: schema, attribute, value
-	        docModel.setProperty("dublincore", "title", title);
-	        docModel.setProperty("file", "filename", filename);
-
+			docModel = documentManager.createDocumentModel(path, docId, AUDIO_TYPE);
+            // update known attributes, format is: schema, attribute, value
+            docModel.setProperty("dublincore", "title", title);
+            docModel.setProperty("file", "filename", filename);
+            
 			// updating icon
-			Type docType = typeService.getType(VIDEO_TYPE);
+			Type docType = typeService.getType(AUDIO_TYPE);
 			if (docType != null) {
 				String iconPath = docType.getIcon();
 				docModel.setProperty("common", "icon", iconPath);

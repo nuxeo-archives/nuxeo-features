@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 1
-Bundle-Name: Nuxeo Video Core
-Bundle-SymbolicName: org.nuxeo.ecm.platform.video.core;singleton=true
+Bundle-Name: Nuxeo Audio Core
+Bundle-SymbolicName: org.nuxeo.ecm.platform.audio.core;singleton=true
 Bundle-Vendor: Nuxeo
-Nuxeo-Component: OSGI-INF/video-schemas-contrib.xml,
+Nuxeo-Component: OSGI-INF/audio-schemas-contrib.xml,
  OSGI-INF/core-types-contrib.xml,
  OSGI-INF/filemanager-importer-contrib.xml 
 Eclipse-LazyStart: true
@@ -15,5 +15,5 @@ Nuxeo-Require: org.nuxeo.ecm.platform.types.api,
 Require-Bundle: org.nuxeo.ecm.platform.types.api,
  org.nuxeo.ecm.core.api,
  org.nuxeo.ecm.platform.commandline.executor
-Export-Package: org.nuxeo.ecm.platform.video.core
+Export-Package: org.nuxeo.ecm.platform.audio.core
 Bundle-ClassPath: .

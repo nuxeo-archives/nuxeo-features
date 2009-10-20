@@ -1,4 +1,4 @@
-package org.nuxeo.ecm.platform.video.extension;
+package org.nuxeo.ecm.platform.audio.extension;
 
 import java.io.File;
 
@@ -14,11 +14,11 @@ import org.nuxeo.ecm.platform.filemanager.api.FileManager;
 import org.nuxeo.runtime.api.Framework;
 
 /*
- * Tests that the VideoImporter class works by importing a sample video
+ * Tests that the AudioImporter class works by importing a sample audio file
  */
-public class TestVideoImporter extends SQLRepositoryTestCase {
+public class TestAudioImporter extends SQLRepositoryTestCase {
 
-    protected static final String VIDEO_TYPE = "Video";
+    protected static final String AUDIO_TYPE = "Audio";
 
     protected FileManager fileManagerService;
 
@@ -26,7 +26,7 @@ public class TestVideoImporter extends SQLRepositoryTestCase {
 
     private File getTestFile() {
         return new File(
-                FileUtils.getResourcePathFromContext("test-data/sample.mpg"));
+                FileUtils.getResourcePathFromContext("test-data/sample.wav"));
     }
 
     @Override
@@ -35,8 +35,7 @@ public class TestVideoImporter extends SQLRepositoryTestCase {
 
         deployBundle("org.nuxeo.ecm.platform.types.api");
         deployBundle("org.nuxeo.ecm.platform.types.core");
-        deployBundle("org.nuxeo.ecm.platform.picture.core");
-        deployBundle("org.nuxeo.ecm.platform.video.core");
+        deployBundle("org.nuxeo.ecm.platform.audio.core");
 
         // use these to get the fileManagerService
         deployBundle("org.nuxeo.ecm.platform.filemanager.api");
@@ -54,44 +53,41 @@ public class TestVideoImporter extends SQLRepositoryTestCase {
         root = null;
     }
 
-    public void testVideoType() throws ClientException {
+    public void testAudioType() throws ClientException {
 
-        DocumentType videoType = session.getDocumentType(VIDEO_TYPE);
-        assertNotNull("Does our type exist?", videoType);
+        DocumentType audioType = session.getDocumentType(AUDIO_TYPE);
+        assertNotNull("Does our type exist?", audioType);
         
-        //TODO: check get/set properties on common properties of videos
+        //TODO: check get/set properties on common properties of audios
         
         // Create a new DocumentModel of our type in memory
-        DocumentModel docModel = session.createDocumentModel("/", "doc", VIDEO_TYPE);
+        DocumentModel docModel = session.createDocumentModel("/", "doc", AUDIO_TYPE);
         assertNotNull(docModel);
       
         assertNull(docModel.getPropertyValue("common:icon"));
         assertNull(docModel.getPropertyValue("dc:title"));
-        assertNull(docModel.getPropertyValue("picture:credit"));
         assertNull(docModel.getPropertyValue("uid:uid"));
-        assertNull(docModel.getPropertyValue("vid:duration"));
+        assertNull(docModel.getPropertyValue("aud:duration"));
         
-        docModel.setPropertyValue("common:icon", "/icons/video.png");
+        docModel.setPropertyValue("common:icon", "/icons/audio.png");
         docModel.setPropertyValue("dc:title", "testTitle");
-        docModel.setPropertyValue("picture:credit", "testUser");
         docModel.setPropertyValue("uid:uid", "testUid");
-        docModel.setPropertyValue("vid:duration", 133);
+        docModel.setPropertyValue("aud:duration", 133);
         
         DocumentModel docModelResult = session.createDocument(docModel);
         assertNotNull(docModelResult);
         
-        assertEquals("/icons/video.png", docModelResult.getPropertyValue("common:icon"));
+        assertEquals("/icons/audio.png", docModelResult.getPropertyValue("common:icon"));
         assertEquals("testTitle", docModelResult.getPropertyValue("dc:title"));
-        assertEquals("testUser", docModelResult.getPropertyValue("picture:credit"));
         assertEquals("testUid", docModelResult.getPropertyValue("uid:uid"));
-        assertEquals("133", docModelResult.getPropertyValue("vid:duration").toString());
+        assertEquals("133", docModelResult.getPropertyValue("aud:duration").toString());
 
     }
 
-    public void testImportVideo() throws Exception {
+    public void testImportAudio() throws Exception {
 
         File testFile = getTestFile();
-        Blob blob = StreamingBlob.createFromFile(testFile, "video/mpg");
+        Blob blob = StreamingBlob.createFromFile(testFile, "audio/wav");
         String rootPath = root.getPathAsString();
         assertNotNull(blob);
         assertNotNull(rootPath);
@@ -99,7 +95,7 @@ public class TestVideoImporter extends SQLRepositoryTestCase {
         assertNotNull(fileManagerService);
 
         DocumentModel docModel = fileManagerService.createDocumentFromBlob(
-                session, blob, rootPath, true, "test-data/sample.mpg");
+                session, blob, rootPath, true, "test-data/sample.wav");
 
         assertNotNull(docModel);
         DocumentRef ref = docModel.getRef();
@@ -109,19 +105,17 @@ public class TestVideoImporter extends SQLRepositoryTestCase {
         openSession();
 
         docModel = session.getDocument(ref);
-        assertEquals("Video", docModel.getType());
+        assertEquals("Audio", docModel.getType());
         assertEquals("sample", docModel.getTitle());
 
-        // check that we don't get PropertyExceptions when accessing the video
-        // and picture schemas
+        // check that we don't get PropertyExceptions when accessing the audio schema
         
         // TODO: add duration detection
-        assertNull(docModel.getPropertyValue("vid:duration"));
+        assertNull(docModel.getPropertyValue("aud:duration"));
 
         // TODO: add thumbnail generation and picture metadata extraction where
-        // they make sense for videos (ie. extract these from the metadata already included in the video
+        // they make sense for audios (ie. extract these from the metadata already included in the audio 
         // and use them to set the appropriate schema properties)
-        assertNull(docModel.getPropertyValue("picture:credit"));
 
         tearDown();
 
