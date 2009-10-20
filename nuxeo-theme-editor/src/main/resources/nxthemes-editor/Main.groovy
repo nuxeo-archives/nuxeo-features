@@ -120,6 +120,13 @@ public class Main extends ModuleRoot {
   }
 
   @GET
+  @Path("backToCanvas")
+  public Object renderBackToCanvas(@QueryParam("org.nuxeo.theme.application.path") String path, 
+           @QueryParam("org.nuxeo.theme.application.name") String name) {
+      return getTemplate("backToCanvas.ftl")
+  }
+  
+  @GET
   @Path("themeActions")
   public Object renderThemeActions(@QueryParam("org.nuxeo.theme.application.path") String path, 
            @QueryParam("org.nuxeo.theme.application.name") String name) {

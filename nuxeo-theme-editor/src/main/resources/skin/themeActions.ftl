@@ -1,6 +1,5 @@
 
 
-
 <@nxthemes_button identifier="canvas_editor"
   controlledBy="editor buttons"
   switchTo="editor perspectives/canvas editor"

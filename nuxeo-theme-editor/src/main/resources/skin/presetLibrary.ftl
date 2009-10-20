@@ -80,8 +80,6 @@ ${preset_info.preview}</div>
 
 </td></tr></table>
 
-  <button class="nxthemesRoundButton" style="margin-top: 10px" onclick="NXThemesEditor.editCanvas()">CLOSE</button>
-  
 </div>
 
 

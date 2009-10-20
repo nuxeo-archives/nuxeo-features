@@ -16,11 +16,6 @@
     <div id="nxthemesHeader">
 
       <div id="nxthemesMainButtons">
-                
-        <@nxthemes_button identifier="preset_library"
-          controlledBy="editor buttons"
-          switchTo="editor perspectives/preset library"
-          label="Preset library" />
 
         <!-- theme browser actions -->
         <@nxthemes_panel identifier="theme browser actions"
@@ -42,9 +37,13 @@
         controlledBy="editor perspectives,perspective selector"
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
-
       <div style="position: absolute; right: 10px; top: 7px">
-                                                          
+                                  
+        <@nxthemes_button identifier="preset_library"
+          controlledBy="editor buttons"
+          switchTo="editor perspectives/preset library"
+          label="Preset library" />
+                                            
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
           label="Quit" />  
@@ -52,7 +51,12 @@
       </div>
     
       <div id="nxthemesLocalButtons">
-               
+
+        <@nxthemes_panel identifier="back to canvas"
+          url="${basePath}/nxthemes-editor/backToCanvas"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="preset library" />
+                         
         <!-- theme actions -->
         <@nxthemes_panel identifier="theme actions"
           url="${basePath}/nxthemes-editor/themeActions"
@@ -64,7 +68,8 @@
           url="${basePath}/nxthemes-editor/viewModes"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
-        </div>
+
+      </div>
 
     </div>
 
