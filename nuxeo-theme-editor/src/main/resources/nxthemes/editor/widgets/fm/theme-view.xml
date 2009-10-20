@@ -55,7 +55,7 @@
         <@nxthemes_panel identifier="back to canvas"
           url="${basePath}/nxthemes-editor/backToCanvas"
           controlledBy="editor perspectives"
-          visibleInPerspectives="preset library" />
+          visibleInPerspectives="preset library,theme browser" />
                          
         <!-- theme actions -->
         <@nxthemes_panel identifier="theme actions"

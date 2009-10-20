@@ -189,7 +189,7 @@ html, body {
 
 /* Header */
 #nxthemesHeader {
-  background: #666 url(${basePath}/skin/nxthemes-editor/img/header-bg.png) top left
+  background: #505050 url(${basePath}/skin/nxthemes-editor/img/header-bg.png) top left
     repeat-x;
   text-decoration: none;
   position: fixed;
