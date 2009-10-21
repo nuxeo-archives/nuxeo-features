@@ -296,16 +296,17 @@ html, body {
 #nxthemesThemeSelector {
   float: left;
   padding: 1px;
-  margin-left: 20px;
+  margin-left: 14px;
   padding: 1px;
   font: 12px Arial, sans-serif;
-  color: #fff;
+  color: #eee;
 }
 
 #nxthemesThemeSelector select {
   font: 11px Arial, sans-serif;
   border: 1px solid #000;
   width: 150px;
+  background-color: #eee;
 }
 
 #nxthemesThemeSelector option.selected {
@@ -321,6 +322,7 @@ html, body {
   font: 11px Arial, sans-serif;
   border: 1px solid #000;
   width: 180px;
+  background-color: #eee;
 }
 
 
