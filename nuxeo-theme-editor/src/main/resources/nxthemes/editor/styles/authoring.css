@@ -206,10 +206,9 @@ html, body {
   padding: 0;
   position: absolute;
   z-index: 1;
-  top: 60px;
+  top: 61px;
   min-height:100%;
   width: 100%;
-  background: url(/skin/nxthemes-editor/img/canvas-bg.png);
 }
 
 /* Footer */
@@ -290,6 +289,7 @@ html, body {
   float: left;
   padding: 1px;
   margin-left: 10px;
+  margin-top: 8px;
 }
 	
 /* Theme selector drop-down list */
@@ -297,6 +297,7 @@ html, body {
   float: left;
   padding: 1px;
   margin-left: 14px;
+  margin-top: 8px;
   padding: 1px;
   font: 12px Arial, sans-serif;
   color: #eee;
@@ -955,9 +956,6 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
   padding: 10px;
   font-family: Arial, sans-serif;
   z-index: 1;
-  border-width: 1px 2px 2px 1px;
-  border-style: solid;
-  border-color: #333;
 }
 
 .nxthemesPresets div.name {

@@ -15,16 +15,6 @@
 
     <div id="nxthemesHeader">
 
-      <div id="nxthemesMainButtons">
-
-        <!-- theme browser actions -->
-        <@nxthemes_panel identifier="theme browser actions"
-          url="${basePath}/nxthemes-editor/themeBrowserActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="theme browser" />
-                  
-      </div>
-
       <!--  theme selector -->
       <@nxthemes_panel identifier="theme selector"
         url="${basePath}/nxthemes-editor/themeSelector"
@@ -63,6 +53,12 @@
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
 
+        <!-- theme browser actions -->
+        <@nxthemes_panel identifier="theme browser actions"
+          url="${basePath}/nxthemes-editor/themeBrowserActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="theme browser" />
+          
         <!-- view modes -->
         <@nxthemes_panel identifier="view modes"
           url="${basePath}/nxthemes-editor/viewModes"

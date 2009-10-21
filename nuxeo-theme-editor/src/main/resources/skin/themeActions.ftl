@@ -11,9 +11,9 @@
     label="Save changes" />
 </#if>
 
-  <@nxthemes_button identifier="manage styles"
-    link="javascript:NXThemesEditor.manageStyles()"
-    label="Manage styles" />
+<@nxthemes_button identifier="manage styles"
+  link="javascript:NXThemesEditor.manageStyles()"
+  label="Manage styles" />
 
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"
