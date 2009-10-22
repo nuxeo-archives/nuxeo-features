@@ -45,7 +45,7 @@
         <@nxthemes_panel identifier="back to canvas"
           url="${basePath}/nxthemes-editor/backToCanvas"
           controlledBy="editor perspectives"
-          visibleInPerspectives="preset library,theme browser" />
+          visibleInPerspectives="preset library,theme browser,style manager" />
                          
         <!-- theme actions -->
         <@nxthemes_panel identifier="theme actions"
@@ -59,6 +59,12 @@
           controlledBy="editor perspectives"
           visibleInPerspectives="theme browser" />
           
+        <!-- preset manage actions -->
+        <@nxthemes_panel identifier="preset manager actions"
+          url="${basePath}/nxthemes-editor/presetManagerActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="preset manager" />          
+
         <!-- view modes -->
         <@nxthemes_panel identifier="view modes"
           url="${basePath}/nxthemes-editor/viewModes"

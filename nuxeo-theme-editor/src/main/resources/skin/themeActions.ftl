@@ -11,19 +11,17 @@
     label="Save changes" />
 </#if>
 
-<@nxthemes_button identifier="manage styles"
-  link="javascript:NXThemesEditor.manageStyles()"
-  label="Manage styles" />
-
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"
   hover="NXThemesEditor.showMenu('nxthemesThemeActions')"
   label="More actions" />
 
 <div id="nxthemesThemeActions"  
-  style="position: relative; left: 120px; width: 150px; top: 10px; z-index: 2; display: none"> 
+  style="position: absolute; width: 150px; z-index: 2; display: none"> 
   <ul class="nxthemesDropDownMenu">
-     <#if theme.exportable>
+    <li><a href="javascript:void(0)" onclick="NXThemesEditor.manageStyles()">Manage theme styles</a></li>
+    <li><a href="javascript:void(0)" onclick="NXThemesEditor.managePresets()">Manage theme presets</a></li>
+    <#if theme.exportable>
       <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src}&amp;download=1&amp;indent=2'">Download theme</a></li>  
       <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src}'">Show source XML</a></li>
     </#if>

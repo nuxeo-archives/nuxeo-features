@@ -137,6 +137,13 @@ public class Main extends ModuleRoot {
   }
   
   @GET
+  @Path("presetManagerActions")
+  public Object renderPresetManagerActions(@QueryParam("org.nuxeo.theme.application.path") String path, 
+           @QueryParam("org.nuxeo.theme.application.name") String name) {
+      return getTemplate("presetManagerActions.ftl")
+  }
+
+  @GET
   @Path("viewModes")
   public Object renderViewModes(@QueryParam("org.nuxeo.theme.application.path") String path,
           @QueryParam("org.nuxeo.theme.application.name") String name) {

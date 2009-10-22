@@ -1,11 +1,11 @@
-<div>
+
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 <#if selected_named_style>
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
-<div id="nxthemesStyleManager">
+<div id="nxthemesStyleManager" class="nxthemesScreen">
 
 <div class="nxthemesButtonSelector" style="float: right; padding: 11px 5px 12px 0;">
   <#if style_manager_mode = 'unused styles'>
@@ -18,36 +18,6 @@
 </div>
 
 <h1 class="nxthemesEditor">Manage styles</h1>
-
-<a onclick="NXThemesEditor.editCanvas()" class="nxthemesBack">Back to canvas</a>
-
-<table cellpadding="0" cellspacing="0" style="width: 100%"><tr>
-
-<td style="vertical-align: top; width: 200px; padding-right: 5px;">
-
-<h3 class="nxthemesEditor">THEMES</h3>
-<ul class="nxthemesSelector">
-<#list themes as theme>
-<li <#if theme.name = current_theme_name>class="selected"</#if>><a href="javascript:void(0)" 
-  onclick="NXThemesEditor.selectTheme('${theme.name}', 'style manager')">
-  <#if theme.customized>
-    <img src="${skinPath}/img/customized-theme-16.png" width="16" height="16" />
-  <#else>
-    <#if theme.xmlConfigured>
-      <img src="${skinPath}/img/theme-16.png" width="16" height="16" />
-    </#if>
-    <#if theme.custom>
-      <img src="${skinPath}/img/custom-theme-16.png" width="16" height="16" />
-    </#if>
-  </#if>
-  ${theme.name} <span style="font-size: 11px; font-style: italic; overflow: hidden">(${theme.src})</span></a></li>
-</#list>
-</ul>
-
-</td>
-<td style="padding-left: 10px; vertical-align: top;">
-
-<h2 class="nxthemesEditor" style="text-transform: uppercase">${current_theme_name}</h2>
 
 <#if style_manager_mode = 'unused styles'>
 
@@ -113,10 +83,4 @@
 </form>
 </#if>
 
-
 </#if>
-
-</td></tr></table>
-
-</div>
-

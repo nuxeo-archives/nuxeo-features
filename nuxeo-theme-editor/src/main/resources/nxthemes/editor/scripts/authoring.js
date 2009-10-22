@@ -736,6 +736,10 @@ NXThemesEditor.editCanvas = function() {
     NXThemesEditor.refreshCanvas();
 }
 
+NXThemesEditor.managePresets = function() {
+    NXThemes.getControllerById("editor perspectives").switchTo('preset manager');
+};
+
 NXThemesEditor.addPreset = function(themeName, category, view_id) {
     var name = prompt("Please enter a preset name:", "");
     if (name === "") {
