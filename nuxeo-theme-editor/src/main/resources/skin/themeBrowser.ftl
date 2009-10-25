@@ -11,7 +11,7 @@
     <ul class="nxthemesSelector">
     <#list available_themes as theme>
     <li><a title="${theme.src}" href="javascript:void(0)" 
-      onclick="NXThemesEditor.addThemeToWorkspace('${theme.name}', 'theme browser')">
+      onclick="NXThemesEditor.addThemeToWorkspace('${theme.name?js_string}', 'theme browser')">
        <img src="${skinPath}/img/theme-16.png" width="16" height="16" />
       <span>${theme.name}</span>
       <span class="info"><img src="${skinPath}/img/add-theme-to-list-16.png" width="16" height="16" /> add to list</span></a></li>
@@ -26,7 +26,7 @@
         <li <#if theme.selected>class="disabled"</#if>>
           <a
             <#if !theme.selected>
-            onclick="NXThemesEditor.removeThemeFromWorkspace('${theme.name}', 'theme browser')"
+            onclick="NXThemesEditor.removeThemeFromWorkspace('${theme.name?js_string}', 'theme browser')"
             </#if> 
             href="javascript:void(0)">
             <img src="${skinPath}/img/theme-16.png" width="16" height="16" /> 

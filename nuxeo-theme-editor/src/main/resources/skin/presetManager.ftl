@@ -30,7 +30,7 @@
 <ul class="nxthemesSelector">
 <#list themes as theme>
 <li <#if theme.name = current_theme_name>class="selected"</#if>><a href="javascript:void(0)" 
-  onclick="NXThemesEditor.selectTheme('${theme.name}', 'preset manager')">
+  onclick="NXThemesEditor.selectTheme('${theme.name?js_string}', 'preset manager')">
   <#if theme.customized>
     <img src="${skinPath}/img/customized-theme-16.png" width="16" height="16" />
   <#else>
@@ -51,7 +51,7 @@
 <ul class="nxthemesSelector">
 <#list preset_groups as group>
 <li <#if group = selected_preset_group>class="selected"</#if>><a href="javascript:void(0)" 
-  onclick="NXThemesPresetManager.selectPresetGroup('${group}')">
+  onclick="NXThemesPresetManager.selectPresetGroup('${group?js_string}')">
   <img src="${skinPath}/img/palette-16.png" width="16" height="16" />
   ${group}</a></li>
 </#list>
@@ -169,7 +169,7 @@ ${preset_info.preview}
   </#if>
 
 <td class="preset">
-  <div class="preview"><div onclick="NXThemesPresetManager.addMissingPreset('${current_theme_name}', '${name}')">&nbsp;</div></div>
+  <div class="preview"><div onclick="NXThemesPresetManager.addMissingPreset('${current_theme_name?js_string}', '${name?js_string}')">&nbsp;</div></div>
   <div class="name">${name}</div>
 </td>
 
@@ -208,7 +208,7 @@ ${preset_info.preview}
   </#if>
 <#list colors as color>
 <td class="preset">
-  <div class="preview"><div onclick="NXThemesPresetManager.convertValueToPreset('${current_theme_name}', 'color', '${color}')" style="background-color: ${color}">&nbsp;</div></div>
+  <div class="preview"><div onclick="NXThemesPresetManager.convertValueToPreset('${current_theme_name?js_string}', 'color', '${color?js_string}')" style="background-color: ${color}">&nbsp;</div></div>
   <div class="name">${color}</div>
 </td>
 
@@ -247,7 +247,7 @@ ${preset_info.preview}
   </#if>
 <#list images as image>
 <td class="preset">
-  <div class="preview"><div onclick="NXThemesPresetManager.convertValueToPreset('${current_theme_name}', 'image', '${image}')" style="background:${image}">&nbsp;</div></div>
+  <div class="preview"><div onclick="NXThemesPresetManager.convertValueToPreset('${current_theme_name?js_string}', 'image', '${image?js_string}')" style="background:${image}">&nbsp;</div></div>
   <div class="name">${image}</div>
 </td>
 
