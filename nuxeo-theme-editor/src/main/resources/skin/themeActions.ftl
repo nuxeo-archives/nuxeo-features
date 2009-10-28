@@ -1,3 +1,4 @@
+<#setting url_escaping_charset='UTF-8'>
 
 <@nxthemes_button identifier="canvas_editor"
   controlledBy="editor buttons"
@@ -20,8 +21,8 @@
     <li><a href="javascript:void(0)" onclick="NXThemesEditor.manageStyles()">Manage theme styles</a></li>
     <li><a href="javascript:void(0)" onclick="NXThemesEditor.managePresets()">Manage theme presets</a></li>
     <#if theme.exportable>
-      <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src}&amp;download=1&amp;indent=2'">Download theme</a></li>  
-      <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src}'">Show source XML</a></li>
+      <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}&amp;download=1&amp;indent=2'">Download theme</a></li>  
+      <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}'">Show source XML</a></li>
     </#if>
     <#if theme.repairable><li><a href="javascript:void(0)" onclick="NXThemesEditor.repairTheme('${theme.src?js_string}')">Repair theme</a></li></#if>
     <#if theme.reloadable><li><a href="javascript:void(0)" onclick="NXThemesEditor.loadTheme('${theme.src?js_string}')">Restore theme from source</a></li></#if>
