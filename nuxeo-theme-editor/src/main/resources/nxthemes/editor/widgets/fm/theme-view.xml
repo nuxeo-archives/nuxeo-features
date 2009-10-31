@@ -27,7 +27,7 @@
         controlledBy="editor perspectives,perspective selector"
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
-      <div style="position: absolute; right: 10px; top: 7px">
+      <div id="nxthemesMainButtons">
                                   
         <@nxthemes_button identifier="preset_library"
           controlledBy="editor buttons"

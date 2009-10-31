@@ -13,10 +13,10 @@
 
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"
-  hover="NXThemesEditor.showMenu('nxthemesThemeActions')"
+  menu="nxthemesThemeActions"
   label="More actions" />
 
-<div id="nxthemesThemeActions" style="position: absolute; width: 150px; z-index: 2; display: none"> 
+<div id="nxthemesThemeActions" style="display: none"> 
   <ul class="nxthemesDropDownMenu">
     <li><a href="javascript:void(0)" onclick="NXThemesEditor.manageStyles()">Manage theme styles</a></li>
     <li><a href="javascript:void(0)" onclick="NXThemesEditor.managePresets()">Manage theme presets</a></li>

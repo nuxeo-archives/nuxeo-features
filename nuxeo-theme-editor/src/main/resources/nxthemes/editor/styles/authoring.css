@@ -198,7 +198,6 @@ html, body {
   left: 0;
   height: 60px;
   width: 100%;
-  border-bottom: 1px solid #333;
 }
 
 /* Main area */
@@ -209,6 +208,14 @@ html, body {
   top: 61px;
   min-height:100%;
   width: 100%;
+}
+
+#nxthemesThemeActions {
+  position: absolute;
+  width: 150px;
+  margin-top: 10px;
+  margin-left: 2px;
+  z-index: 2; 
 }
 
 /* Footer */
@@ -251,10 +258,10 @@ html, body {
 #nxthemesEditorInfo {
   position: absolute;
   right: 6px;
-  top: 2px;
+  top: 3px;
   padding: 0;
-  font:  11px Arial, sans-serif;
-  color: #666;
+  font:  10px Arial, sans-serif;
+  color: #333;
 }
 
 #nxthemesWaitAnimation {
@@ -271,11 +278,13 @@ html, body {
 }
 
 #nxthemesMainButtons {
-  margin: 8px;
+  position: absolute; 
+  right: 10px; 
+  top: 9px
 }
 
 #nxthemesLocalButtons {
-  top: 30px;
+  top: 28px;
   position: absolute;
   margin: 8px;
   width: 100%;
@@ -289,7 +298,7 @@ html, body {
   float: left;
   padding: 1px;
   margin-left: 10px;
-  margin-top: 8px;
+  margin-top: 9px;
 }
 	
 /* Theme selector drop-down list */
@@ -297,7 +306,7 @@ html, body {
   float: left;
   padding: 1px;
   margin-left: 14px;
-  margin-top: 8px;
+  margin-top: 9px;
   padding: 1px;
   font: 12px Arial, sans-serif;
   color: #eee;
@@ -712,25 +721,7 @@ div.nxthemesEditorFrame {
 
 .nxthemesButton b, .nxthemesButton a {
   background-image: url(${basePath}/skin/nxthemes-editor/img/button.png);
-  font: 12px arial;
-  color: #000 !important;
-  padding-top: 3px;
-  padding-bottom: 3px;
 }
-
-.nxthemesButton b {
-  margin-left: 3px;
-  padding-left: 15px;
-}
-
-.nxthemesButton a {
-  padding-right: 15px;
-}
-
-.nxthemesButton.dropList a {
-  padding-right: 20px;
-}
-
 
 /* Form elements used in the element editor */
 .nxthemesForm {
@@ -1479,12 +1470,12 @@ table.fragmentFactory td {
 
 .nxthemesDropDownMenu {
   background-color: #fff;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  border-width: 1px 2px 2px 1px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border-width: 1px 3px 3px 1px;
   border-style: solid;
-  border-color: #000;
+  border-color: #666;
   padding: 5px 10px;
 }
 
@@ -1502,12 +1493,16 @@ table.fragmentFactory td {
   font-weight: bold !important;
 }
 
+.nxthemesDropDownMenu li.selected a {
+  font-weight: bold !important;
+}
+
 .nxthemesDropDownMenu li a {
   color: #000;
   font: 12px Arial, sans-serif;
   text-decoration: none;
   display: block;
-  padding: 3px 5px;
+  padding: 3px 6px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px;
@@ -1515,9 +1510,11 @@ table.fragmentFactory td {
 }
 
 .nxthemesDropDownMenu li a:hover {
-  border: 1px solid #ddd;
-  background-color: #eee;
+  border: 1px solid #fc0;
+  background-color: #ff0;
+  color: #333;
 }
+
 .nxthemesRoundButton {
   border: 1px solid #999;
   background-color: #ddd;

@@ -1063,19 +1063,6 @@ NXThemesEditor.refreshCanvas = function() {
     NXThemes.getViewById("canvas area").refresh();
 };
 
-NXThemesEditor.showMenu = function(id) {
-	var menu = $(id)
-	menu.show();
-	menu.observe("mouseleave", NXThemesEditor.hideMenu.bindAsEventListener(this, id));
-	menu.observe("mouseup", NXThemesEditor.hideMenu.bindAsEventListener(this, id));
-};
-
-NXThemesEditor.hideMenu = function(e, id) {
-	var menu = $(id)
-	menu.hide();
-	menu.stopObserving();
-};
-
 
 // Initialization
 
