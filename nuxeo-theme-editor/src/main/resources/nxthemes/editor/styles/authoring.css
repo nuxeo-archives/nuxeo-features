@@ -205,7 +205,7 @@ html, body {
   padding: 0;
   position: absolute;
   z-index: 1;
-  top: 61px;
+  top: 60px;
   min-height:100%;
   width: 100%;
 }
@@ -913,8 +913,9 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 /* style editor */
 #stylePreviewArea {
   width: auto;
-  overflow: hidden;
-  background: #fff url(${basePath}/skin/nxthemes-editor/img/checker.png) repeat; 
+  overflow: scroll;
+  background: #fff url((${basePath}/skin/nxthemes-editor/img/checker.png) repeat;
+  height: 300px;
 }
 
 #stylePreviewArea, #stylePreviewArea a {
@@ -934,7 +935,7 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 
 .nxthemesScreen {
   position: absolute;
-  top: 75px;
+  top: 50px;
   left: 10px;
   right: 10px;
   background-color: #fff;
@@ -1510,9 +1511,9 @@ table.fragmentFactory td {
 }
 
 .nxthemesDropDownMenu li a:hover {
-  border: 1px solid #fc0;
-  background-color: #ff0;
-  color: #333;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  color: #000;
 }
 
 .nxthemesRoundButton {

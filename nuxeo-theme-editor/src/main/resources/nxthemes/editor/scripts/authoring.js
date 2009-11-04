@@ -976,6 +976,7 @@ NXThemesEditor.repairTheme = function(src) {
     	     src: src
          },
          onSuccess: function(r) {
+             NXThemesEditor.refreshCanvas();
              NXThemesEditor.writeMessage("Theme repaired.");
          },
          onFailure: function(r) {
@@ -997,6 +998,7 @@ NXThemesEditor.loadTheme = function(src) {
              src: src
          },
          onSuccess: function(r) {
+           NXThemesEditor.refreshCanvas();
            NXThemesEditor.writeMessage("Theme loaded.");
          },
          onFailure: function(r) {
@@ -1036,6 +1038,7 @@ NXThemesEditor.deleteTheme = function(src) {
              src: src
          },
          onSuccess: function(r) {
+           NXThemesEditor.refreshCanvas();
            NXThemesEditor.writeMessage("Theme deleted.");
          },
          onFailure: function(r) {
