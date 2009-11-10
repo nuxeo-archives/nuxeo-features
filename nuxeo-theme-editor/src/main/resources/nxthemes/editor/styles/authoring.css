@@ -209,6 +209,7 @@ html, body {
   top: 60px;
   min-height:100%;
   width: 100%;
+  padding-bottom: 35px;
 }
 
 #nxthemesThemeActions {
@@ -941,6 +942,7 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
   right: 10px;
   background-color: #fff;
   padding: 10px;
+  padding-bottom: 25px;
   font-family: Arial, sans-serif;
   z-index: 1;
 }
