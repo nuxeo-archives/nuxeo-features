@@ -7,6 +7,8 @@
        "showDisabledItems": false,
        "targetType": "element",
        "items": [
+         {"type": "title"
+         },
          {"type": "item",
           "label": "Edit",
           "icon": "/skin/nxthemes-editor/img/edit-16.png",

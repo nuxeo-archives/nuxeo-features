@@ -81,7 +81,8 @@ ins.model, ins.view, ins.controller {
 }
 
 .nxthemesContextMenu .title {
-  display: none;
+  height: 13px;
+  overflow: hidden;
 }
 
 .nxthemesContextMenu .separator {
