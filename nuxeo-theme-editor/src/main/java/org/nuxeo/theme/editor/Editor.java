@@ -228,9 +228,7 @@ public class Editor {
 
         final String themeName = theme.getName();
         Manager.getThemeManager().themeModified(themeName);
-
         Manager.getThemeManager().stylesModified(themeName);
-
     }
 
     public static void saveTheme(String src, int indent)

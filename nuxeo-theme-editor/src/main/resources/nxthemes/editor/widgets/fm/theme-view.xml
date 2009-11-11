@@ -28,7 +28,12 @@
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
       <div id="nxthemesMainButtons">
-                                  
+              
+        <@nxthemes_button identifier="theme_browser"
+          controlledBy="editor buttons"
+          switchTo="editor perspectives/theme browser"
+          label="Theme browser" />
+                                            
         <@nxthemes_button identifier="preset_library"
           controlledBy="editor buttons"
           switchTo="editor perspectives/preset library"
@@ -45,7 +50,7 @@
         <@nxthemes_panel identifier="back to canvas"
           url="${basePath}/nxthemes-editor/backToCanvas"
           controlledBy="editor perspectives"
-          visibleInPerspectives="preset library,theme browser,style manager,element editor" />
+          visibleInPerspectives="preset library,preset manager,theme browser,style manager,element editor" />
                          
         <!-- theme actions -->
         <@nxthemes_panel identifier="theme actions"
@@ -98,7 +103,6 @@
       <@nxthemes_controller resource="toggle-context-menu.json" />
       <@nxthemes_view resource="context-menu.json" />
       
-
       <!--  page selector -->
       <@nxthemes_panel identifier="page selector"
         url="${basePath}/nxthemes-editor/pageSelector"

@@ -7,11 +7,13 @@
 
 <#if theme.saveable>
   <@nxthemes_button identifier="save"
+    controlledBy="editor buttons"
     link="javascript:NXThemesEditor.saveTheme('${theme.src?js_string}', 2)"
     label="Save changes" />
 </#if>
 
 <@nxthemes_button identifier="theme_actions"
+  controlledBy="editor buttons"
   classNames="dropList"
   menu="nxthemesThemeActions"
   label="More actions" />

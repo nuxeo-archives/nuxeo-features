@@ -91,12 +91,16 @@ public class Main extends ModuleRoot {
     if (!styles.contains(selectedStyle) && !styles.isEmpty()) {
         selectedStyle = styles[0];
     }
+    String currentThemeName = getCurrentThemeName(path, name)
+    String templateEngine = getTemplateEngine(path)
+    ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(templateEngine, currentThemeName) 
     return getTemplate("styleManager.ftl").arg(
+            "theme", currentThemeDef).arg(
             "named_styles", styles).arg(
             "style_manager_mode", getStyleManagerMode()).arg(
             "selected_named_style", selectedStyle).arg(
             "selected_named_style_css", getRenderedPropertiesForNamedStyle(selectedStyle)).arg(
-            "current_theme_name", getCurrentThemeName(path, name))
+            "current_theme_name", currentThemeName)
   }  
   
   @GET
@@ -140,7 +144,10 @@ public class Main extends ModuleRoot {
   @Path("presetManagerActions")
   public Object renderPresetManagerActions(@QueryParam("org.nuxeo.theme.application.path") String path, 
            @QueryParam("org.nuxeo.theme.application.name") String name) {
-      return getTemplate("presetManagerActions.ftl")
+      String currentThemeName = getCurrentThemeName(path, name)
+      String templateEngine = getTemplateEngine(path)
+      ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(templateEngine, currentThemeName)
+      return getTemplate("presetManagerActions.ftl").arg("theme", currentThemeDef)
   }
 
   @GET
@@ -153,17 +160,8 @@ public class Main extends ModuleRoot {
   @GET
   @Path("themeBrowserActions")
   public Object renderThemeBrowserActions(@QueryParam("org.nuxeo.theme.application.path") String path,
-          @QueryParam("org.nuxeo.theme.application.name") String name) {
+          @QueryParam("org.nuxeo.theme.application.name") String name) {          
     return getTemplate("themeBrowserActions.ftl")
-  }
-  
-  @GET
-  @Path("themeManager")
-  public Object renderThemeManager(@QueryParam("org.nuxeo.theme.application.path") String path,
-          @QueryParam("org.nuxeo.theme.application.name") String name) {
-    return getTemplate("themeManager.ftl").arg(
-            "theme_manager_mode", getThemeManagerMode()).arg(
-            "current_theme_name", getCurrentThemeName(path, name))     
   }
 
   @GET

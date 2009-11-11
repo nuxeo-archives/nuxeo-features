@@ -618,6 +618,7 @@ NXThemesEditor.switchTheme = function(info) {
     NXThemesEditor.selectTheme(name);
     NXThemes.getViewById("theme selector").refresh();
     NXThemes.getViewById("page selector").refresh();
+    NXThemes.getViewById("theme actions").refresh();
     NXThemesEditor.refreshCanvas();
 };
 

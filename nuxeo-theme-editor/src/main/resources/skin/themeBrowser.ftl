@@ -1,5 +1,7 @@
 <div id="nxthemesBrowser" class="nxthemesScreen">
 
+  <h1 class="nxthemesEditor">Theme browser</h1>
+  
   <table style="width: 100%;" cellpadding="3" cellspacing="2">
   <tr>
     <th style="text-align: left; width: 50%; background-color: #999; color: #fff">Available themes</th>
