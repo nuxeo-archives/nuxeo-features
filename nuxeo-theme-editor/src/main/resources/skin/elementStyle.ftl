@@ -43,7 +43,9 @@
       
       <div class="nxthemesButtonSelector"
         style="text-align: left; padding: 4px 15px;">
-        <span>Layers: </span>
+        <span>
+          <img style="vertical-align: middle" src="${skinPath}/img/layers-16.png" width="16" height="16" />
+          Layers: </span>
         <#list style_layers_of_selected_element as layer>
           <span>${layer.rendered}</span>
         </#list>

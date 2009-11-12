@@ -1,11 +1,10 @@
+<div id="nxthemesStyleManager" class="nxthemesScreen">
 
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 <#if selected_named_style>
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
-
-<div id="nxthemesStyleManager" class="nxthemesScreen">
 
 <div class="nxthemesButtonSelector" style="float: right; padding: 11px 5px 12px 0;">
   <#if style_manager_mode = 'unused styles'>
@@ -60,14 +59,26 @@
 
 <#assign found=false>
 
-<ul class="namedStyleSelector">
+  <table style="width: 100%;" cellpadding="3" cellspacing="2">
+  <tr>
+    <th style="text-align: left; width: 25%; background-color: #999; color: #fff">Style</th>
+    <th style="text-align: left; width: 75%; background-color: #999; color: #fff">CSS properties</th>
+  </tr>
+  <tr>
+  <td style="vertical-align: top">
+
+<ul class="nxthemesSelector">
 <#list named_styles as style>
   <#if selected_named_style & style.uid = selected_named_style.uid>
     <#assign found=true>
   </#if>
-  <li><a <#if style.name = selected_named_style_name>class="selected"</#if> href="javascript:NXThemesStyleManager.selectNamedStyle('#{style.uid}')">${style.name}</a></li>
+  <li><a <#if style.name = selected_named_style_name>class="selected"</#if> href="javascript:NXThemesStyleManager.selectNamedStyle('#{style.uid}')">
+      <img src="${skinPath}/img/style-16.png"/> ${style.name}</a></li>
 </#list>
 </ul>
+
+</td>
+<td>
 
 <#if found>
 <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
@@ -82,5 +93,9 @@
 </div>
 </form>
 </#if>
+
+</td>
+</tr>
+</table>
 
 </#if>
