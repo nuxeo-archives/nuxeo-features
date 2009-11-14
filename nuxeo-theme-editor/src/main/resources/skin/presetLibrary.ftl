@@ -16,8 +16,7 @@
 
 <ul class="nxthemesSelector">
 <#list preset_groups as group>
-<li <#if group = selected_preset_group>class="selected"</#if>><a href="javascript:void(0)" 
-  onclick="NXThemesPresetManager.selectPresetGroup('${group}')">
+<li <#if group = selected_preset_group>class="selected"</#if>><a href="javascript:NXThemesPresetLibrary.selectPresetGroup('${group}')">
   <img src="${skinPath}/img/palette-16.png" width="16" height="16" />
   ${group}</a></li>
 </#list>

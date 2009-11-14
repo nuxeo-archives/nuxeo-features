@@ -34,6 +34,7 @@ public class SessionManager extends AbstractComponent {
     private static final String STYLE_MANAGER_MODE = "org.nuxeo.theme.editor.style_manager_mode";
     private static final String PRESET_MANAGER_MODE = "org.nuxeo.theme.editor.preset_manager_mode";
     private static final String PRESET_GROUP = "org.nuxeo.theme.editor.preset_group";
+    private static final String PRESET_CATEGORY = "org.nuxeo.theme.editor.preset_category";
     private static final String CLIPBOARD_ELEMENT_ID = "org.nuxeo.theme.editor.clipboard_element";
     private static final String CLIPBOARD_PRESET_ID = "org.nuxeo.theme.editor.clipboard_preset";
     private static final String SELECTED_FRAGMENT_TYPE = "org.nuxeo.theme.editor.fragment_type";
@@ -125,6 +126,14 @@ public class SessionManager extends AbstractComponent {
         getUserSession().put(PRESET_GROUP, group);
     }
 
+    public static synchronized String getPresetCategory() {
+        return (String) getUserSession().get(PRESET_CATEGORY);
+    }
+
+    public static synchronized void setPresetCategory(String category) {
+        getUserSession().put(PRESET_CATEGORY, category);
+    }
+    
     public static synchronized String getClipboardElementId() {
         return (String) getUserSession().get(CLIPBOARD_ELEMENT_ID);
     }

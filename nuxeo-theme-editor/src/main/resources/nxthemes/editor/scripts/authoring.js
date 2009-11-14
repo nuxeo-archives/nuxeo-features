@@ -1116,6 +1116,30 @@ NXThemes.registerFilters({
 });
 
 
+//PRESET LIBRARY
+
+if (typeof NXThemesPresetLibrary == "undefined") {
+    NXThemesPresetLibrary = {
+    }
+}
+
+NXThemesPresetLibrary.selectPresetGroup = function(group) {
+    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_group"; 
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             group: group
+         },
+         onSuccess: function(r) {
+        	 NXThemes.getViewById("preset library").refresh();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }         
+    });
+};
+
 //PRESET MANAGER
 
 if (typeof NXThemesPresetManager == "undefined") {
@@ -1140,15 +1164,16 @@ NXThemesPresetManager.setEditMode = function(mode) {
     });
 };
 
-NXThemesPresetManager.selectPresetGroup = function(group) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_group"; 
+
+NXThemesPresetManager.selectPresetCategory = function(category) {
+    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_category"; 
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
-             group: group
+             category: category
          },
          onSuccess: function(r) {
-        	 NXThemes.getViewById("preset library").refresh();
+        	 NXThemes.getViewById("preset manager").refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -1156,6 +1181,7 @@ NXThemesPresetManager.selectPresetGroup = function(group) {
          }         
     });
 };
+
 
 NXThemesPresetManager.editPreset = function(info) {
   var target = Event.element(info);

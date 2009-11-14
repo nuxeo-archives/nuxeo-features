@@ -72,8 +72,9 @@
   <#if selected_named_style & style.uid = selected_named_style.uid>
     <#assign found=true>
   </#if>
-  <li><a <#if style.name = selected_named_style_name>class="selected"</#if> href="javascript:NXThemesStyleManager.selectNamedStyle('#{style.uid}')">
-      <img src="${skinPath}/img/style-16.png"/> ${style.name}</a></li>
+  <li <#if style.name = selected_named_style_name>class="selected"</#if>>
+    <a href="javascript:NXThemesStyleManager.selectNamedStyle('#{style.uid}')">
+    <img src="${skinPath}/img/style-16.png" width="16" height="16"/> ${style.name}</a></li>
 </#list>
 </ul>
 

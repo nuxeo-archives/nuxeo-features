@@ -15,11 +15,21 @@
   </tr>
   <tr>
     <td>
-      TODO
-    </td>
+       <ul class="nxthemesSelector">
+         <li <#if selected_preset_category = 'color'>class="selected"</#if>>
+              <a href="javascript:NXThemesPresetManager.selectPresetCategory('color')">Color</a></li>
+         <li <#if selected_preset_category = 'background'>class="selected"</#if>>
+             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('background')">Background</a></li>
+         <li <#if selected_preset_category = 'font'>class="selected"</#if>>
+             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('font')">Font</a></li>
+         <li <#if selected_preset_category = 'image'>class="selected"</#if>>
+             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('image')">Image</a></li>
+       </ul>
+     </td>
     <td>
     
-<#assign presets = This.getCustomPresets(current_theme_name)>
+<#if selected_preset_category>
+<#assign presets = This.getCustomPresets(current_theme_name, selected_preset_category)>
 
 <table cellspacing="0" cellpadding="1" style="width: 100%">
 <#assign count = 0 />
@@ -106,6 +116,7 @@ ${preset_info.preview}
 </#if>
 
 </table>
+</#if>
 
 <#assign preset_names=This.getUnidentifiedPresetNames(current_theme_name)>
 

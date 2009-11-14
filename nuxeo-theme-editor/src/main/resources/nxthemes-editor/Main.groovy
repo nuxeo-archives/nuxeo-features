@@ -78,8 +78,7 @@ public class Main extends ModuleRoot {
           @QueryParam("org.nuxeo.theme.application.name") String name) {
     return getTemplate("presetManager.ftl").arg(
             "current_theme_name", getCurrentThemeName(path, name)).arg(
-            "presets", getPresetGroups()).arg(
-            "selected_preset_group", getSelectedPresetGroup()) 
+            "selected_preset_category", getSelectedPresetCategory()) 
    }
 
   @GET
@@ -148,6 +147,16 @@ public class Main extends ModuleRoot {
       String templateEngine = getTemplateEngine(path)
       ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(templateEngine, currentThemeName)
       return getTemplate("presetManagerActions.ftl").arg("theme", currentThemeDef)
+  }
+  
+  @GET
+  @Path("styleManagerActions")
+  public Object renderStyleManagerActions(@QueryParam("org.nuxeo.theme.application.path") String path, 
+           @QueryParam("org.nuxeo.theme.application.name") String name) {
+      String currentThemeName = getCurrentThemeName(path, name)
+      String templateEngine = getTemplateEngine(path)
+      ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(templateEngine, currentThemeName)
+      return getTemplate("styleManagerActions.ftl").arg("theme", currentThemeDef)
   }
 
   @GET
@@ -342,6 +351,7 @@ public class Main extends ModuleRoot {
     SessionManager.setStylePropertyCategory(null);
     SessionManager.setStyleCategory(null);
     SessionManager.setPresetGroup(null);
+    SessionManager.setPresetCategory(null);
     SessionManager.setClipboardElementId(null);
     SessionManager.setFragmentView(null);
     SessionManager.setFragmentType(null);
@@ -360,6 +370,7 @@ public class Main extends ModuleRoot {
     SessionManager.setStylePropertyCategory(null);
     SessionManager.setStyleCategory(null);
     SessionManager.setPresetGroup(null);
+    SessionManager.setPresetCategory(null);
     SessionManager.setFragmentView(null);
     SessionManager.setFragmentType(null);
   }
@@ -797,6 +808,14 @@ public class Main extends ModuleRoot {
       FormData form = ctx.getForm()
       String group = form.getString("group")        
       SessionManager.setPresetGroup(group)
+  }
+  
+  @POST
+  @Path("select_preset_category")
+  public void selectPresetCategory() {
+      FormData form = ctx.getForm()
+      String category = form.getString("category")        
+      SessionManager.setPresetCategory(category)
   }
   
   @POST
@@ -1419,7 +1438,7 @@ public class Main extends ModuleRoot {
       }
       return groups
   }
-    
+      
   public static List<PresetInfo> getGlobalPresets(String group) {
       def presets = []
       for (preset in  PresetManager.getGlobalPresets(group, null)) {
@@ -1428,9 +1447,9 @@ public class Main extends ModuleRoot {
       return presets
   }
   
-  public static List<PresetInfo> getCustomPresets(String themeName) {
+  public static List<PresetInfo> getCustomPresets(String themeName, String category) {
       def presets = []
-      for (preset in PresetManager.getCustomPresets(themeName, null)) {
+      for (preset in PresetManager.getCustomPresets(themeName, category)) {
           presets.add(new PresetInfo(preset))
       }
       return presets
@@ -1489,6 +1508,12 @@ public class Main extends ModuleRoot {
       String category = SessionManager.getPresetGroup()
       return category
   }
+  
+  public static String getSelectedPresetCategory() {
+      String category = SessionManager.getPresetCategory()
+      return category
+  }
+  
   
   public static String getSelectedStyleCategory() {
         String category = SessionManager.getStyleCategory()

@@ -6,8 +6,8 @@
     label="Save changes" />
 </#if>
 
-<@nxthemes_button identifier="create_preset"
+<@nxthemes_button identifier="create_style"
   controlledBy="editor buttons"
-  link="javascript:NXThemesEditor.addPreset('${theme.name?js_string}', ${current_category?js_string}, 'preset manager')"
-  label="Create new preset" />
+  link="javascript:NXThemesEditor.addStyle()"
+  label="Create new style" />
 
