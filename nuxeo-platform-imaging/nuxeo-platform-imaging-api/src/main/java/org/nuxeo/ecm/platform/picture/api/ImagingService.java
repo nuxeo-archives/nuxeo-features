@@ -46,11 +46,12 @@ public interface ImagingService {
      * Resize image
      *
      * @param in
+     * @param format
      * @param width
      * @param height
      * @return resized image file created in temporary folder
      */
-    InputStream resize(InputStream in, int width, int height);
+    InputStream resize(InputStream in, String format, int width, int height);
 
     /**
      * Rotate image
@@ -92,5 +93,43 @@ public interface ImagingService {
      * @param blob - the blob of a picture
      * @return - the <b>ImageInfo</b> of a blob
      */
-    ImageInfo getImageInfo(Blob blob);    
+    ImageInfo getImageInfo(Blob blob); 
+    
+    /**
+     * Returns a map with the configurations that were registered for the
+     * ImagingService.
+     * 
+     * @return
+     */
+    Map<String, String> getConfigurations();
+
+    /**
+     * Returns the value a configuration which name is received as parameter.
+     * 
+     * @param configurationName - the name of the configuration
+     * @return the value of the configuration, which can be null in case no
+     *         configuration with the specified name was registered
+     */
+    String getConfigurationValue(String configurationName);
+
+    /**
+     * Returns the value a configuration which name is received as parameter. In
+     * case no configuration with the specified name was registered, the
+     * received <b>defaultValue</b> parameter will be return.
+     * 
+     * @param configurationName - the name of the configuration
+     * @param defaultValue the value of the configuration
+     * @return
+     */
+    String getConfigurationValue(String configurationName, String defaultValue);
+
+    /**
+     * Sets the value of a configuration which could be used by the
+     * ImagingService.
+     * 
+     * @param configurationName - the name of the configuration
+     * @param configurationValue - the value of the configuration
+     */
+    void setConfigurationValue(String configurationName,
+            String configurationValue);
 }

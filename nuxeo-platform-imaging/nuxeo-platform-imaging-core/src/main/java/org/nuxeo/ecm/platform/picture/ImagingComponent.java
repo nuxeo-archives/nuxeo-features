@@ -19,8 +19,9 @@
 
 package org.nuxeo.ecm.platform.picture;
 
-import java.io.InputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -28,20 +29,26 @@ import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.platform.picture.api.ImageInfo;
+import org.nuxeo.ecm.platform.picture.api.ImagingConfigurationDescriptor;
 import org.nuxeo.ecm.platform.picture.api.ImagingService;
 import org.nuxeo.ecm.platform.picture.core.libraryselector.LibrarySelector;
 import org.nuxeo.ecm.platform.picture.magick.utils.ImageIdentifier;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
 
 /**
  * @author Max Stepanov
- *
+ * 
  */
 public class ImagingComponent extends DefaultComponent implements
         ImagingService {
 
     private static final Log log = LogFactory.getLog(ImagingComponent.class);
+
+    public static final String CONFIGURATION_PARAMETERS = "configuration";
+
+    protected Map<String, String> configurationParameters = new HashMap<String, String>();
 
     private LibrarySelector librarySelector;
 
@@ -59,9 +66,9 @@ public class ImagingComponent extends DefaultComponent implements
         return in;
     }
 
-    public InputStream resize(InputStream in, int width, int height) {
+    public InputStream resize(InputStream in, String format, int width, int height) {
         try {
-            return getLibrarySelectorService().getImageUtils().resize(in,
+            return getLibrarySelectorService().getImageUtils().resize(in, format,
                     width, height);
         } catch (InstantiationException e) {
             log.error("Failed to instanciate ImageUtils Class", e);
@@ -132,8 +139,9 @@ public class ImagingComponent extends DefaultComponent implements
 
     public String getImageMimeType(File file) {
         try {
-            return getLibrarySelectorService().getMimeUtils().getImageMimeType(file);
-        }catch (InstantiationException e) {
+            return getLibrarySelectorService().getMimeUtils().getImageMimeType(
+                    file);
+        } catch (InstantiationException e) {
             log.error("Failed to instanciate ImageMime Class", e);
         } catch (IllegalAccessException e) {
             log.error("Failed to instanciate ImageMime Class", e);
@@ -145,8 +153,9 @@ public class ImagingComponent extends DefaultComponent implements
 
     public String getImageMimeType(InputStream in) {
         try {
-            return getLibrarySelectorService().getMimeUtils().getImageMimeType(in);
-        }catch (InstantiationException e) {
+            return getLibrarySelectorService().getMimeUtils().getImageMimeType(
+                    in);
+        } catch (InstantiationException e) {
             log.error("Failed to instanciate ImageMime Class", e);
         } catch (IllegalAccessException e) {
             log.error("Failed to instanciate ImageMime Class", e);
@@ -181,8 +190,54 @@ public class ImagingComponent extends DefaultComponent implements
                     + blob.getFilename(), e);
         } finally {
             tmpFile.delete();
-        }        
+        }
         return imageInfo;
+    }
+
+    public void registerContribution(Object contribution,
+            String extensionPoint, ComponentInstance contributor)
+            throws Exception {
+        if (CONFIGURATION_PARAMETERS.equals(extensionPoint)) {
+            ImagingConfigurationDescriptor desc = (ImagingConfigurationDescriptor) contribution;
+            configurationParameters.putAll(desc.getParameters());
+        }
+    }
+
+    public void unregisterContribution(Object contribution,
+            String extensionPoint, ComponentInstance contributor)
+            throws Exception {
+        if (CONFIGURATION_PARAMETERS.equals(extensionPoint)) {
+            ImagingConfigurationDescriptor desc = (ImagingConfigurationDescriptor) contribution;
+            for (String configuration : desc.getParameters().keySet()) {
+                configurationParameters.remove(configuration);
+            }
+        }
+    }
+
+    public Map<String, String> getConfigurations() {
+        return configurationParameters;
+    }
+
+    public String getConfigurationValue(String configurationName) {
+        if (getConfigurations() == null) {
+            return null;
+        }
+        return getConfigurations().get(configurationName);
+    }
+
+    public String getConfigurationValue(String configurationName,
+            String defaultValue) {
+        String value = getConfigurationValue(configurationName);
+        if (value == null) {
+            return defaultValue;
+        } else {
+            return value;
+        }
+    }
+
+    public void setConfigurationValue(String configurationName,
+            String configurationValue) {
+        configurationParameters.put(configurationName, configurationValue);
     }
 
 }

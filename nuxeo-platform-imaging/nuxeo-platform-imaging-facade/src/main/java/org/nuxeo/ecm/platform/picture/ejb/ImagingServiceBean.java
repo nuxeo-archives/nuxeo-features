@@ -69,8 +69,8 @@ public class ImagingServiceBean implements ImagingService {
         return service.getImageMetadata(blob);
     }
 
-    public InputStream resize(InputStream in, int width, int height) {
-        return service.resize(in, width, height);
+    public InputStream resize(InputStream in, String format, int width, int height) {
+        return service.resize(in, format, width, height);
     }
 
     public InputStream rotate(InputStream in, int angle) {
@@ -90,6 +90,24 @@ public class ImagingServiceBean implements ImagingService {
 
     public ImageInfo getImageInfo(Blob blob) {
         return service.getImageInfo(blob);
+    }
+
+    public String getConfigurationValue(String configurationName) {
+        return service.getConfigurationValue(configurationName);
+    }
+
+    public String getConfigurationValue(String configurationName,
+            String defaultValue) {
+        return service.getConfigurationValue(configurationName, defaultValue);
+    }
+
+    public Map<String, String> getConfigurations() {
+        return service.getConfigurations();
+    }
+
+    public void setConfigurationValue(String configurationName,
+            String configurationValue) {
+        service.setConfigurationValue(configurationName, configurationValue);
     }
 
 }

@@ -28,7 +28,7 @@ public interface ImageUtils {
 
     InputStream crop(InputStream in, int x, int y, int width, int height);
 
-    InputStream resize(InputStream in, int width, int height);
+    InputStream resize(InputStream in, String format, int width, int height);
 
     InputStream rotate(InputStream in, int angle);
 
