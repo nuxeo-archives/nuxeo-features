@@ -43,15 +43,21 @@ public interface ImagingService {
     InputStream crop(InputStream in, int x, int y, int width, int height);
 
     /**
-     * Resize image
+     * Method used to resize an image of which input stream is received as parameter. The original and final formats are received as parameter,
+     * in order to control the behavior of the conversion that will be made by ImageMagick. 
+     * 
+     * Note: ImageMagick is not able to retrieve the 'identify' information of a RAW file image only if the RAW file has the exact format that
+     * corresponds to its mime type. For example ImageMagick returns the 'identify' information of a .cr2 image file only if the file has this
+     * exact format(not with .tmp or other extension).
      *
      * @param in
-     * @param format
+     * @param originalFormat - the initial format of the file
+     * @param finalFormat - the final format of the file after the resize is made
      * @param width
      * @param height
      * @return resized image file created in temporary folder
      */
-    InputStream resize(InputStream in, String format, int width, int height);
+    InputStream resize(InputStream in, String originalFormat, String finalFormat, int width, int height, int depth);
 
     /**
      * Rotate image
@@ -131,5 +137,5 @@ public interface ImagingService {
      * @param configurationValue - the value of the configuration
      */
     void setConfigurationValue(String configurationName,
-            String configurationValue);
+            String configurationValue);    
 }

@@ -69,8 +69,10 @@ public class ImagingServiceBean implements ImagingService {
         return service.getImageMetadata(blob);
     }
 
-    public InputStream resize(InputStream in, String format, int width, int height) {
-        return service.resize(in, format, width, height);
+    public InputStream resize(InputStream in, String originalFormat,
+            String finalFormat, int width, int height, int depth) {
+        return service.resize(in, originalFormat, finalFormat, width, height,
+                depth);
     }
 
     public InputStream rotate(InputStream in, int angle) {

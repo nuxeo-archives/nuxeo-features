@@ -66,10 +66,11 @@ public class ImagingComponent extends DefaultComponent implements
         return in;
     }
 
-    public InputStream resize(InputStream in, String format, int width, int height) {
+    public InputStream resize(InputStream in, String originalFormat,
+            String finalFormat, int width, int height, int depth) {
         try {
-            return getLibrarySelectorService().getImageUtils().resize(in, format,
-                    width, height);
+            return getLibrarySelectorService().getImageUtils().resize(in,
+                    originalFormat, finalFormat, width, height, depth);
         } catch (InstantiationException e) {
             log.error("Failed to instanciate ImageUtils Class", e);
         } catch (IllegalAccessException e) {
@@ -181,7 +182,7 @@ public class ImagingComponent extends DefaultComponent implements
     public ImageInfo getImageInfo(Blob blob) {
         ImageInfo imageInfo = null;
         File tmpFile = new File(System.getProperty("java.io.tmpdir"),
-                blob.getFilename() + ".tmp");
+                blob.getFilename() != null ? blob.getFilename() : "tmp.tmp");
         try {
             blob.transferTo(tmpFile);
             imageInfo = ImageIdentifier.getInfo(tmpFile.getAbsolutePath());
@@ -239,5 +240,4 @@ public class ImagingComponent extends DefaultComponent implements
             String configurationValue) {
         configurationParameters.put(configurationName, configurationValue);
     }
-
 }

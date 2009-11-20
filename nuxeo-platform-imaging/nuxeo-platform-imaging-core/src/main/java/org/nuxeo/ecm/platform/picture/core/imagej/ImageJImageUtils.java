@@ -39,7 +39,8 @@ public class ImageJImageUtils implements ImageUtils {
 
     private static final Log log = LogFactory.getLog(ImageJImageUtils.class);
 
-    public InputStream resize(InputStream in, String format, int width, int height) {
+    public InputStream resize(InputStream in, String originalFormat,
+            String finalFormat, int width, int height, int depth) {
         try {
             FileBlob fb = new FileBlob(in);
             String path = fb.getFile().getPath();
@@ -50,8 +51,8 @@ public class ImageJImageUtils implements ImageUtils {
             ImageProcessor ip_small = im.resize(width, height);
             ImagePlus small = new ImagePlus("small", ip_small);
             File resultFile = save(small, fileName.split("\\.")[0],
-                    format != null ? format : "tmp",
-                    format != null ? FileInfo.UNKNOWN
+                    finalFormat != null ? finalFormat : "tmp",
+                    finalFormat != null ? FileInfo.UNKNOWN
                             : f.getOriginalFileInfo().fileFormat);
             if (resultFile != null) {
                 FileInputStream fis = new FileInputStream(resultFile);

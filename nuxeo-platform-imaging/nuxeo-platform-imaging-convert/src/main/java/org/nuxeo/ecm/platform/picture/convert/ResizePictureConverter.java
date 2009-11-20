@@ -46,30 +46,42 @@ public class ResizePictureConverter implements Converter {
 
     public BlobHolder convert(BlobHolder blobHolder,
             Map<String, Serializable> parameters) throws ConversionException {
-        try{
-        ImagingService service = Framework.getService(ImagingService.class);
-        List<Blob> results = new ArrayList<Blob>();
-        List<Blob> sources = blobHolder.getBlobs();
-        int height = (Integer) parameters.get(OPTION_RESIZE_HEIGHT);
-        int width = (Integer) parameters.get(OPTION_RESIZE_WIDTH);     
-        // use the registered conversion format
-        String format = (String) parameters.get(CONVERSION_FORMAT);
-        
-        for (Blob source : sources) {
-            if (source != null) {
-                InputStream in = source.getStream();
-                if (in != null) {
-                    InputStream result = service.resize(in, format, width, height);
-                    if (result != null) {
-                        // FIXME : local only
-                        Blob blob = new FileBlob(result);
-                        results.add(blob);
+        try {
+            ImagingService service = Framework.getService(ImagingService.class);
+            List<Blob> results = new ArrayList<Blob>();
+            List<Blob> sources = blobHolder.getBlobs();
+            int height = (Integer) parameters.get(OPTION_RESIZE_HEIGHT);
+            int width = (Integer) parameters.get(OPTION_RESIZE_WIDTH);
+            int depth = (Integer) parameters.get(OPTION_RESIZE_DEPTH);
+            // use the registered conversion format
+            String finalFormat = (String) parameters.get(CONVERSION_FORMAT);
+            String filename, originalFormat;
+            filename = originalFormat = null;
+            int index = 0;
+            for (Blob source : sources) {
+                if (source != null) {
+                    InputStream in = source.getStream();
+                    if (in != null) {
+                        filename = source.getFilename();
+                        if (filename != null) {
+                            index = filename.lastIndexOf(".");
+                            if (index > 0 && index + 1 < filename.length()) {
+                                originalFormat = filename.substring(index + 1);
+                            }
+                        }
+                        
+                        InputStream result = service.resize(in, originalFormat,
+                                finalFormat, width, height, depth);
+                        if (result != null) {
+                            // FIXME : local only
+                            Blob blob = new FileBlob(result);
+                            results.add(blob);
+                        }
                     }
                 }
             }
-        }
-        return new SimpleCachableBlobHolder(results);
-        } catch (Exception e){
+            return new SimpleCachableBlobHolder(results);
+        } catch (Exception e) {
             log.error(e);
             throw new ConversionException("Resize conversion has failed", e);
         }

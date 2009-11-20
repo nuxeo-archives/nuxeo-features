@@ -69,17 +69,17 @@ public class IMImageUtils implements ImageUtils {
         }
     }
 
-    public InputStream resize(InputStream in, String format, int width, int height) {
+    public InputStream resize(InputStream in, String originalFormat, String finalFormat, int width, int height, int depth) {
         try {
             CommandLineExecutorService cles = Framework.getLocalService(CommandLineExecutorService.class);
             CommandAvailability commandAvailability = cles.getCommandAvailability("resizer");
             if (commandAvailability.isAvailable()) {
-                FileBlob fb = new FileBlob(in);
+                FileBlob fb = new FileBlob(in, null, null, originalFormat);
                 String path = fb.getFile().getAbsolutePath();
                 File img2 = File.createTempFile("target",
-                        "." + (format != null ? format
+                        "." + (finalFormat != null ? finalFormat
                                 : ImageIdentifier.getInfo(path).getFormat()));
-                ImageResizer.resize(path, img2.getAbsolutePath(), width, height);
+                ImageResizer.resize(path, img2.getAbsolutePath(), width, height, depth);
 
                 InputStream is = new FileInputStream(img2);
                 img2.delete();
@@ -87,7 +87,7 @@ public class IMImageUtils implements ImageUtils {
                 return is;
             } else {
                 MistralImageUtils miu = new MistralImageUtils();
-                return miu.resize(in, format, width, height);
+                return miu.resize(in, originalFormat, finalFormat, width, height, depth);
             }
         } catch (Exception e) {
             log.error("Resizing with ImageMagick failed", e);

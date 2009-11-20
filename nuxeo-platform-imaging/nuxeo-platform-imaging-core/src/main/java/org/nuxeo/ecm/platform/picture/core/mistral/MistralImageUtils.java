@@ -78,7 +78,8 @@ public class MistralImageUtils implements ImageUtils {
         return null;
     }
 
-    public InputStream resize(InputStream in, String format, int width, int height) {
+    public InputStream resize(InputStream in, String originalFormat,
+            String finalFormat, int width, int height, int depth) {
         try {
             ImplementationFactoryJAI.getInstance();
             ImplementationFactoryJ2D.getInstance().unregisterImplementation(

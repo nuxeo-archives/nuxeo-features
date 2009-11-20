@@ -34,17 +34,18 @@ import org.nuxeo.ecm.platform.picture.magick.MagickExecutor;
 public class ImageResizer extends MagickExecutor {
 
     public static ImageInfo resize(String inputFile, String outputFile,
-            int targetWidth, int targetHeight) throws Exception {
+            int targetWidth, int targetHeight, int targetDepth) throws Exception {
         
-        // find the depth of the image first
-        ImageInfo imageInfo = ImageIdentifier.getInfo(inputFile);
+        if (targetDepth == -1) {
+            targetDepth = ImageIdentifier.getInfo(inputFile).getDepth();
+        }
         CmdParameters params = new CmdParameters();        
                 
         params.addNamedParameter("targetWidth", String.valueOf(targetWidth));
         params.addNamedParameter("targetHeight", String.valueOf(targetHeight));
         params.addNamedParameter("inputFilePath", formatFilePath(inputFile));
         params.addNamedParameter("outputFilePath", formatFilePath(outputFile));
-        params.addNamedParameter("targetDepth", String.valueOf(imageInfo.getDepth()));
+        params.addNamedParameter("targetDepth", String.valueOf(targetDepth));
         execCommand("resizer", params);
 
         if (new File(outputFile).exists()) {
