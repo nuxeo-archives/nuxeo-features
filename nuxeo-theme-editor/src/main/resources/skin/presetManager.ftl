@@ -1,10 +1,12 @@
+
+<!-- preset menu -->
+<@nxthemes_view resource="preset-menu.json" />   
+
 <div id="nxthemesPresetManager" class="nxthemesPresets nxthemesScreen">
 
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
-
-<!-- preset menu -->
-<@nxthemes_view resource="preset-menu.json" />     
+  
       
 <h1 class="nxthemesEditor">Theme presets</h1>
 
