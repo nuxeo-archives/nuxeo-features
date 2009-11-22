@@ -723,6 +723,7 @@ div.nxthemesEditorFrame {
 
 .nxthemesButton b, .nxthemesButton a {
   background-image: url(${basePath}/skin/nxthemes-editor/img/button.png);
+  color: #000 !important;
 }
 
 /* Form elements used in the element editor */
