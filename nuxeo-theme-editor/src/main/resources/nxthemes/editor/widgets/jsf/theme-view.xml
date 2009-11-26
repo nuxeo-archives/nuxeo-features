@@ -24,7 +24,7 @@
       <nxthemes:panel identifier="theme selector"
         url="/nuxeo/site/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
-        visibleInPerspectives="canvas editor,padding editor" />
+        visibleInPerspectives="canvas editor,padding editor,style manager,preset manager,theme browser" />
         
       <!--  perspective selector -->
       <nxthemes:panel identifier="perspective selector"
@@ -33,7 +33,12 @@
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
       <div id="nxthemesMainButtons">
-                                  
+                          
+        <nxthemes:button identifier="theme_browser"
+          controlledBy="editor buttons"
+          switchTo="editor perspectives/theme browser"
+          label="Theme browser" />
+                                
         <nxthemes:button identifier="preset_library"
           controlledBy="editor buttons"
           switchTo="editor perspectives/preset library"

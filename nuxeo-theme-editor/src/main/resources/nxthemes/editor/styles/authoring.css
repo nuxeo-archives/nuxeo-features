@@ -1459,17 +1459,21 @@ ul.namedStyleSelector li a.selected {
 
 table.fragmentFactory {
   width: 100%;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
 }
 
 table.fragmentFactory th {
-  border: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   text-align: left;
-  padding: 3px 7px;
+  padding: 5px 7px;
   background-color: #eee;
+  color: #333;
+  font-size: 11px;
 }
 
 table.fragmentFactory td {
-  border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
 }
 

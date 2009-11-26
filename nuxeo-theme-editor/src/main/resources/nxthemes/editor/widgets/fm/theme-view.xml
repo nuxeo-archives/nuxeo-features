@@ -19,7 +19,7 @@
       <@nxthemes_panel identifier="theme selector"
         url="${basePath}/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
-        visibleInPerspectives="canvas editor,padding editor,style manager,preset manager" />
+        visibleInPerspectives="canvas editor,padding editor,style manager,preset manager,theme browser" />
         
       <!--  perspective selector -->
       <@nxthemes_panel identifier="perspective selector"
