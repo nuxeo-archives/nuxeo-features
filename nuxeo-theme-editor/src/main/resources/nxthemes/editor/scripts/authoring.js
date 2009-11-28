@@ -1056,20 +1056,6 @@ NXThemesEditor.deleteTheme = function(src) {
     });
 };
 
-NXThemesEditor.saveChanges = function() {
-    var url = nxthemesBasePath + "/nxthemes-editor/save_changes"; 
-    new Ajax.Request(url, {
-         method: 'post',
-         onSuccess: function(r) {
-           NXThemesEditor.writeMessage("Changes saved.");
-         },
-         onFailure: function(r) {
-           var text = r.responseText;
-           window.alert(text);
-         }      
-    });
-};
-
 NXThemesEditor.refreshCanvas = function() {
     NXThemes.getViewById("canvas area").refresh();
 };

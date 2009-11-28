@@ -793,16 +793,6 @@ public class Main extends ModuleRoot {
   }
   
   @POST
-  @Path("save_changes")
-  public void saveChanges() {
-      try {
-          Editor.saveChanges()
-      } catch (Exception e) {
-          throw new ThemeEditorException(e.getMessage(), e)
-      }
-  }
-  
-  @POST
   @Path("select_preset_group")
   public void selectPresetGroup() {
       FormData form = ctx.getForm()
