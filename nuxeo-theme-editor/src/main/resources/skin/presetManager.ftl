@@ -7,31 +7,39 @@
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
   
-      
+
 <h1 class="nxthemesEditor">Theme presets</h1>
 
 <table style="width: 100%;" cellpadding="3" cellspacing="2">
   <tr>
     <th style="text-align: left; width: 25%; background-color: #999; color: #fff">Category</th>
-    <th style="text-align: left; width: 75%; background-color: #999; color: #fff">Presets</th>
+    <th style="text-align: left; width: 75%; background-color: #999; color: #fff">Presets 
+      <button style="border: 1px solid #666; cursor: pointer; padding: 0; margin: 0; float: right; font-size: 11px; " onclick="NXThemesEditor.addPreset('${current_theme_name?js_string}', '${selected_preset_category?js_string}', 'preset manager')">Create preset</button>
+    </th>
   </tr>
   <tr>
-    <td>
+    <td style="vertical-align: top">
        <ul class="nxthemesSelector">
          <li <#if selected_preset_category = 'color'>class="selected"</#if>>
-              <a href="javascript:NXThemesPresetManager.selectPresetCategory('color')">Color</a></li>
+              <a href="javascript:NXThemesPresetManager.selectPresetCategory('color')">
+              <img src="${skinPath}/img/category-16.png" width="16" height="16"/> Color</a></li>
          <li <#if selected_preset_category = 'background'>class="selected"</#if>>
-             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('background')">Background</a></li>
+             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('background')">
+             <img src="${skinPath}/img/category-16.png" width="16" height="16"/> Background</a></li>
          <li <#if selected_preset_category = 'font'>class="selected"</#if>>
-             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('font')">Font</a></li>
+             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('font')">
+             <img src="${skinPath}/img/category-16.png" width="16" height="16"/> Font</a></li>
          <li <#if selected_preset_category = 'image'>class="selected"</#if>>
-             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('image')">Image</a></li>
+             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('image')">
+             <img src="${skinPath}/img/category-16.png" width="16" height="16"/> Image</a></li>
        </ul>
      </td>
     <td>
     
+    
 <#if selected_preset_category>
 <#assign presets = This.getCustomPresets(current_theme_name, selected_preset_category)>
+
 
 <table cellspacing="0" cellpadding="1" style="width: 100%">
 <#assign count = 0 />

@@ -1,9 +1,10 @@
-<div id="nxthemesPresetLibrary" class="nxthemesPresets nxthemesScreen">
-
-<h1 class="nxthemesEditor">Preset library</h1>
 
 <!-- preset menu -->
 <@nxthemes_view resource="preset-menu.json" />     
+
+<div id="nxthemesPresetLibrary" class="nxthemesPresets nxthemesScreen">
+
+<h1 class="nxthemesEditor">Preset library</h1>
 
 <table style="width: 100%;" cellpadding="3" cellspacing="2">
   <tr>

@@ -68,12 +68,6 @@
           url="/nuxeo/site/nxthemes-editor/themeBrowserActions"
           controlledBy="editor perspectives"
           visibleInPerspectives="theme browser" />
-          
-        <!-- preset manage actions -->
-        <nxthemes:panel identifier="preset manager actions"
-          url="/nuxeo/site/nxthemes-editor/presetManagerActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="preset manager" />          
 
         <!-- view modes -->
         <nxthemes:panel identifier="view modes"

@@ -64,12 +64,6 @@
           controlledBy="editor perspectives"
           visibleInPerspectives="theme browser" />
           
-        <!-- preset manager actions -->
-        <@nxthemes_panel identifier="preset manager actions"
-          url="${basePath}/nxthemes-editor/presetManagerActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="preset manager" />          
-
         <!-- style manager actions -->
         <@nxthemes_panel identifier="style manager actions"
           url="${basePath}/nxthemes-editor/styleManagerActions"
