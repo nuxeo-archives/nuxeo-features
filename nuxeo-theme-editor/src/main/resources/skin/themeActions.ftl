@@ -1,9 +1,16 @@
 <#setting url_escaping_charset='UTF-8'>
 
-<@nxthemes_button identifier="canvas_editor"
-  controlledBy="editor buttons"
-  switchTo="editor perspectives/canvas editor"
-  label="Refresh theme" />
+<#if theme.saveable>
+  <@nxthemes_button identifier="refresh_theme"
+    controlledBy="editor buttons"
+    link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}')"
+    label="Refresh theme" />
+<#else>
+  <@nxthemes_button identifier="restore_theme"
+    controlledBy="editor buttons"
+    link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}', true)"
+    label="Restore theme" />
+</#if>
 
 <@nxthemes_button identifier="theme_actions"
   controlledBy="editor buttons"

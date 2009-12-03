@@ -994,10 +994,12 @@ NXThemesEditor.repairTheme = function(src) {
     });
 };
 
-NXThemesEditor.loadTheme = function(src) {
-    var ok = confirm("Unsaved changes will be lost, are you sure?");
-    if (!ok) {
-        return;
+NXThemesEditor.loadTheme = function(src, confirmation) {
+    if (confirmation) {
+        var ok = confirm("Unsaved changes will be lost, are you sure?");
+        if (!ok) {
+            return;
+        }
     }
     var url = nxthemesBasePath + "/nxthemes-editor/load_theme"; 
     new Ajax.Request(url, {
