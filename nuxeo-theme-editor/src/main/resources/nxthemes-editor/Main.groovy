@@ -142,6 +142,17 @@ public class Main extends ModuleRoot {
                        "current_page_path", currentPagePath).arg(
                        "current_page_name", currentpageName)
   }
+
+  @GET
+  @Path("presetManagerActions")
+  public Object renderPresetManagerActions(@QueryParam("org.nuxeo.theme.application.path") String path, 
+           @QueryParam("org.nuxeo.theme.application.name") String name) {
+      String currentThemeName = getCurrentThemeName(path, name)
+      String templateEngine = getTemplateEngine(path)
+      ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(templateEngine, currentThemeName)
+      return getTemplate("presetManagerActions.ftl").arg("theme", currentThemeDef).arg(
+                  "selected_preset_category", getSelectedPresetCategory())
+  }  
     
   @GET
   @Path("styleManagerActions")

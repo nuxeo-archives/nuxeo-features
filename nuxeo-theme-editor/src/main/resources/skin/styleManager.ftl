@@ -6,16 +6,6 @@
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
-<div class="nxthemesButtonSelector" style="float: right; padding: 11px 5px 12px 0;">
-  <#if style_manager_mode = 'unused styles'>
-     <a href="javascript:void(0)" onclick="NXThemesStyleManager.setEditMode('named styles')">Named styles</a>
-     <a href="javascript:void(0)" class="selected">Unused styles</a>
-  <#else>
-     <a href="javascript:void(0)" class="selected">Named styles</a>
-     <a href="javascript:void(0)" onclick="NXThemesStyleManager.setEditMode('unused styles')">Unused styles</a>
-  </#if>
-</div>
-
 <h1 class="nxthemesEditor">Manage styles</h1>
 
 <#if style_manager_mode = 'unused styles'>
@@ -59,7 +49,7 @@
 
 <#assign found=false>
 
-  <table style="width: 100%;" cellpadding="3" cellspacing="2">
+  <table style="width: 100%;" cellpadding="3" cellspacing="1">
   <tr>
     <th style="text-align: left; width: 25%; background-color: #999; color: #fff">Style</th>
     <th style="text-align: left; width: 75%; background-color: #999; color: #fff">CSS properties</th>

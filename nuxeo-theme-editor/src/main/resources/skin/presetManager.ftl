@@ -10,12 +10,10 @@
 
 <h1 class="nxthemesEditor">Theme presets</h1>
 
-<table style="width: 100%;" cellpadding="3" cellspacing="2">
+<table style="width: 100%;" cellpadding="3" cellspacing="1">
   <tr>
     <th style="text-align: left; width: 25%; background-color: #999; color: #fff">Category</th>
-    <th style="text-align: left; width: 75%; background-color: #999; color: #fff">Presets 
-      <button style="border: 1px solid #666; cursor: pointer; padding: 0; margin: 0; float: right; font-size: 11px; " onclick="NXThemesEditor.addPreset('${current_theme_name?js_string}', '${selected_preset_category?js_string}', 'preset manager')">Create preset</button>
-    </th>
+    <th style="text-align: left; width: 75%; background-color: #999; color: #fff">Presets</th>
   </tr>
   <tr>
     <td style="vertical-align: top">
@@ -79,6 +77,7 @@
      }
   }
 </ins>
+
 <#if preset_info.category>
 ${preset_info.preview}
 <#else>
