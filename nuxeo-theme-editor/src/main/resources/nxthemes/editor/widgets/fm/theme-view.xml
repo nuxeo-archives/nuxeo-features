@@ -19,7 +19,7 @@
       <@nxthemes_panel identifier="theme selector"
         url="${basePath}/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
-        visibleInPerspectives="canvas editor,padding editor,style manager,preset manager,theme browser" />
+        visibleInPerspectives="canvas editor,padding editor,style manager,preset manager" />
         
       <!--  perspective selector -->
       <@nxthemes_panel identifier="perspective selector"
@@ -32,7 +32,7 @@
         <@nxthemes_button identifier="preset_library"
           controlledBy="editor buttons"
           switchTo="editor perspectives/preset library"
-          label="Preset library" />
+          label="Factory presets" />
                                             
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
@@ -45,7 +45,7 @@
         <@nxthemes_panel identifier="back to canvas"
           url="${basePath}/nxthemes-editor/backToCanvas"
           controlledBy="editor perspectives"
-          visibleInPerspectives="preset library,preset manager,theme browser,style manager,element editor" />
+          visibleInPerspectives="preset library,preset manager,theme browser,style manager,element editor,fragment factory" />
                          
         <!-- theme actions -->
         <@nxthemes_panel identifier="theme actions"
@@ -128,6 +128,7 @@
     
     <@nxthemes_controller resource="editor-perspectives.json" />
     <@nxthemes_controller resource="editor-buttons.json" />
+    <@nxthemes_controller resource="theme-buttons.json" />
     <@nxthemes_controller resource="canvas-mode-selector.json" />
     <@nxthemes_controller resource="layout-editor-actions.json" />
     <@nxthemes_controller resource="area-style-perspectives.json" />

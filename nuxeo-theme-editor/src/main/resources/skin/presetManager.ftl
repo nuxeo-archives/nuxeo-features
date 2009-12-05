@@ -8,7 +8,10 @@
 <#assign themes=themeManager.getThemeDescriptors()>
   
 
-<h1 class="nxthemesEditor">Theme presets</h1>
+<#if preset_manager_mode = 'theme presets'>
+
+
+<h1 class="nxthemesEditor">Manage presets</h1>
 
 <table style="width: 100%;" cellpadding="3" cellspacing="1">
   <tr>
@@ -165,7 +168,11 @@ ${preset_info.preview}
 
 </#if>
 
+</#if>
 
+<#if preset_manager_mode = 'unregistered presets'>
+
+<h1 class="nxthemesEditor">Register CSS properties</h1>
 
 <#assign colors=This.getHardcodedColors(current_theme_name)>
 
@@ -246,6 +253,8 @@ ${preset_info.preview}
 </tr>
 </td>
 </table>
+
+</#if>
 
 </div>
 

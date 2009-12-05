@@ -78,6 +78,7 @@ public class Main extends ModuleRoot {
           @QueryParam("org.nuxeo.theme.application.name") String name) {
     return getTemplate("presetManager.ftl").arg(
             "current_theme_name", getCurrentThemeName(path, name)).arg(
+            "preset_manager_mode", getPresetManagerMode()).arg(
             "selected_preset_category", getSelectedPresetCategory()) 
    }
 

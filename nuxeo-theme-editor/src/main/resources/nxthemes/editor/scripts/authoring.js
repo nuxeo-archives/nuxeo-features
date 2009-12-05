@@ -109,7 +109,8 @@ NXThemesEditor.addFragment = function(typeName, destId) {
              dest_id: destId
          },
          onSuccess: function(r) {
-             NXThemesEditor.editCanvas();
+             NXThemesEditor.switchToCanvas();
+             NXThemesEditor.refreshCanvas();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -158,6 +159,7 @@ NXThemesEditor.insertFragment = function(info) {
 
 NXThemesEditor.manageStyles = function() {
     NXThemes.getControllerById("editor perspectives").switchTo('style manager');
+    NXThemes.getControllerById('theme buttons').select('show_named_styles');
 };
 
 NXThemesEditor.changeElementStyle = function(info) {
@@ -607,8 +609,21 @@ NXThemesEditor.selectTheme = function(name) {
     if (name) {
         NXThemes.setCookie("nxthemes.theme", name);
     } else {
-       	NXThemes.getControllerById('editor perspectives').switchTo('theme browser');
     	NXThemes.expireCookie("nxthemes.theme");
+    }
+};
+
+NXThemesEditor.switchTheme = function(info) {
+    var form = Event.findElement(info, "form");
+    var name = Form.findFirstElement(form).getValue();
+    if (name) {
+        NXThemesEditor.selectTheme(name);
+        NXThemes.getViewById("theme selector").refresh();
+        NXThemes.getViewById("page selector").refresh();
+        NXThemes.getViewById("theme actions").refresh();
+        NXThemesEditor.refreshCanvas();
+    } else {
+        NXThemes.getControllerById('editor perspectives').switchTo('theme browser');
     }
 };
 
@@ -616,16 +631,6 @@ NXThemesEditor.selectPerspective = function(info) {
     var form = Event.findElement(info, "form");
     var perspective = Form.findFirstElement(form).getValue();
     NXThemes.setCookie("nxthemes.perspective", perspective);
-    NXThemesEditor.refreshCanvas();
-};
-
-NXThemesEditor.switchTheme = function(info) {
-    var form = Event.findElement(info, "form");
-    var name = Form.findFirstElement(form).getValue();
-    NXThemesEditor.selectTheme(name);
-    NXThemes.getViewById("theme selector").refresh();
-    NXThemes.getViewById("page selector").refresh();
-    NXThemes.getViewById("theme actions").refresh();
     NXThemesEditor.refreshCanvas();
 };
 
@@ -739,13 +744,15 @@ NXThemesEditor.switchToCanvas = function() {
     NXThemes.getControllerById('editor perspectives').switchTo('canvas editor');
 };
 
-NXThemesEditor.editCanvas = function() {
+NXThemesEditor.backToCanvas = function() {
 	NXThemesEditor.switchToCanvas();
     NXThemesEditor.refreshCanvas();
+    NXThemes.getControllerById('editor buttons').select();
 }
 
 NXThemesEditor.managePresets = function() {
     NXThemes.getControllerById("editor perspectives").switchTo('preset manager');
+    NXThemes.getControllerById('theme buttons').select('show_presets');
 };
 
 NXThemesEditor.addPreset = function(themeName, category, view_id) {

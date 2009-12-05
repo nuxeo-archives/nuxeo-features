@@ -2,28 +2,33 @@
 
 <#if theme.saveable>
   <@nxthemes_button identifier="refresh_theme"
-    controlledBy="editor buttons"
     icon="${skinPath}/img/refresh-14.png"
     link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}')"
     label="Refresh theme" />
 <#else>
   <@nxthemes_button identifier="restore_theme"
-    controlledBy="editor buttons"
     icon="${skinPath}/img/refresh-14.png"
     link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}', true)"
     label="Restore theme" />
 </#if>
 
+<@nxthemes_button identifier="manage_styles"
+  controlledBy="theme buttons"
+  link="javascript:NXThemesEditor.manageStyles()"
+  label="Manage styles" />
+    
+<@nxthemes_button identifier="manage_presets"
+  controlledBy="theme buttons"
+  link="javascript:NXThemesEditor.managePresets()"
+  label="Manage presets" />
+
 <@nxthemes_button identifier="theme_actions"
-  controlledBy="editor buttons"
   classNames="dropList"
   menu="nxthemesThemeActions"
   label="More actions" />
 
 <div id="nxthemesThemeActions" style="display: none"> 
   <ul class="nxthemesDropDownMenu">
-    <li><a href="javascript:void(0)" onclick="NXThemesEditor.manageStyles()">Manage theme styles</a></li>
-    <li><a href="javascript:void(0)" onclick="NXThemesEditor.managePresets()">Manage theme presets</a></li>
     <#if theme.exportable>
       <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}&amp;download=1&amp;indent=2'">Download theme</a></li>  
       <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}'">Show source XML</a></li>

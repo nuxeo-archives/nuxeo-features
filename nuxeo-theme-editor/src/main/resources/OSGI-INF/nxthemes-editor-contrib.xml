@@ -63,6 +63,12 @@
       </path>
     </resource>
 
+    <resource name="theme-buttons.json">
+      <path>
+        nxthemes/editor/controllers/theme-buttons.json
+      </path>
+    </resource>    
+
     <resource name="fragment-inserter.json">
       <path>
         nxthemes/editor/controllers/fragment-inserter.json
@@ -90,12 +96,6 @@
     <resource name="fragment-factory-expander.json">
       <path>
         nxthemes/editor/controllers/fragment-factory-expander.json
-      </path>
-    </resource>
-
-    <resource name="theme-switcher.json">
-      <path>
-        nxthemes/editor/controllers/theme-switcher.json
       </path>
     </resource>
 
@@ -144,6 +144,12 @@
     <resource name="canvas-mode-selector.json">
       <path>
         nxthemes/editor/controllers/canvas-mode-selector.json
+      </path>
+    </resource>
+
+    <resource name="theme-switcher.json">
+      <path>
+        nxthemes/editor/controllers/theme-switcher.json
       </path>
     </resource>
 

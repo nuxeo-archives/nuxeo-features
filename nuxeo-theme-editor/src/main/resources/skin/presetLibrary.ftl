@@ -4,7 +4,7 @@
 
 <div id="nxthemesPresetLibrary" class="nxthemesPresets nxthemesScreen">
 
-<h1 class="nxthemesEditor">Preset library</h1>
+<h1 class="nxthemesEditor">Factory presets</h1>
 
 <table style="width: 100%;" cellpadding="3" cellspacing="1">
   <tr>
