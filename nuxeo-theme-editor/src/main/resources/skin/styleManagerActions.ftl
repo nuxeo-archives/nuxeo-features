@@ -1,6 +1,7 @@
 
 <@nxthemes_button identifier="create_style"
   controlledBy="editor buttons"
+  icon="${skinPath}/img/add-14.png"
   link="javascript:NXThemesEditor.addStyle()"
   label="Create new style" />
   

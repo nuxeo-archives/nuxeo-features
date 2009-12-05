@@ -3,11 +3,13 @@
 <#if theme.saveable>
   <@nxthemes_button identifier="refresh_theme"
     controlledBy="editor buttons"
+    icon="${skinPath}/img/refresh-14.png"
     link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}')"
     label="Refresh theme" />
 <#else>
   <@nxthemes_button identifier="restore_theme"
     controlledBy="editor buttons"
+    icon="${skinPath}/img/refresh-14.png"
     link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}', true)"
     label="Restore theme" />
 </#if>
