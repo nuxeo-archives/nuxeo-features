@@ -548,7 +548,7 @@ public class JbpmActionsBean extends DocumentContextBoundActionBean implements
         return returnToCurrentDocOrHome();
     }
 
-    private String returnToCurrentDocOrHome() throws ClientException {
+    protected String returnToCurrentDocOrHome() throws ClientException {
         DocumentModel currentDocument;
         try {
             // re-fetch the document, it might have change during the process
@@ -561,7 +561,7 @@ public class JbpmActionsBean extends DocumentContextBoundActionBean implements
         }
     }
 
-    private Map<String, Serializable> getTransientVariables() {
+    protected Map<String, Serializable> getTransientVariables() {
         Map<String, Serializable> transientVariables = new HashMap<String, Serializable>();
         transientVariables.put(JbpmService.VariableName.document.name(),
                 navigationContext.getCurrentDocument());
@@ -571,7 +571,7 @@ public class JbpmActionsBean extends DocumentContextBoundActionBean implements
     }
 
     @SuppressWarnings("unchecked")
-    private Set<String> getRecipientsFromTask(final TaskInstance taskInstance)
+    protected Set<String> getRecipientsFromTask(final TaskInstance taskInstance)
             throws NuxeoJbpmException {
         GetRecipientsForTaskOperation operation = new GetRecipientsForTaskOperation(
                 taskInstance.getId());
