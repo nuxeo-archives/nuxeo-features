@@ -88,7 +88,6 @@ ${preset_info.preview}
 </#if>
 </div>
 <div class="name">${preset_info.name}</div>
-<div class="category">${preset_info.category}</div>
 </td>
 
   <#if row == 10>

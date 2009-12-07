@@ -191,12 +191,12 @@ public class SessionManager extends AbstractComponent {
         getUserSession().put(WORKSPACE_THEMES, themes);
     }
 
-    public static synchronized void getUndoBuffer() {
-        getUserSession().get(UNDO_BUFFER);
+    public static synchronized UndoBuffer getUndoBuffer() {
+        return (UndoBuffer) getUserSession().get(UNDO_BUFFER);
     }
 
-    public static synchronized void setUndoBuffer(List<UndoBuffer> underBuffer) {
-        getUserSession().put(UNDO_BUFFER, underBuffer);
+    public static synchronized void setUndoBuffer(List<UndoBuffer> undoBuffer) {
+        getUserSession().put(UNDO_BUFFER, undoBuffer);
     }
 
 }

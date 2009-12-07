@@ -46,6 +46,7 @@ import org.nuxeo.theme.themes.ThemeDescriptor;
 import org.nuxeo.theme.themes.ThemeException;
 import org.nuxeo.theme.themes.ThemeIOException;
 import org.nuxeo.theme.themes.ThemeManager;
+import org.nuxeo.theme.themes.ThemeSerializer;
 import org.nuxeo.theme.types.TypeFamily;
 import org.nuxeo.theme.types.TypeRegistry;
 import org.nuxeo.theme.views.ViewType;
@@ -87,7 +88,8 @@ public class Editor {
     }
 
     public static void updateElementVisibility(Element element,
-            List<String> perspectives, boolean alwaysVisible) throws ThemeException {
+            List<String> perspectives, boolean alwaysVisible)
+            throws ThemeException {
         PerspectiveManager perspectiveManager = Manager.getPerspectiveManager();
         if (alwaysVisible) {
             perspectiveManager.setAlwaysVisible(element);
@@ -106,7 +108,8 @@ public class Editor {
     }
 
     public static void updateElementStyle(Element element, Style style,
-            String path, String viewName, Map<String, String> propertyMap) throws ThemeException {
+            String path, String viewName, Map<String, String> propertyMap)
+            throws ThemeException {
         Properties properties = new Properties();
         for (Object key : propertyMap.keySet()) {
             properties.put(key, propertyMap.get(key));
@@ -125,7 +128,8 @@ public class Editor {
         saveTheme(themeName);
     }
 
-    public static void splitElement(Element element) throws NodeException, ThemeException {
+    public static void splitElement(Element element) throws NodeException,
+            ThemeException {
         if (!element.getElementType().getTypeName().equals("cell")) {
             return;
         }
@@ -174,8 +178,8 @@ public class Editor {
         saveTheme(themeName);
     }
 
-    public static void updateNamedStyleCss(Style style, String cssSource, String themeName)
-            throws ThemeException {
+    public static void updateNamedStyleCss(Style style, String cssSource,
+            String themeName) throws ThemeException {
         if (style == null || style.getName() == null) {
             throw new ThemeException("A named style is required.");
         }
@@ -184,14 +188,16 @@ public class Editor {
         saveTheme(themeName);
     }
 
-    public static void updateElementWidth(Format layout, String width) throws ThemeException {
+    public static void updateElementWidth(Format layout, String width)
+            throws ThemeException {
         layout.setProperty("width", width);
         final String themeName = ThemeManager.getThemeOfFormat(layout).getName();
         saveTheme(themeName);
     }
 
     public static void updateElementProperties(Element element,
-            Map<String, String> propertyMap) throws ThemeIOException, ThemeException {
+            Map<String, String> propertyMap) throws ThemeIOException,
+            ThemeException {
         Properties properties = new Properties();
         for (Object key : propertyMap.keySet()) {
             properties.put(key, propertyMap.get(key));
@@ -248,6 +254,9 @@ public class Editor {
         final ThemeManager themeManager = Manager.getThemeManager();
         themeManager.themeModified(themeName);
         themeManager.stylesModified(themeName);
+        
+        // Undo buffer
+        saveThemeVersion(themeSrc);
     }
 
     public static String renderCssPreview(Element element, Style style,
@@ -436,7 +445,8 @@ public class Editor {
         saveTheme(themeName);
     }
 
-    public static void alignElement(Element element, String position) throws ThemeException {
+    public static void alignElement(Element element, String position)
+            throws ThemeException {
         ThemeManager themeManager = Manager.getThemeManager();
         Layout layout = (Layout) ElementFormatter.getFormatFor(element,
                 "layout");
@@ -526,7 +536,7 @@ public class Editor {
 
         final String themeName = ThemeManager.getThemeOf(element).getName();
         saveTheme(themeName);
-        
+
         return duplicate.getUid();
     }
 
@@ -568,7 +578,8 @@ public class Editor {
         saveTheme(themeName);
     }
 
-    public static void deleteStyleView(Style style, String viewName) throws ThemeException {
+    public static void deleteStyleView(Style style, String viewName)
+            throws ThemeException {
         style.clearPropertiesFor(viewName);
         final String themeName = ThemeManager.getThemeOfFormat(style).getName();
         saveTheme(themeName);
@@ -742,7 +753,8 @@ public class Editor {
         saveTheme(themeName);
     }
 
-    public static void insertSectionAfter(Element element) throws NodeException, ThemeException {
+    public static void insertSectionAfter(Element element)
+            throws NodeException, ThemeException {
         ThemeManager themeManager = Manager.getThemeManager();
         Element newSection = ElementFactory.create("section");
         Element newCell = ElementFactory.create("cell");
@@ -788,5 +800,17 @@ public class Editor {
         }
         return org.nuxeo.theme.Utils.readResourceAsBytes(iconResourcePath);
     }
-    
+
+    // UndoBuffer
+    public static void saveThemeVersion(final String themeSrc) {
+        ThemeSerializer serializer = new ThemeSerializer();        
+        String xmlSource = serializer.serializeToXml(themeSrc, 0);
+        
+        UndoBuffer undoBuffer = SessionManager.getUndoBuffer();
+        if (undoBuffer == null) {
+            undoBuffer = new UndoBuffer(themeSrc);
+        }
+        undoBuffer.save(xmlSource);
+    }
+
 }

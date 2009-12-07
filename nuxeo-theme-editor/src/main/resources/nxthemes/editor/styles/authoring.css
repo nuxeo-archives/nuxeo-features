@@ -273,14 +273,15 @@ html, body {
   position: absolute;
   top: 65px;
   left: 15px;
-  padding: 0px 14px;
+  padding: 0px 4px;
   z-index: 10;
-  font:  italic 12px Arial, sans-serif;
+  font: italic 12px Arial, sans-serif;
   color: #000;
   background-color: #eee;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  border: 1px solid #333;
 }
 
 #nxthemesWaitAnimation img {
@@ -965,7 +966,7 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 
 .nxthemesPresets div.name {
   color: #333;
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .nxthemesPresets div.category {
