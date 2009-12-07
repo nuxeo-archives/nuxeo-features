@@ -10,7 +10,7 @@
 
 <#if style_manager_mode = 'unused styles'>
 
-<p class="nxthemesEditor"><em>These styles are associated with non existing views. They can probably be cleaned up.</em><p>
+<p class="nxthemesExplanation">These styles are associated with non existing views. They can probably be cleaned up.<p>
 
 <#assign styles=themeManager.getStyles(current_theme_name)>
 <#list styles as style>
@@ -75,9 +75,10 @@
 <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
       onsubmit="NXThemesStyleManager.updateNamedStyleCSS(this); return false">
 <div>
-  <textarea id="namedStyleCssEditor" name="cssSource" rows="15" cols="72"
+  <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
  style="border: 1px solid #999; width: 100%; height: 250px; font-size: 11px;">${selected_named_style_css}</textarea>
   <input type="hidden" name="style_uid" value="#{selected_named_style.uid}" />
+  <input type="hidden" name="theme_name" value="${current_theme_name}" />
 </div>
 <div>
   <button type="submit">Save</button>

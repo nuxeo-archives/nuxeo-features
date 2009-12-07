@@ -10,8 +10,8 @@
 
 <#if preset_manager_mode = 'theme presets'>
 
-
 <h1 class="nxthemesEditor">Manage presets</h1>
+<p class="nxthemesExplanation">List presets by category</p>
 
 <table style="width: 100%;" cellpadding="3" cellspacing="1">
   <tr>
@@ -172,7 +172,8 @@ ${preset_info.preview}
 
 <#if preset_manager_mode = 'unregistered presets'>
 
-<h1 class="nxthemesEditor">Register CSS properties</h1>
+<h1 class="nxthemesEditor">Manage presets</h1>
+<p class="nxthemesExplanation">Find unregistered presets</p>
 
 <#assign colors=This.getHardcodedColors(current_theme_name)>
 

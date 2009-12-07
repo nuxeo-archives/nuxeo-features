@@ -928,9 +928,11 @@ public class Main extends ModuleRoot {
       String cssSource = form.getString("css_source")      
       Element element = ThemeManager.getElementById(id)
       Style selectedStyleLayer = getSelectedStyleLayer()
-    try {
-        Editor.updateElementStyleCss(element, selectedStyleLayer, viewName, cssSource) 
-    } catch (Exception e) {
+
+      
+      try {
+          Editor.updateElementStyleCss(element, selectedStyleLayer, viewName, cssSource) 
+      } catch (Exception e) {
           throw new ThemeEditorException(e.getMessage(), e)
       }
   }
@@ -941,10 +943,11 @@ public class Main extends ModuleRoot {
       FormData form = ctx.getForm()
       String style_uid = form.getString("style_uid")
       String cssSource = form.getString("css_source")
+      String themeName = form.getString("theme_name")
       Style style = (Style) ThemeManager.getFormatById(style_uid)
       try {
-        Editor.updateNamedStyleCss(style, cssSource) 
-    } catch (Exception e) {
+        Editor.updateNamedStyleCss(style, cssSource, themeName) 
+      } catch (Exception e) {
           throw new ThemeEditorException(e.getMessage(), e)
       }
   }

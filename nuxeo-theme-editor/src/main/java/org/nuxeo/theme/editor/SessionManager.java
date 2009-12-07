@@ -25,22 +25,38 @@ public class SessionManager extends AbstractComponent {
     private static final long serialVersionUID = 1L;
 
     private static final String SELECTED_ELEMENT_ID = "org.nuxeo.theme.editor.selected_element";
+
     private static final String STYLE_EDIT_MODE = "org.nuxeo.theme.editor.style_edit_mode";
+
     private static final String STYLE_LAYER_ID = "org.nuxeo.theme.editor.style_layer";
+
     private static final String NAMED_STYLE_ID = "org.nuxeo.theme.editor.named_style";
+
     private static final String STYLE_SELECTOR = "org.nuxeo.theme.editor.style_selector";
+
     private static final String STYLE_PROPERTY_CATEGORY = "org.nuxeo.theme.editor.style_property_category";
+
     private static final String STYLE_CATEGORY = "org.nuxeo.theme.editor.style_category";
+
     private static final String STYLE_MANAGER_MODE = "org.nuxeo.theme.editor.style_manager_mode";
+
     private static final String PRESET_MANAGER_MODE = "org.nuxeo.theme.editor.preset_manager_mode";
+
     private static final String PRESET_GROUP = "org.nuxeo.theme.editor.preset_group";
+
     private static final String PRESET_CATEGORY = "org.nuxeo.theme.editor.preset_category";
+
     private static final String CLIPBOARD_ELEMENT_ID = "org.nuxeo.theme.editor.clipboard_element";
+
     private static final String CLIPBOARD_PRESET_ID = "org.nuxeo.theme.editor.clipboard_preset";
+
     private static final String SELECTED_FRAGMENT_TYPE = "org.nuxeo.theme.editor.fragment_type";
+
     private static final String SELECTED_FRAGMENT_VIEW = "org.nuxeo.theme.editor.fragment_view";
+
     private static final String WORKSPACE_THEMES = "org.nuxeo.theme.editor.workspace_themes";
-    
+
+    private static final String UNDO_BUFFER = "org.nuxeo.theme.editor.undo_buffer";
 
     private static UserSession getUserSession() {
         return WebEngine.getActiveContext().getUserSession();
@@ -105,7 +121,7 @@ public class SessionManager extends AbstractComponent {
     public static synchronized String getStyleManagerMode() {
         return (String) getUserSession().get(STYLE_MANAGER_MODE);
     }
-    
+
     public static synchronized void setStyleManagerMode(String mode) {
         getUserSession().put(STYLE_MANAGER_MODE, mode);
     }
@@ -133,7 +149,7 @@ public class SessionManager extends AbstractComponent {
     public static synchronized void setPresetCategory(String category) {
         getUserSession().put(PRESET_CATEGORY, category);
     }
-    
+
     public static synchronized String getClipboardElementId() {
         return (String) getUserSession().get(CLIPBOARD_ELEMENT_ID);
     }
@@ -165,14 +181,22 @@ public class SessionManager extends AbstractComponent {
     public static synchronized String getFragmentView() {
         return (String) getUserSession().get(SELECTED_FRAGMENT_VIEW);
     }
-    
+
     @SuppressWarnings("unchecked")
     public static synchronized List<ThemeInfo> getWorkspaceThemes() {
         return (List<ThemeInfo>) getUserSession().get(WORKSPACE_THEMES);
     }
-    
+
     public static synchronized void setWorkspaceThemes(List<ThemeInfo> themes) {
         getUserSession().put(WORKSPACE_THEMES, themes);
+    }
+
+    public static synchronized void getUndoBuffer() {
+        getUserSession().get(UNDO_BUFFER);
+    }
+
+    public static synchronized void setUndoBuffer(List<UndoBuffer> underBuffer) {
+        getUserSession().put(UNDO_BUFFER, underBuffer);
     }
 
 }

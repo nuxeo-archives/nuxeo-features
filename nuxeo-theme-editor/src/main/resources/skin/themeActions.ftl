@@ -13,12 +13,10 @@
 </#if>
     
 <@nxthemes_button identifier="manage_presets"
-  controlledBy="theme buttons"
   link="javascript:NXThemesEditor.managePresets()"
   label="Manage presets" />
   
 <@nxthemes_button identifier="manage_styles"
-  controlledBy="theme buttons"
   link="javascript:NXThemesEditor.manageStyles()"
   label="Manage styles" />
 

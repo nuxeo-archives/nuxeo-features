@@ -159,7 +159,7 @@ NXThemesEditor.insertFragment = function(info) {
 
 NXThemesEditor.manageStyles = function() {
     NXThemes.getControllerById("editor perspectives").switchTo('style manager');
-    NXThemes.getControllerById('theme buttons').select('show_named_styles');
+    NXThemesStyleManager.setEditMode('named styles');
 };
 
 NXThemesEditor.changeElementStyle = function(info) {
@@ -752,6 +752,7 @@ NXThemesEditor.backToCanvas = function() {
 
 NXThemesEditor.managePresets = function() {
     NXThemes.getControllerById("editor perspectives").switchTo('preset manager');
+    NXThemesPresetManager.setEditMode('theme presets');
 };
 
 NXThemesEditor.addPreset = function(themeName, category, view_id) {
@@ -1857,8 +1858,10 @@ NXThemesStyleManager.updateNamedStyleCSS = function(form) {
         var value = Form.Element.getValue(i);
         if (name == "style_uid") {
           style_uid = value;
-        } else if (name == "cssSource") {
+        } else if (name == "css_source") {
           css_source = value;
+        } else if (name == "theme_name") {
+          theme_name = value;
         }
     });
     var url = nxthemesBasePath + "/nxthemes-editor/update_named_style_css"; 
@@ -1866,7 +1869,8 @@ NXThemesStyleManager.updateNamedStyleCSS = function(form) {
          method: 'post',
          parameters: {
              'style_uid': style_uid,
-             'css_source': css_source
+             'css_source': css_source,
+             'theme_name': theme_name
          },
          onSuccess: function(r) {
         	 NXThemes.getViewById("style manager").refresh();

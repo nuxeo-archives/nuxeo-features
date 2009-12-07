@@ -174,14 +174,13 @@ public class Editor {
         saveTheme(themeName);
     }
 
-    public static void updateNamedStyleCss(Style style, String cssSource)
+    public static void updateNamedStyleCss(Style style, String cssSource, String themeName)
             throws ThemeException {
         if (style == null || style.getName() == null) {
             throw new ThemeException("A named style is required.");
         }
         final String viewName = "*";
         org.nuxeo.theme.html.Utils.loadCss(style, cssSource, viewName);
-        final String themeName = ThemeManager.getThemeOfFormat(style).getName();
         saveTheme(themeName);
     }
 
@@ -240,8 +239,9 @@ public class Editor {
         if (themeDef == null) {
             throw new ThemeException("Theme not found: " + themeName);
         }
+        String themeSrc = themeDef.getSrc();
         try {
-            ThemeManager.saveTheme(themeDef.getSrc());
+            ThemeManager.saveTheme(themeSrc);
         } catch (ThemeIOException e) {
             throw new ThemeException("Theme cannot be saved: " + themeName, e);
         }
@@ -788,5 +788,5 @@ public class Editor {
         }
         return org.nuxeo.theme.Utils.readResourceAsBytes(iconResourcePath);
     }
-
+    
 }
