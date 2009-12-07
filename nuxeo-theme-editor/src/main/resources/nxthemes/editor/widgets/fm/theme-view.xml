@@ -36,6 +36,7 @@
                                             
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
+          icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"
           label="Quit" />  
 
       </div>
@@ -83,7 +84,11 @@
 
 
     <div id="nxthemesEditorArea">
-
+                  
+      <div id="nxthemesWaitAnimation" style="display:none">
+          <img src="${basePath}/skin/nxthemes-editor/img/loader.gif" alt="" width="16" height="16" /> LOADING ...
+      </div>
+        
       <@nxthemes_model resource="theme-editor.json" />
 
       <!--  canvas area -->
@@ -112,15 +117,8 @@
 
       <!--  Status message -->
       <div id="nxthemesStatusBar">
-      
-        <div id="nxthemesStatusMessage"></div>
-                        
-        <div id="nxthemesWaitAnimation" style="display:none">
-          <img src="${basePath}/skin/nxthemes-editor/img/loader.gif" alt="" width="16" height="16" /> LOADING ...
-        </div>
-      
+        <div id="nxthemesStatusMessage"></div>      
         <div id="nxthemesEditorInfo">FREEMARKER</div>
-
       </div>
     </div>
 

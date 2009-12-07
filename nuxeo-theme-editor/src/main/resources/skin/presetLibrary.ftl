@@ -8,7 +8,7 @@
 
 <table style="width: 100%;" cellpadding="3" cellspacing="1">
   <tr>
-    <th style="text-align: left; width: 25%; background-color: #999; color: #fff">Library</th>
+    <th style="text-align: left; width: 25%; background-color: #999; color: #fff">Palette</th>
     <th style="text-align: left; width: 75%; background-color: #999; color: #fff">Presets</th>
   </tr>
 

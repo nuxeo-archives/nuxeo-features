@@ -11,16 +11,16 @@
     link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}', true)"
     label="Restore theme" />
 </#if>
-
-<@nxthemes_button identifier="manage_styles"
-  controlledBy="theme buttons"
-  link="javascript:NXThemesEditor.manageStyles()"
-  label="Manage styles" />
     
 <@nxthemes_button identifier="manage_presets"
   controlledBy="theme buttons"
   link="javascript:NXThemesEditor.managePresets()"
   label="Manage presets" />
+  
+<@nxthemes_button identifier="manage_styles"
+  controlledBy="theme buttons"
+  link="javascript:NXThemesEditor.manageStyles()"
+  label="Manage styles" />
 
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"

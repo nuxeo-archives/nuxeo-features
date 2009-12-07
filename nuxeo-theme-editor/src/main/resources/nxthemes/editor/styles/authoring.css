@@ -247,7 +247,10 @@ html, body {
 #nxthemesStatusMessage {
   padding: 3px 8px;
   font: bold 11px Arial;
-  color: #000;
+  color: #444;
+  background: #ffc url(${basePath}/skin/nxthemes-editor/img/info.png) no-repeat 1px 1px;
+  z-index: 10;
+  padding-left: 20px;
 }
 
 #nxthemesCanvasModeArea {
@@ -271,8 +274,8 @@ html, body {
   top: 0;
   left: 4px;
   padding: 1px;
-  font:  11px bold Arial, sans-serif;
-  color: #333;
+  font:  italic 12px Arial, sans-serif;
+  color: #000;
 }
 
 #nxthemesWaitAnimation img {
@@ -1533,3 +1536,5 @@ table.fragmentFactory td {
   -webkit-border-radius: 3px;
   border-radius: 3px;
 }
+
+

@@ -752,7 +752,6 @@ NXThemesEditor.backToCanvas = function() {
 
 NXThemesEditor.managePresets = function() {
     NXThemes.getControllerById("editor perspectives").switchTo('preset manager');
-    NXThemes.getControllerById('theme buttons').select('show_presets');
 };
 
 NXThemesEditor.addPreset = function(themeName, category, view_id) {
