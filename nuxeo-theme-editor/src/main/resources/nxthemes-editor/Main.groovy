@@ -490,7 +490,10 @@ public class Main extends ModuleRoot {
       String id = form.getString("id")
       String themeName = form.getString("theme_name")
       String styleName = form.getString("style_name")
-      Element element = ThemeManager.getElementById(id)
+      Element element = null;
+      if (id) {
+          element = ThemeManager.getElementById(id)
+      }
     try {
         Editor.createNamedStyle(element, styleName, themeName)
       } catch (Exception e) {

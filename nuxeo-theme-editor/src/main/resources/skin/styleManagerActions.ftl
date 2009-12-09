@@ -13,7 +13,6 @@
   label="Find unused styles" />  
 
 <@nxthemes_button identifier="create_style"
-  controlledBy="theme buttons"
   icon="${skinPath}/img/add-14.png"
-  link="javascript:NXThemesEditor.addStyle()"
+  link="javascript:NXThemesStyleEditor.createNamedStyle(null, '${theme.name}', 'style manager')"
   label="Create new style" />

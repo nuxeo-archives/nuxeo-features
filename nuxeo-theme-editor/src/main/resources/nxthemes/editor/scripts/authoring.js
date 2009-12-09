@@ -1677,7 +1677,7 @@ NXThemesStyleEditor.makeElementUseNamedStyle = function(select) {
     });
 };
 
-NXThemesStyleEditor.createNamedStyle = function(id, currentThemeName) {
+NXThemesStyleEditor.createNamedStyle = function(id, currentThemeName, screenName) {
     var styleName = prompt("Please enter a style name:", "");
     if (styleName === null) {
         return;
@@ -1695,7 +1695,7 @@ NXThemesStyleEditor.createNamedStyle = function(id, currentThemeName) {
              theme_name: currentThemeName
          },
          onSuccess: function(req) {
-             NXThemes.getViewById("element style").refresh();
+             NXThemes.getViewById(screenName).refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;

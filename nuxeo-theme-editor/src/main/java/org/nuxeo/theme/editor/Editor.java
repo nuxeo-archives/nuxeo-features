@@ -254,7 +254,7 @@ public class Editor {
         final ThemeManager themeManager = Manager.getThemeManager();
         themeManager.themeModified(themeName);
         themeManager.stylesModified(themeName);
-        
+
         // Undo buffer
         saveThemeVersion(themeSrc);
     }
@@ -562,7 +562,9 @@ public class Editor {
         style.setName(styleName);
         themeManager.setNamedObject(themeName, "style", style);
 
-        themeManager.makeElementUseNamedStyle(element, styleName, themeName);
+        if (element != null) {
+            themeManager.makeElementUseNamedStyle(element, styleName, themeName);
+        }
 
         saveTheme(themeName);
     }
@@ -803,9 +805,9 @@ public class Editor {
 
     // UndoBuffer
     public static void saveThemeVersion(final String themeSrc) {
-        ThemeSerializer serializer = new ThemeSerializer();        
+        ThemeSerializer serializer = new ThemeSerializer();
         String xmlSource = serializer.serializeToXml(themeSrc, 0);
-        
+
         UndoBuffer undoBuffer = SessionManager.getUndoBuffer();
         if (undoBuffer == null) {
             undoBuffer = new UndoBuffer(themeSrc);

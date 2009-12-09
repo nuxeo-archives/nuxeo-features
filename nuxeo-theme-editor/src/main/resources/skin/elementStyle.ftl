@@ -33,7 +33,7 @@
 	    </#list>
 	  </select>
 
-          <button onclick="NXThemesStyleEditor.createNamedStyle('#{selected_element.uid}', '${current_theme_name}')">New style</button>
+          <button onclick="NXThemesStyleEditor.createNamedStyle('#{selected_element.uid}', '${current_theme_name}', 'element style')">New style</button>
           <#if inherited_style_name_of_selected_element>
             <button onclick="NXThemesStyleEditor.deleteNamedStyle('#{selected_element.uid}', '${current_theme_name}', '${inherited_style_name_of_selected_element}')">Delete '${inherited_style_name_of_selected_element}'</button>
           </#if>
