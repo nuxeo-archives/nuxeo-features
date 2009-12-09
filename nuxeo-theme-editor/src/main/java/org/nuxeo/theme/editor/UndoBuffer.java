@@ -17,6 +17,8 @@ package org.nuxeo.theme.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nuxeo.theme.themes.ThemeException;
+
 public class UndoBuffer {
 
     private String themeSrc;
@@ -57,7 +59,7 @@ public class UndoBuffer {
             versions.subList(historyLength, size).clear();
         }
     }
-
+    
     public int getHistoryLength() {
         return historyLength;
     }
@@ -71,6 +73,10 @@ public class UndoBuffer {
             return null;
         }
         return versions.get(position-1);
+    }
+    
+    public ThemeVersion getPreviousVersion() {
+        return getHistory(1);
     }
     
     public int size() {

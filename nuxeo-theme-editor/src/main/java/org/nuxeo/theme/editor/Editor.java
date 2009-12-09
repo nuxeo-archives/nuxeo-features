@@ -256,7 +256,7 @@ public class Editor {
         themeManager.stylesModified(themeName);
 
         // Undo buffer
-        saveThemeVersion(themeSrc);
+        saveThemeVersion(themeSrc, themeName);
     }
 
     public static String renderCssPreview(Element element, Style style,
@@ -804,15 +804,30 @@ public class Editor {
     }
 
     // UndoBuffer
-    public static void saveThemeVersion(final String themeSrc) {
+    public static void saveThemeVersion(final String themeSrc,
+            final String themeName) {
         ThemeSerializer serializer = new ThemeSerializer();
         String xmlSource = serializer.serializeToXml(themeSrc, 0);
 
-        UndoBuffer undoBuffer = SessionManager.getUndoBuffer();
+        UndoBuffer undoBuffer = SessionManager.getUndoBuffer(themeName);
         if (undoBuffer == null) {
-            undoBuffer = new UndoBuffer(themeSrc);
+            undoBuffer = new UndoBuffer(themeName);
+            SessionManager.setUndoBuffer(themeName, undoBuffer);
         }
         undoBuffer.save(xmlSource);
     }
 
+    public static void undo(final String themeName) throws ThemeException {
+        UndoBuffer undoBuffer = SessionManager.getUndoBuffer(themeName);
+        if (undoBuffer == null) {
+            throw new ThemeException("No history buffer found.");
+        }
+        ThemeVersion version = undoBuffer.getPreviousVersion();
+        if (version == null) {
+            throw new ThemeException("No previous version found.");
+        }
+        String xmlSource = version.getSource();
+        // TODO
+        
+    }
 }

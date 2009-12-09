@@ -272,7 +272,7 @@ html, body {
 #nxthemesWaitAnimation {
   position: absolute;
   top: 65px;
-  left: 15px;
+  right: 15px;
   padding: 1px 10px;
   z-index: 10;
   font: 12px Arial, sans-serif;
@@ -1559,4 +1559,26 @@ table.fragmentFactory td {
   color: #666;
 }
 
+.nxthemesHistoryButtons {
+  background-color: #f3f3f3; 
+  float: left; 
+  margin: 10px 30px;
+  padding: 1px 4px; 
+  font: bold 11px Arial;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
 
+.nxthemesHistoryButtons img {
+  border: none;
+}
+
+.nxthemesHistoryButtons a {
+  text-decoration: none;
+  color: #000;
+}
+
+.nxthemesHistoryButtons a:hover {
+  color: #666;
+}

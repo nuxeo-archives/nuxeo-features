@@ -180,6 +180,14 @@ public class Main extends ModuleRoot {
   }
 
   @GET
+  @Path("historyActions")
+  public Object renderHistoryActions(@QueryParam("org.nuxeo.theme.application.path") String path,
+          @QueryParam("org.nuxeo.theme.application.name") String name) {          
+    return getTemplate("historyActions.ftl").arg(
+        "current_theme_name", getCurrentThemeName(path, name))
+  }  
+  
+  @GET
   @Path("fragmentFactory")
   public Object renderFragmentFactory(@QueryParam("org.nuxeo.theme.application.path") String path,
           @QueryParam("org.nuxeo.theme.application.name") String name) {
@@ -1072,7 +1080,33 @@ public class Main extends ModuleRoot {
           themes.remove(name)
       }
       SessionManager.setWorkspaceThemes(themes)
+  }
+  
+  @POST
+  @Path("undo")
+  public void undo() {
+      FormData form = ctx.getForm()
+      String themeName = form.getString("theme_name")
+      try {
+          Editor.undo(themeName)
+      } catch (Exception e) {
+          throw new ThemeEditorException(e.getMessage(), e)
+      }
+  }
+  
+  @POST
+  @Path("redo")
+  public void redo() {
+      FormData form = ctx.getForm()
+      String themeName = form.getString("theme_name")
+      try {
+          Editor.redo(themeName)
+      } catch (Exception e) {
+          throw new ThemeEditorException(e.getMessage(), e)
+      }
   }  
+  
+  
   /* API */
    
   public static ThemeDescriptor getThemeDescriptor(String themeName) {

@@ -27,6 +27,12 @@
         controlledBy="editor perspectives,perspective selector"
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
+      <!-- history actions -->
+      <@nxthemes_panel identifier="history actions"
+        url="${basePath}/nxthemes-editor/historyActions"
+        controlledBy="editor perspectives"
+        visibleInPerspectives="canvas editor" />
+
       <div id="nxthemesMainButtons">
                                             
         <@nxthemes_button identifier="preset_library"
