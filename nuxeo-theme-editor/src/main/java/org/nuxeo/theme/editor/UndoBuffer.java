@@ -18,16 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UndoBuffer {
-    
+
     private String themeSrc;
-    
+
     private List<ThemeVersion> versions;
+
+    private int historyLength;
+
+    private static int HISTORY_LENGTH = 10;
 
     public UndoBuffer(String themeSrc) {
         this.themeSrc = themeSrc;
         this.versions = new ArrayList<ThemeVersion>();
+        this.historyLength = HISTORY_LENGTH;
     }
-    
+
     public String getThemeSrc() {
         return themeSrc;
     }
@@ -43,9 +48,33 @@ public class UndoBuffer {
     public void setVersions(List<ThemeVersion> versions) {
         this.versions = versions;
     }
-    
+
     public void save(String source) {
-        versions.add(new ThemeVersion(source));
+        versions.add(0, new ThemeVersion(source));
+        int size = size();
+        int historyLength = getHistoryLength();
+        if (size > historyLength) {
+            versions.subList(historyLength, size).clear();
+        }
+    }
+
+    public int getHistoryLength() {
+        return historyLength;
+    }
+
+    public void setHistoryLength(int historyLength) {
+        this.historyLength = historyLength;
+    }
+
+    public ThemeVersion getHistory(int position) {
+        if (position < 1 || position >  size()) {
+            return null;
+        }
+        return versions.get(position-1);
+    }
+    
+    public int size() {
+        return versions.size();
     }
 
 }
