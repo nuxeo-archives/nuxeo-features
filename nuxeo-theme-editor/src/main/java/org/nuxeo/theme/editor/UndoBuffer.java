@@ -14,73 +14,28 @@
 
 package org.nuxeo.theme.editor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.nuxeo.theme.themes.ThemeException;
-
 public class UndoBuffer {
 
-    private String themeSrc;
+    private String savedVersion;
 
-    private List<ThemeVersion> versions;
-
-    private int historyLength;
-
-    private static int HISTORY_LENGTH = 10;
-
-    public UndoBuffer(String themeSrc) {
-        this.themeSrc = themeSrc;
-        this.versions = new ArrayList<ThemeVersion>();
-        this.historyLength = HISTORY_LENGTH;
-    }
-
-    public String getThemeSrc() {
-        return themeSrc;
-    }
-
-    public void setThemeSrc(String themeSrc) {
-        this.themeSrc = themeSrc;
-    }
-
-    public List<ThemeVersion> getVersions() {
-        return versions;
-    }
-
-    public void setVersions(List<ThemeVersion> versions) {
-        this.versions = versions;
+    public UndoBuffer() {
+        this.savedVersion = null;
     }
 
     public void save(String source) {
-        versions.add(0, new ThemeVersion(source));
-        int size = size();
-        int historyLength = getHistoryLength();
-        if (size > historyLength) {
-            versions.subList(historyLength, size).clear();
-        }
-    }
-    
-    public int getHistoryLength() {
-        return historyLength;
+        savedVersion = source;
     }
 
-    public void setHistoryLength(int historyLength) {
-        this.historyLength = historyLength;
+    public String getSavedVersion() {
+        return savedVersion;
     }
 
-    public ThemeVersion getHistory(int position) {
-        if (position < 1 || position >  size()) {
-            return null;
-        }
-        return versions.get(position-1);
+    public void setSavedVersion(String savedVersion) {
+        this.savedVersion = savedVersion;
     }
-    
-    public ThemeVersion getPreviousVersion() {
-        return getHistory(1);
-    }
-    
-    public int size() {
-        return versions.size();
+
+    public boolean canUndo() {
+        return savedVersion != null;
     }
 
 }

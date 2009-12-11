@@ -282,8 +282,8 @@ html, body {
   -webkit-border-radius: 4px;
   border-radius: 4px;
   border-style: solid;
-  border-color: #000;
-  border-width: 1px 2px 2px 1px;
+  border-color: #666;
+  border-width: 1px;
 }
 
 #nxthemesWaitAnimation img {
@@ -1559,26 +1559,27 @@ table.fragmentFactory td {
   color: #666;
 }
 
-.nxthemesHistoryButtons {
-  background-color: #f3f3f3; 
-  float: left; 
-  margin: 10px 30px;
-  padding: 1px 4px; 
+.nxthemesUndoButtons {
+  background-color: #ccc;
+  position: absolute;
+  right: 210px;
+  top: 9px;
+  padding: 2px 4px; 
   font: bold 11px Arial;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
 
-.nxthemesHistoryButtons img {
+.nxthemesUndoButtons img {
   border: none;
 }
 
-.nxthemesHistoryButtons a {
+.nxthemesUndoButtons a {
   text-decoration: none;
   color: #000;
 }
 
-.nxthemesHistoryButtons a:hover {
+.nxthemesUndoButtons a:hover {
   color: #666;
 }

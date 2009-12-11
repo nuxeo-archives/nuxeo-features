@@ -27,11 +27,12 @@
         controlledBy="editor perspectives,perspective selector"
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
-      <!-- history actions -->
-      <@nxthemes_panel identifier="history actions"
-        url="${basePath}/nxthemes-editor/historyActions"
+      <!-- undo actions -->
+      <@nxthemes_panel identifier="undo actions"
+        url="${basePath}/nxthemes-editor/undoActions"
         controlledBy="editor perspectives"
-        visibleInPerspectives="canvas editor" />
+        visibleInPerspectives="canvas editor,preset manager,style manager,element editor" />
+      
 
       <div id="nxthemesMainButtons">
                                             
@@ -123,7 +124,7 @@
 
       <!--  Status message -->
       <div id="nxthemesStatusBar">
-        <div id="nxthemesStatusMessage"></div>      
+        <div id="nxthemesStatusMessage" style="display: none"></div>      
         <div id="nxthemesEditorInfo">FREEMARKER</div>
       </div>
     </div>

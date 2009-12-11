@@ -180,11 +180,18 @@ public class Main extends ModuleRoot {
   }
 
   @GET
-  @Path("historyActions")
-  public Object renderHistoryActions(@QueryParam("org.nuxeo.theme.application.path") String path,
-          @QueryParam("org.nuxeo.theme.application.name") String name) {          
-    return getTemplate("historyActions.ftl").arg(
-        "current_theme_name", getCurrentThemeName(path, name))
+  @Path("undoActions")
+  public Object renderUndoActions(@QueryParam("org.nuxeo.theme.application.path") String path,
+          @QueryParam("org.nuxeo.theme.application.name") String name) {
+    String themeName =  getCurrentThemeName(path, name)
+    UndoBuffer undoBuffer = SessionManager.getUndoBuffer(themeName)
+    boolean canUndo = false
+    if (undoBuffer) {
+        canUndo = undoBuffer.canUndo()
+    }   
+    return getTemplate("undoActions.ftl").arg(
+        "current_theme_name", themeName).arg(
+        "can_undo", canUndo)
   }  
   
   @GET

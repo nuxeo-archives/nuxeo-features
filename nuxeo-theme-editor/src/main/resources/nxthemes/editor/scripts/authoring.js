@@ -1067,6 +1067,7 @@ NXThemesEditor.deleteTheme = function(src) {
 
 NXThemesEditor.refreshCanvas = function() {
     NXThemes.getViewById("canvas area").refresh();
+    NXThemes.getViewById("undo actions").refresh();
 };
 
 NXThemesEditor.undo =  function(theme_name) {
@@ -1078,25 +1079,8 @@ NXThemesEditor.undo =  function(theme_name) {
          },
          onSuccess: function(r) {
            NXThemesEditor.refreshCanvas();
+           NXThemes.getViewById("undo actions").refresh();
            NXThemesEditor.writeMessage("Undo");
-         },
-         onFailure: function(r) {
-           var text = r.responseText;
-           window.alert(text);
-         }              
-    });
-};
-
-NXThemesEditor.redo =  function(theme_name) {
-    var url = nxthemesBasePath + "/nxthemes-editor/redo"; 
-    new Ajax.Request(url, {
-         method: 'post',
-         parameters: {
-             theme_name: theme_name
-         },
-         onSuccess: function(r) {
-           NXThemesEditor.refreshCanvas();
-           NXThemesEditor.writeMessage("Redo");
          },
          onFailure: function(r) {
            var text = r.responseText;

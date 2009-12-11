@@ -32,9 +32,9 @@
         controlledBy="editor perspectives,perspective selector"
         visibleInPerspectives="add fragments,canvas editor,padding editor" />
 
-      <!-- history actions -->
-      <nxthemes:panel identifier="history actions"
-        url="/nuxeo/site/nxthemes-editor/historyActions"
+      <!-- undo actions -->
+      <nxthemes:panel identifier="undo actions"
+        url="/nuxeo/site/nxthemes-editor/undoActions"
         controlledBy="editor perspectives"
         visibleInPerspectives="canvas editor" />
         
@@ -94,6 +94,10 @@
 
 
     <div id="nxthemesEditorArea">
+                        
+      <div id="nxthemesWaitAnimation" style="display:none">
+        <img src="/nuxeo/site/skin/nxthemes-editor/img/loader.gif" alt="" width="16" height="16" /> LOADING ...
+      </div>
 
       <nxthemes:model resource="theme-editor.json" />
 
@@ -115,7 +119,6 @@
       <nxthemes:controller resource="context-menu-actions.json" />
       <nxthemes:controller resource="toggle-context-menu.json" />
       <nxthemes:view resource="context-menu.json" />
-      
 
       <!--  page selector -->
       <nxthemes:panel identifier="page selector"
@@ -125,15 +128,8 @@
 
       <!--  Status message -->
       <div id="nxthemesStatusBar">
-      
-        <div id="nxthemesStatusMessage"></div>
-                        
-        <div id="nxthemesWaitAnimation" style="display:none">
-          <img src="/nuxeo/site/skin/nxthemes-editor/img/loader.gif" alt="" width="16" height="16" /> LOADING ...
-        </div>
-      
+        <div id="nxthemesStatusMessage" style="display: none"></div>           
         <div id="nxthemesEditorInfo">JSF/FACELETS</div>
-
       </div>
     </div>
 
