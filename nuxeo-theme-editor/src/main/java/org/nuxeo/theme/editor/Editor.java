@@ -382,7 +382,8 @@ public class Editor {
     }
 
     public static String addPage(String path) throws ThemeException,
-            NodeException {
+            NodeException, ThemeIOException {
+        
         ThemeManager themeManager = Manager.getThemeManager();
         if (!path.contains("/")) {
             throw new ThemeException("Incorrect theme path: " + path);
@@ -393,6 +394,9 @@ public class Editor {
             throw new ThemeException("Theme page name is already taken: "
                     + pageName);
         }
+
+        saveToUndoBuffer(themeName);
+        
         ThemeElement theme = themeManager.getThemeByName(themeName);
         PageElement page = (PageElement) ElementFactory.create("page");
         page.setName(pageName);
@@ -404,6 +408,9 @@ public class Editor {
         ElementFormatter.setFormat(page, pageStyle);
         ElementFormatter.setFormat(page, pageLayout);
         themeManager.registerPage(theme, page);
+        // save the page
+        ThemeDescriptor themeDef = ThemeManager.getThemeDescriptorByThemeName(themeName);
+        ThemeManager.saveTheme(themeDef.getSrc());
         return path;
     }
 

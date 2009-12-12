@@ -1080,6 +1080,7 @@ NXThemesEditor.undo =  function(theme_name) {
          onSuccess: function(r) {
            NXThemesEditor.refreshCanvas();
            NXThemes.getViewById("undo actions").refresh();
+           NXThemes.getViewById("page selector").refresh();
            NXThemesEditor.writeMessage("Undo");
          },
          onFailure: function(r) {
