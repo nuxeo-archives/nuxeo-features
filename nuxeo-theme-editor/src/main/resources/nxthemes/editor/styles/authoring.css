@@ -246,11 +246,11 @@ html, body {
 
 #nxthemesStatusMessage {
   font: bold 11px Arial;
-  color: #444;
-  background: #ffc url(${basePath}/skin/nxthemes-editor/img/info.png) no-repeat 1px 1px;
+  color: #000;
+  background: url(/skin/nxthemes-editor/img/info.png) no-repeat 5px 2px;
   z-index: 10;
-  padding: 3px 30px;
-  padding-left: 20px;
+  padding: 4px 0px;
+  padding-left: 25px;
 }
 
 #nxthemesCanvasModeArea {

@@ -1091,27 +1091,15 @@ public class Main extends ModuleRoot {
   
   @POST
   @Path("undo")
-  public void undo() {
+  public String undo() {
       FormData form = ctx.getForm()
       String themeName = form.getString("theme_name")
       try {
-          Editor.undo(themeName)
+          return Editor.undo(themeName)
       } catch (Exception e) {
           throw new ThemeEditorException(e.getMessage(), e)
       }
   }
-  
-  @POST
-  @Path("redo")
-  public void redo() {
-      FormData form = ctx.getForm()
-      String themeName = form.getString("theme_name")
-      try {
-          Editor.redo(themeName)
-      } catch (Exception e) {
-          throw new ThemeEditorException(e.getMessage(), e)
-      }
-  }  
   
   
   /* API */

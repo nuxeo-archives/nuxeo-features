@@ -17,13 +17,16 @@ package org.nuxeo.theme.editor;
 public class UndoBuffer {
 
     private String savedVersion;
+    
+    private String message;
 
     public UndoBuffer() {
         this.savedVersion = null;
     }
 
-    public void save(String source) {
+    public void save(String source, String message) {
         savedVersion = source;
+        this.message = message;
     }
 
     public String getSavedVersion() {
@@ -36,6 +39,14 @@ public class UndoBuffer {
 
     public boolean canUndo() {
         return savedVersion != null;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }
