@@ -36,7 +36,7 @@
       <nxthemes:panel identifier="undo actions"
         url="/nuxeo/site/nxthemes-editor/undoActions"
         controlledBy="editor perspectives"
-        visibleInPerspectives="canvas editor" />
+        visibleInPerspectives="canvas editor,preset manager,style manager,element editor" />
         
       <div id="nxthemesMainButtons">
                                                           
@@ -56,7 +56,7 @@
         <nxthemes:panel identifier="back to canvas"
           url="/nuxeo/site/nxthemes-editor/backToCanvas"
           controlledBy="editor perspectives"
-          visibleInPerspectives="preset library,theme browser,style manager,element editor,fragment factory" />
+          visibleInPerspectives="preset library,preset manager,theme browser,style manager,element editor,fragment factory" />
                          
         <!-- theme actions -->
         <nxthemes:panel identifier="theme actions"

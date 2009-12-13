@@ -252,7 +252,6 @@ public class Editor {
         saveToUndoBuffer(themeName, "repair theme");
 
         ThemeManager.repairTheme(theme);
-
         saveTheme(themeName);
     }
 
@@ -273,11 +272,14 @@ public class Editor {
         if (themeDef == null) {
             throw new ThemeException("Theme not found: " + themeName);
         }
-        String themeSrc = themeDef.getSrc();
-        try {
-            ThemeManager.saveTheme(themeSrc);
-        } catch (ThemeIOException e) {
-            throw new ThemeException("Theme cannot be saved: " + themeName, e);
+        if (themeDef.isSaveable()) {
+            String themeSrc = themeDef.getSrc();
+            try {
+                ThemeManager.saveTheme(themeSrc);
+            } catch (ThemeIOException e) {
+                throw new ThemeException("Theme cannot be saved: " + themeName,
+                        e);
+            }
         }
         final ThemeManager themeManager = Manager.getThemeManager();
         themeManager.themeModified(themeName);
@@ -409,8 +411,7 @@ public class Editor {
         ElementFormatter.setFormat(page, pageLayout);
         themeManager.registerPage(theme, page);
         // save the page
-        ThemeDescriptor themeDef = ThemeManager.getThemeDescriptorByThemeName(themeName);
-        ThemeManager.saveTheme(themeDef.getSrc());
+        saveTheme(themeName);
         return path;
     }
 
@@ -790,6 +791,14 @@ public class Editor {
             ThemeException {
         ThemeManager themeManager = Manager.getThemeManager();
         themeManager.loadTheme(src);
+
+        // Clean up the undo buffer
+        ThemeDescriptor themeDef = ThemeManager.getThemeDescriptor(src);
+        String themeName = themeDef.getName();
+        UndoBuffer undoBuffer = SessionManager.getUndoBuffer(themeName);
+        if (undoBuffer != null) {
+            undoBuffer.clearBuffer();
+        }
     }
 
     public static void insertFragment(Element destElement, String typeName)
@@ -906,7 +915,7 @@ public class Editor {
         } catch (ThemeIOException e) {
             throw new ThemeException(e.getMessage(), e);
         }
-        undoBuffer.setSavedVersion(null);
+        undoBuffer.clearBuffer();
         return undoBuffer.getMessage();
     }
 

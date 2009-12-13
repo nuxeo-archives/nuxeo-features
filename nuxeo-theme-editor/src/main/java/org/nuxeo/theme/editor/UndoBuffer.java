@@ -49,4 +49,7 @@ public class UndoBuffer {
         this.message = message;
     }
 
+    public void clearBuffer() {
+        savedVersion = null;
+    }
 }

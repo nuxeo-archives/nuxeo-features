@@ -172,7 +172,7 @@ ${preset_info.preview}
 <#if preset_manager_mode = 'unregistered presets'>
 
 <h1 class="nxthemesEditor">Manage presets</h1>
-<p class="nxthemesExplanation">Find unregistered presets</p>
+<p class="nxthemesExplanation">Find unregistered presets (colors, images, ...)</p>
 
 <#assign colors=This.getHardcodedColors(current_theme_name)>
 
@@ -216,7 +216,7 @@ ${preset_info.preview}
 <#assign images=This.getHardcodedImages(current_theme_name)>
 
 <#if images>
-<h3 class="nxthemesEditorFocus">Images that are not yet registered as presets ...</h3>
+<h3 class="nxthemesEditorFocus"These images could be registered as presets ...</h3>
 
 <table cellspacing="5" cellpadding="4" style="width: 100%">
 <#assign count = 0 />

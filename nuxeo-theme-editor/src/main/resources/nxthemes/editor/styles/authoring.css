@@ -247,7 +247,7 @@ html, body {
 #nxthemesStatusMessage {
   font: bold 11px Arial;
   color: #000;
-  background: url(/skin/nxthemes-editor/img/info.png) no-repeat 5px 2px;
+  background: url(${basePath}/skin/nxthemes-editor/img/info.png) no-repeat 5px 2px;
   z-index: 10;
   padding: 4px 0px;
   padding-left: 25px;
