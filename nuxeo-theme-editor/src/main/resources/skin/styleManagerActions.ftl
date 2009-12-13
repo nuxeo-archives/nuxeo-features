@@ -1,3 +1,4 @@
+<#if theme>
 
 <span class="nxthemesButtonHeader">Styles:</span>
     
@@ -16,3 +17,5 @@
   icon="${skinPath}/img/add-14.png"
   link="javascript:NXThemesStyleEditor.createNamedStyle(null, '${theme.name}', 'style manager')"
   label="Create new style" />
+
+</#if>

@@ -7,7 +7,7 @@ if (typeof NXThemesEditor == "undefined") {
           var box = $("nxthemesStatusMessage");
           box.innerHTML = msg;
           box.show();
-          NXThemes.Effects.get('fadeout')(box, {delay: 10000});
+          NXThemes.Effects.get('fadeout')(box, {delay: 4000});
         },
         isLowerCase: function(s) {
           for (var i = 0; i < s.length; i= i+1) {
@@ -241,7 +241,8 @@ NXThemesEditor.updateElementProperties = function(info) {
          },
          onSuccess: function(r) {
              NXThemes.getViewById("element properties").refresh();
-             NXThemesEditor.writeMessage("Properties updated.");
+             NXThemesEditor.refreshUndoActions();
+             NXThemesEditor.writeMessage("Element properties updated.");
          },
          onFailure: function(r) {
              NXThemes.getViewById("element properties").refresh();
@@ -274,7 +275,8 @@ NXThemesEditor.updateElementWidget = function(info) {
              'view_name': viewName
          },
          onSuccess: function(r) {
-             NXThemesEditor.writeMessage("Widget changed.");
+             NXThemesEditor.refreshUndoActions();
+             NXThemesEditor.writeMessage("Widget view changed.");
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -309,6 +311,7 @@ NXThemesEditor.updateElementDescription = function(info) {
              'description': description
          },
          onSuccess: function(r) {
+             NXThemesEditor.refreshUndoActions();
              NXThemesEditor.writeMessage("Description changed.");
          },
          onFailure: function(r) {
@@ -348,6 +351,7 @@ NXThemesEditor.updateElementStyle = function() {
          },
          onSuccess: function(r) {
              NXThemesStyleEditor.refreshCssPreview();
+             NXThemesEditor.refreshUndoActions();
              NXThemesEditor.writeMessage("Style updated.");
          },
          onFailure: function(r) {
@@ -381,6 +385,7 @@ NXThemesEditor.updateElementStyleCss = function() {
          },
          onSuccess: function(r) {
              NXThemesStyleEditor.refreshCssPreview();
+             NXThemesEditor.refreshUndoActions();
              NXThemesEditor.writeMessage("Style updated.");
          },
          onFailure: function(r) {
@@ -416,6 +421,7 @@ NXThemesEditor.setElementVisibility = function(info) {
          },
          onSuccess: function(r) {
              NXThemes.getViewById("element visibility").refresh();
+             NXThemesEditor.refreshUndoActions();
              NXThemesEditor.writeMessage("Visibility changed.");
          },
          onFailure: function(r) {
@@ -1073,6 +1079,9 @@ NXThemesEditor.undo =  function(theme_name) {
                case "style manager":
                    NXThemes.getViewById("style manager").refresh();
                    break;
+               case "element editor":
+                   NXThemes.getViewById("element editor").refresh();
+                   break;                   
                case "canvas editor":
                    NXThemesEditor.refreshCanvas();
                    break;                                      

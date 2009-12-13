@@ -57,7 +57,7 @@ public class Editor {
             throws ThemeException {
 
         final String themeName = ThemeManager.getThemeOf(element).getName();
-        saveToUndoBuffer(themeName, "update widget view to:" + viewName);
+        saveToUndoBuffer(themeName, "change widget view");
 
         FormatType widgetType = (FormatType) Manager.getTypeRegistry().lookup(
                 TypeFamily.FORMAT, "widget");

@@ -1,4 +1,6 @@
 
+<#if theme>
+
 <span class="nxthemesButtonHeader">Presets:</span>
     
 <@nxthemes_button identifier="show_presets"
@@ -17,3 +19,4 @@
   link="javascript:NXThemesEditor.addPreset('${theme.name?js_string}', '${selected_preset_category?js_string}', 'preset manager')"
   label="Create new preset" />
 
+</#if>

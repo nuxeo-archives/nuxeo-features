@@ -33,12 +33,14 @@
          <li <#if selected_preset_category = 'image'>class="selected"</#if>>
              <a  href="javascript:NXThemesPresetManager.selectPresetCategory('image')">
              <img src="${skinPath}/img/category-16.png" width="16" height="16"/> Image</a></li>
+ <li <#if selected_preset_category = ''>class="selected"</#if>>
+             <a  href="javascript:NXThemesPresetManager.selectPresetCategory('')">
+             <img src="${skinPath}/img/category-16.png" width="16" height="16"/> <em style="color: #666">Unsorted</em></a></li>             
        </ul>
      </td>
     <td>
     
-    
-<#if selected_preset_category>
+
 <#assign presets = This.getCustomPresets(current_theme_name, selected_preset_category)>
 
 
@@ -127,7 +129,7 @@ ${preset_info.preview}
 </#if>
 
 </table>
-</#if>
+
 
 <#assign preset_names=This.getUnidentifiedPresetNames(current_theme_name)>
 
@@ -216,7 +218,7 @@ ${preset_info.preview}
 <#assign images=This.getHardcodedImages(current_theme_name)>
 
 <#if images>
-<h3 class="nxthemesEditorFocus"These images could be registered as presets ...</h3>
+<h3 class="nxthemesEditorFocus">These images could be registered as presets ...</h3>
 
 <table cellspacing="5" cellpadding="4" style="width: 100%">
 <#assign count = 0 />
