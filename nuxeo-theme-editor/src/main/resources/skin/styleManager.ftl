@@ -11,6 +11,12 @@
 
 <#if style_manager_mode = 'named styles'>
 
+
+<div style="float: right">
+  <a class="nxthemesActionButton" href="javascript:NXThemesStyleEditor.createNamedStyle(null, '${theme.name}', 'style manager')">
+  <img src="${skinPath}/img/add-14.png" /> Create new style</a>
+</div>
+
   <p class="nxthemesExplanation">List styles by name.<p>
 
   <table style="width: 100%;" cellpadding="3" cellspacing="1">
@@ -58,8 +64,6 @@
 
 <p class="nxthemesExplanation">Find unused styles.<p>
 
-<#assign found=false>
-
 <#assign styles=themeManager.getStyles(current_theme_name)>
 <#list styles as style>
 
@@ -67,8 +71,6 @@
 <#if views>
 
 <#list views as view>
-
-<#assign found=true>
 
 <form class="unusedViews" action="javascript:void(0)" submit="return false">
   <div>
@@ -94,10 +96,6 @@
 
 </#if>
 </#list>
-
-<#if found=false>
-  <em>Nothing found.</em>
-</#if>
 
 </#if>
 </div>

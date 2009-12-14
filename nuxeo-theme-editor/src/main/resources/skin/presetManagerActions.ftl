@@ -14,9 +14,4 @@
   link="javascript:NXThemesPresetManager.setEditMode('unregistered presets')"
   label="Find unregistered presets" />
 
-<@nxthemes_button identifier="create_preset"
-  icon="${skinPath}/img/add-14.png"
-  link="javascript:NXThemesEditor.addPreset('${theme.name?js_string}', '${selected_preset_category?js_string}', 'preset manager')"
-  label="Create new preset" />
-
 </#if>

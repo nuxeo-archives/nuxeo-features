@@ -13,9 +13,4 @@
   link="javascript:NXThemesStyleManager.setEditMode('unused styles')"
   label="Find unused styles" />  
 
-<@nxthemes_button identifier="create_style"
-  icon="${skinPath}/img/add-14.png"
-  link="javascript:NXThemesStyleEditor.createNamedStyle(null, '${theme.name}', 'style manager')"
-  label="Create new style" />
-
 </#if>

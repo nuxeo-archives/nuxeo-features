@@ -2,6 +2,9 @@
   <form action="javascript:void(0)">
   <label>Theme:</label>
   <select id="theme">
+    <#if !themes>
+        <option value="">???</option>
+    </#if>
     <#list themes as theme>
       <option <#if theme.selected> selected="selected" class="selected"</#if> 
       value="${theme.path}">${theme.name}</option>

@@ -11,6 +11,14 @@
 <#if preset_manager_mode = 'theme presets'>
 
 <h1 class="nxthemesEditor">Manage presets</h1>
+
+<#if selected_preset_category>
+<div style="float: right">
+  <a class="nxthemesActionButton" href="javascript:NXThemesEditor.addPreset('${current_theme_name?js_string}', '${selected_preset_category?js_string}', 'preset manager')">
+  <img src="${skinPath}/img/add-14.png" /> Create new style</a>
+</div>
+</#if>
+
 <p class="nxthemesExplanation">List presets by category</p>
 
 <table style="width: 100%;" cellpadding="3" cellspacing="1">
