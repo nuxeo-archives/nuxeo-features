@@ -108,12 +108,12 @@ public class Main extends ModuleRoot {
   public Object renderThemeBrowser(@QueryParam("org.nuxeo.theme.application.path") String path,
           @QueryParam("org.nuxeo.theme.application.name") String name) {
     def availableThemes = []
-    def workspaceThemes =  getWorkspaceThemes(path, name)
+    def workspaceThemes = getWorkspaceThemes(path, name)
     def workspaceThemeNames =  []
-    for (ThemeInfo theme : workspaceThemes) {
+    for (ThemeInfo theme: workspaceThemes) {
         workspaceThemeNames.add(theme.getName())
     }
-    for (ThemeInfo theme : themeManager.getThemeDescriptors()) {
+    for (ThemeInfo theme: themeManager.getThemeDescriptors()) {
         if (!workspaceThemeNames.contains(theme.getName())) {
             availableThemes.add(theme)
         }
@@ -1654,13 +1654,20 @@ public class Main extends ModuleRoot {
   public static List<ThemeInfo> getWorkspaceThemes(path, name) {
       def themes = []
       String currentThemeName = getCurrentThemeName(path, name)
+      String templateEngine = getTemplateEngine(path)
       def workspaceThemes = SessionManager.getWorkspaceThemes()
+      def compatibleThemes = ThemeManager.getThemeNames(templateEngine)
       if (workspaceThemes == null) {
           workspaceThemes = []
       }
-      for (String themeName : workspaceThemes) {
-          String pagePath = String.format("%s/default", themeName)
-          themes.add(new ThemeInfo(themeName, pagePath, themeName == currentThemeName))
+      if (!workspaceThemes.contains(currentThemeName)) {
+          workspaceThemes.add(currentThemeName);
+      }
+      for (String themeName: workspaceThemes) {
+          if (compatibleThemes.contains(themeName)) { 
+              String pagePath = String.format("%s/default", themeName)
+              themes.add(new ThemeInfo(themeName, pagePath, themeName == currentThemeName))
+          }
       }
       return themes
   }

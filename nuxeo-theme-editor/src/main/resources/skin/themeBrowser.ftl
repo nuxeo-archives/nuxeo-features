@@ -13,11 +13,11 @@
     <ul class="nxthemesSelector">
       <#list workspace_themes as theme>
         <li>
-          <a onclick="NXThemesEditor.removeThemeFromWorkspace('${theme.name?js_string}', 'theme browser')"
+          <a <#if !theme.selected>onclick="NXThemesEditor.removeThemeFromWorkspace('${theme.name?js_string}', 'theme browser')"</#if>
              href="javascript:void(0)">
             <img src="${skinPath}/img/theme-16.png" width="16" height="16" /> 
-            <span>${theme.name}</span>
-            <span class="info"><img src="${skinPath}/img/remove-theme-from-list-16.png" width="16" height="16" />  remove from list</span></a></li>
+            <span <#if theme.selected>style="font-weight: bold"</#if>>${theme.name}</span>
+            <#if !theme.selected><span class="info"><img src="${skinPath}/img/remove-theme-from-list-16.png" width="16" height="16" /> remove from list</span></#if></a></li>
       </#list>
     </ul>
 
