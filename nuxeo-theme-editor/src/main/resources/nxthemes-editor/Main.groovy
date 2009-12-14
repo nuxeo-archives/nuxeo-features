@@ -1658,9 +1658,6 @@ public class Main extends ModuleRoot {
       if (workspaceThemes == null) {
           workspaceThemes = []
       }
-      if (!workspaceThemes.contains(currentThemeName)) {
-          workspaceThemes.add(currentThemeName)
-      }
       for (String themeName : workspaceThemes) {
           String pagePath = String.format("%s/default", themeName)
           themes.add(new ThemeInfo(themeName, pagePath, themeName == currentThemeName))

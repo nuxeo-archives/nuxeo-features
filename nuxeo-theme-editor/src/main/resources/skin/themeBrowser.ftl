@@ -12,12 +12,9 @@
     
     <ul class="nxthemesSelector">
       <#list workspace_themes as theme>
-        <li <#if theme.selected>class="disabled"</#if>>
-          <a
-            <#if !theme.selected>
-            onclick="NXThemesEditor.removeThemeFromWorkspace('${theme.name?js_string}', 'theme browser')"
-            </#if> 
-            href="javascript:void(0)">
+        <li>
+          <a onclick="NXThemesEditor.removeThemeFromWorkspace('${theme.name?js_string}', 'theme browser')"
+             href="javascript:void(0)">
             <img src="${skinPath}/img/theme-16.png" width="16" height="16" /> 
             <span>${theme.name}</span>
             <span class="info"><img src="${skinPath}/img/remove-theme-from-list-16.png" width="16" height="16" />  remove from list</span></a></li>

@@ -1396,6 +1396,8 @@ option.locked {
  text-decoration: none;
  font: 13px Arial;
  color: #fff;
+ margin-top: 10px;
+ display: block;
 }
 
 .nxthemesAddSection:hover div {
