@@ -15,7 +15,7 @@
 <#if selected_preset_category>
 <div style="float: right">
   <a class="nxthemesActionButton" href="javascript:NXThemesEditor.addPreset('${current_theme_name?js_string}', '${selected_preset_category?js_string}', 'preset manager')">
-  <img src="${skinPath}/img/add-14.png" /> Create new style</a>
+  <img src="${skinPath}/img/add-14.png" /> Create new preset</a>
 </div>
 </#if>
 

@@ -916,15 +916,15 @@ div.nxthemesFragment, div.nxthemesFragmentHidden {
 }
 
 div.nxthemesFragment {
-  border-color: #999 #000 #000 #999;
-  background: #ffe;
+  border-color: #666 #000 #000 #666;
+  background: #fffff9;
   color: #333;
 }
 
 div.nxthemesFragmentHidden {
-  border-color: #ccc #999 #999 #ccc;
-  background: #ffe;
-  color: #ccc;
+  border-color: #999 #999 #999 #999;
+  background: #fcfcf6;
+  color: #999;
 }
 
 div.nxthemesFragment b, div.nxthemesFragmentHidden b {
@@ -1554,7 +1554,7 @@ table.fragmentFactory td {
 }
 
 .nxthemesExplanation {
-  font-style: italic;
+  font: italic 12px Arial, sans-serif;
   margin: 0;
   margin-bottom: 15px;
   padding: 0;
