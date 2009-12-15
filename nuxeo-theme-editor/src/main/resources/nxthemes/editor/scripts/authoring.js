@@ -1470,6 +1470,7 @@ NXThemesStyleEditor.refreshCssPreview = function() {
          method: 'get',
          onSuccess: function(r) {
            var text = r.responseText;
+           text = text.replace('${basePath}', nxthemesBasePath);
            $('previewCss').innerHTML = text;
          },
          onFailure: function(r) {
