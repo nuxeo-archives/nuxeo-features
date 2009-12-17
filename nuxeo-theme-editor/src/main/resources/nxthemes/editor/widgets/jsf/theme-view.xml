@@ -46,6 +46,7 @@
           label="Factory presets" />
                                             
         <nxthemes:button identifier="quit"
+          icon="/nuxeo/site/skin/nxthemes-editor/img/quit-14.png"
           link="javascript:NXThemesEditor.exit()"
           label="Quit" />  
 
