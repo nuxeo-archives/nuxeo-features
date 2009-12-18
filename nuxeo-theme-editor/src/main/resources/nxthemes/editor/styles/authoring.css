@@ -1476,7 +1476,7 @@ ul.namedStyleSelector li a.selected {
 table.fragmentFactory {
   width: 100%;
   border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 
 table.fragmentFactory th {
