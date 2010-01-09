@@ -35,6 +35,7 @@ import org.nuxeo.opensocial.container.client.bean.GadgetBean;
 import org.nuxeo.opensocial.container.factory.api.ContainerManager;
 import org.nuxeo.opensocial.container.factory.mapping.GadgetMapper;
 import org.nuxeo.opensocial.container.factory.utils.CoreSessionHelper;
+import org.nuxeo.opensocial.container.factory.utils.GadgetsUtils;
 import org.nuxeo.opensocial.container.factory.utils.PermissionHelper;
 import org.nuxeo.opensocial.gadgets.service.api.GadgetService;
 import org.nuxeo.runtime.api.Framework;
@@ -183,7 +184,15 @@ public class ContainerManagerImpl implements ContainerManager {
           }
 
           public String getTitle() {
-            return gadgetName;
+              try {
+                  return GadgetsUtils.getGadgetTitle(gadgetName,
+                          gadgetName);
+              } catch (Exception e) {
+                  log.warn("Couldn't retrieve gadget "
+                          + gadgetName
+                          + " default. Using gadget name as default title");
+              }
+              return gadgetName;
           }
 
           public boolean isCollapsed() {
