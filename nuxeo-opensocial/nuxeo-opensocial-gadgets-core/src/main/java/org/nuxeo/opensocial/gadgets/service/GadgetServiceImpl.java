@@ -107,9 +107,11 @@ public class GadgetServiceImpl extends DefaultComponent implements
     ComponentInstance component = Framework.getRuntime()
         .getComponentInstance(gadget.getComponentName());
 
-    URL gadgetURL = component.getRuntimeContext()
-        .getBundle()
-        .getEntry("gadget/" + resourcePath);
+        String directory = gadget.getDirectory();
+        URL gadgetURL = component.getRuntimeContext().getBundle().getEntry(
+                "gadget/"
+                        + directory.substring(0, directory.indexOf("-gadget"))
+                        + "/" + resourcePath);
     if (gadgetURL != null) {
       return gadgetURL.openStream();
     } else {
