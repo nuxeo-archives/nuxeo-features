@@ -59,7 +59,10 @@ import org.nuxeo.runtime.api.Framework;
 public class JbpmServiceImpl implements JbpmService {
 
     private static final String FROM_ORG_JBPM_TASKMGMT_EXE_TASK_INSTANCE_TI_WHERE_TI_END_IS_NULL = "from org.jbpm.taskmgmt.exe.TaskInstance ti where ti.end is null";
-
+    public static final String GET_PI_FOR_INITIATOR_QUERY = "select si.token.processInstance "
+            + " from org.jbpm.context.exe.variableinstance.StringInstance si "
+            + " where si.value in (:initiators) "
+            + " and si.name = 'initiator' ";
     protected Map<String, List<String>> typeFilters;
 
     private EventProducer eventProducer;
@@ -227,18 +230,11 @@ public class JbpmServiceImpl implements JbpmService {
         if (actorsName == null) {
             return initiatorPD;
         }
-        List<ProcessDefinition> pds = context.getGraphSession().findAllProcessDefinitions();
-        for (ProcessDefinition pd : pds) {
-            List<ProcessInstance> pis = context.getGraphSession().findProcessInstances(
-                    pd.getId());
-            for (ProcessInstance pi : pis) {
-                String initiator = (String) pi.getContextInstance().getVariable(
-                        JbpmService.VariableName.initiator.name());
-                if (initiator != null && actorsName.contains(initiator)) {
-                    initiatorPD.add(pi);
-                }
-            }
-        }
+        Session session = context.getSession();
+        List<ProcessInstance> list = session.createQuery(
+                GET_PI_FOR_INITIATOR_QUERY).setParameterList("initiators",
+                actorsName).list();
+        initiatorPD.addAll(list);
         return initiatorPD;
     }
 
