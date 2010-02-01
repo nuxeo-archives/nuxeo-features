@@ -7,10 +7,10 @@
         </td>
         <td style="padding-left: 10px;text-align: left;">
           <div class="pageTitle">
-            ${name}
+            ${name?xml}
           </div>
           <div class="pageDescription">
-            ${siteDescription} 
+            ${siteDescription?xml} 
           </div>
         </td>
       </tr>
