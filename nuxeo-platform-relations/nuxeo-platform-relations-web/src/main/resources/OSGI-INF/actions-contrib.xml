@@ -11,9 +11,6 @@
           <permission>Read</permission>
         </rule>
         <rule grant="false">
-          <facet>Folderish</facet>
-        </rule>
-        <rule grant="false">
           <type>Server</type>
         </rule>
       </filter>

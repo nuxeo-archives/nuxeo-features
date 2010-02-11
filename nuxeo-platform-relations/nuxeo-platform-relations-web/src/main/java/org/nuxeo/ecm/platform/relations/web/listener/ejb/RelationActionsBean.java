@@ -557,8 +557,6 @@ public class RelationActionsBean extends DocumentContextBoundActionBean
                 }
             }
         }
-        // no folderish doc nor hidden doc
-        constraints.add("ecm:mixinType != 'Folderish'");
         constraints.add("ecm:mixinType != 'HiddenInNavigation'");
         // no archived revisions
         constraints.add("ecm:isCheckedInVersion = 0");
