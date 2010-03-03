@@ -3752,37 +3752,37 @@ td.x-date-mp-sep {
 
 .x-tool {
   overflow: hidden;
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   float: right;
   cursor: pointer;
-  background: transparent url(../images/default/panel/tool-sprites.gif)
+  background: transparent url(../images/default/panel/tool-sprites-nuxeo.png)
     no-repeat;
   margin-left: 2px;
 }
 
 .x-tool-toggle {
-  background-position: 0 -60px;
+  background-position: 1px -15px;
 }
 
 .x-tool-toggle-over {
-  background-position: -15px -60px;
+  background-position: -16px -15px;
 }
 
 .x-panel-collapsed .x-tool-toggle {
-  background-position: 0 -75px;
+  background-position: 1px -28px;
 }
 
 .x-panel-collapsed .x-tool-toggle-over {
-  background-position: -15px -75px;
+  background-position: -16px -28px;
 }
 
 .x-tool-close {
-  background-position: 0 -0;
+  background-position: -1px -0;
 }
 
 .x-tool-close-over {
-  background-position: -15px 0;
+  background-position: -18px 0;
 }
 
 .x-tool-minimize {
@@ -3810,11 +3810,11 @@ td.x-date-mp-sep {
 }
 
 .x-tool-gear {
-  background-position: 0 -90px;
+  background-position: 0px -46px;
 }
 
 .x-tool-gear-over {
-  background-position: -15px -90px;
+  background-position: -17px -46px;
 }
 
 .x-tool-pin {

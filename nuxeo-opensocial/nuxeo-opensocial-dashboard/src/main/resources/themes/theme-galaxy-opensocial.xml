@@ -17,16 +17,9 @@
           <fragment type="generic fragment"/>
         </cell>
       </section>
-      <!-- on other pages, this is the navigation and breadcrumb stuff -->
       <section>
         <cell>
           <fragment type="generic fragment"/>
-        </cell>
-      </section>
-      <section>
-        <cell>
-          <fragment type="dashboardLayoutManager"/>
-          <fragment type="dashboardGadgetManager"/>
         </cell>
       </section>
       <section>
@@ -34,16 +27,10 @@
           <fragment type="dashboardMainContent"/>
         </cell>
       </section>
-      <!-- what's this for? -->
       <section>
-        <cell/>
-      </section>
-      <section>
-      <!-- before this was the nuxeo includes, but that broke the JS world
         <cell>
-
           <fragment type="generic fragment"/>
-        </cell> -->
+        </cell>
         <cell/>
       </section>
     </page>
@@ -52,41 +39,6 @@
     <preset category="color" name="opensocialdashboard">#000000</preset>
   </presets>
   <formats>
-    <layout element="page[1]/section[6]">
-      <margin-left>auto</margin-left>
-      <margin-right>auto</margin-right>
-      <width>100%</width>
-    </layout>
-    <layout element="page[1]/section[6]/cell[1]">
-      <width>100%</width>
-    </layout>
-    <layout element="page[1]/section[4]">
-      <margin-left>auto</margin-left>
-      <margin-right>auto</margin-right>
-      <width>100%</width>
-    </layout>
-    <layout element="page[1]/section[4]/cell[1]">
-      <width>100%</width>
-    </layout>
-    <layout element="page[1]/section[3]">
-      <margin-left>auto</margin-left>
-      <margin-right>auto</margin-right>
-      <width>100%</width>
-      <padding>5px 30px 5px 30px</padding>
-    </layout>
-    <layout element="page[1]/section[3]/cell[1]">
-      <width>100%</width>
-    </layout>
-    <layout element="page[1]/section[5]">
-      <margin-left>auto</margin-left>
-      <margin-right>auto</margin-right>
-      <width>100%</width>
-    </layout>
-    <layout element="page[1]/section[5]/cell[1]">
-      <width>100%</width>
-      <text-align>right</text-align>
-    </layout>
-    <!-- compatibility with galaxy -->
     <layout element="page[1]">
       <margin>0</margin>
       <padding>0</padding>
@@ -110,32 +62,57 @@
       <width>100%</width>
     </layout>
     <layout element="page[1]/section[2]/cell[1]"/>
-    <!--  -->
+    <layout element="page[1]/section[3]">
+      <margin-left>auto</margin-left>
+      <margin-right>auto</margin-right>
+      <width>100%</width>
+      <padding>10px 5px</padding>
+    </layout>
+    <layout element="page[1]/section[3]/cell[1]">
+      <width>100%</width>
+    </layout>
+    <layout element="page[1]/section[4]">
+      <margin-left>auto</margin-left>
+      <margin-right>auto</margin-right>
+      <width>100%</width>
+    </layout>
+    <layout element="page[1]/section[4]/cell[1]">
+      <width>100%</width>
+      <text-align>right</text-align>
+    </layout>
+    <widget element="">
+      <view>theme view</view>
+      <icon>/nuxeo/icons/favicon.png</icon>
+      <charset>utf-8</charset>
+    </widget>
     <widget element="page[1]">
       <view>page frame</view>
     </widget>
     <widget element="page[1]/section[1]">
       <view>section frame</view>
     </widget>
-    <widget element="page[1]/section[6]">
-      <view>section frame</view>
+    <widget element="page[1]/section[1]/cell[1]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[1]/fragment[1]">
+      <view>Nuxeo DM logo (Galaxy Theme)</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[2]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[2]/fragment[1]">
+      <view>User services (Galaxy theme)</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[3]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[3]/fragment[1]">
+      <view>opensocial includes</view>
     </widget>
     <widget element="page[1]/section[2]">
       <view>section frame</view>
     </widget>
-    <widget element="page[1]/section[4]">
-      <view>section frame</view>
-    </widget>
-    <widget element="page[1]/section[4]/cell[1]">
-      <view>cell frame</view>
-    </widget>
-    <widget element="page[1]/section[4]/cell[1]/fragment[1]">
-      <view>contenu principal</view>
-    </widget>
-    <widget element="page[1]/section[5]">
-      <view>section frame</view>
-    </widget>
-    <widget element="page[1]/section[5]/cell[1]">
+    <widget element="page[1]/section[2]/cell[1]">
       <view>cell frame</view>
     </widget>
     <widget element="page[1]/section[3]">
@@ -145,90 +122,93 @@
       <view>cell frame</view>
     </widget>
     <widget element="page[1]/section[3]/cell[1]/fragment[1]">
-      <view>module layout manager</view>
+      <view>contenu principal</view>
     </widget>
-    <widget element="page[1]/section[3]/cell[1]/fragment[2]">
-      <view>module gadget manager</view>
+    <widget element="page[1]/section[4]">
+      <view>section frame</view>
     </widget>
-    <!-- widget compatibility with the rest of nuxeo5 -->
-    <widget element="">
-      <view>theme view</view>
-      <icon>${org.nuxeo.ecm.contextPath}/icons/favicon.png</icon>
-      <charset>utf-8</charset>
-    </widget>
-    <!-- section 1 -->
-    <widget element="page[1]/section[1]/cell[1]">
+    <widget element="page[1]/section[4]/cell[1]">
       <view>cell frame</view>
     </widget>
-    <widget element="page[1]/section[1]/cell[2]">
-      <view>cell frame</view>
+    <widget element="page[1]/section[4]/cell[1]/fragment[1]">
+      <view>Nuxeo DM footer (Galaxy Theme)</view>
     </widget>
-    <widget element="page[1]/section[1]/cell[3]">
-      <view>cell frame</view>
-    </widget>
-    <widget element="page[1]/section[1]/cell[1]/fragment[1]">
-      <view>Nuxeo DM logo (Galaxy Theme)</view>
-    </widget>
-    <widget element="page[1]/section[1]/cell[2]/fragment[1]">
-      <view>User services (Galaxy theme)</view>
-    </widget>
-    <widget element="page[1]/section[1]/cell[3]/fragment[1]">
-      <view>opensocial includes</view>
-    </widget>
-    <!-- section 2 -->
-    <widget element="page[1]/section[2]/cell[1]">
-      <view>cell frame</view>
-    </widget>
-    <!-- section 7 -->
-    <widget element="page[1]/section[6]/cell[1]">
-      <view>cell frame</view>
-    </widget>
-    <!-- this needs to be eliminated because it pulls in copies of a bunch of
-      javascript libaries that break the opensocial code from LM
-    <widget element="page[1]/section[6]/cell[1]/fragment[1]">
-        <view>nuxeo5 includes</view>
-    </widget>
-    -->
     <widget element="page[1]/section[2]/cell[1]/fragment[1]">
-      <view>opensocialDashBoardNav</view>
+      <view>toolbar manager</view>
     </widget>
-    <!--  -->
-    <style name="dashboardLayoutManager">
+    <!-- compatibility with nuxeo 5 -->
+    <style name="default buttons">
+      <selector path="input.button">
+        <font preset="default (Galaxy fonts)"/>
+        <color>#333333</color>
+        <border preset="buttons (Galaxy borders)"/>
+        <background preset="buttons (Galaxy backgrounds)"/>
+        <margin>5px 10px 10px 0px</margin>
+        <padding>2px 5px 2px 5px</padding>
+        <cursor>pointer</cursor>
+      </selector>
+      <selector path="input.button:hover">
+        <color>#000000</color>
+        <border-color>#92999e</border-color>
+      </selector>
+      <selector path="input.button[disabled=disabled], input.button[disabled=disabled]:hover">
+        <color>#ccc</color>
+      </selector>
+    </style>
+    <style name="toolBarManager" inherit="default buttons" >
+      <selector path="">
+        <font>normal 10px "Lucida Grande", Helvetica, sans-serif</font>
+      </selector>
+      <selector path=".dashboardToolBarManager">
+        <background-color>#f3f6ff</background-color>
+        <border-bottom>1px solid #77a4d7</border-bottom>
+      </selector>
+      <selector path=".widgetManager">
+        <padding>10px 0</padding>
+      </selector>
+      <selector path=".navigationDomain">
+        <float>right</float>
+        <margin-right>5px</margin-right>
+      </selector>
+      <selector path=".navigationDomain span">
+        <color>#888989</color>
+        <padding-right>10px</padding-right>
+      </selector>
+      <selector path=".navigationDomain select">
+        <margin-right>7px</margin-right>
+      </selector>
+      <selector path=".navigationDomain input.button">
+        <margin>5px 10px 6px 0</margin>
+      </selector>
+    </style>
+    <style name="dashboardLayoutManager" inherit="toolBarManager">
+      <selector path="#layoutManager">
+        <display>inline</display>
+      </selector>
       <selector path="#layoutManagerContainer">
-        <border-bottom>1px solid #4E9AE1</border-bottom>
         <height>130px</height>
-        <background-color>#e9eef4</background-color>
-        <padding>10px</padding>
+        <padding>20px 0</padding>
       </selector>
       <selector path="#closeLayoutManager">
-        <border-bottom>1px solid #C0DCF5</border-bottom>
-        <font>normal 11px "Lucida Grande" Verdana Arial sans-serif</font>
-        <background-color>#ddeeff</background-color>
-        <padding>7px 12px 7px 0</padding>
-        <text-align>left</text-align>
       </selector>
       <selector path="#closeLayoutManager a">
-        <color>#0066ff</color>
+        <color>#7d7d7d</color>
         <padding-left>18px</padding-left>
-        <background>transparent url(${org.nuxeo.ecm.contextPath}/opensocial/images/arrow_unfolded.gif) top left no-repeat</background>
+        <margin>10px</margin>
+        <background>transparent url(/nuxeo/opensocial/images/arrow_unfolded.gif) top left no-repeat</background>
         <text-decoration>none</text-decoration>
-        <display>block</display>
       </selector>
       <selector path="#openLayoutManager">
         <padding-left>5px</padding-left>
       </selector>
       <selector path="#getLayoutManager">
-        <border-bottom>1px solid #4E9AE1</border-bottom>
-        <font>normal 11px "Lucida Grande" Verdana Arial sans-serif</font>
-        <background-color>#ddeeff</background-color>
-        <padding>7px 12px 7px 0px</padding>
       </selector>
       <selector path="#getLayoutManager a">
-        <color>#0066ff</color>
+        <color>#7d7d7d</color>
         <padding-left>18px</padding-left>
-        <background>transparent url(${org.nuxeo.ecm.contextPath}/opensocial/images/arrow_folded.gif) top left no-repeat</background>
+        <margin>10px</margin>
+        <background>transparent url(/nuxeo/opensocial/images/arrow_folded.gif) top left no-repeat</background>
         <text-decoration>none</text-decoration>
-        <display>block</display>
       </selector>
       <selector path="#listColumns">
         <padding-left>5px</padding-left>
@@ -268,22 +248,22 @@
         <padding>5px</padding>
       </selector>
       <selector path="#x-1-default">
-        <background-image>url(${org.nuxeo.ecm.contextPath}/opensocial/images/x-1-default.png)</background-image>
+        <background-image>url(/nuxeo/opensocial/images/x-1-default.png)</background-image>
       </selector>
       <selector path="#x-2-default">
-        <background-image>url(${org.nuxeo.ecm.contextPath}/opensocial/images/x-2-default.png)</background-image>
+        <background-image>url(/nuxeo/opensocial/images/x-2-default.png)</background-image>
       </selector>
       <selector path="#x-3-default">
-        <background-image>url(${org.nuxeo.ecm.contextPath}/opensocial/images/x-3-default.png)</background-image>
+        <background-image>url(/nuxeo/opensocial/images/x-3-default.png)</background-image>
       </selector>
       <selector path="#x-3-header2cols">
-        <background-image>url(${org.nuxeo.ecm.contextPath}/opensocial/images/x-3-header2cols.png)</background-image>
+        <background-image>url(/nuxeo/opensocial/images/x-3-header2cols.png)</background-image>
       </selector>
       <selector path="#x-4-footer3cols">
-        <background-image>url(${org.nuxeo.ecm.contextPath}/opensocial/images/x-4-footer3cols.png)</background-image>
+        <background-image>url(/nuxeo/opensocial/images/x-4-footer3cols.png)</background-image>
       </selector>
       <selector path="#closeLinkLayoutManager">
-        <background-image>url(${org.nuxeo.ecm.contextPath}/opensocial/images/close.gif)</background-image>
+        <background-image>url(/nuxeo/opensocial/images/close.gif)</background-image>
         <color>rgb(0, 0, 0)</color>
         <margin-right>10px</margin-right>
         <padding-left>15px</padding-left>
@@ -321,7 +301,6 @@
       <selector path="#tabDescription">
         <height>35px</height>
         <margin-left>30px</margin-left>
-        <font-family>arial</font-family>
         <margin-bottom>5px</margin-bottom>
         <width>175px</width>
         <font-size>11px</font-size>
@@ -333,7 +312,6 @@
         <float>right</float>
       </selector>
       <selector path="#tabTitle">
-        <font-family>arial</font-family>
         <margin-bottom>5px</margin-bottom>
         <width>175px</width>
         <margin-top>5px</margin-top>
@@ -350,42 +328,34 @@
         <margin-left>30px</margin-left>
       </selector>
     </style>
-    <style name="dashboardGadgetManager">
+    <style inherit="dashboardLayoutManager" name="dashboardGadgetManager">
+      <selector path="#gadgetManager">
+        <display>inline</display>
+      </selector>
       <selector path="#gadgetManagerContainer">
-        <border-bottom>1px solid #4E9AE1</border-bottom>
         <height>130px</height>
-        <background-color>#e9eef4</background-color>
-        <padding>10px</padding>
+        <padding>15px 0px</padding>
       </selector>
       <selector path="#closeGadgetManager">
-        <border-bottom>1px solid #C0DCF5</border-bottom>
-        <font>normal 11px "Lucida Grande" Verdana Arial sans-serif</font>
-        <background-color>#ddeeff</background-color>
-        <padding>7px 12px 7px 0</padding>
-        <text-align>left</text-align>
       </selector>
       <selector path="#closeGadgetManager a">
-        <color>#0066ff</color>
+        <color>#7d7d7d</color>
         <padding-left>18px</padding-left>
-        <background>transparent url(${org.nuxeo.ecm.contextPath}/opensocial/images/arrow_unfolded.gif) top left no-repeat</background>
+        <margin>10px</margin>
+        <background>transparent url(/nuxeo/opensocial/images/arrow_unfolded.gif) top left no-repeat</background>
         <text-decoration>none</text-decoration>
-        <display>block</display>
       </selector>
       <selector path="#openGadgetManager">
         <padding-left>5px</padding-left>
       </selector>
       <selector path="#getGadgetManager">
-        <border-bottom>1px solid #4E9AE1</border-bottom>
-        <font>normal 11px "Lucida Grande" Verdana Arial sans-serif</font>
-        <background-color>#ddeeff</background-color>
-        <padding>7px 12px 7px 0px</padding>
       </selector>
       <selector path="#getGadgetManager a">
-        <color>#0066ff</color>
+        <color>#7d7d7d</color>
         <padding-left>18px</padding-left>
-        <background>transparent url(${org.nuxeo.ecm.contextPath}/opensocial/images/arrow_folded.gif) top left no-repeat</background>
+        <margin>10px</margin>
+        <background>transparent url(/nuxeo/opensocial/images/arrow_folded.gif) top left no-repeat</background>
         <text-decoration>none</text-decoration>
-        <display>block</display>
       </selector>
       <selector path="#listCategories">
         <padding-left>5px</padding-left>
@@ -425,7 +395,7 @@
         <padding>5px</padding>
       </selector>
       <selector path="#closeLinkGadgetManager">
-        <background-image>url(${org.nuxeo.ecm.contextPath}/opensocial/images/close.gif)</background-image>
+        <background-image>url(/nuxeo/opensocial/images/close.gif)</background-image>
         <color>rgb(0, 0, 0)</color>
         <margin-right>10px</margin-right>
         <padding-left>15px</padding-left>
@@ -465,7 +435,7 @@
         <text-align>center</text-align>
       </selector>
       <selector path=".directAdd a">
-        <background>#CECFD1 url(${org.nuxeo.ecm.contextPath}/opensocial/images/buttons.png) repeat-x left top</background>
+        <background>#CECFD1 url(/nuxeo/opensocial/images/buttons.png) repeat-x left top</background>
         <text-decoration>none</text-decoration>
         <border>1px solid #BFC5CB</border>
         <color>#333333</color>
@@ -498,32 +468,6 @@
         <padding>0</padding>
       </selector>
     </style>
-    <!-- compatibility with nuxeo 5 -->
-    <style name="default buttons">
-      <selector path="input.button">
-        <font preset="default (Galaxy fonts)"/>
-        <color>#333333</color>
-        <border preset="buttons (Galaxy borders)"/>
-        <background preset="buttons (Galaxy backgrounds)"/>
-        <margin>5px 10px 10px 0px</margin>
-        <padding>2px 5px 2px 5px</padding>
-        <cursor>pointer</cursor>
-      </selector>
-      <selector path="input.button:hover">
-        <color>#000000</color>
-        <border-color>#92999e</border-color>
-      </selector>
-      <selector path="input.button[disabled=disabled], input.button[disabled=disabled]:hover">
-        <color>#ccc</color>
-      </selector>
-    </style>
-    <style name="opensocialDashboardNav">
-      <selector path="form a.button">
-        <color>#000000</color>
-        <font-family>'Lucida Grande',Verdana,Arial,sans-serif</font-family>
-        <font-size>11px</font-size>
-      </selector>
-    </style>
     <!--  -->
     <style element="page[1]">
       <selector path="" view="page frame">
@@ -536,48 +480,11 @@
         <background preset="header (intralm background)"/>
       </selector>
     </style>
-    <style element="page[1]/section[6]"/>
-    <style element="page[1]/section[6]/cell[1]">
-      <selector path="" view="cell frame">
-        <background preset="fond_gris (intralm background)"/>
-      </selector>
-    </style>
     <style element="page[1]/section[1]/cell[1]">
       <selector path="" view="cell frame">
         <background preset="topbar (Galaxy backgrounds)"/>
       </selector>
     </style>
-    <style element="page[1]/section[2]/cell[1]"/>
-    <style element="page[1]/section[4]"/>
-    <style element="page[1]/section[4]/cell[1]">
-      <selector path="" view="cell frame">
-        <background preset="fond_gris (intralm background)"/>
-      </selector>
-
-
-
-    </style>
-    <style element="page[1]/section[4]/cell[1]/fragment[1]" inherit="loading">
-      <selector path="*" view="contenu principal">
-        <margin>0</margin>
-        <padding>0</padding>
-      </selector>
-
-      <selector path="div.x-panel-tl" view="contenu principal">
-        <background-color>rgb(78, 154, 225)</background-color>
-      </selector>
-
-    </style>
-    <style element="page[1]/section[5]"/>
-    <style element="page[1]/section[5]/cell[1]">
-      <selector path="" view="cell frame">
-        <background preset="fond_gris (intralm background)"/>
-      </selector>
-    </style>
-    <style element="page[1]/section[3]"/>
-    <style element="page[1]/section[3]/cell[1]"/>
-    <style element="page[1]/section[3]/cell[1]/fragment[1]" inherit="dashboardLayoutManager"/>
-    <style element="page[1]/section[3]/cell[1]/fragment[2]" inherit="dashboardGadgetManager"/>
     <!-- Logo -->
     <style element="page[1]/section[1]/cell[1]/fragment[1]">
       <selector path="form" view="Nuxeo DM logo (Galaxy Theme)">
@@ -588,8 +495,13 @@
         <outline>none</outline>
       </selector>
     </style>
+    <style element="page[1]/section[1]/cell[2]">
+      <selector path="" view="cell frame">
+        <background preset="topbar (Galaxy backgrounds)"/>
+      </selector>
+    </style>
     <!-- user services -->
-    <style element="page[1]/section[1]/cell[2]/fragment[1]" inherit="default buttons">
+    <style element="page[1]/section[1]/cell[2]/fragment[1]" inherit="dashboardGadgetManager">
       <selector path="div" view="User services (Galaxy theme)">
         <font preset="small (Galaxy fonts)"/>
         <color>#cecece</color>
@@ -606,7 +518,7 @@
       </selector>
       <selector path=".directoryFilter, .searchField" view="User services (Galaxy theme)">
         <border>1px normal #666</border>
-        <background>url(${org.nuxeo.ecm.contextPath}/icons/search.gif) 2px 2px no-repeat #FFF</background>
+        <background>url(/nuxeo/icons/search.gif) 2px 2px no-repeat #FFF</background>
         <margin>0 5px 10px 0</margin>
         <padding>3px 3px 3px 20px</padding>
         <font-size>11px</font-size>
@@ -638,19 +550,66 @@
         <padding>0</padding>
       </selector>
     </style>
-    <style element="page[1]/section[1]/cell[2]">
-      <selector path="" view="cell frame">
-        <background preset="topbar (Galaxy backgrounds)"/>
-      </selector>
-    </style>
     <style element="page[1]/section[1]/cell[3]">
       <selector path="" view="cell frame">
         <background preset="topbar (Galaxy backgrounds)"/>
       </selector>
     </style>
-    <style element="page[1]/section[2]/cell[1]/fragment[1]" inherit="opensocialDashboardNav">
-      <selector path="form" view="opensocialDashBoardNav">
-        <text-align>center</text-align>
+    <style element="page[1]/section[2]"/>
+    <style element="page[1]/section[2]/cell[1]" inherit="dashboardGadgetManager"/>
+    <style element="page[1]/section[2]/cell[1]/fragment[1]" inherit="dashboardGadgetManager"/>
+    <style element="page[1]/section[3]"/>
+    <style element="page[1]/section[3]/cell[1]"/>
+    <style element="page[1]/section[3]/cell[1]/fragment[1]" inherit="loading">
+      <selector path="*" view="contenu principal">
+        <margin>0</margin>
+        <padding>0</padding>
+      </selector>
+      <selector path="div.x-panel-tl" view="contenu principal">
+        <background-color>#b4c7dc</background-color>
+      </selector>
+    </style>
+    <style element="page[1]/section[4]">
+      <selector path="" view="section frame">
+        <border-top preset="topbar (Galaxy borders)"/>
+      </selector>
+    </style>
+    <style element="page[1]/section[4]/cell[1]"/>
+       <style element="page[1]/section[4]/cell[1]/fragment[1]" inherit="dashboardGadgetManager">
+      <selector path="form, p" view="Nuxeo DM footer (Galaxy Theme)">
+        <margin>5px 0px 0px 0px</margin>
+        <padding>0</padding>
+      </selector>
+      <selector path="" view="Nuxeo DM footer (Galaxy Theme)">
+        <font preset="small (Galaxy fonts)"/>
+        <color preset="gray.dark (Galaxy colors)" />
+        <padding>5px 15px 5px 5px</padding>
+      </selector>
+      <selector path="div" view="Nuxeo DM footer (Galaxy Theme)">
+        <margin>0</margin>
+        <line-height>1.25em</line-height>
+        <padding>0</padding>
+        <font-size preset="small (Galaxy fonts)"/>
+      </selector>
+      <selector path="a" view="Nuxeo DM footer (Galaxy Theme)">
+        <color preset="blue.link (Galaxy colors)" />
+        <text-decoration>none</text-decoration>
+      </selector>
+      <selector path="a:visited" view="Nuxeo DM footer (Galaxy Theme)">
+        <color preset="blue.night (Galaxy colors)" />
+      </selector>
+      <selector path="a:active" view="Nuxeo DM footer (Galaxy Theme)">
+        <color preset="blue.link (Galaxy colors)" />
+      </selector>
+      <selector path="a:hover" view="Nuxeo DM footer (Galaxy Theme)">
+        <color preset="blue.link (Galaxy colors)" />
+        <text-decoration>underline</text-decoration>
+      </selector>
+      <selector path="select.langSelect" view="Nuxeo DM footer (Galaxy Theme)">
+        <margin>9px 5px 0px 5px</margin>
+      </selector>
+      <selector path="input.button" view="Nuxeo DM footer (Galaxy Theme)">
+        <margin>5px 0px 5px 10px</margin>
       </selector>
     </style>
   </formats>

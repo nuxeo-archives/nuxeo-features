@@ -32,11 +32,6 @@
             <class>org.nuxeo.opensocial.dashboard.theme.LayoutManagerModel
             </class>
         </model>
-        <model name="dashboardGadgetManager">
-            <class>org.nuxeo.opensocial.dashboard.theme.GadgetManagerModel
-            </class>
-        </model>
-
     </extension>
 
 
@@ -56,15 +51,6 @@
             <class>org.nuxeo.opensocial.dashboard.theme.LayoutManagerFragment
             </class>
             <model-type>dashboardLayoutManager</model-type>
-            <dynamic>true</dynamic>
-        </fragment>
-    </extension>
-    <extension target="org.nuxeo.theme.services.ThemeService"
-        point="fragments">
-        <fragment name="dashboardGadgetManager">
-            <class>org.nuxeo.opensocial.dashboard.theme.GadgetManagerFragment
-            </class>
-            <model-type>dashboardGadgetManager</model-type>
             <dynamic>true</dynamic>
         </fragment>
     </extension>
@@ -98,18 +84,13 @@
             <model-type>dashboardLayoutManager</model-type>
         </view>
     </extension>
-
     <extension target="org.nuxeo.theme.services.ThemeService"
         point="views">
-        <view name="module gadget manager" template-engine="jsf-facelets">
-            <element-type>fragment</element-type>
+        <view name="toolbar manager" template-engine="jsf-facelets">
             <format-type>widget</format-type>
-            <template>incl/dashboard-gadgetManager.xhtml
-            </template>
-            <model-type>dashboardGadgetManager</model-type>
+            <template>incl/dashboard-toolbarManager.xhtml</template>
         </view>
     </extension>
-
     <extension target="org.nuxeo.theme.services.ThemeService"
         point="views">
         <view name="opensocial includes" template-engine="jsf-facelets">
@@ -125,8 +106,6 @@
             <resource>container.css</resource>
             <resource>gadgetManager.js</resource>
             <resource>layoutManager.js</resource>
-
-
         </view>
         <view name="opensocialDashBoardNav" template-engine="jsf-facelets">
             <format-type>widget</format-type>

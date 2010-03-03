@@ -1,5 +1,9 @@
-<div xmlns:c="http://java.sun.com/jstl/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<div xmlns:c="http://java.sun.com/jstl/core" 
+		 xmlns:h="http://java.sun.com/jsf/html" 
+		 xmlns:f="http://java.sun.com/jsf/core"
+		 class="navigationDomain">
     <h:form>
+    		<span><h:outputText value="#{messages['dashboard.opensocial.navigationDomain']}" /></span>
         <h:selectOneListbox class="dataInputText" size="1" id="selectDomain"
             value="#{opensocialDashboard.selectedDomain}">
             <f:selectItems value="#{opensocialDashboard.domainsSelectItems}"/>

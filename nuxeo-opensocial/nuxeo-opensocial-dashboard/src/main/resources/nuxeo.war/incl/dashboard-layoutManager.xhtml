@@ -1,16 +1,19 @@
-<div xmlns:c="http://java.sun.com/jstl/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+<div xmlns:c="http://java.sun.com/jstl/core" 
+		 xmlns:h="http://java.sun.com/jsf/html" 
+		 xmlns:f="http://java.sun.com/jsf/core"
+		 class="widgetManager">
     <div id="communicationGadgetContainer" style="display:none">
         <a href="#" id="thickboxContent" class="thickbox" ></a>
     </div>
 <c:if
     test="#{!opensocialDashboard.anonymous}">
-  <div id="getLayoutManager">
+  <span id="getLayoutManager">
     <a href="#" id="openLayoutManager">#{messages['dashboard.opensocial.changeLayout']}</a>
-  </div>
-  <div id="layoutManager" style="display:none;">
-    <div id="closeLayoutManager">
+  </span>
+  <span id="layoutManager" style="display:none;">
+    <span id="closeLayoutManager">
       <a href="#" id="closeLinkLayoutManager">#{messages['dashboard.opensocial.close']}</a>
-    </div>
+    </span>
     <div id="layoutManagerContainer">
       <div id="listColumns">
         <div class="button-container">
@@ -47,6 +50,40 @@
       </div>
     </div>
 
-  </div>
+  </span>
  </c:if>
+ 
+	<c:if
+		test="#{!opensocialDashboard.anonymous}">
+		<span id="getGadgetManager"><a href="#" id="openGadgetManager">#{messages['dashboard.opensocial.addAGadget']}</a></span>
+		<span id="gadgetManager" style="display: none;">
+	
+		<span id="closeGadgetManager"><a href="#"
+			id="closeLinkGadgetManager">#{messages['dashboard.opensocial.close']}</a></span>
+		<div id="gadgetManagerContainer">
+		<div id="listCategories"><c:forEach
+			items="#{opensocialDashboard.categories}" var="category">
+			<div class="button-container"><a class="nv-category"
+				category="#{category}">#{category}</a></div>
+		</c:forEach></div>
+		<div id="listGadgets">
+		<ul class="option" id="tabGadgets">
+			<c:forEach items="#{opensocialDashboard.gadgets}" var="gadget">
+				<li class="invisible">
+				<div class="nameGadget">#{gadget.name}</div>
+				<a href="#_" name="#{gadget.name}" class="typeGadget"
+					category="#{gadget.category}"
+					style="background-image: url(#{gadget.iconUrl})"></a>
+				<div class="directAdd"><a href="#"
+					class="directAddLink linkAdd" name="#{gadget.name}"> <span
+					class="addGadgetButton">#{messages['dashboard.opensocial.add']}</span> </a></div>
+				</li>
+			</c:forEach>
+		</ul>
+		</div>
+		</div>
+	
+		</span>
+	</c:if>
+ 
 </div>

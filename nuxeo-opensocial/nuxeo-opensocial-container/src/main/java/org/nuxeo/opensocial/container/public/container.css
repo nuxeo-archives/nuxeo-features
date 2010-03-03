@@ -125,7 +125,7 @@
 }
 
 .x-panel-header {
-  color: white;
+  color: #666;
 }
 
 .gwt-Frame {
@@ -257,7 +257,7 @@
 .x-2-default>.x-portlet,.x-3-default>.x-portlet,.x-2-33-66>.x-portlet,.x-2-66-33>.x-portlet {
   -moz-border-radius : 4px;
   -webkit-border-radius : 4px;
-  border : 1px solid #D4D0C8;
+  border : 1px solid #e1e1e1;
   margin-left:-1px;
   min-width: 100%;
   width: 100%;
