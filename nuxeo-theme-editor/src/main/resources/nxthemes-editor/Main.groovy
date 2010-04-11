@@ -25,6 +25,7 @@ import org.nuxeo.theme.editor.*
 @WebObject(type = "nxthemes-editor", administrator=Access.GRANT)
 @Produces(["text/html", "*/*"])
 public class Main extends ModuleRoot {
+
     
     @GET
     @Path("perspectiveSelector")
@@ -194,6 +195,7 @@ public class Main extends ModuleRoot {
     String fragmentView = getSelectedFragmentView()
     String fragmentStyle = getSelectedFragmentStyle()
     return getTemplate("fragmentFactory.ftl").arg(
+            "current_theme_name", getCurrentThemeName(path, name)).arg(
             "selected_fragment_type", fragmentType).arg(
             "selected_fragment_view", fragmentView).arg(
             "selected_fragment_style", fragmentStyle).arg(
@@ -308,15 +310,6 @@ public class Main extends ModuleRoot {
             "selected_view_name", getViewNameOfSelectedElement()).arg(                    
             "element_style_properties", getElementStyleProperties())
   }
-
-  @GET
-  @Path("render_view_icon")
-  public Response renderViewIcon(@QueryParam("name") String viewTypeName) {
-      byte[] content = org.nuxeo.theme.editor.Editor.getViewIconContent(viewTypeName)
-      ResponseBuilder builder = Response.ok(content)
-      // builder.type(???)
-      return builder.build();
-   }
 
   @GET
   @Path("render_css_preview")
@@ -1764,6 +1757,10 @@ public class Main extends ModuleRoot {
           }
       }
       return themes
+  }
+   
+  public static void createFragmentPreview(String currentThemeName) {
+     Editor.createFragmentPreview(currentThemeName)
   }
 
 }

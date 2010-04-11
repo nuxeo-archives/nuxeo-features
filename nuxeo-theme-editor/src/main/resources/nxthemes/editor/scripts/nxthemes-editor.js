@@ -2051,6 +2051,47 @@ if (typeof NXThemesFragmentFactory == "undefined") {
     }
 }
 
+// widgets
+NXThemes.registerWidgets({
+
+  fragmentpreview: function(def) {
+    var widget = NXThemes.Canvas.createNode({
+      tag: 'div',
+      classes: ['nxthemesFragmentPreview']
+    });
+    return new NXThemesFragmentFactory.FragmentPreview(widget, def);
+  }
+
+});
+
+NXThemesFragmentFactory.FragmentPreview = Class.create();
+NXThemesFragmentFactory.FragmentPreview.prototype = Object.extend(new NXThemes.View(), {
+
+  setup: function() {
+    NXThemesFragmentFactory.drawPreview();
+  }
+
+});
+
+NXThemesFragmentFactory.drawPreview = function() {
+    var area = document.getElementById('fragmentPreviewArea');
+	var currentThemeName = area.getAttribute("theme");
+	
+    var url = window.location.href;
+    var i = url.indexOf('?');
+    var query_params = $H({
+		'theme': currentThemeName + '/~',
+		'engine': 'default'
+		});
+    if (i > 0) {
+      var query_string = url.substr(i+1);
+      query_params = query_params.update($H(query_string.toQueryParams()));
+      url = url.substr(0, i);
+    }
+    url = url + '?' + query_params.toQueryString();
+    area.innerHTML = '<iframe src="' + url + '" ></iframe>';
+};
+
 NXThemesFragmentFactory.selectFragmentType = function(type) {
     var url = nxthemesBasePath + "/nxthemes-editor/select_fragment_type"; 
     new Ajax.Request(url, {

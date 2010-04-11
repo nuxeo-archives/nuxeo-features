@@ -143,6 +143,12 @@
       </path>
     </resource>
 
+    <resource name="fragment-preview.json">
+      <path>
+        nxthemes/editor/views/fragment-preview.json
+      </path>
+    </resource>
+	
     <resource name="canvas-mode-selector.json">
       <path>
         nxthemes/editor/controllers/canvas-mode-selector.json
@@ -240,9 +246,6 @@
     </standalone-filter>
 
   </extension>
-
-
-
 
   <extension target="org.nuxeo.theme.services.ThemeService"
     point="views">
@@ -440,6 +443,7 @@
   <extension target="org.nuxeo.theme.services.ThemeService"
     point="engines">
 
+    <!-- This engine renders the theme editor's UI -->
     <engine name="editor">
 
       <renderer element="theme">
@@ -457,6 +461,7 @@
 
     </engine>
 
+    <!-- This engine renders the editor view of the page canvas -->
     <engine name="page-editor">
 
       <renderer element="theme" />
@@ -498,6 +503,7 @@
 
     </engine>
 
+    <!-- This engine renders all fragments in a linearized fashion -->
     <engine name="fragments-only">
 
       <renderer element="theme">
@@ -520,7 +526,7 @@
       </renderer>
 
     </engine>
-
+	
   </extension>
 
   <extension target="org.nuxeo.theme.services.ThemeService"
@@ -554,5 +560,5 @@
     </preview>
 
   </extension>
-
+  
 </component>

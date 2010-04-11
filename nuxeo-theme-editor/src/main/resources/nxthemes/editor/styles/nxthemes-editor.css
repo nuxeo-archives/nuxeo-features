@@ -1651,3 +1651,22 @@ table.fragmentFactory td {
   padding: 3px;  
 }
 
+h2.nxthemesHeader {
+  margin: 0px;
+  padding: 2px 4px;
+  font: bold 12px arial;
+  text-align: left;
+}
+
+#fragmentPreviewArea {
+  text-align: left;
+}
+
+#fragmentPreviewArea iframe {
+  border: none;
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  width: 100%;
+  height: 180px;
+}
+
