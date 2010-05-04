@@ -217,7 +217,7 @@ public class Editor {
         if (style.getName() != null || "".equals(viewName)) {
             viewName = "*";
         }
-        org.nuxeo.theme.html.Utils.loadCss(style, cssSource, viewName);
+        org.nuxeo.theme.Utils.loadCss(style, cssSource, viewName);
 
         saveTheme(themeName);
     }
@@ -231,7 +231,7 @@ public class Editor {
             throw new ThemeException("A named style is required.");
         }
         final String viewName = "*";
-        org.nuxeo.theme.html.Utils.loadCss(style, cssSource, viewName);
+        org.nuxeo.theme.Utils.loadCss(style, cssSource, viewName);
         saveTheme(themeName);
     }
 
