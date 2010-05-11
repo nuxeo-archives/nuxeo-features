@@ -19,6 +19,7 @@ package org.nuxeo.ecm.platform.jbpm.core.service;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -117,7 +118,11 @@ public class NuxeoJobExecutorThread extends JobExecutorThread {
         } catch (Throwable t) {
             TransactionHelper.setTransactionRollbackOnly();
         } finally {
-            TransactionHelper.commitOrRollbackTransaction();
+            try {
+                TransactionHelper.commitOrRollbackTransaction();
+            } catch (Exception error) {
+                log.error("Job execution rollbacked", error);
+            }
         }
     }
 
@@ -129,6 +134,7 @@ public class NuxeoJobExecutorThread extends JobExecutorThread {
         }
     }
 
+
     @SuppressWarnings("unchecked")
     @Override
     protected Collection acquireJobs() {
@@ -139,7 +145,12 @@ public class NuxeoJobExecutorThread extends JobExecutorThread {
         } catch (Throwable t) {
             TransactionHelper.setTransactionRollbackOnly();
         } finally {
-            TransactionHelper.commitOrRollbackTransaction();
+            try {
+                TransactionHelper.commitOrRollbackTransaction();
+            } catch (Exception error) {
+                log.error("Cannot acquirer jobs", error);
+                return Collections.EMPTY_SET;
+            }
         }
         return acquiredJobs;
     }
@@ -153,7 +164,12 @@ public class NuxeoJobExecutorThread extends JobExecutorThread {
         } catch (Throwable t) {
             TransactionHelper.setTransactionRollbackOnly();
         } finally {
-            TransactionHelper.commitOrRollbackTransaction();
+            try {
+                TransactionHelper.commitOrRollbackTransaction();
+            } catch (Exception error) {
+                log.error("Cannot access next due date", error);
+                return null;
+            }
         }
         return date;
     }
