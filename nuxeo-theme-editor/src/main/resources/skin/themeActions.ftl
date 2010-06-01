@@ -22,6 +22,10 @@
   link="javascript:NXThemesEditor.manageStyles()"
   label="Manage styles" />
 
+<@nxthemes_button identifier="manage_skins"
+  link="javascript:NXThemesEditor.manageSkins()"
+  label="Manage skins" />
+
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"
   menu="nxthemesThemeActions"

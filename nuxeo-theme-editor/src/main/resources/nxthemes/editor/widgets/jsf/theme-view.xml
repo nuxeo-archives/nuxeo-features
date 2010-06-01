@@ -194,6 +194,13 @@
       url="%{contextPath}/site/nxthemes-editor/fragmentFactory"
       controlledBy="editor perspectives"
       visibleInPerspectives="fragment factory" />
+      
+    <!-- skin manager -->
+    <nxthemes:panel identifier="skin manager"
+      url="%{contextPath}/site/nxthemes-editor/skinManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="skin manager" />      
+      
   
   </f:subview>
   

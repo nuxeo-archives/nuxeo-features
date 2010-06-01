@@ -190,6 +190,12 @@
       url="${basePath}/nxthemes-editor/fragmentFactory"
       controlledBy="editor perspectives"
       visibleInPerspectives="fragment factory" />
+      
+    <!-- skin manager -->
+    <@nxthemes_panel identifier="skin manager"
+      url="${basePath}/nxthemes-editor/skinManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="skin manager" />      
 
 <#else>
   <script type="text/javascript"><!--

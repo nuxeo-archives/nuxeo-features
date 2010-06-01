@@ -152,6 +152,35 @@ NXThemesEditor.manageStyles = function() {
     NXThemesStyleManager.setEditMode('named styles', 'named_styles');
 };
 
+NXThemesEditor.manageSkins = function() {
+    NXThemes.getControllerById("editor perspectives").switchTo('skin manager');
+};
+
+
+/* Skin manager */
+
+if (typeof NXThemesSkinManager == "undefined") {
+    NXThemesSkinManager = {
+    }
+}
+
+NXThemesSkinManager.selectResourceBank = function(name) {
+    var url = nxthemesBasePath + "/nxthemes-editor/select_resource_bank"; 
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             name: name
+         },
+         onSuccess: function(r) {
+             NXThemes.getViewById("skin manager").refresh();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }         
+      });
+};
+
 NXThemesEditor.changeElementStyle = function(info) {
     var id = NXThemesEditor.extractElementUid(info.target);
     var url = nxthemesBasePath + "/nxthemes-editor/select_element";
