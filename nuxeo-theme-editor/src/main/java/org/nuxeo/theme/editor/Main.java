@@ -18,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.nuxeo.ecm.webengine.WebEngine;
@@ -113,7 +112,6 @@ public class Main extends ModuleRoot {
     public Object renderStyleManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        ThemeManager themeManager = Manager.getThemeManager();
         List<Style> styles = getNamedStyles(path, name);
 
         Style selectedStyle = getSelectedNamedStyle();
@@ -129,7 +127,7 @@ public class Main extends ModuleRoot {
 
         String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
         return getTemplate("styleManager.ftl").arg("theme", currentThemeDef).arg(
                 "named_styles", styles).arg("style_manager_mode",
@@ -173,7 +171,6 @@ public class Main extends ModuleRoot {
     public Object renderThemeActions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        ThemeManager themeManager = Manager.getThemeManager();
         String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
         String currentPagePath = getCurrentPagePath(path, name);
@@ -190,10 +187,9 @@ public class Main extends ModuleRoot {
     public Object renderPresetManagerActions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        ThemeManager themeManager = Manager.getThemeManager();
         String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
         return getTemplate("presetManagerActions.ftl").arg("theme",
                 currentThemeDef).arg("selected_preset_category",
@@ -205,10 +201,9 @@ public class Main extends ModuleRoot {
     public Object renderStyleManagerActions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        ThemeManager themeManager = Manager.getThemeManager();
         String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = themeManager.getThemeDescriptorByThemeName(
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
         return getTemplate("styleManagerActions.ftl").arg("theme",
                 currentThemeDef);
@@ -387,7 +382,6 @@ public class Main extends ModuleRoot {
     @GET
     @Path("render_css_preview")
     public String renderCssPreview() {
-        String selectedElementId = getSelectedElementId();
         Style selectedStyleLayer = getSelectedStyleLayer();
         String selectedViewName = getViewNameOfSelectedElement();
         Element selectedElement = getSelectedElement();
@@ -401,11 +395,27 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String bankName = getSelectedBankName();
-        return getTemplate("skinManager.ftl").arg("selected_bank_name",
+        return getTemplate("skinManager.ftl").arg("current_theme_name",
+                getCurrentThemeName(path, name)).arg("selected_bank_name",
                 bankName).arg("skins", getBankSkins(bankName)).arg("banks",
                 ThemeManager.getResourceBanks());
     }
 
+    @POST
+    @Path("activate_skin")
+    public void activateSkin() {
+        FormData form = ctx.getForm();
+        String themeName = form.getString("theme");
+        String bankName = form.getString("bank");
+        String collectionName = form.getString("collection");
+        String resourceName = form.getString("resource");
+        try {
+            Editor.activateSkin(themeName, bankName, collectionName, resourceName);
+        } catch (Exception e) {
+            throw new ThemeEditorException(e.getMessage(), e);
+        }
+    }
+    
     public static String getSelectedBankName() {
         return SessionManager.getResourceBank();
     }
@@ -903,7 +913,6 @@ public class Main extends ModuleRoot {
     public void saveTheme() {
         FormData form = ctx.getForm();
         String src = form.getString("src");
-        Integer indent = Integer.getInteger(form.getString("indent"));
         try {
             Editor.saveTheme(src);
         } catch (Exception e) {
@@ -965,11 +974,12 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("set_page_styles")
+    @SuppressWarnings("unchecked")
     public void setPageStyles() {
         FormData form = ctx.getForm();
         String themeName = form.getString("theme_name");
         String property_map = form.getString("property_map");
-        Map propertyMap = JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
         try {
             Editor.setPageStyles(themeName, propertyMap);
         } catch (Exception e) {
@@ -1009,6 +1019,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("expand_css_categories")
+    @SuppressWarnings("unchecked")
     public void expandCssCategories() {
         Properties cssStyleCategories = org.nuxeo.theme.editor.Utils.getCssStyleCategories();
         List<String> allCssCategories = (List<String>) Collections.list(cssStyleCategories.propertyNames());
@@ -1069,11 +1080,12 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_element_properties")
+    @SuppressWarnings("unchecked")
     public void updateElementProperties() {
         FormData form = ctx.getForm();
         String id = form.getString("id");
         String property_map = form.getString("property_map");
-        Map propertyMap = JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.updateElementProperties(element, propertyMap);
@@ -1143,13 +1155,14 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_element_style")
+    @SuppressWarnings("unchecked")
     public void updateElementStyle() {
         FormData form = ctx.getForm();
         String id = form.getString("id");
         String path = form.getString("path");
         String viewName = form.getString("view_name");
         String property_map = form.getString("property_map");
-        Map propertyMap = JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
         Element element = ThemeManager.getElementById(id);
         Style currentStyleLayer = getSelectedStyleLayer();
         try {
@@ -1162,6 +1175,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_element_visibility")
+    @SuppressWarnings("unchecked")
     public void updateElementVisibility() {
         FormData form = ctx.getForm();
         String id = form.getString("id");
@@ -1177,10 +1191,11 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_element_layout")
+    @SuppressWarnings("unchecked")
     public void updateElementPadding() {
         FormData form = ctx.getForm();
         String property_map = form.getString("property_map");
-        Map propertyMap = JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
         Element element = getSelectedElement();
         try {
             Editor.updateElementLayout(element, propertyMap);
@@ -1207,10 +1222,8 @@ public class Main extends ModuleRoot {
     @Path("delete_style_view")
     public void deleteStyleView() {
         FormData form = ctx.getForm();
-        ;
         String styleUid = form.getString("style_uid");
         String viewName = form.getString("view_name");
-        String themeName = form.getString("theme_name");
         Style style = (Style) ThemeManager.getFormatById(styleUid);
         try {
             Editor.deleteStyleView(style, viewName);
@@ -1414,7 +1427,6 @@ public class Main extends ModuleRoot {
     }
 
     public static List<String> getStyleSelectorsForSelectedElement() {
-        Element element = getSelectedElement();
         String viewName = getViewNameOfSelectedElement();
         Style style = getStyleOfSelectedElement();
         Style selectedStyleLayer = getSelectedStyleLayer();
@@ -1855,9 +1867,7 @@ public class Main extends ModuleRoot {
     public static List<ThemeInfo> getThemes(String applicationPath, String name) {
         List<ThemeInfo> themes = new ArrayList<ThemeInfo>();
         String defaultTheme = getDefaultTheme(applicationPath, name);
-        String defaultThemeName = defaultTheme.split("/")[0];
         String defaultPageName = defaultTheme.split("/")[1];
-        String currentThemeName = getCurrentThemeName(applicationPath, name);
         String templateEngine = getTemplateEngine(applicationPath);
         for (String themeName : ThemeManager.getThemeNames(templateEngine)) {
             String path = String.format("%s/%s", themeName, defaultPageName);

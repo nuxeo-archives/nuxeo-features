@@ -1043,4 +1043,21 @@ public class Editor {
         themeManager.themeModified(currentThemeName);
     }
 
+    public static void activateSkin(String themeName, String bankName,
+            String collectionName, String resourceName) {
+        System.out.println(themeName);
+        System.out.println(bankName);
+        System.out.println(collectionName);
+        System.out.println(resourceName);
+        
+        ThemeManager themeManager  = Manager.getThemeManager();
+        String styleName = String.format("%s (%s)", resourceName, collectionName);
+        
+        for (PageElement page : themeManager.getPagesOf(themeName)) {
+           themeManager.makeElementUseNamedStyle(page, styleName, themeName);
+        }
+        
+        
+    }
+
 }

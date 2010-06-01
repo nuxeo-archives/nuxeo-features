@@ -181,6 +181,27 @@ NXThemesSkinManager.selectResourceBank = function(name) {
       });
 };
 
+NXThemesSkinManager.activateSkin = function(theme, bank, collection, resource) {
+    var url = nxthemesBasePath + "/nxthemes-editor/activate_skin"; 
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             theme: theme,
+             bank: bank,
+             collection: collection,
+             resource: resource
+         },
+         onSuccess: function(r) {
+             NXThemes.getViewById("skin manager").refresh();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }         
+      });
+};
+
+
 NXThemesEditor.changeElementStyle = function(info) {
     var id = NXThemesEditor.extractElementUid(info.target);
     var url = nxthemesBasePath + "/nxthemes-editor/select_element";
