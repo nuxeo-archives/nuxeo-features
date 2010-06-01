@@ -410,7 +410,7 @@ public class Main extends ModuleRoot {
         return SessionManager.getResourceBank();
     }
 
-    public static List<Map> getBankSkins(String bankName) {
+    public static List<Map<String, String>> getBankSkins(String bankName) {
         if (bankName != null) {
             ResourceBank resourceBank = ThemeManager.getResourceBank(bankName);
             return resourceBank.getSkins();

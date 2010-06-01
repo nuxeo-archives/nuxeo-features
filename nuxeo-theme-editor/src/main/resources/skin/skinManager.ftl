@@ -22,10 +22,16 @@
 </td>
 <td>
 
-<#list skins as skin>
-${skin.collection}
-${skin.resource}
-</#list>
+<div class="album">
+  <#list skins as skin>
+    <a href="javascript:void(0)">
+      <div class="imageSingle">
+        <div class="image"><img src="${skin.preview}" /></div>
+        <div class="footer">${skin.collection} ${skin.resource}</div>
+      </div>
+    </a>
+  </#list>
+</div>
 
 </td>
 </tr>

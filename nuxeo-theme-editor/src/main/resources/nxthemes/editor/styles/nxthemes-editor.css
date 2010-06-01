@@ -1777,3 +1777,59 @@ table.fragmentFactory td {
   float: left;
   margin: 2px 5px 2px 3px;
 }
+
+/* Image browser */
+.album {
+  width: 100%;
+  padding: 0; 
+  float: left;
+  background-color: #f6f6f6;
+  -moz-border-radius: 8px;
+}
+
+.album .imageSingle {
+  float: left; 
+  margin: 10px; 
+  width: 212px; 
+  text-align: center; 
+  border: 1px solid #999;
+  -moz-border-radius: 4px;
+  background-color: #fff;
+}
+
+.album .imageSingle .image {
+  width: 200px; 
+  height: 135px; 
+  margin: 5px;
+ }
+
+.album .imageSingle:hover {
+  border: 1px solid #666;
+  cursor: pointer;
+}
+
+.album .imageSingle:hover .footer {
+  color: #666;
+  text-decoration: none;
+}
+
+.album .footer {
+  text-align: center;
+  color: #999; 
+  padding-bottom: 2px; 
+  font: bold 11px tahoma;
+} 
+
+.album .imageSingle img {
+  max-width: 200px; 
+  max-height: 135px;
+  border: none;
+}
+
+.imageFrame {
+  margin: 15px 0;
+  text-align: center; 
+  border: 1px solid #eee;
+  -moz-border-radius: 4px;
+  padding: 20px;
+}
