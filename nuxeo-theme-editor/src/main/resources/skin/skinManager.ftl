@@ -28,7 +28,7 @@
        onclick="NXThemesSkinManager.activateSkin('${current_theme_name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">
       <div class="imageSingle">
         <div class="image"><img src="${skin.preview}" /></div>
-        <div class="footer">${skin.collection} ${skin.resource}</div>
+        <div class="footer">${skin.collection} ${skin.resource?replace('.css', '')}</div>
       </div>
     </a>
   </#list>

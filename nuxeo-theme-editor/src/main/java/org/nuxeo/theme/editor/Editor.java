@@ -1025,14 +1025,14 @@ public class Editor {
             Widget widget = (Widget) FormatFactory.create("widget");
             widget.setName(viewName);
             ElementFormatter.setFormat(fragment, widget);
-            
+
             // Style
             Style style = (Style) FormatFactory.create("style");
             ElementFormatter.setFormat(fragment, style);
 
             themeManager.makeElementUseNamedStyle(fragment, styleName,
                     currentThemeName);
-            
+
             String themeName = currentThemeName.split("/")[0];
             themeManager.fillScratchPage(themeName, fragment);
 
@@ -1044,20 +1044,27 @@ public class Editor {
     }
 
     public static void activateSkin(String themeName, String bankName,
-            String collectionName, String resourceName) {
+            String collectionName, String resourceName) throws ThemeException {
+
         System.out.println(themeName);
         System.out.println(bankName);
         System.out.println(collectionName);
         System.out.println(resourceName);
-        
-        ThemeManager themeManager  = Manager.getThemeManager();
-        String styleName = String.format("%s (%s)", resourceName, collectionName);
-        
+
+        ThemeManager themeManager = Manager.getThemeManager();
+        String styleName = String.format("%s (%s)", resourceName,
+                collectionName);
+
         for (PageElement page : themeManager.getPagesOf(themeName)) {
-           themeManager.makeElementUseNamedStyle(page, styleName, themeName);
+            try {
+                themeManager.makeElementUseNamedStyle(page, styleName,
+                        themeName + "/default");
+            } catch (ThemeException e) {
+
+                throw new ThemeException(e.getMessage(), e);
+            }
         }
-        
-        
+
     }
 
 }
