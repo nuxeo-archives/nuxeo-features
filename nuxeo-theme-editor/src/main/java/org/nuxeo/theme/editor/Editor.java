@@ -679,7 +679,7 @@ public class Editor {
         themeManager.setNamedObject(themeName, "style", style);
 
         if (element != null) {
-            themeManager.makeElementUseNamedStyle(element, styleName, themeName);
+            themeManager.makeElementUseNamedStyle(element, styleName, themeName, false);
         }
 
         saveTheme(themeName);
@@ -705,7 +705,7 @@ public class Editor {
         Style inheritedStyle = (Style) themeManager.getNamedObject(themeName,
                 "style", styleName);
         themeManager.deleteFormat(inheritedStyle);
-        themeManager.makeElementUseNamedStyle(element, null, themeName);
+        themeManager.makeElementUseNamedStyle(element, null, themeName, false);
         themeManager.removeNamedObject(themeName, "style", styleName);
         saveTheme(themeName);
     }
@@ -1030,10 +1030,10 @@ public class Editor {
             Style style = (Style) FormatFactory.create("style");
             ElementFormatter.setFormat(fragment, style);
 
-            themeManager.makeElementUseNamedStyle(fragment, styleName,
-                    currentThemeName);
-
             String themeName = currentThemeName.split("/")[0];
+            themeManager.makeElementUseNamedStyle(fragment, styleName,
+            		themeName, false);
+
             themeManager.fillScratchPage(themeName, fragment);
 
         } catch (Exception e) {
@@ -1046,23 +1046,19 @@ public class Editor {
     public static void activateSkin(String themeName, String bankName,
             String collectionName, String resourceName) throws ThemeException {
 
-        System.out.println(themeName);
-        System.out.println(bankName);
-        System.out.println(collectionName);
-        System.out.println(resourceName);
-
         ThemeManager themeManager = Manager.getThemeManager();
         String styleName = String.format("%s (%s)", resourceName,
                 collectionName);
 
+        final boolean preserveInheritance = true;
         for (PageElement page : themeManager.getPagesOf(themeName)) {
             try {
                 themeManager.makeElementUseNamedStyle(page, styleName,
-                        themeName + "/default");
+                        themeName, preserveInheritance);
             } catch (ThemeException e) {
-
                 throw new ThemeException(e.getMessage(), e);
             }
+            saveTheme(themeName);
         }
 
     }
