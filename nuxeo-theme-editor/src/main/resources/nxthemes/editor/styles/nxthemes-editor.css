@@ -1837,11 +1837,37 @@ table.fragmentFactory td {
 /* Theme wizard */
 
 table.nxthemesThemeWizardMenu {
-  width: 100%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 table.nxthemesThemeWizardMenu td {
   padding: 20px;
   width: 50%;
   font: 16px Arial, sans-serif;
+}
+
+table.nxthemesThemeWizardMenu img {
+  padding: 8px;
+  float: left;
+  border: 1px solid #eee;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+table.nxthemesThemeWizardMenu div {
+  padding: 14px;
+  float: left;
+}
+
+table.nxthemesThemeWizardMenu a:hover img {
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+}
+
+table.nxthemesThemeWizardMenu a:hover  {
+  color: #000;
 }

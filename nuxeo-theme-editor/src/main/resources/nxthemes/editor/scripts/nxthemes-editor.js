@@ -148,14 +148,17 @@ NXThemesEditor.insertFragment = function(info) {
 };
 
 NXThemesEditor.manageStyles = function() {
-    NXThemes.getControllerById("editor perspectives").switchTo('style manager');
+    NXThemesEditor.setEditorPerspective('style manager');
     NXThemesStyleManager.setEditMode('named styles', 'named_styles');
 };
 
 NXThemesEditor.manageSkins = function() {
-    NXThemes.getControllerById("editor perspectives").switchTo('skin manager');
+    NXThemesEditor.setEditorPerspective('skin manager');
 };
 
+NXThemesEditor.setEditorPerspective = function(perspective) {
+    NXThemes.getControllerById('editor perspectives').switchTo(perspective);
+};
 
 /* Skin manager */
 
@@ -821,7 +824,7 @@ NXThemesEditor.backToCanvas = function() {
 }
 
 NXThemesEditor.managePresets = function() {
-    NXThemes.getControllerById("editor perspectives").switchTo('preset manager');
+    NXThemesEditor.setEditorPerspective('preset manager');
     NXThemesPresetManager.setEditMode('theme presets', 'theme_presets');
 };
 
