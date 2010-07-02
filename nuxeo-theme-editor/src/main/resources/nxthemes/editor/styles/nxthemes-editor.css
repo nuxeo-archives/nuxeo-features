@@ -1833,3 +1833,15 @@ table.fragmentFactory td {
   -moz-border-radius: 4px;
   padding: 20px;
 }
+
+/* Theme wizard */
+
+table.nxthemesThemeWizardMenu {
+  width: 100%;
+}
+
+table.nxthemesThemeWizardMenu td {
+  padding: 20px;
+  width: 50%;
+  font: 16px Arial, sans-serif;
+}

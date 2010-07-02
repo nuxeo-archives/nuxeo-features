@@ -145,6 +145,12 @@
 
     <nxthemes:controller resource="link-disabler.json" />
 
+    <!-- theme wizard -->
+    <nxthemes:panel identifier="theme wizard"
+      url="%{contextPath}/site/nxthemes-editor/themeWizard"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="theme wizard" />
+
     <!-- theme chooser -->
     <nxthemes:panel identifier="theme browser"
       url="%{contextPath}/site/nxthemes-editor/themeBrowser"

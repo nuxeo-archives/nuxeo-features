@@ -389,6 +389,17 @@ public class Main extends ModuleRoot {
                 selectedViewName);
     }
 
+
+    
+    // Theme wizard
+    @GET
+    @Path("themeWizard")
+    public Object renderThemeWizard (
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("themeWizard.ftl");
+    }
+
     @GET
     @Path("skinManager")
     public Object renderSkinManager(
@@ -400,7 +411,7 @@ public class Main extends ModuleRoot {
                 bankName).arg("skins", getBankSkins(bankName)).arg("banks",
                 ThemeManager.getResourceBanks());
     }
-
+    
     @POST
     @Path("activate_skin")
     public void activateSkin() {
@@ -410,12 +421,13 @@ public class Main extends ModuleRoot {
         String collectionName = form.getString("collection");
         String resourceName = form.getString("resource");
         try {
-            Editor.activateSkin(themeName, bankName, collectionName, resourceName);
+            Editor.activateSkin(themeName, bankName, collectionName,
+                    resourceName);
         } catch (Exception e) {
             throw new ThemeEditorException(e.getMessage(), e);
         }
     }
-    
+
     public static String getSelectedBankName() {
         return SessionManager.getResourceBank();
     }
@@ -466,8 +478,10 @@ public class Main extends ModuleRoot {
 
         ResponseBuilder builder = Response.ok(xml);
         if (download != null) {
-            builder.header("Content-disposition", String.format(
-                    "attachment; filename=theme-%s.xml", themeDef.getName()));
+            builder.header(
+                    "Content-disposition",
+                    String.format("attachment; filename=theme-%s.xml",
+                            themeDef.getName()));
         }
         builder.type("text/xml");
         return builder.build();
@@ -1727,8 +1741,8 @@ public class Main extends ModuleRoot {
         String themeName = getCurrentThemeName(applicationPath, name);
         List<PresetInfo> presets = new ArrayList<PresetInfo>();
         List<PresetType> presetTypes = group == null ? PresetManager.getGlobalPresets(
-                group, category)
-                : PresetManager.getCustomPresets(themeName, category);
+                group, category) : PresetManager.getCustomPresets(themeName,
+                category);
         for (PresetType preset : presetTypes) {
             presets.add(new PresetInfo(preset));
         }
