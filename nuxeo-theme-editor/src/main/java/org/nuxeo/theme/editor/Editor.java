@@ -679,7 +679,8 @@ public class Editor {
         themeManager.setNamedObject(themeName, "style", style);
 
         if (element != null) {
-            themeManager.makeElementUseNamedStyle(element, styleName, themeName, false);
+            themeManager.makeElementUseNamedStyle(element, styleName,
+                    themeName, false);
         }
 
         saveTheme(themeName);
@@ -765,7 +766,7 @@ public class Editor {
         if (PresetManager.getCustomPreset(themeName, presetName) != null) {
             throw new ThemeException("Preset name already taken: " + presetName);
         }
-        PresetManager.createCustomPreset(themeName, presetName, category, value);
+        PresetManager.createCustomPreset(themeName, presetName, category, value, "", "");
         saveTheme(themeName);
         return presetName;
     }
@@ -1032,7 +1033,7 @@ public class Editor {
 
             String themeName = currentThemeName.split("/")[0];
             themeManager.makeElementUseNamedStyle(fragment, styleName,
-            		themeName, false);
+                    themeName, false);
 
             themeManager.fillScratchPage(themeName, fragment);
 
