@@ -31,7 +31,7 @@ import org.nuxeo.ecm.core.api.DocumentModelIterator;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.LifeCycleConstants;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
+import org.nuxeo.ecm.core.api.PageProvider;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.CompoundFilter;
 import org.nuxeo.ecm.core.api.impl.DocumentsPageProvider;
@@ -53,8 +53,10 @@ import org.nuxeo.runtime.api.Framework;
 public class JSONDocument extends DocumentObject {
 
     private static final int PAGE_SIZE = 10;
+
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss");
+
     private final static CompoundFilter FILTER = new CompoundFilter(
             new FacetFilter(FacetNames.HIDDEN_IN_NAVIGATION, false),
             new LifeCycleFilter(LifeCycleConstants.DELETED_STATE, false));
@@ -64,8 +66,7 @@ public class JSONDocument extends DocumentObject {
     @GET
     @Override
     public Object doGet() {
-        String currentPage = ctx.getRequest()
-                .getParameter("page");
+        String currentPage = ctx.getRequest().getParameter("page");
 
         Integer index = 0;
         try {
@@ -85,15 +86,14 @@ public class JSONDocument extends DocumentObject {
 
         CoreSession session = ctx.getCoreSession();
 
-        PagedDocumentsProvider provider;
+        PageProvider<DocumentModel> provider;
         try {
             provider = getResProviderForDocChildren(getDocument().getRef(),
                     session);
-            summary.put("pages", fixedSQLExceptionWhenUpload(session,
-                    provider.getNumberOfPages()));
+            summary.put("pages", fixedSQLExceptionWhenUpload(session, new Long(
+                    provider.getNumberOfPages()).intValue()));
             summary.put("pageNumber", index);
-            summary.put("id", getDocument().getRef()
-                    .toString());
+            summary.put("id", getDocument().getRef().toString());
             all.put("summary", summary);
 
             List<Object> docs = new ArrayList<Object>();
@@ -111,8 +111,7 @@ public class JSONDocument extends DocumentObject {
             e.printStackTrace();
         }
 
-        return Response.serverError()
-                .build();
+        return Response.serverError().build();
 
     }
 
@@ -126,8 +125,7 @@ public class JSONDocument extends DocumentObject {
             fm = Framework.getService(FileManager.class);
         } catch (Exception e1) {
             e1.printStackTrace();
-            return Response.serverError()
-                    .build();
+            return Response.serverError().build();
         }
 
         try {
@@ -161,8 +159,7 @@ public class JSONDocument extends DocumentObject {
             e.printStackTrace();
         }
 
-        return Response.ok("File upload ok!", MediaType.TEXT_PLAIN)
-                .build();
+        return Response.ok("File upload ok!", MediaType.TEXT_PLAIN).build();
     }
 
     private int fixedSQLExceptionWhenUpload(CoreSession session, int nbPages)
@@ -217,24 +214,22 @@ public class JSONDocument extends DocumentObject {
     }
 
     @Path(value = "{path}")
-    public Resource traverse(@PathParam("path") String path) {
+    public Resource traverse(@PathParam("path")
+    String path) {
         return newDocument(path);
     }
 
     public DocumentObject newDocument(String path) {
         try {
-            PathRef pathRef = new PathRef(doc.getPath()
-                    .append(path)
-                    .toString());
-            DocumentModel doc = ctx.getCoreSession()
-                    .getDocument(pathRef);
+            PathRef pathRef = new PathRef(doc.getPath().append(path).toString());
+            DocumentModel doc = ctx.getCoreSession().getDocument(pathRef);
             return (DocumentObject) newObject("JSONDocument", doc);
         } catch (Exception e) {
             throw WebException.wrap(e);
         }
     }
 
-    private PagedDocumentsProvider getResProviderForDocChildren(
+    private PageProvider<DocumentModel> getResProviderForDocChildren(
             DocumentRef docRef, CoreSession session) throws ClientException {
 
         DocumentModelIterator resultDocsIt = session.getChildrenIterator(

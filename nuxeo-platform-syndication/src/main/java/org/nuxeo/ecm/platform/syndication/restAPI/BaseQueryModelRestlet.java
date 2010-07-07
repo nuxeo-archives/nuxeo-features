@@ -21,7 +21,6 @@ package org.nuxeo.ecm.platform.syndication.restAPI;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,10 +36,11 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DataModel;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
-import org.nuxeo.ecm.core.api.PagedDocumentsProvider;
+import org.nuxeo.ecm.core.api.PageProvider;
 import org.nuxeo.ecm.core.api.SortInfo;
 import org.nuxeo.ecm.core.api.impl.DataModelImpl;
 import org.nuxeo.ecm.core.api.impl.DocumentModelImpl;
+import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
 import org.nuxeo.ecm.core.api.model.PropertyException;
 import org.nuxeo.ecm.core.api.repository.Repository;
 import org.nuxeo.ecm.core.api.repository.RepositoryManager;
@@ -141,7 +141,7 @@ public abstract class BaseQueryModelRestlet extends BaseStatelessNuxeoRestlet {
 
         CoreSession session = getCoreSession(req, res, null);
         try {
-            PagedDocumentsProvider provider = getPageDocumentsProvider(session,
+            PageProvider<DocumentModel> provider = getPageDocumentsProvider(session,
                     qmd, req);
 
             // get Page number
@@ -167,7 +167,6 @@ public abstract class BaseQueryModelRestlet extends BaseStatelessNuxeoRestlet {
                 format = getDefaultFormat();
             }
 
-
             // get Columns definition
             String columnsDefinition = req.getResourceRef().getQueryAsForm().getFirstValue(
                     "columns");
@@ -180,7 +179,11 @@ public abstract class BaseQueryModelRestlet extends BaseStatelessNuxeoRestlet {
                     "lang");
 
             // fetch result
-            DocumentModelList dmList = provider.getPage(page);
+            List<DocumentModel> docs = provider.getPage(page);
+            DocumentModelList dmList = new DocumentModelListImpl();
+            if (docs != null) {
+                dmList.addAll(docs);
+            }
 
             ResultSummary summary = new ResultSummary();
 
@@ -189,11 +192,10 @@ public abstract class BaseQueryModelRestlet extends BaseStatelessNuxeoRestlet {
             summary.setAuthor(getUserPrincipal(req).getName());
             summary.setModificationDate(new Date());
             summary.setLink(getRestletFullUrl(req));
-            summary.setPages(provider.getNumberOfPages());
+            summary.setPages(new Long(provider.getNumberOfPages()).intValue());
             summary.setPageNumber(page);
 
-
-            if (lang!=null) {
+            if (lang != null) {
                 String[] cols = columnsDefinition.split(DocumentModelListSerializer.colDefinitonDelimiter);
                 List<String> labels = new ArrayList<String>();
                 for (String col : cols) {
@@ -202,8 +204,7 @@ public abstract class BaseQueryModelRestlet extends BaseStatelessNuxeoRestlet {
                 // format result
                 SerializerHelper.formatResult(summary, dmList, res, format,
                         columnsDefinition, getHttpRequest(req), labels, lang);
-            }
-            else {
+            } else {
                 // format result
                 SerializerHelper.formatResult(summary, dmList, res, format,
                         columnsDefinition, getHttpRequest(req));
@@ -239,7 +240,7 @@ public abstract class BaseQueryModelRestlet extends BaseStatelessNuxeoRestlet {
         return qmService;
     }
 
-    protected PagedDocumentsProvider getPageDocumentsProvider(
+    protected PageProvider<DocumentModel> getPageDocumentsProvider(
             CoreSession session, QueryModelDescriptor qmd, Request request)
             throws ClientException, QueryException {
 
