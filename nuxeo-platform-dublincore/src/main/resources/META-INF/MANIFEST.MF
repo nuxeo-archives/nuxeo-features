@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: NXDublinCore
-Bundle-SymbolicName: org.nuxeo.ecm.platform.dublincore
-Bundle-Localization: plugin
-Require-Bundle: org.nuxeo.ecm.core
-Nuxeo-Component: OSGI-INF/nxdublincore-service.xml
-Bundle-Vendor: Nuxeo
