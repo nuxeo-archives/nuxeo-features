@@ -167,6 +167,14 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("backToMenu")
+    public Object renderBackToMenu(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("backToMenu.ftl");
+    }
+    
+    @GET
     @Path("themeActions")
     public Object renderThemeActions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -389,29 +397,31 @@ public class Main extends ModuleRoot {
                 selectedViewName);
     }
 
-
-    
-    // Theme wizard
+    // Main menu
     @GET
-    @Path("themeWizard")
-    public Object renderThemeWizard (
+    @Path("mainMenu")
+    public Object renderMainMenu(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("themeWizard.ftl");
+        return getTemplate("mainMenu.ftl");
     }
 
     @GET
     @Path("skinManager")
-    public Object renderSkinManager(
+    public Object renderSkinPreview(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String bankName = getSelectedBankName();
+        List<ResourceBank> banks = ThemeManager.getResourceBanks();
+        if (bankName == null && !banks.isEmpty()) {
+            bankName = banks.get(0).getName();
+        }
         return getTemplate("skinManager.ftl").arg("current_theme_name",
                 getCurrentThemeName(path, name)).arg("selected_bank_name",
                 bankName).arg("skins", getBankSkins(bankName)).arg("banks",
-                ThemeManager.getResourceBanks());
+                banks);
     }
-    
+
     @POST
     @Path("activate_skin")
     public void activateSkin() {

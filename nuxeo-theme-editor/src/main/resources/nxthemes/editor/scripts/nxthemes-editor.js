@@ -195,7 +195,7 @@ NXThemesSkinManager.activateSkin = function(theme, bank, collection, resource) {
              resource: resource
          },
          onSuccess: function(r) {
-             NXThemes.getViewById("skin manager").refresh();
+             NXThemesEditor.switchToCanvas();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -817,10 +817,8 @@ NXThemesEditor.switchToCanvas = function() {
     NXThemes.getControllerById('editor perspectives').switchTo('canvas editor');
 };
 
-NXThemesEditor.backToCanvas = function() {
-	NXThemesEditor.switchToCanvas();
-    NXThemesEditor.refreshCanvas();
-    NXThemes.getControllerById('editor buttons').select();
+NXThemesEditor.backToMenu = function() {
+    NXThemes.getControllerById('editor perspectives').switchTo('main menu');
 }
 
 NXThemesEditor.managePresets = function() {

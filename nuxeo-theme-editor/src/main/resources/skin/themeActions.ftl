@@ -2,37 +2,20 @@
 
 <#if theme>
 
-<#if theme.saveable>
-  <@nxthemes_button identifier="refresh_theme"
-    icon="${basePath}/skin/nxthemes-editor/img/refresh-14.png"
-    link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}')"
-    label="Refresh theme" />
-<#else>
-  <@nxthemes_button identifier="download_theme"
-    icon="${basePath}/skin/nxthemes-editor/img/download-14.png"
-    link="${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}&amp;download=1&amp;indent=2"
-    label="Download theme" />
-</#if>
-    
-<@nxthemes_button identifier="manage_presets"
-  link="javascript:NXThemesEditor.managePresets()"
-  label="Manage presets" />
-  
-<@nxthemes_button identifier="manage_styles"
-  link="javascript:NXThemesEditor.manageStyles()"
-  label="Manage styles" />
-
-<@nxthemes_button identifier="manage_skins"
-  link="javascript:NXThemesEditor.manageSkins()"
-  label="Manage skins" />
-
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"
   menu="nxthemesThemeActions"
-  label="More actions" />
+  label="Theme actions" />
 
 <div id="nxthemesThemeActions" style="display: none"> 
   <ul class="nxthemesDropDownMenu">
+  
+  <#if theme.saveable>
+    <li><a href="javascript:void(0)" onclick="NXThemesEditor.loadTheme('${theme.src?js_string}')">Refresh theme</a></li>
+  <#else>
+    <li><a href="javascript:void(0)" onclick="onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}&amp;download=1&amp;indent=2'">Download theme</a></li>
+  </#if>
+  
     <#if theme.exportable>
       <#if theme.saveable>
         <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}&amp;download=1&amp;indent=2'">Download theme</a></li>  
