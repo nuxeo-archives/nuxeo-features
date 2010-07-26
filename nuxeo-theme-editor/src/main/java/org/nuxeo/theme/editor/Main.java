@@ -167,11 +167,11 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("backToMenu")
-    public Object renderBackToMenu(
+    @Path("backToControlPanel")
+    public Object renderBackToControlPanel(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("backToMenu.ftl");
+        return getTemplate("backToControlPanel.ftl");
     }
     
     @GET
@@ -397,13 +397,13 @@ public class Main extends ModuleRoot {
                 selectedViewName);
     }
 
-    // Main menu
+    // Control panel
     @GET
-    @Path("mainMenu")
-    public Object renderMainMenu(
+    @Path("controlPanel")
+    public Object renderControlPanel(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("mainMenu.ftl");
+        return getTemplate("controlPanel.ftl");
     }
 
     @GET

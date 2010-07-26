@@ -817,8 +817,8 @@ NXThemesEditor.switchToCanvas = function() {
     NXThemes.getControllerById('editor perspectives').switchTo('canvas editor');
 };
 
-NXThemesEditor.backToMenu = function() {
-    NXThemes.getControllerById('editor perspectives').switchTo('main menu');
+NXThemesEditor.backToControlPanel = function() {
+    NXThemes.getControllerById('editor perspectives').switchTo('control panel');
 }
 
 NXThemesEditor.managePresets = function() {

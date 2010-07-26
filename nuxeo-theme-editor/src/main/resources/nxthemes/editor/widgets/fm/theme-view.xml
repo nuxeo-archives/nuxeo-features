@@ -41,8 +41,28 @@
       
 
       <div id="nxthemesMainButtons">
-                                            
-        <@nxthemes_button identifier="quit"
+                  
+        <@nxthemes_button identifier="manage skins button"
+          link="javascript:NXThemesEditor.manageSkins()"
+          label="Change skin" />
+
+        <@nxthemes_button identifier="manage presets button"
+          link="javascript:NXThemesEditor.managePresets()"
+          label="Customize theme" />
+      
+        <@nxthemes_button identifier="manage styles button"
+          link="javascript:NXThemesEditor.manageStyles()"
+          label="Edit CSS" />
+ 
+        <@nxthemes_button identifier="manage theme layout button"
+          link="javascript:NXThemesEditor.manageThemeLayout()"
+          label="Modify layout" />          
+
+        <@nxthemes_button identifier="switch to canvas button"
+          link="javascript:NXThemesEditor.switchToCanvas()"
+          label="Switch to expert mode" />       
+                                                       
+        <@nxthemes_button identifier="quit button"
           link="javascript:NXThemesEditor.exit()"
           icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"
           label="Quit" />  
@@ -51,8 +71,8 @@
     
       <div id="nxthemesLocalButtons">
 
-        <@nxthemes_panel identifier="back to menu"
-          url="${basePath}/nxthemes-editor/backToMenu"
+        <@nxthemes_panel identifier="back to control panel"
+          url="${basePath}/nxthemes-editor/backToControlPanel"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor,preset library,preset manager,theme browser,style manager,element editor,fragment factory,skin manager" />       
                                                   
@@ -141,11 +161,11 @@
     
     <@nxthemes_controller resource="link-disabler.json" />
 
-    <!-- main menu -->
-    <@nxthemes_panel identifier="main menu"
-      url="${basePath}/nxthemes-editor/mainMenu"
+    <!-- control panel -->
+    <@nxthemes_panel identifier="control panel"
+      url="${basePath}/nxthemes-editor/controlPanel"
       controlledBy="editor perspectives"
-      visibleInPerspectives="main menu" />
+      visibleInPerspectives="control panel" />
 
     <!-- theme chooser -->
     <@nxthemes_panel identifier="theme browser"

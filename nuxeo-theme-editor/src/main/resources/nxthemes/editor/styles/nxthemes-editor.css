@@ -1834,21 +1834,21 @@ table.fragmentFactory td {
   padding: 20px;
 }
 
-/* Theme wizard */
+/* Control panel */
 
-table.nxthemesThemeWizardMenu {
+table.nxthemesThemeControlPanel {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
 }
 
-table.nxthemesThemeWizardMenu td {
+table.nxthemesThemeControlPanel td {
   padding: 20px;
   width: 50%;
   font: 16px Arial, sans-serif;
 }
 
-table.nxthemesThemeWizardMenu img {
+table.nxthemesThemeControlPanel img {
   padding: 8px;
   float: left;
   border: 1px solid #eee;
@@ -1858,16 +1858,16 @@ table.nxthemesThemeWizardMenu img {
   background-color: #f9f9f9;
 }
 
-table.nxthemesThemeWizardMenu div {
+table.nxthemesThemeControlPanel div {
   padding: 14px;
   float: left;
 }
 
-table.nxthemesThemeWizardMenu a:hover img {
+table.nxthemesThemeControlPanel a:hover img {
   border: 1px solid #ccc;
   background-color: #f0f0f0;
 }
 
-table.nxthemesThemeWizardMenu a:hover  {
+table.nxthemesThemeControlPanel a:hover  {
   color: #000;
 }
