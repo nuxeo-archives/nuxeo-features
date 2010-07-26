@@ -9,7 +9,7 @@
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
-<h1 class="nxthemesEditor">Manage styles</h1>
+<h1 class="nxthemesEditor">Edit CSS</h1>
 
 <#if style_manager_mode = 'named styles'>
 

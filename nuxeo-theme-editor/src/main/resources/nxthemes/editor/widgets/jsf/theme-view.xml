@@ -46,19 +46,19 @@
 
         <nxthemes:button identifier="manage skins button"
           link="javascript:NXThemesEditor.manageSkins()"
-          label="Choose skin" />
+          label="1. Choose a skin" />
 
         <nxthemes:button identifier="manage presets button"
           link="javascript:NXThemesEditor.managePresets()"
-          label="Set theme options" />
+          label="2. Set theme options" />
       
         <nxthemes:button identifier="manage styles button"
           link="javascript:NXThemesEditor.manageStyles()"
-          label="Customize CSS" />
+          label="3. Edit CSS" />
  
         <nxthemes:button identifier="manage theme layout button"
           link="javascript:NXThemesEditor.manageThemeLayout()"
-          label="Modify theme layout" />          
+          label="4. Modify theme layout" />          
 
         <nxthemes:button identifier="switch to canvas button"
           link="javascript:NXThemesEditor.switchToCanvas()"

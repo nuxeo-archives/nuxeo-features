@@ -457,6 +457,11 @@ div.nxthemesEditor {
   font-size: 12px;
 }
 
+.nxthemesEditorDescription {
+  color: #333;
+  font-style: italic;
+}
+
 .nxthemesEditorFocus {
   background-color: #fc0;
   font-size: 13px;
@@ -966,15 +971,22 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 }
 
 .nxthemesPresets div.preview {
+  width: 20px;
   color: #000;
   text-align: center;
-  border: 1px solid #ccc;
-  margin: 2px;
-  padding: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #000;
+  background-color: #fff;
+}
+
+.nxthemesPresets div.preview div {
+  height: 20px;
+  padding: 0;
 }
 
 .nxthemesPresets table {
@@ -996,10 +1008,6 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 
 .nxthemesPresets table td.presetTarget {
   height: 100px;
-}
-
-.nxthemesPresets div.preview div {
-  height: 65px;
 }
 
 ul.nxthemesSelector {
@@ -1779,11 +1787,12 @@ table.fragmentFactory td {
 }
 
 /* Image browser */
+
 .album {
   width: 100%;
   padding: 0; 
   float: left;
-  background-color: #f6f6f6;
+  background-color: #fff;
   -moz-border-radius: 8px;
 }
 
@@ -1792,7 +1801,7 @@ table.fragmentFactory td {
   margin: 10px; 
   width: 212px; 
   text-align: center; 
-  border: 1px solid #999;
+  border: 2px solid #fff;
   -moz-border-radius: 4px;
   background-color: #fff;
 }
@@ -1804,12 +1813,12 @@ table.fragmentFactory td {
  }
 
 .album .imageSingle:hover {
-  border: 1px solid #666;
+  border: 2px solid #09c;
   cursor: pointer;
 }
 
 .album .imageSingle:hover .footer {
-  color: #666;
+  color: #000;
   text-decoration: none;
 }
 

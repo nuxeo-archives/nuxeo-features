@@ -5,19 +5,19 @@
     <td>
         <a href="javascript:NXThemesEditor.manageSkins()">
           <img src="${basePath}/skin/nxthemes-editor/img/manage-skins-32.png" width="32" height="32" />
-          <div>Change skin</div></a>
+          <div>Choose a skin</div></a>
     </td>
     <td>
         <a href="javascript:NXThemesEditor.manageThemeLayout()">
           <img src="${basePath}/skin/nxthemes-editor/img/manage-layout-32.png" width="32" height="32" />
-          <div>Modify layout</div></a>
+          <div>Modify theme layout</div></a>
     </td>
   </tr>
   <tr>
     <td>
         <a href="javascript:NXThemesEditor.managePresets()">
           <img src="${basePath}/skin/nxthemes-editor/img/manage-presets-32.png" width="32" height="32" />
-          <div>Customize theme</div></a>
+          <div>Set theme options</div></a>
     </td>
     <td>
         <a href="javascript:NXThemesEditor.switchToCanvas()">
