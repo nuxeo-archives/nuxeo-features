@@ -1801,7 +1801,7 @@ table.fragmentFactory td {
   margin: 10px; 
   width: 212px; 
   text-align: center; 
-  border: 2px solid #fff;
+  border: 1px solid #fff;
   -moz-border-radius: 4px;
   background-color: #fff;
 }
@@ -1813,18 +1813,19 @@ table.fragmentFactory td {
  }
 
 .album .imageSingle:hover {
-  border: 2px solid #09c;
+  background-color: #ffc;
+  border: 1px solid #fc0;
   cursor: pointer;
 }
 
 .album .imageSingle:hover .footer {
-  color: #000;
+  color: #900;
   text-decoration: none;
 }
 
 .album .footer {
   text-align: center;
-  color: #999; 
+  color: #666;
   padding-bottom: 2px; 
   font: bold 11px tahoma;
 } 
@@ -1845,26 +1846,26 @@ table.fragmentFactory td {
 
 /* Control panel */
 
+
 table.nxthemesThemeControlPanel {
-  width: 80%;
+  width: 55%;
   margin-left: auto;
   margin-right: auto;
 }
 
 table.nxthemesThemeControlPanel td {
-  padding: 20px;
-  width: 50%;
-  font: 16px Arial, sans-serif;
+  padding: 12px;
+  font: bold 13px Arial, sans-serif;
 }
 
 table.nxthemesThemeControlPanel img {
-  padding: 8px;
+  padding: 5px;
   float: left;
-  border: 1px solid #eee;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
-  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
 }
 
 table.nxthemesThemeControlPanel div {
@@ -1873,10 +1874,22 @@ table.nxthemesThemeControlPanel div {
 }
 
 table.nxthemesThemeControlPanel a:hover img {
-  border: 1px solid #ccc;
-  background-color: #f0f0f0;
+  border: 1px solid #999;
+  background-color: #ccc;
 }
 
 table.nxthemesThemeControlPanel a:hover  {
-  color: #000;
+  color: #666;
+}
+
+#nxthemesThemeControlPanel {
+  background:  url(${basePath}/skin/nxthemes-editor/img/control-panel-bg.png);
+}
+
+.nxthemesThemeControlPanel {
+  background-color: #fff;
+  border: 2px solid #000; 
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+  border-radius: 12px;
 }
