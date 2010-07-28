@@ -26,9 +26,9 @@
   <#list skins as skin>
     <a href="javascript:void(0)" 
        onclick="NXThemesSkinManager.activateSkin('${current_theme_name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">
-      <div class="imageSingle">
+      <div class="imageSingle <#if current_skin_name=skin.name>selected</#if>">
         <div class="image"><img src="${skin.preview}" /></div>
-        <div class="footer">${skin.collection} ${skin.resource?replace('.css', '')}</div>
+        <div class="footer">${skin.name}</div>
       </div>
     </a>
   </#list>

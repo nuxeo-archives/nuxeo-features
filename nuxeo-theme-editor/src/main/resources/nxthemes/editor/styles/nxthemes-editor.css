@@ -1806,6 +1806,10 @@ table.fragmentFactory td {
   background-color: #fff;
 }
 
+.album .selected {
+   border: 1px solid #ccc;
+}
+
 .album .imageSingle .image {
   width: 200px; 
   height: 135px; 

@@ -709,6 +709,8 @@ public class Editor {
         themeManager.removeNamedObject(themeName, "style", styleName);
         saveTheme(themeName);
     }
+    
+
 
     public static void deleteStyleView(Style style, String viewName)
             throws ThemeException {

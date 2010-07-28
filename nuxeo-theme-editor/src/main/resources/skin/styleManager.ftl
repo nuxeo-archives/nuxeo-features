@@ -9,7 +9,6 @@
 
 <h1 class="nxthemesEditor">Edit CSS</h1>
 
-
   <table class="nxthemesManageScreen">
   <tr>
     <th style="width: 25%;">Style</th>
@@ -30,18 +29,39 @@
 <td>
 
 <#if selected_named_style>
-<form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
+
+  <h2 class="nxthemesEditor">${selected_named_style.name}</h2>
+
+  <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
       onsubmit="NXThemesStyleManager.updateNamedStyleCSS(this); return false">
-<div>
-  <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
- style="border: 1px solid #999; width: 100%; height: 250px; font-size: 11px;">${selected_named_style_css}</textarea>
-  <input type="hidden" name="style_uid" value="#{selected_named_style.uid}" />
-  <input type="hidden" name="theme_name" value="${current_theme_name}" />
-</div>
-<div>
-  <button type="submit">Save</button>
-</div>
-</form>
+    <input type="hidden" name="style_uid" value="#{selected_named_style.uid}" />
+    <input type="hidden" name="theme_name" value="${current_theme_name}" />
+    
+<#if selected_named_style.customized>   
+  <div>
+    <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
+   style="border: 1px solid #999; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">${selected_named_style_css}</textarea>
+  </div>
+  <div>
+    <button type="submit">Save</button>
+  </div>
+  
+<#else>
+
+   <textarea disabled="disabled" id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
+   style="cursor: default; border: 1px solid #eee; background-color: #fcfcfc; color: #666; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">
+${selected_named_style_css}
+</textarea>
+
+  <div>
+    <button type="submit">Customize CSS</button>
+  </div>
+
+  </form>
+
+</#if>
+
+
 </#if>
 
 </td>
