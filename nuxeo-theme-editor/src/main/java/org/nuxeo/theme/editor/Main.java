@@ -173,7 +173,7 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         return getTemplate("backToControlPanel.ftl");
     }
-    
+
     @GET
     @Path("themeActions")
     public Object renderThemeActions(
@@ -403,7 +403,10 @@ public class Main extends ModuleRoot {
     public Object renderControlPanel(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("controlPanel.ftl");
+        String currentThemeName = getCurrentThemeName(path, name);
+        String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
+        return getTemplate("controlPanel.ftl").arg("current_skin_name",
+                currentSkinName).arg("current_theme_name", currentThemeName);
     }
 
     @GET
@@ -416,10 +419,12 @@ public class Main extends ModuleRoot {
         if (bankName == null && !banks.isEmpty()) {
             bankName = banks.get(0).getName();
         }
-        return getTemplate("skinManager.ftl").arg("current_theme_name",
-                getCurrentThemeName(path, name)).arg("selected_bank_name",
-                bankName).arg("skins", getBankSkins(bankName)).arg("banks",
-                banks);
+        String currentThemeName = getCurrentThemeName(path, name);
+        String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
+        return getTemplate("skinManager.ftl").arg("current_skin_name",
+                currentSkinName).arg("current_theme_name", currentThemeName).arg(
+                "selected_bank_name", bankName).arg("skins",
+                getBankSkins(bankName)).arg("banks", banks);
     }
 
     @POST

@@ -50,7 +50,6 @@ import org.nuxeo.theme.themes.ThemeManager;
 import org.nuxeo.theme.themes.ThemeSerializer;
 import org.nuxeo.theme.types.TypeFamily;
 import org.nuxeo.theme.types.TypeRegistry;
-import org.nuxeo.theme.views.ViewType;
 
 public class Editor {
 
@@ -766,7 +765,8 @@ public class Editor {
         if (PresetManager.getCustomPreset(themeName, presetName) != null) {
             throw new ThemeException("Preset name already taken: " + presetName);
         }
-        PresetManager.createCustomPreset(themeName, presetName, category, value, "", "");
+        PresetManager.createCustomPreset(themeName, presetName, category,
+                value, "", "");
         saveTheme(themeName);
         return presetName;
     }
@@ -1031,6 +1031,9 @@ public class Editor {
         themeManager.themeModified(currentThemeName);
     }
 
+    /*
+     * Skin management
+     */
     public static void activateSkin(String themeName, String bankName,
             String collectionName, String resourceName) throws ThemeException {
 
@@ -1046,9 +1049,33 @@ public class Editor {
             } catch (ThemeException e) {
                 throw new ThemeException(e.getMessage(), e);
             }
-            saveTheme(themeName);
         }
+        saveTheme(themeName);
+    }
 
+    public static String getCurrentSkinName(final String themeName) {
+        ThemeManager themeManager = Manager.getThemeManager();
+        final FormatType styleType = (FormatType) Manager.getTypeRegistry().lookup(
+                TypeFamily.FORMAT, "style");
+        String skinName = null;
+        String previousSkinName = null;
+        for (PageElement page : themeManager.getPagesOf(themeName)) {
+            Style style = (Style) ElementFormatter.getFormatByType(page,
+                    styleType);
+            if (style == null) {
+                return null;
+            }
+            Style ancestorStyle = (Style) ThemeManager.getAncestorFormatOf(style);
+            if (ancestorStyle == null || !ancestorStyle.isNamed()) {
+                return null;
+            }
+            skinName = ancestorStyle.getName();
+            if (previousSkinName != null && !skinName.equals(previousSkinName)) {
+                return null;
+            }
+            previousSkinName = skinName;
+        }
+        return skinName;
     }
 
 }

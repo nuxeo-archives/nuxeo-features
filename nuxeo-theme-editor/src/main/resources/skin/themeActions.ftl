@@ -13,7 +13,7 @@
   <#if theme.saveable>
     <li><a href="javascript:void(0)" onclick="NXThemesEditor.loadTheme('${theme.src?js_string}')">Refresh theme</a></li>
   <#else>
-    <li><a href="javascript:void(0)" onclick="onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}&amp;download=1&amp;indent=2'">Download theme</a></li>
+    <li><a href="javascript:void(0)" onclick="window.location='${basePath}/nxthemes-editor/xml_export?src=${theme.src?url}&amp;download=1&amp;indent=2'">Download theme</a></li>
   </#if>
   
     <#if theme.exportable>
