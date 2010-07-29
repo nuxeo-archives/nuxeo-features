@@ -62,6 +62,14 @@ ${selected_named_style_css}
 </#if>
 
 
+<!--
+<#if selected_named_style.remote>
+  <div>
+    <button type="submit">Revert to original CSS</button>
+  </div>
+</#if>
+-->
+
 </#if>
 
 </td>

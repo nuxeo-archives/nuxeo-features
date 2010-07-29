@@ -213,24 +213,25 @@ public class Editor {
                     TypeFamily.FORMAT, "style");
             style = (Style) ElementFormatter.getFormatByType(element, styleType);
         }
-        if (style.getName() != null || "".equals(viewName)) {
+        if (style.isNamed() || "".equals(viewName)) {
             viewName = "*";
         }
         org.nuxeo.theme.Utils.loadCss(style, cssSource, viewName);
-
         saveTheme(themeName);
     }
 
     public static void updateNamedStyleCss(Style style, String cssSource,
             String themeName) throws ThemeException {
-
         saveToUndoBuffer(themeName, "update style properties");
-
         if (style == null || style.getName() == null) {
             throw new ThemeException("A named style is required.");
         }
         final String viewName = "*";
         org.nuxeo.theme.Utils.loadCss(style, cssSource, viewName);
+        // if the style came from a resource bank, it has now been customized.
+        if (style.isRemote()) {
+            style.setCustomized(true);
+        }
         saveTheme(themeName);
     }
 
