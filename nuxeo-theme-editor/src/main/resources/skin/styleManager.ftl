@@ -57,18 +57,20 @@ ${selected_named_style_css}
     <button type="submit">Customize CSS</button>
   </div>
 
-  </form>
-
 </#if>
+</form>
+  
 
-
-<!--
-<#if selected_named_style.remote>
+<#if selected_named_style.remote & selected_named_style.customized>
+ <form class="nxthemesForm" style="padding: 0"
+      onsubmit="NXThemesStyleManager.restoreNamedStyle(this); return false">
+    <input type="hidden" name="style_uid" value="#{selected_named_style.uid}" />
+    <input type="hidden" name="theme_name" value="${current_theme_name}" />
   <div>
-    <button type="submit">Revert to original CSS</button>
+    <button type="submit">Restore CSS</button>
   </div>
+  </form>
 </#if>
--->
 
 </#if>
 

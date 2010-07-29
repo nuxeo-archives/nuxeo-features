@@ -1168,6 +1168,20 @@ public class Main extends ModuleRoot {
             throw new ThemeEditorException(e.getMessage(), e);
         }
     }
+    
+    @POST
+    @Path("restore_named_style")
+    public void restoreNamedStyle() {
+        FormData form = ctx.getForm();
+        String style_uid = form.getString("style_uid");
+        String themeName = form.getString("theme_name");
+        Style style = (Style) ThemeManager.getFormatById(style_uid);
+        try {
+            Editor.restoreNamedStyle(style, themeName);
+        } catch (Exception e) {
+            throw new ThemeEditorException(e.getMessage(), e);
+        }
+    }
 
     @POST
     @Path("split_element")

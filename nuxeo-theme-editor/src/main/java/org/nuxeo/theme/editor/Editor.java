@@ -47,6 +47,7 @@ import org.nuxeo.theme.themes.ThemeDescriptor;
 import org.nuxeo.theme.themes.ThemeException;
 import org.nuxeo.theme.themes.ThemeIOException;
 import org.nuxeo.theme.themes.ThemeManager;
+import org.nuxeo.theme.themes.ThemeParser;
 import org.nuxeo.theme.themes.ThemeSerializer;
 import org.nuxeo.theme.types.TypeFamily;
 import org.nuxeo.theme.types.TypeRegistry;
@@ -232,6 +233,23 @@ public class Editor {
         if (style.isRemote()) {
             style.setCustomized(true);
         }
+        saveTheme(themeName);
+    }
+
+    public static void restoreNamedStyle(Style style, String themeName)
+            throws ThemeException {
+        saveToUndoBuffer(themeName, "restore style");
+        if (style == null || style.getName() == null) {
+            throw new ThemeException("A named style is required.");
+        }
+        if (!style.isRemote()) {
+            throw new ThemeException(
+                    "A style from a remote resource bank is required.");
+        }
+        // if the style came from a resource bank, it has now been customized.
+        ThemeManager.loadRemoteStyle(style);
+
+        style.setCustomized(false);
         saveTheme(themeName);
     }
 
@@ -710,8 +728,6 @@ public class Editor {
         themeManager.removeNamedObject(themeName, "style", styleName);
         saveTheme(themeName);
     }
-    
-
 
     public static void deleteStyleView(Style style, String viewName)
             throws ThemeException {

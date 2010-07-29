@@ -2069,6 +2069,37 @@ NXThemesStyleManager.updateNamedStyleCSS = function(form) {
     });   
 }
 
+
+NXThemesStyleManager.restoreNamedStyle = function(form) {
+	var style_uid = '';
+    $A(Form.getElements(form)).each(function(i) {
+        var name = i.name;
+        var value = $F(i);
+        if (name == "style_uid") {
+          style_uid = value;
+        } else if (name == "theme_name") {
+          theme_name = value;
+        }
+    });
+    var url = nxthemesBasePath + "/nxthemes-editor/restore_named_style"; 
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             'style_uid': style_uid,
+             'theme_name': theme_name
+         },
+         onSuccess: function(r) {
+        	 NXThemes.getViewById("style manager").refresh();
+        	 NXThemesEditor.refreshUndoActions();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }         
+    });   
+}
+
+
 NXThemesStyleManager.setPageStyles = function(themeName, form) {
     var propertyMap = $H();
     $A(Form.getElements(form)).each(function(i) {
