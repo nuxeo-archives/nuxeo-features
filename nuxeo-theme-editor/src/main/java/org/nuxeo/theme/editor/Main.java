@@ -1,6 +1,7 @@
 package org.nuxeo.theme.editor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
@@ -51,10 +52,6 @@ import org.nuxeo.theme.types.Type;
 import org.nuxeo.theme.types.TypeFamily;
 import org.nuxeo.theme.uids.Identifiable;
 import org.nuxeo.theme.views.ViewType;
-
-import com.google.common.collect.Multiset.Entry;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 @WebObject(type = "nxthemes-editor", administrator = Access.GRANT)
 @Produces(MediaType.TEXT_HTML)
