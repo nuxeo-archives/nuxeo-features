@@ -27,6 +27,7 @@
        </ul>
        <div style="clear: both"></div>
     </div>
+    
 
 
 
@@ -34,22 +35,33 @@
 
 <div class="nxthemesEditorFrame">
 
-<form class="nxthemesForm">
+<form class="nxthemesForm" 
+      onsubmit="NXThemesPresetManager.updatePresets(this); return false">
 
+    <input type="hidden" name="theme_name" value="${current_theme_name}" />
+    
 <#list presets as preset_info>
   <p>
     <label>${preset_info.label}</label>
-    <input type="text" value="${preset_info.value?replace(r'${basePath}', '${basePath}')}" />
+    <input type="text" 
+        name="preset_${preset_info.name}"
+        value="${preset_info.value}" />
     <span class="description">${preset_info.description}</span>
   
+    <!--
     <div class="preview"
        title="${preset_info.value?replace(r'${basePath}', '${basePath}')}"></div>
+    -->
   </p>
 </#list>
 
+<#if presets>
   <div>
     <button type="submit">Save options</button>
   </div>
+<#else>
+  <div>No options can be configured in this category.</div>
+</#if>
   
 </form>
 

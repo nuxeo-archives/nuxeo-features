@@ -52,6 +52,8 @@ import org.nuxeo.theme.types.TypeFamily;
 import org.nuxeo.theme.uids.Identifiable;
 import org.nuxeo.theme.views.ViewType;
 
+import com.google.common.collect.Multiset.Entry;
+
 import edu.emory.mathcs.backport.java.util.Arrays;
 
 @WebObject(type = "nxthemes-editor", administrator = Access.GRANT)
@@ -824,6 +826,22 @@ public class Main extends ModuleRoot {
     }
 
     @POST
+    @Path("update_presets")
+    public void updatePresets() {
+        FormData form = ctx.getForm();
+        String themeName = form.getString("theme_name");
+        String property_map = form.getString("property_map");
+        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
+        try {
+            for (Map.Entry<String, String> preset : propertyMap.entrySet()) {
+                Editor.editPreset(themeName, preset.getKey(), preset.getValue());
+            }
+        } catch (Exception e) {
+            throw new ThemeEditorException(e.getMessage(), e);
+        }
+    }
+
+    @POST
     @Path("rename_preset")
     public void renamePreset() {
         FormData form = ctx.getForm();
@@ -1168,7 +1186,7 @@ public class Main extends ModuleRoot {
             throw new ThemeEditorException(e.getMessage(), e);
         }
     }
-    
+
     @POST
     @Path("restore_named_style")
     public void restoreNamedStyle() {

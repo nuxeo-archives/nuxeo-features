@@ -1257,6 +1257,36 @@ NXThemesPresetManager.selectPresetCategory = function(category) {
     });
 };
 
+NXThemesPresetManager.updatePresets = function(form) {
+    var propertyMap = $H();
+    var themeName = "";
+    $A(Form.getElements(form)).each(function(i) {
+        var name = i.name;
+        var value = $F(i);
+        if (name.startsWith('preset_')) {
+            propertyMap.set(name.substr(7), value);
+        } else if (name == "theme_name") {
+        	themeName = value;
+        }
+    });
+    var url = nxthemesBasePath + "/nxthemes-editor/update_presets"; 
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             property_map: Object.toJSON(propertyMap),
+             theme_name: themeName
+         },
+         onSuccess: function(r) {
+        	 NXThemes.getViewById("preset manager").refresh();
+        	 NXThemesEditor.refreshUndoActions();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }         
+    });   
+}
+
 
 NXThemesPresetManager.editPreset = function(info) {
   var target = Event.element(info);
