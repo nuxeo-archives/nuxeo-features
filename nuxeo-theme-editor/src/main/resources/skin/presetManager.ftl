@@ -1,9 +1,19 @@
 
-
-<div id="nxthemesPresetManager" class="nxthemesPresets nxthemesScreen">
-
+<div class="nxthemesThemeControlPanelScreen">
+    
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
+
+<div id="nxthemesPresetManager" class="nxthemesThemeControlPanel">
+
+<form class="nxthemesForm" onsubmit="return false">
+  <div style="text-align: center; margin-top: -80px; padding-bottom: 10px">
+    <button onclick="NXThemesEditor.manageSkins()">Choose a skin</button> 
+    <button class="selected">Set theme options</button> 
+    <button onclick="NXThemesEditor.manageStyles()">Edit CSS</button> 
+    <button onclick="NXThemesEditor.backToControlPanel()">Finish</button>
+  </div>
+</form>
 
 <h1 class="nxthemesEditor">Set theme options</h1>
 
@@ -64,6 +74,7 @@
 </#if>
   
 </form>
+
 
 </div>
 

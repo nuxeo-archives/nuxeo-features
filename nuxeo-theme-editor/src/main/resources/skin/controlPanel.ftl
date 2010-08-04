@@ -1,6 +1,8 @@
-<div id="nxthemesThemeControlPanel" class="nxthemesScreen">
+<div class="nxthemesThemeControlPanelScreen">
 
-<table class="nxthemesThemeControlPanel">
+<div id="nxthemesThemeControlPanel" class="nxthemesThemeControlPanel">
+
+<table style="width: 100%">
   <tr>
     <td colspan="2" style="padding: 0 10px">
     <h1 style="margin: 15px 0 0 0; padding: 0">Welcome to Nuxeo Theme</h1>
@@ -48,4 +50,5 @@
   </tr>
 </table>
 
+</div>
 </div>

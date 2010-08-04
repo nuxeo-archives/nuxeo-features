@@ -25,7 +25,7 @@
       <@nxthemes_panel identifier="theme selector"
         url="${basePath}/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
-        visibleInPerspectives="canvas editor,padding editor,style manager,preset manager,skin manager" />
+        visibleInPerspectives="canvas editor,padding editor" />
         
       <!--  perspective selector -->
       <@nxthemes_panel identifier="perspective selector"
@@ -41,27 +41,7 @@
       
 
       <div id="nxthemesMainButtons">
-                  
-        <@nxthemes_button identifier="manage skins button"
-          link="javascript:NXThemesEditor.manageSkins()"
-          label="Choose a skin" />
-
-        <@nxthemes_button identifier="manage presets button"
-          link="javascript:NXThemesEditor.managePresets()"
-          label="Set theme options" />
-      
-        <@nxthemes_button identifier="manage styles button"
-          link="javascript:NXThemesEditor.manageStyles()"
-          label="Edit CSS" />
- 
-        <@nxthemes_button identifier="manage theme layout button"
-          link="javascript:NXThemesEditor.manageThemeLayout()"
-          label="Modify theme layout" />          
-
-        <@nxthemes_button identifier="switch to canvas button"
-          link="javascript:NXThemesEditor.switchToCanvas()"
-          label="Switch to expert mode" />       
-                                                       
+                                                                         
         <@nxthemes_button identifier="quit button"
           link="javascript:NXThemesEditor.exit()"
           icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"
@@ -74,8 +54,8 @@
         <@nxthemes_panel identifier="back to control panel"
           url="${basePath}/nxthemes-editor/backToControlPanel"
           controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor,preset library,preset manager,theme browser,style manager,element editor,fragment factory,skin manager" />       
-                                                  
+          visibleInPerspectives="canvas editor,preset library,theme browser,element editor,fragment factory" />       
+                
         <!-- theme actions -->
         <@nxthemes_panel identifier="theme actions"
           url="${basePath}/nxthemes-editor/themeActions"
@@ -148,13 +128,32 @@
     <@nxthemes_controller resource="page-switcher.json" />
     
     <@nxthemes_controller resource="link-disabler.json" />
-
+    
     <!-- control panel -->
     <@nxthemes_panel identifier="control panel"
       url="${basePath}/nxthemes-editor/controlPanel"
       controlledBy="editor perspectives"
       visibleInPerspectives="control panel" />
 
+    <!-- preset manager -->
+    <@nxthemes_panel identifier="preset manager"
+      url="${basePath}/nxthemes-editor/presetManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="preset manager" />
+      
+    <!-- style manager -->
+    <@nxthemes_controller resource="style-manager-actions.json" />
+    <@nxthemes_panel identifier="style manager"
+      url="${basePath}/nxthemes-editor/styleManager"
+      controlledBy="editor perspectives,style manager actions"
+      visibleInPerspectives="style manager" />
+
+    <!-- skin manager -->
+    <@nxthemes_panel identifier="skin manager"
+      url="${basePath}/nxthemes-editor/skinManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="skin manager" />      
+    
     <!-- theme chooser -->
     <@nxthemes_panel identifier="theme browser"
       url="${basePath}/nxthemes-editor/themeBrowser"
@@ -186,30 +185,12 @@
       controlledBy="editor perspectives"
       visibleInPerspectives="theme optimizer" />
       
-    <!-- preset manager -->
-    <@nxthemes_panel identifier="preset manager"
-      url="${basePath}/nxthemes-editor/presetManager"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="preset manager" />
-      
-    <!-- style manager -->
-    <@nxthemes_controller resource="style-manager-actions.json" />
-    <@nxthemes_panel identifier="style manager"
-      url="${basePath}/nxthemes-editor/styleManager"
-      controlledBy="editor perspectives,style manager actions"
-      visibleInPerspectives="style manager" />
-
+    
     <!-- fragment factory -->
     <@nxthemes_panel identifier="fragment factory"
       url="${basePath}/nxthemes-editor/fragmentFactory"
       controlledBy="editor perspectives"
       visibleInPerspectives="fragment factory" />
-      
-    <!-- skin manager -->
-    <@nxthemes_panel identifier="skin manager"
-      url="${basePath}/nxthemes-editor/skinManager"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="skin manager" />      
       
 <#else>
   <script type="text/javascript"><!--

@@ -1,13 +1,21 @@
-
-<div id="nxthemesStyleManager" class="nxthemesScreen">
-
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 <#if selected_named_style>
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
-<h1 class="nxthemesEditor">Edit CSS</h1>
+<div class="nxthemesThemeControlPanelScreen">
+
+<div id="nxthemesStyleManager" class="nxthemesThemeControlPanel">
+
+<form class="nxthemesForm" onsubmit="return false">
+  <div style="text-align: center; margin-top: -80px; padding-bottom: 10px">
+    <button onclick="NXThemesEditor.manageSkins()">Choose a skin</button> 
+    <button onclick="NXThemesEditor.managePresets()">Set theme options</button>
+    <button class="selected">Edit CSS</button> 
+    <button onclick="NXThemesEditor.backToControlPanel()">Finish</button>
+  </div>
+</form>
 
   <table class="nxthemesManageScreen">
   <tr>
@@ -62,7 +70,7 @@ ${selected_named_style_css}
   
 
 <#if selected_named_style.remote & selected_named_style.customized>
- <form class="nxthemesForm" style="padding: 0"
+ <form class="nxthemesForm" style="padding: 0; float: right"
       onsubmit="NXThemesStyleManager.restoreNamedStyle(this); return false">
     <input type="hidden" name="style_uid" value="#{selected_named_style.uid}" />
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
@@ -78,6 +86,5 @@ ${selected_named_style_css}
 </tr>
 </table>
 
-
-
+</div>
 </div>
