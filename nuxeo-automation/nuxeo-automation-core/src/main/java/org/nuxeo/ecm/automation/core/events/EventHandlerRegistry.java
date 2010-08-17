@@ -18,6 +18,7 @@ package org.nuxeo.ecm.automation.core.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -33,20 +34,20 @@ import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
  * This service should be moved in another project
  *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
- *
  */
 public class EventHandlerRegistry {
 
-    private final static Log log = LogFactory.getLog(OperationEventListener.class);
+    private static final Log log = LogFactory.getLog(OperationEventListener.class);
 
     protected AutomationService svc;
 
     protected Map<String, List<EventHandler>> handlers;
+
     protected Map<String, List<EventHandler>> pchandlers;
 
     protected volatile Map<String, List<EventHandler>> lookup;
-    protected volatile Map<String, List<EventHandler>> pclookup;
 
+    protected volatile Map<String, List<EventHandler>> pclookup;
 
     public EventHandlerRegistry(AutomationService svc) {
         this.svc = svc;
@@ -68,7 +69,8 @@ public class EventHandlerRegistry {
         }
     }
 
-    public synchronized void putEventHandler(String eventId, EventHandler handler) {
+    public synchronized void putEventHandler(String eventId,
+            EventHandler handler) {
         List<EventHandler> handlers = this.handlers.get(eventId);
         if (handlers == null) {
             handlers = new ArrayList<EventHandler>();
@@ -84,7 +86,8 @@ public class EventHandlerRegistry {
         }
     }
 
-    public synchronized void putPostCommitEventHandler(String eventId, EventHandler handler) {
+    public synchronized void putPostCommitEventHandler(String eventId,
+            EventHandler handler) {
         List<EventHandler> handlers = this.pchandlers.get(eventId);
         if (handlers == null) {
             handlers = new ArrayList<EventHandler>();
@@ -92,6 +95,52 @@ public class EventHandlerRegistry {
         }
         handlers.add(handler);
         pclookup = null;
+    }
+
+    public synchronized void removePostCommitEventHandler(EventHandler handler) {
+        for (String eventId : handler.getEvents()) {
+            List<EventHandler> handlers = this.pchandlers.get(eventId);
+            if (handlers != null) {
+                Iterator<EventHandler> it = handlers.iterator();
+                while (it.hasNext()) {
+                    EventHandler h = it.next();
+                    if (h.chainId.equals(handler.chainId)) { // TODO chainId
+                                                                // is not
+                                                                // really an
+                                                                // unique ID
+                                                                // for the
+                                                                // event
+                                                                // handler ...
+                        it.remove();
+                        break;
+                    }
+                }
+            }
+        }
+        pclookup = null;
+    }
+
+    public synchronized void removeEventHandler(EventHandler handler) {
+        for (String eventId : handler.getEvents()) {
+            List<EventHandler> handlers = this.handlers.get(eventId);
+            if (handlers != null) {
+                Iterator<EventHandler> it = handlers.iterator();
+                while (it.hasNext()) {
+                    EventHandler h = it.next();
+                    if (h.chainId.equals(handler.chainId)) { // TODO chainId
+                                                                // is not
+                                                                // really an
+                                                                // unique ID
+                                                                // for the
+                                                                // event
+                                                                // handler ...
+                        it.remove();
+                        break;
+                    }
+                }
+            }
+        }
+        lookup = null;
     }
 
     public synchronized void clear() {
@@ -119,7 +168,8 @@ public class EventHandlerRegistry {
         if (_lookup == null) {
             synchronized (this) {
                 if (pclookup == null) {
-                    pclookup = new HashMap<String, List<EventHandler>>(pchandlers);
+                    pclookup = new HashMap<String, List<EventHandler>>(
+                            pchandlers);
                 }
                 _lookup = pclookup;
             }
@@ -127,10 +177,11 @@ public class EventHandlerRegistry {
         return _lookup;
     }
 
-    //TODO: impl remove handlers method? or should refactor runtime to be able to redeploy only using clear() method
+    // TODO: impl remove handlers method? or should refactor runtime to be able
+    // to redeploy only using clear() method
 
-
-    public void handleEvent(Event event, List<EventHandler> handlers, boolean saveSession) {
+    public void handleEvent(Event event, List<EventHandler> handlers,
+            boolean saveSession) {
         if (handlers == null || handlers.isEmpty()) {
             return; // ignore
         }
@@ -139,8 +190,9 @@ public class EventHandlerRegistry {
         OperationContext ctx = null;
         if (ectx instanceof DocumentEventContext) {
             ctx = new OperationContext(ectx.getCoreSession());
-            ctx.setInput(((DocumentEventContext)ectx).getSourceDocument());
-        } else { // not a document event .. the chain must begin with void operation - session is not available.
+            ctx.setInput(((DocumentEventContext) ectx).getSourceDocument());
+        } else { // not a document event .. the chain must begin with void
+                    // operation - session is not available.
             ctx = new OperationContext();
         }
         ctx.put("Event", event);
@@ -148,11 +200,14 @@ public class EventHandlerRegistry {
 
         for (EventHandler handler : handlers) {
             try {
-                if (handler.isEnabled(ctx, ectx)) { //TODO this will save the session at each iteration!
+                if (handler.isEnabled(ctx, ectx)) { // TODO this will save the
+                                                    // session at each
+                                                    // iteration!
                     svc.run(ctx, handler.getChainId());
                 }
             } catch (Exception e) {
-                log.error("Failed to handle event "+event.getName()+" using chain: "+handler.getChainId(), e);
+                log.error("Failed to handle event " + event.getName()
+                        + " using chain: " + handler.getChainId(), e);
             }
         }
     }

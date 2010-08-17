@@ -32,16 +32,17 @@ import org.nuxeo.ecm.platform.versioning.api.VersioningManager;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * Wrap a {@link DocumentModel} to expose in a pretty way more information to mvel scripts
+ * Wrap a {@link DocumentModel} to expose in a pretty way more information to
+ * mvel scripts.
  *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
- *
  */
-public class DocumentWrapper extends HashMap<String,Serializable> {
+public class DocumentWrapper extends HashMap<String, Serializable> {
 
     private static final long serialVersionUID = 1L;
 
     protected CoreSession session;
+
     protected DocumentModel doc;
 
     public DocumentWrapper(CoreSession session, DocumentModel doc) {
@@ -95,7 +96,7 @@ public class DocumentWrapper extends HashMap<String,Serializable> {
     }
 
     public String getDescription() throws Exception {
-        return (String)doc.getPropertyValue("dc:description");
+        return (String) doc.getPropertyValue("dc:description");
     }
 
     public boolean hasFacet(String facet) {
@@ -171,11 +172,13 @@ public class DocumentWrapper extends HashMap<String,Serializable> {
     }
 
     public String getVersionLabel() throws Exception {
-        return Framework.getLocalService(VersioningManager.class).getVersionLabel(doc);
+        return Framework.getLocalService(VersioningManager.class).getVersionLabel(
+                doc);
     }
 
     /** property map implementation */
 
+    @Override
     public boolean containsKey(Object key) {
         try {
             doc.getProperty(key.toString());
@@ -186,8 +189,10 @@ public class DocumentWrapper extends HashMap<String,Serializable> {
     }
 
     /**
-     * The behavior of this method was changed -> it is checking if an xpath has a value attached
+     * The behavior of this method was changed -> it is checking if an xpath
+     * has a value attached.
      */
+    @Override
     public boolean containsValue(Object value) {
         try {
             return doc.getProperty(value.toString()).getValue() != null;
@@ -196,6 +201,7 @@ public class DocumentWrapper extends HashMap<String,Serializable> {
         }
     }
 
+    @Override
     public Serializable get(Object key) {
         try {
             return doc.getProperty(key.toString()).getValue();
@@ -204,27 +210,32 @@ public class DocumentWrapper extends HashMap<String,Serializable> {
         }
     }
 
-
+    @Override
     public boolean isEmpty() {
         return false;
     }
 
+    @Override
     public int size() {
         throw new UnsupportedOperationException("Operation not supported.");
     }
 
+    @Override
     public Set<String> keySet() {
         throw new UnsupportedOperationException("Operation not supported.");
     }
 
+    @Override
     public Collection<Serializable> values() {
         throw new UnsupportedOperationException("Operation not supported.");
     }
 
-    public Set<java.util.Map.Entry<String, Serializable>> entrySet() {
+    @Override
+    public Set<Map.Entry<String, Serializable>> entrySet() {
         throw new UnsupportedOperationException("Operation not supported.");
     }
 
+    @Override
     public Serializable put(String key, Serializable value) {
         try {
             Property p = doc.getProperty(key);
@@ -236,14 +247,17 @@ public class DocumentWrapper extends HashMap<String,Serializable> {
         }
     }
 
+    @Override
     public void putAll(Map<? extends String, ? extends Serializable> m) {
         throw new UnsupportedOperationException("Read Only Map.");
     }
 
+    @Override
     public Serializable remove(Object key) {
         throw new UnsupportedOperationException("Read Only Map.");
     }
 
+    @Override
     public void clear() {
         throw new UnsupportedOperationException("Read Only Map.");
     }

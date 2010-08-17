@@ -30,28 +30,29 @@ import org.nuxeo.ecm.automation.OperationChain;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationDocumentation;
 import org.nuxeo.ecm.automation.OperationException;
+import org.nuxeo.ecm.automation.OperationNotFoundException;
 import org.nuxeo.ecm.automation.OperationParameters;
 import org.nuxeo.ecm.automation.OperationType;
 import org.nuxeo.ecm.automation.TypeAdapter;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 
 /**
- * The operation registry is thread safe and optimized for modifications at startup and lookups at runtime.
+ * The operation registry is thread safe and optimized for modifications at
+ * startup and lookups at runtime.
  *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
- *
  */
 public class OperationServiceImpl implements AutomationService {
 
-
     /**
-     * Modifiable operation registry. Modifying the registry is using a lock and it's thread safe.
-     * Modifications are removing the cache.
+     * Modifiable operation registry. Modifying the registry is using a lock
+     * and it's thread safe. Modifications are removing the cache.
      */
     protected final Map<String, OperationTypeImpl> operations;
 
     /**
-     * Read only cache for operation lookup. Thread safe. Not using synchronization if cache already created.
+     * Read only cache for operation lookup. Thread safe. Not using
+     * synchronization if cache already created.
      */
     protected volatile Map<String, OperationTypeImpl> lookup;
 
@@ -70,16 +71,14 @@ public class OperationServiceImpl implements AutomationService {
      */
     protected AdapterKeyedRegistry adapters;
 
-
-
     public OperationServiceImpl() {
         operations = new HashMap<String, OperationTypeImpl>();
         chains = new HashMap<String, ChainEntry>();
         adapters = new AdapterKeyedRegistry();
     }
 
-
-    public Object run(OperationContext ctx, String chainId) throws Exception, InvalidChainException {
+    public Object run(OperationContext ctx, String chainId) throws Exception,
+            InvalidChainException {
         try {
             Object input = ctx.getInput();
             Class<?> inputType = input == null ? Void.TYPE : input.getClass();
@@ -88,7 +87,8 @@ public class OperationServiceImpl implements AutomationService {
                 chain.cchain = compileChain(inputType, chain.chain);
             }
             Object ret = chain.cchain.invoke(ctx);
-            if (ctx.getCoreSession() != null && ctx.isCommit()) { // auto save session if any
+            if (ctx.getCoreSession() != null && ctx.isCommit()) {
+                // auto save session if any
                 ctx.getCoreSession().save();
             }
             return ret;
@@ -97,12 +97,14 @@ public class OperationServiceImpl implements AutomationService {
         }
     }
 
-    public Object run(OperationContext ctx, OperationChain chain) throws Exception, InvalidChainException {
+    public Object run(OperationContext ctx, OperationChain chain)
+            throws Exception, InvalidChainException {
         try {
             Object input = ctx.getInput();
             Class<?> inputType = input == null ? Void.TYPE : input.getClass();
             Object ret = compileChain(inputType, chain).invoke(ctx);
-            if (ctx.getCoreSession() != null && ctx.isCommit()) { // auto save session if any
+            if (ctx.getCoreSession() != null && ctx.isCommit()) {
+                // auto save session if any
                 ctx.getCoreSession().save();
             }
             return ret;
@@ -111,13 +113,16 @@ public class OperationServiceImpl implements AutomationService {
         }
     }
 
-    public synchronized void putOperationChain(OperationChain chain) throws OperationException {
+    public synchronized void putOperationChain(OperationChain chain)
+            throws OperationException {
         putOperationChain(chain, false);
     }
 
-    public synchronized void putOperationChain(OperationChain chain, boolean replace) throws OperationException {
+    public synchronized void putOperationChain(OperationChain chain,
+            boolean replace) throws OperationException {
         if (!replace && chains.containsKey(chain.getId())) {
-            throw new OperationException("Chain with id "+chain.getId()+" already exists");
+            throw new OperationException("Chain with id " + chain.getId()
+                    + " already exists");
         }
         chains.put(chain.getId(), new ChainEntry(chain));
         chainLookup = null;
@@ -129,18 +134,29 @@ public class OperationServiceImpl implements AutomationService {
         }
     }
 
-    public OperationChain getOperationChain(String id) throws OperationException {
+    public OperationChain getOperationChain(String id)
+            throws OperationNotFoundException {
         ChainEntry chain = chainLookup().get(id);
         if (chain == null) {
-            throw new OperationException("No such chain was registered: "+id);
+            throw new OperationNotFoundException(
+                    "No such chain was registered: " + id);
         }
         return chain.chain;
+    }
+
+    public List<OperationChain> getOperationChains() {
+        List<OperationChain> result = new ArrayList<OperationChain>();
+        Map<String, ChainEntry> chains = chainLookup();
+        for (ChainEntry entry : chains.values()) {
+            result.add(entry.chain);
+        }
+        return result;
     }
 
     public ChainEntry getChainEntry(String id) throws OperationException {
         ChainEntry chain = chainLookup().get(id);
         if (chain == null) {
-            throw new OperationException("No such chain was registered: "+id);
+            throw new OperationException("No such chain was registered: " + id);
         }
         return chain;
     }
@@ -150,14 +166,18 @@ public class OperationServiceImpl implements AutomationService {
         putOperation(op, false);
     }
 
-    public void putOperation(Class<?> type, boolean replace) throws OperationException {
+    public void putOperation(Class<?> type, boolean replace)
+            throws OperationException {
         OperationTypeImpl op = new OperationTypeImpl(this, type);
         putOperation(op, replace);
     }
 
-    protected synchronized void putOperation(OperationTypeImpl op, boolean replace) throws OperationException {
+    protected synchronized void putOperation(OperationTypeImpl op,
+            boolean replace) throws OperationException {
         if (!replace && operations.containsKey(op.getId())) {
-            throw new OperationException("An operation is already bound to: "+op.getId()+". Use 'replace=true' to replace an existing operation");
+            throw new OperationException("An operation is already bound to: "
+                    + op.getId()
+                    + ". Use 'replace=true' to replace an existing operation");
         }
         operations.put(op.getId(), op);
         lookup = null;
@@ -176,10 +196,12 @@ public class OperationServiceImpl implements AutomationService {
         return values.toArray(new OperationType[values.size()]);
     }
 
-    public OperationType getOperation(String id) throws OperationException {
-        OperationType op = (OperationType)lookup().get(id);
+    public OperationType getOperation(String id)
+            throws OperationNotFoundException {
+        OperationType op = lookup().get(id);
         if (op == null) {
-            throw new OperationException("No operation was bound on ID: "+id);
+            throw new OperationNotFoundException(
+                    "No operation was bound on ID: " + id);
         }
         return op;
     }
@@ -206,15 +228,19 @@ public class OperationServiceImpl implements AutomationService {
         return _lookup;
     }
 
-    public CompiledChain compileChain(Class<?> inputType, OperationChain chain) throws Exception, InvalidChainException {
+    public CompiledChain compileChain(Class<?> inputType, OperationChain chain)
+            throws Exception, InvalidChainException {
         List<OperationParameters> ops = chain.getOperations();
-        return compileChain(inputType, ops.toArray(new OperationParameters[ops.size()]));
+        return compileChain(inputType,
+                ops.toArray(new OperationParameters[ops.size()]));
     }
 
-    public CompiledChain compileChain(Class<?> inputType, OperationParameters ... chain) throws Exception, InvalidChainException {
-        return CompiledChainImpl.buildChain(this, inputType == null ? Void.TYPE : inputType, chain);
+    public CompiledChain compileChain(Class<?> inputType,
+            OperationParameters... chain) throws Exception,
+            InvalidChainException {
+        return CompiledChainImpl.buildChain(this, inputType == null ? Void.TYPE
+                : inputType, chain);
     }
-
 
     public void putTypeAdapter(Class<?> accept, Class<?> produce,
             TypeAdapter adapter) {
@@ -234,8 +260,8 @@ public class OperationServiceImpl implements AutomationService {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getAdapter(OperationContext ctx, Object toAdapt, Class<?> targetType)
-            throws Exception {
+    public <T> T getAdaptedValue(OperationContext ctx, Object toAdapt,
+            Class<?> targetType) throws Exception {
         if (toAdapt == null) {
             return null;
         }
@@ -244,18 +270,19 @@ public class OperationServiceImpl implements AutomationService {
         if (targetType.isPrimitive()) {
             targetType = getTypeForPrimitive(targetType);
             if (targetType.isAssignableFrom(toAdaptClass)) {
-                return (T)toAdapt;
+                return (T) toAdapt;
             }
         }
         TypeAdapter adapter = getTypeAdapter(toAdaptClass, targetType);
         if (adapter == null) {
-            throw new OperationException("No type adapter found for input: "+toAdapt.getClass()+" and output "+targetType);
+            throw new OperationException("No type adapter found for input: "
+                    + toAdapt.getClass() + " and output " + targetType);
         }
-        return (T)adapter.getAdapter(ctx, toAdapt);
+        return (T) adapter.getAdaptedValue(ctx, toAdapt);
     }
 
     public List<OperationDocumentation> getDocumentation() {
-        ArrayList<OperationDocumentation> result = new ArrayList<OperationDocumentation>();
+        List<OperationDocumentation> result = new ArrayList<OperationDocumentation>();
         Collection<OperationTypeImpl> ops = lookup().values();
         for (OperationTypeImpl ot : ops.toArray(new OperationTypeImpl[ops.size()])) {
             result.add(ot.getDocumentation());
@@ -264,10 +291,11 @@ public class OperationServiceImpl implements AutomationService {
         return result;
     }
 
-
     static class ChainEntry {
         OperationChain chain;
+
         CompiledChain cchain;
+
         ChainEntry(OperationChain chain) {
             this.chain = chain;
         }

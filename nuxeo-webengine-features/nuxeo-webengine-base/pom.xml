@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.nuxeo.ecm.platform</groupId>
     <artifactId>nuxeo-webengine-features</artifactId>
-    <version>5.3.2-SNAPSHOT</version>
+    <version>5.4.0-SNAPSHOT</version>
   </parent>
 
   <groupId>org.nuxeo.ecm.webengine</groupId>
@@ -19,7 +19,7 @@
     <dependency>
       <groupId>javax.ws.rs</groupId>
       <artifactId>jsr311-api</artifactId>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.nuxeo.ecm.webengine</groupId>
       <artifactId>nuxeo-webengine-core</artifactId>
@@ -45,7 +45,10 @@
       <groupId>javax.ejb</groupId>
       <artifactId>ejb-api</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

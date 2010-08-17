@@ -37,14 +37,10 @@ import org.nuxeo.ecm.core.api.NuxeoGroup;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
-import org.nuxeo.ecm.core.api.event.CoreEventConstants;
-import org.nuxeo.ecm.core.api.event.DocumentEventCategories;
 import org.nuxeo.ecm.core.api.security.ACE;
 import org.nuxeo.ecm.core.api.security.ACL;
 import org.nuxeo.ecm.core.api.security.ACP;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
-import org.nuxeo.ecm.core.event.Event;
-import org.nuxeo.ecm.core.event.EventProducer;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.ecm.platform.ec.notification.NotificationConstants;
 import org.nuxeo.ecm.platform.jbpm.JbpmEventNames;
@@ -63,13 +59,11 @@ import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- *
  * Implementation of the {@link PublishedDocumentFactory} for core
  * implementation using native proxy system with validation workflow.
  *
  * @author <a href="mailto:troger@nuxeo.com">Thomas Roger</a>
  * @author <a href="mailto:tmartins@nuxeo.com">Thierry Martins</a>
- *
  */
 public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
         PublishedDocumentFactory {
@@ -81,8 +75,6 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
     protected JbpmService jbpmService;
 
     protected UserManager userManager;
-
-    protected EventProducer eventProducer;
 
     @Override
     public PublishedDocument publishDocument(DocumentModel doc,
@@ -172,7 +164,8 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
         getJbpmService().saveTaskInstances(Collections.singletonList(ti));
         DocumentEventContext ctx = new DocumentEventContext(session, principal,
                 document);
-        ctx.setProperty(NotificationConstants.RECIPIENTS_KEY, actorIds);
+        ctx.setProperty(NotificationConstants.RECIPIENTS_KEY,
+                prefixedActorIds.toArray(new String[prefixedActorIds.size()]));
         try {
             getEventProducer().fireEvent(
                     ctx.newEvent(JbpmEventNames.WORKFLOW_TASK_ASSIGNED));
@@ -207,66 +200,6 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
         return jbpmService;
     }
 
-    protected EventProducer getEventProducer() throws ClientException {
-        if (eventProducer == null) {
-            try {
-                eventProducer = Framework.getService(EventProducer.class);
-            } catch (Exception e) {
-                throw new ClientException(e);
-            }
-        }
-        return eventProducer;
-    }
-
-    protected void notifyEvent(PublishingEvent event, DocumentModel doc,
-            CoreSession coreSession) throws PublishingException {
-        try {
-            notifyEvent(event.name(), null, null, null, doc, coreSession);
-        } catch (ClientException e) {
-            throw new PublishingException(e);
-        }
-    }
-
-    protected void notifyEvent(String eventId,
-            Map<String, Serializable> properties, String comment,
-            String category, DocumentModel dm, CoreSession coreSession)
-            throws ClientException {
-        // Default category
-        if (category == null) {
-            category = DocumentEventCategories.EVENT_DOCUMENT_CATEGORY;
-        }
-        if (properties == null) {
-            properties = new HashMap<String, Serializable>();
-        }
-        properties.put(CoreEventConstants.REPOSITORY_NAME,
-                dm.getRepositoryName());
-        properties.put(CoreEventConstants.SESSION_ID,
-                coreSession.getSessionId());
-        properties.put(CoreEventConstants.DOC_LIFE_CYCLE,
-                dm.getCurrentLifeCycleState());
-
-        DocumentEventContext ctx = new DocumentEventContext(coreSession,
-                coreSession.getPrincipal(), dm);
-        ctx.setProperties(properties);
-        ctx.setComment(comment);
-        ctx.setCategory(category);
-
-        Event event = ctx.newEvent(eventId);
-
-        EventProducer evtProducer;
-        try {
-            evtProducer = Framework.getService(EventProducer.class);
-        } catch (Exception e) {
-            throw new ClientException(e);
-        }
-
-        try {
-            evtProducer.fireEvent(event);
-        } catch (Exception e) {
-            throw new ClientException(e);
-        }
-    }
-
     @Override
     public void validatorPublishDocument(PublishedDocument publishedDocument,
             String comment) throws PublishingException {
@@ -276,14 +209,16 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
 
             DocumentModel sourceVersion = coreSession.getSourceDocument(proxy.getRef());
             DocumentModel dm = coreSession.getSourceDocument(sourceVersion.getRef());
-            DocumentModelList brothers = coreSession.getProxies(dm.getRef(), proxy.getParentRef());
-            if(brothers != null && brothers.size() > 1) {
+            DocumentModelList brothers = coreSession.getProxies(dm.getRef(),
+                    proxy.getParentRef());
+            if (brothers != null && brothers.size() > 1) {
                 // we remove the brothers of the published document if any
                 // the use case is:
-                // v1 is published, v2 is waiting for publication and was just validated
+                // v1 is published, v2 is waiting for publication and was just
+                // validated
                 // v1 is removed and v2 is now being published
-                for(DocumentModel doc : brothers) {
-                    if(!doc.getId().equals(proxy.getId())) {
+                for (DocumentModel doc : brothers) {
+                    if (!doc.getId().equals(proxy.getId())) {
                         coreSession.removeDocument(doc.getRef());
                     }
                 }
@@ -386,6 +321,7 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
 
     protected boolean isPublished(PublishedDocument publishedDocument)
             throws PublishingException {
+        // FIXME: should be cached
         DocumentModel proxy = ((SimpleCorePublishedDocument) publishedDocument).getProxy();
         try {
             List<TaskInstance> tis = getJbpmService().getTaskInstances(proxy,
@@ -462,15 +398,18 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
 
     /**
      * @author arussel
-     *
      */
     protected class DocumentPublisherUnrestricted extends
             UnrestrictedSessionRunner {
 
         protected PublishedDocument result;
+
         protected DocumentRef docRef;
+
         protected DocumentRef targetRef;
+
         protected NuxeoPrincipal principal;
+
         protected String comment = "";
 
         public DocumentPublisherUnrestricted(CoreSession session,
@@ -544,11 +483,15 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
                         DocumentModel proxy = session.publishDocument(
                                 session.getDocument(docRef),
                                 session.getDocument(targetRef), false);
+                        // save needed to have the proxy visible from other
+                        // sessions in non-JCA mode
+                        session.save();
                         SimpleCorePublishedDocument publishedDocument = new SimpleCorePublishedDocument(
                                 proxy);
                         notifyEvent(PublishingEvent.documentWaitingPublication,
                                 proxy, coreSession);
                         restrictPermission(proxy, principal, coreSession, null);
+                        session.save(); // process invalidations (non-JCA)
                         createTask(proxy, coreSession, principal);
                         publishedDocument.setPending(true);
                         result = publishedDocument;
@@ -556,6 +499,9 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
                         DocumentModel proxy = session.publishDocument(
                                 session.getDocument(docRef),
                                 session.getDocument(targetRef));
+                        // save needed to have the proxy visible from other
+                        // sessions in non-JCA mode
+                        session.save();
                         notifyEvent(PublishingEvent.documentPublished, proxy,
                                 coreSession);
                         SimpleCorePublishedDocument publishedDocument = new SimpleCorePublishedDocument(
@@ -565,6 +511,7 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
                 }
             } else if (list.size() == 2) {
                 DocumentModel waitingForPublicationDoc = null;
+                session.save(); // process invalidations (non-JCA)
                 for (DocumentModel dm : list) {
                     if (session.getACP(dm.getRef()).getACL(ACL_NAME) != null) {
                         waitingForPublicationDoc = dm;
@@ -601,4 +548,5 @@ public class CoreProxyWithWorkflowFactory extends CoreProxyFactory implements
         }
 
     }
+
 }

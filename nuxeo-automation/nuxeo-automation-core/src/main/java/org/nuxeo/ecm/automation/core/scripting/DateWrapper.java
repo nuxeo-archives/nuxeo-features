@@ -22,11 +22,10 @@ import java.util.Date;
 
 /**
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
- *
  */
 public class DateWrapper {
 
-    protected Calendar date;
+    protected final Calendar date;
 
     public DateWrapper() {
         this.date = Calendar.getInstance();

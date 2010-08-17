@@ -31,6 +31,7 @@ import static org.nuxeo.ecm.platform.mail.utils.MailCoreConstants.TEXT_KEY;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,6 +43,7 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.ContentType;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
 import org.apache.commons.logging.Log;
@@ -69,15 +71,31 @@ public class ExtractMessageInformationAction extends AbstractMailAction {
     public static final String MESSAGE_RFC822_MIMETYPE = "message/rfc822";
 
     private String bodyContent;
-
+    
     @Override
     public boolean execute(ExecutionContext context) throws Exception {
         bodyContent = "";
 
         try {
-            Message message = context.getMessage();
+            Message originalMessage = context.getMessage();
             if (log.isDebugEnabled()) {
-                log.debug("Transforming message" + message.getSubject());
+                log.debug("Transforming message, original subject: "
+                        + originalMessage.getSubject());
+            }
+
+            // fully load the message before trying to parse to
+            // override most of server bugs, see
+            // http://java.sun.com/products/javamail/FAQ.html#imapserverbug
+            Message message;
+            if (originalMessage instanceof MimeMessage) {
+                message = new MimeMessage((MimeMessage) originalMessage);
+                if (log.isDebugEnabled()) {
+                    log.debug("Transforming message after full load: "
+                            + message.getSubject());
+                }
+            } else {
+                // stuck with the original one
+                message = originalMessage;
             }
 
             // Subject
@@ -197,52 +215,96 @@ public class ExtractMessageInformationAction extends AbstractMailAction {
             throws Exception {
         String filename = getFilename(part, defaultFilename);
         List<FileBlob> blobs = (List<FileBlob>) context.get(ATTACHMENTS_KEY);
-
-        if (!part.isMimeType("multipart/*")) {
-            String disp = part.getDisposition();
-            // no disposition => mail body, which can be also blob (image for
-            // instance)
-            if (disp == null && // convert only text
-                    part.getContentType().toLowerCase().startsWith("text/")) {
-                bodyContent += decodeMailBody(part);
-            } else {
-                FileBlob fileBlob = new FileBlob(part.getInputStream());
-                String mime = DEFAULT_BINARY_MIMETYPE;
-                try {
-                    if (mimeService != null) {
-                        ContentType contentType = new ContentType(
-                                part.getContentType());
-                        mime = mimeService.getMimetypeFromFilenameAndBlobWithDefault(
-                                filename, fileBlob, contentType.getBaseType());
+        
+        if (part.isMimeType("multipart/alternative")) {
+            bodyContent += getText(part);
+        } else {
+            if (!part.isMimeType("multipart/*")) {
+                String disp = part.getDisposition();
+                // no disposition => mail body, which can be also blob (image for
+                // instance)
+                if (disp == null && // convert only text
+                        part.getContentType().toLowerCase().startsWith("text/")) {
+                    bodyContent += decodeMailBody(part);
+                } else {
+                    FileBlob fileBlob = new FileBlob(part.getInputStream());
+                    String mime = DEFAULT_BINARY_MIMETYPE;
+                    try {
+                        if (mimeService != null) {
+                            ContentType contentType = new ContentType(
+                                    part.getContentType());
+                            mime = mimeService.getMimetypeFromFilenameAndBlobWithDefault(
+                                    filename, fileBlob, contentType.getBaseType());
+                        }
+                    } catch (Exception e) {
+                        log.error(e);
                     }
-                } catch (Exception e) {
-                    log.error(e);
+                    fileBlob.setMimeType(mime);
+    
+                    fileBlob.setFilename(filename);
+    
+                    blobs.add(fileBlob);
                 }
-                fileBlob.setMimeType(mime);
-
-                fileBlob.setFilename(filename);
-
-                blobs.add(fileBlob);
             }
-        }
-
-        if (part.isMimeType("multipart/*")) {
-            // This is a Multipart
-            Multipart mp = (Multipart) part.getContent();
-
-            int count = mp.getCount();
-            for (int i = 0; i < count; i++) {
-                getAttachmentParts(mp.getBodyPart(i), defaultFilename,
+    
+            if (part.isMimeType("multipart/*")) {
+                // This is a Multipart
+                Multipart mp = (Multipart) part.getContent();
+    
+                int count = mp.getCount();
+                for (int i = 0; i < count; i++) {
+                    getAttachmentParts(mp.getBodyPart(i), defaultFilename,
+                            mimeService, context);
+                }
+            } else if (part.isMimeType(MESSAGE_RFC822_MIMETYPE)) {
+                // This is a Nested Message
+                getAttachmentParts((Part) part.getContent(), defaultFilename,
                         mimeService, context);
             }
-        } else if (part.isMimeType(MESSAGE_RFC822_MIMETYPE)) {
-            // This is a Nested Message
-            getAttachmentParts((Part) part.getContent(), defaultFilename,
-                    mimeService, context);
         }
 
     }
 
+    /**
+     * Return the primary text content of the message.
+     */
+    private String getText(Part p) throws
+                MessagingException, IOException {
+        if (p.isMimeType("text/*")) {
+            return decodeMailBody(p);
+        }
+
+        if (p.isMimeType("multipart/alternative")) {
+            // prefer html text over plain text
+            Multipart mp = (Multipart)p.getContent();
+            String text = null;
+            for (int i = 0; i < mp.getCount(); i++) {
+                Part bp = mp.getBodyPart(i);
+                if (bp.isMimeType("text/plain")) {
+                    if (text == null)
+                        text = getText(bp);
+                    continue;
+                } else if (bp.isMimeType("text/html")) {
+                    String s = getText(bp);
+                    if (s != null)
+                        return s;
+                } else {
+                    return getText(bp);
+                }
+            }
+            return text;
+        } else if (p.isMimeType("multipart/*")) {
+            Multipart mp = (Multipart)p.getContent();
+            for (int i = 0; i < mp.getCount(); i++) {
+                String s = getText(mp.getBodyPart(i));
+                if (s != null)
+                    return s;
+            }
+        }
+
+        return null;
+    }
+    
     /**
      * Interprets the body accordingly to the charset used. It relies on the
      * content type being ****;charset={charset};******
@@ -251,7 +313,8 @@ public class ExtractMessageInformationAction extends AbstractMailAction {
      */
     protected static String decodeMailBody(Part part)
             throws MessagingException, IOException {
-        InputStream is = part.getInputStream();
+        String encoding = MimeUtility.getEncoding(part.getDataHandler());
+        InputStream is = MimeUtility.decode(part.getInputStream(), encoding);
         String contType = part.getContentType();
         final String charsetIdentifier = "charset=";
         final String ISO88591 = "iso-8859-1";
@@ -265,6 +328,10 @@ public class ExtractMessageInformationAction extends AbstractMailAction {
                 charset = charset.substring(0, offset);
             }
         }
+        // Charset could be like "utf-8" or utf-8
+        if (!"".equals(charset)) {
+            charset = charset.replaceAll("\"", "");
+        }
         log.debug("Content type: " + contType + "; charset: " + charset);
         if (charset.equalsIgnoreCase(ISO88591)) {
             // see
@@ -275,14 +342,17 @@ public class ExtractMessageInformationAction extends AbstractMailAction {
             log.debug("Using replacing charset: " + charset);
         }
         String ret;
-        // FIXME new String(FileUtils.readBytes(is), charset) throws exceptions all the time,
-        //commented out for the moment.
-//        if (StringUtils.isBlank(charset)) {
-//            ret = new String(FileUtils.readBytes(is));
-//        } else {
-//            ret = new String(FileUtils.readBytes(is), charset);
-//        }
-        ret = new String(FileUtils.readBytes(is));
+        byte[] streamContent = FileUtils.readBytes(is);
+        if ("".equals(charset)) {
+            ret = new String(streamContent);
+        } else {
+            try {
+                ret = new String(streamContent, charset);
+            } catch (UnsupportedEncodingException e) {
+                // try without encoding
+                ret = new String(streamContent);
+            }
+        }
         return ret;
     }
 
