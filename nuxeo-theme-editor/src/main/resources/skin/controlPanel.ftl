@@ -2,7 +2,7 @@
 
 <div id="nxthemesThemeControlPanel" class="nxthemesThemeControlPanel">
 
-<table style="width: 100%">
+<table style="width: 100%" class="nxthemesThemeControlPads">
   <tr>
     <td colspan="2" style="padding: 0 10px">
     <h1 style="margin: 15px 0 0 0; padding: 0">Welcome to Nuxeo Theme</h1>

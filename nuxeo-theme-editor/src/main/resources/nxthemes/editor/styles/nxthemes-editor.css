@@ -1883,3 +1883,26 @@ table.fragmentFactory td {
   margin: 45px 50px;
   padding: 30px;
 }
+
+.nxthemesThemeControlPads img {
+  border: none;
+  border: 1px solid #ccc;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background-color: #eee;
+  float: left;
+  padding: 8px;
+  margin-left: 10px;
+}
+
+.nxthemesThemeControlPads a {
+  text-decoration: none;
+  color: #000;
+  font-size: 15px;
+}
+
+
+.nxthemesThemeControlPads div {
+  padding: 16px;
+}
