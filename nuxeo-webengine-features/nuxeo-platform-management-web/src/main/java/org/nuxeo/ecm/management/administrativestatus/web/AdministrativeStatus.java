@@ -25,7 +25,6 @@ import javax.ws.rs.Produces;
 
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.management.administrativestatus.service.AdministrativeStatusService;
 import org.nuxeo.ecm.webengine.WebEngine;
 import org.nuxeo.ecm.webengine.WebException;
 import org.nuxeo.ecm.webengine.model.Access;
@@ -43,15 +42,15 @@ import org.nuxeo.runtime.api.Framework;
  */
 @WebObject(type = ADMINISTRATIVE_STATUS_WEB_OBJECT_TYPE , administrator=Access.GRANT)
 @Produces("text/html; charset=UTF-8")
-public class AdministratativeStatus extends DefaultObject {
+public class AdministrativeStatus extends DefaultObject {
 
-    AdministrativeStatusService administrativeStatusService;
+	org.nuxeo.ecm.platform.management.statuses.AdministrativeStatus administrativeStatus;
 
     @Override
     public void initialize(Object... args) {
         super.initialize(args);
         try {
-            administrativeStatusService = getAdministrativeStatusService();
+            administrativeStatus = getAdministrativeStatus();
         } catch (Exception e) {
         }
     }
@@ -62,9 +61,9 @@ public class AdministratativeStatus extends DefaultObject {
         CoreSession session = context.getCoreSession();
         try {
             return getView("administrative-status").arg("serverInstanceId",
-                    getAdministrativeStatusService().getServerInstanceName()).arg(
+                    getAdministrativeStatus().getServerInstanceName()).arg(
                     "administrativeStatus",
-                    getAdministrativeStatusService().getServerStatus(session));
+                    getAdministrativeStatus().getValue());
         } catch (ClientException e) {
             throw WebException.wrap(e);
         }
@@ -75,12 +74,11 @@ public class AdministratativeStatus extends DefaultObject {
     @Produces("text/html")
     public Object lockServer() {
         try {
-            CoreSession session = WebEngine.getActiveContext().getCoreSession();
-            getAdministrativeStatusService().lockServer(session);
+            getAdministrativeStatus().setPassive();
             return getView("administrative-status").arg("serverInstanceId",
-                    getAdministrativeStatusService().getServerInstanceName()).arg(
+                    getAdministrativeStatus().getServerInstanceName()).arg(
                     "administrativeStatus",
-                    getAdministrativeStatusService().getServerStatus(session));
+                    getAdministrativeStatus().getValue());
         } catch (Exception e) {
             throw WebException.wrap(e);
         }
@@ -91,26 +89,25 @@ public class AdministratativeStatus extends DefaultObject {
     @Produces("text/html")
     public Object unlockServer() {
         try {
-            CoreSession session = WebEngine.getActiveContext().getCoreSession();
-            getAdministrativeStatusService().unlockServer(session);
+            getAdministrativeStatus().setActive();
             return getView("administrative-status").arg("serverInstanceId",
-                    getAdministrativeStatusService().getServerInstanceName()).arg(
+                    getAdministrativeStatus().getServerInstanceName()).arg(
                     "administrativeStatus",
-                    getAdministrativeStatusService().getServerStatus(session));
+                    getAdministrativeStatus().getValue());
         } catch (Exception e) {
             throw WebException.wrap(e);
         }
     }
 
-    private AdministrativeStatusService getAdministrativeStatusService()
+    private org.nuxeo.ecm.platform.management.statuses.AdministrativeStatus getAdministrativeStatus()
             throws ClientException {
-        if (administrativeStatusService == null) {
+        if (administrativeStatus == null) {
             try {
-                administrativeStatusService = Framework.getService(AdministrativeStatusService.class);
+                administrativeStatus = Framework.getService(org.nuxeo.ecm.platform.management.statuses.AdministrativeStatus.class);
             } catch (Exception e) {
                 throw new ClientException(e);
             }
         }
-        return administrativeStatusService;
+        return administrativeStatus;
     }
 }
