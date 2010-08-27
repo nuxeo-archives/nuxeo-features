@@ -14,11 +14,12 @@
  * Contributors:
  *     mcedica
  */
-package org.nuxeo.ecm.management.administrativestatus.web;
+package org.nuxeo.ecm.platform.management.web;
 
-import static org.nuxeo.ecm.platform.management.web.utils.PlatformManagementWebConstants.ADMINISTRATIVE_STATUS_WEB_OBJECT_TYPE;
-import static org.nuxeo.ecm.platform.management.web.utils.PlatformManagementWebConstants.PROBES_WEB_OBJECT_TYPE;
-import static org.nuxeo.ecm.platform.management.web.utils.PlatformManagementWebConstants.PROBE_WEB_OBJECT_TYPE;
+import static org.nuxeo.ecm.platform.management.web.statuses.Constants.ADMINISTRATIVE_STATUS_WEB_OBJECT_TYPE;
+import static org.nuxeo.ecm.platform.management.web.statuses.Constants.MANAGEMENT_WEB_MODULE;
+import static org.nuxeo.ecm.platform.management.web.statuses.Constants.PROBES_WEB_OBJECT_TYPE;
+import static org.nuxeo.ecm.platform.management.web.statuses.Constants.PROBE_WEB_OBJECT_TYPE;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,32 +30,31 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.platform.management.statuses.ProbeRunner;
 import org.nuxeo.ecm.webengine.WebException;
-import org.nuxeo.ecm.webengine.model.Access;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
 import org.nuxeo.runtime.api.Framework;
 
 
 /**
- * 
- * Web object implementation corresponding to the root module for ha 
+ *
+ * Web object implementation corresponding to the root module for management
  * (module used for administrative purpose)
- * 
+ *
  * @author mcedica
- * 
+ *
  */
-@WebObject(type = "ha" , administrator=Access.GRANT)
+@WebObject(type = MANAGEMENT_WEB_MODULE)
 @Produces("text/html; charset=UTF-8")
-public class HaManager extends DefaultObject {
+public class ManagementModule extends DefaultObject {
 
-    private static final Log log = LogFactory.getLog(HaManager.class);
+    private static final Log log = LogFactory.getLog(ManagementModule.class);
 
-    private ProbeRunner probeRunner;
+    protected ProbeRunner probeRunner;
 
     @Override
     public void initialize(Object... args) {
         try {
-            probeRunner = getProbeRunner();
+            probeRunner = Framework.getService(ProbeRunner.class);
         } catch (Exception e) {
             log.error("Unable to retreive the probeRunner", e);
         }
@@ -65,8 +65,8 @@ public class HaManager extends DefaultObject {
         return getView("index");
     }
 
-    @Path("{probeName}")
-    public Object dispatch(@PathParam("probeName") String path) {
+    @Path("{name}")
+    public Object dispatch(@PathParam("name") String path) {
         try {
             if (getProbesObjectTypeName().equals(path)) {
                 return newObject(getProbesObjectTypeName(), probeRunner);
@@ -74,20 +74,14 @@ public class HaManager extends DefaultObject {
 
             if (getAdministrativeStatusObjectTypeName().equals(path)) {
                 return newObject(getAdministrativeStatusObjectTypeName(), path);
-            } else {
-                return newObject(getProbeObjectTypeName(), probeRunner, path);
             }
+
+            return newObject(getProbeObjectTypeName(), probeRunner, path);
+
 
         } catch (Exception e) {
             throw WebException.wrap(e);
         }
-    }
-
-    ProbeRunner getProbeRunner() throws Exception {
-        if (probeRunner == null) {
-            probeRunner = Framework.getService(ProbeRunner.class);
-        }
-        return probeRunner;
     }
 
     public String getAdministrativeStatusObjectTypeName() {

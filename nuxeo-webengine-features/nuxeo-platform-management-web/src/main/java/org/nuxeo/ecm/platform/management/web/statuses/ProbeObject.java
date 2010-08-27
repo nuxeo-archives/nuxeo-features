@@ -14,50 +14,58 @@
  * Contributors:
  *     mcedica
  */
-package org.nuxeo.ecm.platform.management.web.probes;
+package org.nuxeo.ecm.platform.management.web.statuses;
 
-import static org.nuxeo.ecm.platform.management.web.utils.PlatformManagementWebConstants.PROBES_WEB_OBJECT_TYPE;
+import static org.nuxeo.ecm.platform.management.web.statuses.Constants.PROBE_WEB_OBJECT_TYPE;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 
 import org.nuxeo.ecm.platform.management.statuses.ProbeInfo;
 import org.nuxeo.ecm.platform.management.statuses.ProbeRunner;
-import org.nuxeo.ecm.webengine.model.Access;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
 
-/**
- * Runs the contributed probs if any
- * */
-@WebObject(type = PROBES_WEB_OBJECT_TYPE, administrator = Access.GRANT)
-public class Probes extends DefaultObject {
+
+@WebObject(type = PROBE_WEB_OBJECT_TYPE)
+public class ProbeObject extends DefaultObject {
 
     private ProbeRunner probeRunner;
+
+    private String probeName;
 
     @Override
     protected void initialize(Object... args) {
         assert args != null && args.length > 0;
         probeRunner = (ProbeRunner) args[0];
+        probeName = (String) args[1];
     }
 
     @GET
     public Object doGet() {
-        // run all probes and then display status for each one
         if (probeRunner == null) {
-            return getView(getErrorViewName()).args(getNoProbesErrorArguments());
+            return getView(getErrorViewName()).args(
+                    getNoProbesErrorArguments());
         }
-        probeRunner.run();
-        List<ProbeInfo> succededProbes = new ArrayList<ProbeInfo>();
-        succededProbes.addAll(probeRunner.getRunWithSuccessProbesInfo());
-        return getView("run-all-probes").arg("probes_in_error",
-                probeRunner.getProbesInError()).arg("probes_succeded",
-                succededProbes);
+        if (!probeRunner.getProbeNames().contains(probeName)) {
+            return getView(getErrorViewName()).args(
+                    getNoProbeErrorArguments());
+        }
 
+        // probe is registered, we should be able to run it
+        ProbeInfo probeInfo = probeRunner.getProbeInfo(probeName);
+        return getView("index").arg("probe", probeInfo);
+
+    }
+
+    @POST
+    public Object run() {
+        ProbeInfo info = probeRunner.getProbeInfo(probeName);
+        probeRunner.runProbe(info);
+        return redirect(getPath());
     }
 
     private Map<String, Object> getNoProbesErrorArguments() {
@@ -66,7 +74,13 @@ public class Probes extends DefaultObject {
         return errorArguments;
     }
 
+    private Map<String, Object> getNoProbeErrorArguments() {
+        Map<String, Object> errorArguments = new HashMap<String, Object>();
+        errorArguments.put("probe_name", probeName);
+        return errorArguments;
+    }
+
     private String getErrorViewName() {
-        return "run-probe-error";
+        return "error";
     }
 }
