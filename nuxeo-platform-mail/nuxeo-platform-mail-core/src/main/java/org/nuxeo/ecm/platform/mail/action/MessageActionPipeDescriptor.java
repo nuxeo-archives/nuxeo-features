@@ -33,7 +33,7 @@ import org.nuxeo.common.xmap.annotation.XObject;
 @XObject("pipe")
 public class MessageActionPipeDescriptor {
 
-    private final static String START_ACTION = "StartAction";
+    private static final String START_ACTION = "StartAction";
 
     @XNode("@name")
     private String name;
@@ -41,7 +41,7 @@ public class MessageActionPipeDescriptor {
     @XNode("@override")
     private Boolean override;
 
-    private final Map<String, MessageActionDescriptor> actionDecriptorsRegistry = new HashMap<String, MessageActionDescriptor>();
+    private final Map<String, MessageActionDescriptor> actionDescriptorsRegistry = new HashMap<String, MessageActionDescriptor>();
 
     private MessageActionPipe pipe = new MessageActionPipe();
 
@@ -52,7 +52,7 @@ public class MessageActionPipeDescriptor {
         return name;
     }
 
-    public Boolean getOverride() {
+    public boolean getOverride() {
         if (override == null) {
             return false;
         }
@@ -61,19 +61,17 @@ public class MessageActionPipeDescriptor {
 
     public Map<String, MessageActionDescriptor> getActions() {
         for (MessageActionDescriptor action : actions) {
-            actionDecriptorsRegistry.put(action.getId(), action);
+            actionDescriptorsRegistry.put(action.getId(), action);
         }
-        return actionDecriptorsRegistry;
+        return actionDescriptorsRegistry;
     }
 
     /**
      * Merge this MessageActionPipeDescriptor with the given one.
-     *
-     * @param descriptor
      */
     public void merge(MessageActionPipeDescriptor descriptor) {
         for (String actionName : descriptor.getActions().keySet()) {
-            actionDecriptorsRegistry.put(actionName,
+            actionDescriptorsRegistry.put(actionName,
                     descriptor.getActions().get(actionName));
         }
         pipe = new MessageActionPipe();
@@ -95,7 +93,7 @@ public class MessageActionPipeDescriptor {
     private void addAction(MessageActionDescriptor msgActionDescriptor) {
         pipe.add(msgActionDescriptor.getAction());
         String next = msgActionDescriptor.getTo();
-        MessageActionDescriptor nextAction = actionDecriptorsRegistry.get(next);
+        MessageActionDescriptor nextAction = actionDescriptorsRegistry.get(next);
         if (nextAction == null) {
             return;
         } else {

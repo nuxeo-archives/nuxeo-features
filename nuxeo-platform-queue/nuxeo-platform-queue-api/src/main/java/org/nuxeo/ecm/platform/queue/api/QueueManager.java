@@ -22,13 +22,12 @@ import java.util.Map;
 /**
  * Handle contents that needs long processing such as OCRing a document, images
  * manipulation, and eventually sequencing.
- *
+ * <p>
  * Handle only content of same type. Delegate the content saving to a dedicated
  * persister .
  *
  * @author Stephane Lacoin <slacoin@nuxeo.com> (aka matic)
  * @see QueuePersister
- *
  */
 public interface QueueManager {
 
@@ -44,23 +43,23 @@ public interface QueueManager {
      *
      * @return the list
      */
-    public List<QueueItem> listOrphanedItems();
+    List<QueueItem> listOrphanedItems();
 
     /**
      * Check for the existence of an atomic content on persistence back-end.
-     * 
+     *
      * @param content the content
      * @return true if content is already present on persistence back-end
      * @throws QueueException
      */
-    public boolean knowsContent(QueueContent content) throws QueueException;
+    boolean knowsContent(QueueContent content) throws QueueException;
 
     /**
      * Remove content from persistence back-end.
      *
      * @param content the content
      */
-    public void forgetContent(QueueContent content);
+    void forgetContent(QueueContent content);
 
     /**
      * Update additional item informations on persistence back-end.
@@ -68,7 +67,7 @@ public interface QueueManager {
      * @param content the content
      * @param additionalInfos the additional infos
      */
-    public void updateItem(QueueContent content,
+    void updateItem(QueueContent content,
             Map<String, Serializable> additionalInfos);
 
 }

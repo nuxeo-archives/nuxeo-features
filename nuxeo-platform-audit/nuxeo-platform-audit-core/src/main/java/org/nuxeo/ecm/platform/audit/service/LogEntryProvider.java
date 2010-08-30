@@ -222,10 +222,10 @@ public class LogEntryProvider {
     public List<LogEntry> queryLogsByPage(String[] eventIds, Date limit,
             String[] categories, String path, int pageNb, int pageSize) {
         if (eventIds == null) {
-            eventIds= new String[0];
+            eventIds = new String[0];
         }
         if (categories == null) {
-            categories= new String[0];
+            categories = new String[0];
         }
 
         StringBuilder queryString = new StringBuilder();
@@ -276,7 +276,7 @@ public class LogEntryProvider {
 
     @SuppressWarnings("unchecked")
     public int removeEntries(String eventId, String pathPattern) {
-        // TODO extended infos cascade delete does not work using HQL, so we
+        // TODO extended info cascade delete does not work using HQL, so we
         // have to delete each
         // entry by hand.
         Query query = em.createNamedQuery("LogEntry.findByEventIdAndPath");
@@ -304,7 +304,5 @@ public class LogEntryProvider {
         Query query = em.createNamedQuery("LogEntry.findEventIds");
         return (List<String>)query.getResultList();
     }
-
-
 
 }

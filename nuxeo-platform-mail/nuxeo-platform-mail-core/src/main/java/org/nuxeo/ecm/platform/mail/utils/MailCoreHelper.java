@@ -166,34 +166,34 @@ public final class MailCoreHelper {
                     properties.put("mail.imap.host", host);
                     properties.put("mail.imap.port", port);
                     properties.put("mail.imap.starttls.enable",
-                    		starttlsEnable.toString());
+                            starttlsEnable.toString());
                     properties.put("mail.imap.debug","true");
                 } else if (IMAPS.equals(protocolType)) {
                     properties.put("mail.imaps.host", host);
                     properties.put("mail.imaps.port", port);
                     properties.put("mail.imaps.starttls.enable",
-                    		starttlsEnable.toString());
+                            starttlsEnable.toString());
                     properties.put("mail.imaps.ssl.protocols", sslProtocols);
-                	properties.put("mail.imaps.socketFactory.class",
-                	"javax.net.ssl.SSLSocketFactory");
-                	properties.put("mail.imaps.socketFactory.fallback",
-                			socketFactoryFallback.toString());
-                	properties.put("mail.imaps.socketFactory.port",
-                			socketFactoryPort);
+                    properties.put("mail.imaps.socketFactory.class",
+                    "javax.net.ssl.SSLSocketFactory");
+                    properties.put("mail.imaps.socketFactory.fallback",
+                            socketFactoryFallback.toString());
+                    properties.put("mail.imaps.socketFactory.port",
+                            socketFactoryPort);
                 } else if (POP3S.equals(protocolType)) {
-                	properties.put("mail.pop3s.host", host);
-                	properties.put("mail.pop3s.port", port);
-                	properties.put("mail.pop3s.socketFactory.class",
-                	"javax.net.ssl.SSLSocketFactory");
-                	properties.put("mail.pop3s.socketFactory.fallback",
-                			socketFactoryFallback.toString());
-                	properties.put("mail.pop3s.socketFactory.port",
-                			socketFactoryPort);
+                    properties.put("mail.pop3s.host", host);
+                    properties.put("mail.pop3s.port", port);
+                    properties.put("mail.pop3s.socketFactory.class",
+                    "javax.net.ssl.SSLSocketFactory");
+                    properties.put("mail.pop3s.socketFactory.fallback",
+                            socketFactoryFallback.toString());
+                    properties.put("mail.pop3s.socketFactory.port",
+                            socketFactoryPort);
                     properties.put("mail.pop3s.ssl.protocols", sslProtocols);
                 } else {
                     // Is POP3 connection
-                	properties.put("mail.pop3.host", host);
-                	properties.put("mail.pop3.port", port);
+                    properties.put("mail.pop3.host", host);
+                    properties.put("mail.pop3.port", port);
                 }
 
                 properties.put("user", email);
@@ -201,8 +201,8 @@ public final class MailCoreHelper {
 
                 Session session = Session.getInstance(properties);
 
-            	Store store = session.getStore();
-            	store.connect(email, password);
+                Store store = session.getStore();
+                store.connect(email, password);
 
                 String folderName = INBOX; // TODO should be an attribute in 'protocol' schema
                 rootFolder = store.getFolder(folderName);
@@ -218,12 +218,11 @@ public final class MailCoreHelper {
                 rootFolder.fetch(allMessages, fetchProfile);
 
                 List<Message> unreadMessagesList = new ArrayList<Message>();
-                for (int i = 0; i < allMessages.length; i++) {
-                    Flags flags = allMessages[i].getFlags();
+                for (Message message : allMessages) {
+                    Flags flags = message.getFlags();
                     int unreadMessagesListSize = unreadMessagesList.size();
-                    if (flags != null && !flags.contains(Flag.SEEN)
-                            && unreadMessagesListSize < emailsLimitLongValue) {
-                        unreadMessagesList.add(allMessages[i]);
+                    if (flags != null && !flags.contains(Flag.SEEN) && unreadMessagesListSize < emailsLimitLongValue) {
+                        unreadMessagesList.add(message);
                         if (unreadMessagesListSize == emailsLimitLongValue - 1) {
                             break;
                         }

@@ -1,3 +1,20 @@
+/*
+ * (C) Copyright 2010 Nuxeo SAS (http://nuxeo.com/) and contributors.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser General Public License
+ * (LGPL) version 2.1 which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl.html
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * Contributors:
+ *     Nuxeo - initial API and implementation
+ */
+
 package org.nuxeo.opensocial.shindig.crypto;
 
 import java.io.FileReader;
@@ -49,18 +66,18 @@ public class NXBlobCrypterSecurityTokenDecoder extends
                     log.warn("We expected to be able to use a BasicOAuthStore "
                             + "to configure OAuth services!");
                 } else {
-                    for (OAuthServiceDescriptor descrptor : os.getOAuthServices()) {
+                    for (OAuthServiceDescriptor descriptor : os.getOAuthServices()) {
                         BasicOAuthStore oauthStore = (BasicOAuthStore) store;
                         BasicOAuthStoreConsumerIndex index = new BasicOAuthStoreConsumerIndex();
-                        index.setGadgetUri(descrptor.getGadgetUrl());
-                        index.setServiceName(descrptor.getServiceName());
+                        index.setGadgetUri(descriptor.getGadgetUrl());
+                        index.setServiceName(descriptor.getServiceName());
                         String oauthKey = IOUtils.toString(new FileReader(
                                 os.getOAuthPrivateKeyFile()));
-                        if (!StringUtils.isEmpty(descrptor.getConsumerSecret())) {
-                            oauthKey = descrptor.getConsumerSecret();
+                        if (!StringUtils.isEmpty(descriptor.getConsumerSecret())) {
+                            oauthKey = descriptor.getConsumerSecret();
                         }
                         BasicOAuthStoreConsumerKeyAndSecret keyAndSecret = new BasicOAuthStoreConsumerKeyAndSecret(
-                                descrptor.getConsumerKey(), oauthKey,
+                                descriptor.getConsumerKey(), oauthKey,
                                 KeyType.RSA_PRIVATE,
                                 os.getOAuthPrivateKeyName(),
                                 os.getOAuthCallbackUrl());

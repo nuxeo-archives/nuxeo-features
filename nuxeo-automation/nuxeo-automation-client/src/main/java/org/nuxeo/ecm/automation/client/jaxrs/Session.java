@@ -29,36 +29,34 @@ public interface Session {
 
     /**
      * Get the client that created this session.
-     * 
+     *
      * @return the client. cannot be null.
      */
     AutomationClient getClient();
 
     /**
      * Get the login used to authenticate against the server
-     * 
+     *
      * @return the login. cannot be null.
      */
     LoginInfo getLogin();
 
     /**
      * Create a new operation request given an operation ID.
-     * 
+     *
      * @param id the ID of the operation to be executed.
      * @return the operation request
-     * @throws Exception
      */
     OperationRequest newRequest(String id) throws Exception;
 
     /**
      * Create a new operation request given an operation ID and an operation
      * context map.
-     * 
+     *
      * @param id the operation id
      * @param ctx the context map to be used when executing the operation on the
      *            server.
      * @return the operation request
-     * @throws Exception
      */
     OperationRequest newRequest(String id, Map<String, String> ctx)
             throws Exception;
@@ -69,20 +67,18 @@ public interface Session {
 
     /**
      * Get a file from the server given a path identifying the file.
-     * 
+     *
      * @param path the file path
      * @return a blob representation of the file
-     * @throws Exception
      */
     Blob getFile(String path) throws Exception;
 
     /**
      * Get a collection of files from the server given the path identifying the
      * collection.
-     * 
-     * @param path
+     *
+     * @param path the file path
      * @return a collection of files represented as blobs.
-     * @throws Exception
      */
     Blobs getFiles(String path) throws Exception;
 
@@ -100,11 +96,7 @@ public interface Session {
      * <p>
      * Optional operation. Environments that cannot support this method (like
      * GWT) must throw {@link UnsupportedOperationException}
-     * 
-     * @param <T>
-     * @param type
-     * @return
-     * 
+     *
      * @see AutomationClient#getAdapter(Object, Class)
      */
     <T> T getAdapter(Class<T> type);

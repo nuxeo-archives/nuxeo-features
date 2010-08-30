@@ -1,3 +1,20 @@
+/*
+ * (C) Copyright 2010 Nuxeo SAS (http://nuxeo.com/) and contributors.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser General Public License
+ * (LGPL) version 2.1 which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl.html
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * Contributors:
+ *     Nuxeo - initial API and implementation
+ */
+
 package org.nuxeo.ecm.platform.comment.impl;
 
 import java.util.Calendar;
@@ -7,9 +24,6 @@ import org.nuxeo.ecm.core.api.Sorter;
 
 public class CommentSorter implements Sorter {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     private boolean asc = true;
@@ -28,7 +42,7 @@ public class CommentSorter implements Sorter {
              return asc ? 1 : -1;
          }
 
-        int cmp=0;
+        int cmp = 0;
         try {
             Calendar created1 = doc1.getProperty("dc:created").getValue(Calendar.class);
             Calendar created2 = doc2.getProperty("dc:created").getValue(Calendar.class);

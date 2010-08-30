@@ -110,9 +110,9 @@ public abstract class AbstractSiteDocumentObject extends DocumentObject {
             resp = SiteUtils.getLogoResponse(parentWebSite);
         } catch (Exception e) {
             if (doc == null) {
-                log.error("Problems retriveing the logo", e);
+                log.error("Problems retrieving the logo", e);
             } else {
-                log.error("Problems retriveing the logo for" + doc.getName(), e);
+                log.error("Problems retrieving the logo for" + doc.getName(), e);
             }
         }
         // return a default image, maybe you want to change this in future
@@ -182,18 +182,17 @@ public abstract class AbstractSiteDocumentObject extends DocumentObject {
             throw WebException.wrap(e);
         }
     }
-    
+
     /**
-     * JAX-RS specs doesn't allow  multiple REST designator on a single method so we need to use another method to do a POST  
-     * @param searchParam
-     * @return
+     * JAX-RS specs doesn't allow  multiple REST designator on a single method
+     * so we need to use another method to do a POST.
      */
     @POST
     @Path("search")
     public Object _getSearchParameters() {
         return getSearchParameters();
     }
-    
+
     @Override
     @Path(value = "{path}")
     public Resource traverse(@PathParam("path") String path) {
@@ -331,7 +330,6 @@ public abstract class AbstractSiteDocumentObject extends DocumentObject {
      *
      * @param session the nuxeo core session
      * @return the parent web site of the current web object
-     * @throws Exception
      */
     protected DocumentModel getParentWebSite(CoreSession session)
             throws Exception {

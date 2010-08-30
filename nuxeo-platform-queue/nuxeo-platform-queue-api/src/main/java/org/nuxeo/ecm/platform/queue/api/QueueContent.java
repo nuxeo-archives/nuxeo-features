@@ -1,3 +1,20 @@
+/*
+ * (C) Copyright 2010 Nuxeo SAS (http://nuxeo.com/) and contributors.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser General Public License
+ * (LGPL) version 2.1 which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl.html
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * Contributors:
+ *     Nuxeo - initial API and implementation
+ */
+
 package org.nuxeo.ecm.platform.queue.api;
 
 import java.io.Serializable;
@@ -8,13 +25,12 @@ import java.net.URISyntaxException;
  * Content that needs long processing. Asynchronous operation is started by the
  * queue when the content is handled. Content will remain in queue until it's
  * removed by an end of asynchronous operation call.
- * 
+ *
  * @see QueueManager
- **/
+ */
+public final class QueueContent {
 
-final public class QueueContent {
-
-    final public static long DEFAULT_DELAY = 1000;
+    public static final long DEFAULT_DELAY = 1000;
 
     public QueueContent(URI owner, String destination, String name) {
         this.owner = owner;
@@ -35,19 +51,12 @@ final public class QueueContent {
 
     Serializable additionalInfo;
 
-    /**
-     * return the
-     * 
-     * @return
-     */
     public URI getResourceURI() throws URISyntaxException {
         return new URI("queueContent:" + destination + ":" + name);
     }
 
     /**
-     * Gives the user who is performing the job
-     * 
-     * @return
+     * Gives the user who is performing the job.
      */
     public URI getOwner() {
         return owner;
@@ -55,27 +64,20 @@ final public class QueueContent {
 
     /**
      * Gives the queue name on which the content should be handled
-     * 
-     * @return
      */
-
     public String getDestination() {
         return destination;
     }
 
     /**
      * Uniquely names the content inside a queue.
-     * 
-     * @return the name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Gives the delay for locking purpose
-     * 
-     * @return
+     * Gives the delay for locking purpose.
      */
     public long getDelay() {
         return delay;
@@ -86,9 +88,7 @@ final public class QueueContent {
     }
 
     /**
-     * Gives information about the task being processed
-     * 
-     * @return
+     * Gives information about the task being processed.
      */
     public String getComments() {
         return comments;
@@ -100,8 +100,6 @@ final public class QueueContent {
 
     /**
      * Additional info for any queue job having to re run the test.
-     * 
-     * @return
      */
     public Serializable getAdditionalInfo() {
         return additionalInfo;

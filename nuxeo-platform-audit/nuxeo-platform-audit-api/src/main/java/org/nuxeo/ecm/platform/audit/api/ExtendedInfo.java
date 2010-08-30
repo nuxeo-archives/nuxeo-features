@@ -37,7 +37,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Extended audit info entities, used to persist contributed extended informations
+ * Extended audit info entities, used to persist contributed extended information.
  *
  * @author Stephane Lacoin (Nuxeo EP software engineer)
  */
@@ -47,9 +47,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @DiscriminatorColumn(name = "DISCRIMINATOR")
 public class ExtendedInfo implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     private ExtendedInfo() {
@@ -267,9 +264,6 @@ public class ExtendedInfo implements Serializable {
     @DiscriminatorValue(value = "BLOB")
     public static class BlobInfo extends ExtendedInfo {
 
-        /**
-         *
-         */
         private static final long serialVersionUID = 1L;
 
         private BlobInfo() {

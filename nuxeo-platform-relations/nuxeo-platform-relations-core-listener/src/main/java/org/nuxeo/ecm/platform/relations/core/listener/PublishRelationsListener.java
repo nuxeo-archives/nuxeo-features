@@ -47,21 +47,21 @@ import org.nuxeo.runtime.api.Framework;
  * Core Event listener to copy relations affecting the source document to the
  * proxy upon publication events and the relations that were present on the
  * replaced proxies if any.
- * 
+ *
  * If this core event listener is used in combination with another core event
  * listener that cleans relation on deleted documents, it should be executed
  * before the cleaning listener so as to be able to copy relations from the
  * deleted proxies.
- * 
+ *
  * This core event listener cannot work in asynchronous or post commit mode.
- * 
+ *
  * @author ogrisel
  */
 public class PublishRelationsListener implements EventListener {
 
     private static final Log log = LogFactory.getLog(PublishRelationsListener.class);
 
-    protected RelationManager rmanager = null;
+    protected RelationManager rmanager;
 
     // Override to change the list of graphs to copy relations when a document
     // is published, set to null to copy relations from all graphs
@@ -87,7 +87,7 @@ public class PublishRelationsListener implements EventListener {
         }
         return graphNamesForCopyFromWork;
     }
-    
+
     public List<String> getGraphNamesForCopyFromReplacedProxy() throws ClientException {
         if (graphNamesForCopyFromReplacedProxy == null) {
             return getRelationManager().getGraphNames();

@@ -23,20 +23,20 @@ import java.util.List;
 /**
  * This is a copy of OperationDocumentation from automation-core - must be keep
  * in sync
- * 
+ *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
- * 
+ *
  */
 public class OperationDocumentation implements
         Comparable<OperationDocumentation>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String id;
+    public final String id;
 
     /**
-     * an array of size multiple of 2. Each pair in the array is the input and
-     * output type of a method
+     * An array of size multiple of 2. Each pair in the array is the input and
+     * output type of a method.
      */
     public String[] signature;
 

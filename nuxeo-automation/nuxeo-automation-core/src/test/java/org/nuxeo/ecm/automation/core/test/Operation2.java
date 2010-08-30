@@ -27,16 +27,15 @@ import org.nuxeo.ecm.core.api.DocumentRef;
 
 /**
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
- *
  */
 @Operation(id="o2")
 public class Operation2 {
 
     @Param(name="message", required=false) protected String message = "default message";
-    
+
     @Context OperationContext ctx;
     @Context CoreSession session;
-    
+
     @OperationMethod
     public DocumentModel printInfo1(DocumentModel doc) throws Exception {
         //System.out.println("O2:doc:doc: "+doc.getId()+". Session: "+session+". message: "+message);
