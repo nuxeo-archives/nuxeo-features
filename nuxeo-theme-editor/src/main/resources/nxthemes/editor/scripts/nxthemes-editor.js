@@ -119,7 +119,7 @@ NXThemesEditor.editElement = function(info) {
              'id': id
          },
          onSuccess: function(r) {
-             NXThemes.getControllerById("editor perspectives").switchTo("element editor");
+             NXThemesEditor.setEditorPerspective("element editor");
              NXThemes.getViewById("element editor tabs").switchTo("element editor perspectives/edit properties");             
          },
          onFailure: function(r) {
@@ -138,7 +138,7 @@ NXThemesEditor.insertFragment = function(info) {
              'id': id
          },
          onSuccess: function(r) {
-             NXThemes.getControllerById("editor perspectives").switchTo("fragment factory");
+             NXThemesEditor.setEditorPerspective("fragment factory");
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -215,7 +215,7 @@ NXThemesEditor.changeElementStyle = function(info) {
              'id': id
          },
          onSuccess: function(r) {
-             NXThemes.getControllerById("editor perspectives").switchTo("element editor");
+             NXThemesEditor.setEditorPerspective("element editor");
              NXThemes.getViewById("element editor tabs").switchTo("element editor perspectives/edit style");
          },
          onFailure: function(r) {
@@ -558,7 +558,7 @@ NXThemesEditor.setElementPadding = function(info) {
              'id': id
          },
          onSuccess: function(r) {
-             NXThemes.getControllerById("editor perspectives").switchTo("padding editor");
+             NXThemesEditor.setEditorPerspective("padding editor");
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -694,7 +694,7 @@ NXThemesEditor.switchTheme = function(info) {
         NXThemes.getViewById("theme actions").refresh();
         NXThemesEditor.refreshCanvas();
     } else {
-        NXThemes.getControllerById('editor perspectives').switchTo('theme browser');
+        NXThemesEditor.setEditorPerspective('theme browser');
     }
 };
 
@@ -814,16 +814,27 @@ NXThemesEditor.addPage = function(themeName) {
 };
 
 NXThemesEditor.switchToCanvas = function() {
-    NXThemes.getControllerById('editor perspectives').switchTo('canvas editor');
+    NXThemesEditor.setViewMode('wysiwyg');
+    NXThemesEditor.setEditorPerspective('canvas editor');
 };
 
 NXThemesEditor.backToControlPanel = function() {
-    NXThemes.getControllerById('editor perspectives').switchTo('control panel');
+    NXThemesEditor.setEditorPerspective('control panel');
 }
 
 NXThemesEditor.managePresets = function() {
     NXThemesEditor.setEditorPerspective('preset manager');
     NXThemesPresetManager.setEditMode('theme presets', 'theme_presets');
+};
+
+NXThemesEditor.manageThemeLayout = function() {
+    NXThemesEditor.setViewMode('layout');
+    NXThemesEditor.setEditorPerspective('canvas editor');
+};
+
+NXThemesEditor.manageAreaStyles = function() {
+    NXThemesEditor.setViewMode('area-styles-cell');
+    NXThemesEditor.setEditorPerspective('canvas editor');
 };
 
 NXThemesEditor.addPreset = function(themeName, category, view_id) {
@@ -1555,7 +1566,7 @@ NXThemesStyleEditor.refreshCssPreview = function() {
 };
 
 NXThemesStyleEditor.closeStylePicker = function() {
-    NXThemes.getControllerById('style editor perspectives').switchTo('style properties');
+    NXThemesEditor.setEditorPerspective('style properties');
 };
 
 NXThemesStyleEditor.renderElement = function(id, area) {
@@ -1710,7 +1721,7 @@ NXThemesStyleEditor.setCurrentStyleLayer = function(uid) {
              uid: uid
          },
          onSuccess: function(r) {
-             NXThemes.getControllerById('style editor perspectives').switchTo('default');
+             NXThemesEditor.setEditorPerspective('default');
              NXThemesEditor.refreshUndoActions();
              NXThemes.getViewById("element style").refresh();
          },
@@ -2357,3 +2368,6 @@ NXThemesFragmentFactory.addFragment = function(typeName, styleName, destId) {
     });
     return false;
 };
+
+
+

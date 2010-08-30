@@ -4,6 +4,10 @@
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 
+<#if !selected_preset_category>
+  <#assign selected_preset_category="background" />
+</#if>
+
 <div id="nxthemesPresetManager" class="nxthemesThemeControlPanel">
 
 <form class="nxthemesForm" onsubmit="return false">
