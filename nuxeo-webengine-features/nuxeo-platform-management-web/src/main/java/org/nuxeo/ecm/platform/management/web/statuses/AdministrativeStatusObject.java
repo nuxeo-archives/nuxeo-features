@@ -23,7 +23,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.nuxeo.ecm.platform.management.statuses.AdministrativeStatus;
+import org.nuxeo.ecm.core.management.statuses.AdministrativeStatus;
 import org.nuxeo.ecm.webengine.WebException;
 import org.nuxeo.ecm.webengine.model.Access;
 import org.nuxeo.ecm.webengine.model.WebObject;

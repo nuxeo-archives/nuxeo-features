@@ -17,10 +17,11 @@
  * $Id$
  */
 
-package org.nuxeo.ecm.platform.management.web.detached.service;
+package org.nuxeo.ecm.platform.management.web.auth;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import java.security.Principal;
+
+import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -28,7 +29,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
+import org.nuxeo.ecm.platform.usermanager.DetachedNuxeoPrincipal;
 import org.nuxeo.ecm.platform.usermanager.UserManager;
+import org.nuxeo.ecm.webengine.WebException;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.DefaultObject;
 import org.nuxeo.runtime.api.Framework;
@@ -41,12 +44,12 @@ import com.thoughtworks.xstream.XStream;
  *
  * @author Mariana Cedica
  */
-@WebObject(type = "userService")
-public class UserService extends DefaultObject {
+@WebObject(type = "DetachedPrincipal")
+public class DetachedPrincipalObject extends DefaultObject {
 
     private static final Log log = LogFactory.getLog(UserManager.class);
 
-    UserManager userManager;
+    protected UserManager userManager;
 
     @Override
     protected void initialize(Object... args) {
@@ -57,18 +60,21 @@ public class UserService extends DefaultObject {
         }
     }
 
-    @POST
-    @Path("userInfo")
+    @GET
     @Produces(MediaType.APPLICATION_XML)
-    public String doPost() {
-  /*      try {
-            NuxeoPrincipal principal = userManager.getPrincipal(ctx.getPrincipal().getName());
-           // DetachedNuxeoPrincipal detachedPrincipal = userManager.getDetachedNuxeoPrincipal(principal);
+    public String doGet() {
+            Principal authenticatedPrincipal = ctx.getPrincipal();
+            NuxeoPrincipal nxPrincipal;
+            try {
+                nxPrincipal = userManager.getPrincipal(authenticatedPrincipal.getName());
+            } catch (ClientException e) {
+                throw  WebException.wrap("Errors occured while retrieving principal for " + authenticatedPrincipal.getName(), e);
+            }
+            if (nxPrincipal == null) {
+                throw new WebException("No users available for " + authenticatedPrincipal.getName());
+            }
+            DetachedNuxeoPrincipal detachedPrincipal = DetachedNuxeoPrincipal.detach(nxPrincipal);
             return new XStream().toXML(detachedPrincipal);
-        } catch (ClientException e) {
-            log.error("Unable to serialize nuxeoPrincipal", e);
-        }*/
-        return null;
     }
 
 }
