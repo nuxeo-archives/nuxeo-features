@@ -61,12 +61,6 @@
           url="${basePath}/nxthemes-editor/themeActions"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
-
-        <!-- theme browser actions -->
-        <@nxthemes_panel identifier="theme browser actions"
-          url="${basePath}/nxthemes-editor/themeBrowserActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="theme browser" />
           
         <!-- view modes -->
         <@nxthemes_panel identifier="view modes"

@@ -190,46 +190,11 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("presetManagerActions")
-    public Object renderPresetManagerActions(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String currentThemeName = getCurrentThemeName(path, name);
-        String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
-                templateEngine, currentThemeName);
-        return getTemplate("presetManagerActions.ftl").arg("theme",
-                currentThemeDef).arg("selected_preset_category",
-                getSelectedPresetCategory());
-    }
-
-    @GET
-    @Path("styleManagerActions")
-    public Object renderStyleManagerActions(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String currentThemeName = getCurrentThemeName(path, name);
-        String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
-                templateEngine, currentThemeName);
-        return getTemplate("styleManagerActions.ftl").arg("theme",
-                currentThemeDef);
-    }
-
-    @GET
     @Path("viewModes")
     public Object renderViewModes(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         return getTemplate("viewModes.ftl");
-    }
-
-    @GET
-    @Path("themeBrowserActions")
-    public Object renderThemeBrowserActions(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("themeBrowserActions.ftl");
     }
 
     @GET
