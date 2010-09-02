@@ -69,7 +69,7 @@ public class PresetInfo {
     public String getCategory() {
         return preset.getCategory();
     }
-    
+
     public String getLabel() {
         return preset.getLabel();
     }
