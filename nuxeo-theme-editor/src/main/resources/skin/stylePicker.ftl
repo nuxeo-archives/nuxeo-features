@@ -33,7 +33,7 @@
       <div>
         <#if !selected_preset_group>
           <a class="editPreset" href="javascript:void(0)" onclick="NXThemesEditor.editPreset('${current_theme_name?js_string}', '${preset_info.effectiveName?js_string}', '${preset_info.value?js_string}', 'style picker');">
-	      <img src="${basePath}/skin/nxthemes-editor/img/edit-12.png" /></a>
+          <img src="${basePath}/skin/nxthemes-editor/img/edit-12.png" /></a>
         </#if>
         <#if preset_info.value>
           <div class="selection" title="${preset_info.effectiveName}" onclick="NXThemesStyleEditor.updateFormField('&quot;${preset_info.effectiveName?js_string}&quot;')">
@@ -48,7 +48,7 @@
             <div class="value">???</div>
           </div>
         </#if>
-	</div>
+    </div>
     </#list>
   </div>
 

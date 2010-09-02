@@ -16,7 +16,7 @@
 
   <f:view>
     <f:subview rendered="#{currentNuxeoPrincipal.administrator}">
-	
+
     <nxthemes:accesskeys />
 
     <div id="nxthemesHeader">
@@ -29,7 +29,7 @@
         url="%{contextPath}/site/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
         visibleInPerspectives="canvas editor,padding editor" />
-        
+
       <!--  perspective selector -->
       <nxthemes:panel identifier="perspective selector"
         url="%{contextPath}/site/nxthemes-editor/perspectiveSelector"
@@ -41,7 +41,7 @@
         url="%{contextPath}/site/nxthemes-editor/undoActions"
         controlledBy="editor perspectives"
         visibleInPerspectives="canvas editor,preset manager,style manager,element editor,skin manager" />
-      
+
       <div id="nxthemesMainButtons">
 
         <nxthemes:button identifier="quit button"
@@ -52,11 +52,11 @@
       </div>
 
       <div id="nxthemesLocalButtons">
-      
+
         <nxthemes:panel identifier="back to control panel"
           url="%{contextPath}/site/nxthemes-editor/backToControlPanel"
           controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor,preset library,theme browser,element editor,fragment factory" />   
+          visibleInPerspectives="canvas editor,preset library,theme browser,element editor,fragment factory" />
 
         <!-- theme actions -->
         <nxthemes:panel identifier="theme actions"
@@ -138,7 +138,7 @@
       url="%{contextPath}/site/nxthemes-editor/presetManager"
       controlledBy="editor perspectives"
       visibleInPerspectives="preset manager" />
-      
+
     <!-- style manager -->
     <nxthemes:controller resource="style-manager-actions.json" />
     <nxthemes:panel identifier="style manager"
@@ -150,14 +150,14 @@
     <nxthemes:panel identifier="skin manager"
       url="%{contextPath}/site/nxthemes-editor/skinManager"
       controlledBy="editor perspectives"
-      visibleInPerspectives="skin manager" />      
-    
+      visibleInPerspectives="skin manager" />
+
     <!-- theme chooser -->
     <nxthemes:panel identifier="theme browser"
       url="%{contextPath}/site/nxthemes-editor/themeBrowser"
       controlledBy="editor perspectives"
       visibleInPerspectives="theme browser" />
-      
+
     <!-- element editor -->
     <nxthemes:panel identifier="element editor"
       url="%{contextPath}/site/nxthemes-editor/elementEditor"
@@ -176,28 +176,28 @@
       url="%{contextPath}/site/nxthemes-editor/areaStyleChooser"
       controlledBy="area style perspectives,toolbox mover"
       visibleInPerspectives="style chooser" />
-    
+
     <!-- theme optimizer -->
     <nxthemes:panel identifier="theme optimizer"
       url="%{contextPath}/site/nxthemes-editor/themeOptimizer"
       controlledBy="editor perspectives"
       visibleInPerspectives="theme optimizer" />
-      
-    
+
+
     <!-- fragment factory -->
     <nxthemes:panel identifier="fragment factory"
       url="%{contextPath}/site/nxthemes-editor/fragmentFactory"
       controlledBy="editor perspectives"
       visibleInPerspectives="fragment factory" />
-        
+
   </f:subview>
-  
+
   <f:subview rendered="#{!currentNuxeoPrincipal.administrator}">
     <script type="text/javascript"><!--
       NXThemesEditor.accessDenied();
     //--></script>
   </f:subview>
-	
+
 </f:view>
 
 </body>

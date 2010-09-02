@@ -4,9 +4,9 @@
 
 <form class="nxthemesForm" onsubmit="return false">
   <div style="text-align: center; margin-top: -80px; padding-bottom: 10px">
-    <button class="selected">Choose a skin</button> 
-    <button onclick="NXThemesEditor.managePresets()">Set theme options</button> 
-    <button onclick="NXThemesEditor.manageStyles()">Edit CSS</button> 
+    <button class="selected">Choose a skin</button>
+    <button onclick="NXThemesEditor.managePresets()">Set theme options</button>
+    <button onclick="NXThemesEditor.manageStyles()">Edit CSS</button>
     <button onclick="NXThemesEditor.backToControlPanel()">Finish</button>
   </div>
 </form>
@@ -34,7 +34,7 @@
 
 <div class="album">
   <#list skins as skin>
-    <a href="javascript:void(0)" 
+    <a href="javascript:void(0)"
        onclick="NXThemesSkinManager.activateSkin('${current_theme_name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">
       <div class="imageSingle <#if current_skin_name=skin.name>selected</#if>">
         <div class="image"><img src="${skin.preview}" /></div>

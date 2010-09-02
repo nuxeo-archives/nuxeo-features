@@ -26,14 +26,14 @@ if (typeof NXThemesEditor == "undefined") {
             }
           }
           return true;
-        },              
-	    extractElementUid: function(el) {
-	      var attr = el.getAttribute('id');
-	      if (!attr) {
-	        return
-	      }
-	      return attr.replace(/^e/, '');
-	    }
+        },
+        extractElementUid: function(el) {
+          var attr = el.getAttribute('id');
+          if (!attr) {
+            return
+          }
+          return attr.replace(/^e/, '');
+        }
     };
 };
 
@@ -43,7 +43,7 @@ NXThemesEditor.accessDenied = function() {
     NXThemes.expireCookie("nxthemes.engine");
     NXThemes.expireCookie("nxthemes.mode");
     NXThemes.expireCookie("nxthemes.perspective");
-    window.location.reload();  
+    window.location.reload();
 };
 
 NXThemesEditor.setViewMode =  function(mode) {
@@ -59,12 +59,12 @@ NXThemesEditor.deletePage = function(pagePath) {
     }
     var i = pagePath.indexOf('/');
     if (i <= 0) {
-    	return;
+        return;
     }
     var pageName = pagePath.substr(i+1);
     if (pageName == "default") {
-    	window.alert("Cannot delete the default page");
-    	return;
+        window.alert("Cannot delete the default page");
+        return;
     }
     var themeName = pagePath.substr(0, i);
     var url = nxthemesBasePath + "/nxthemes-editor/delete_page";
@@ -74,7 +74,7 @@ NXThemesEditor.deletePage = function(pagePath) {
              page_path: pagePath
          },
          onSuccess: function(r) {
-        	 NXThemesEditor.selectTheme(themeName + "/default");
+             NXThemesEditor.selectTheme(themeName + "/default");
              NXThemesEditor.refreshPageSelector();
              NXThemes.getViewById("theme actions").refresh();
              NXThemesEditor.refreshCanvas();
@@ -83,7 +83,7 @@ NXThemesEditor.deletePage = function(pagePath) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }      
+         }
     });
 };
 
@@ -106,7 +106,7 @@ NXThemesEditor.moveElement = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -120,12 +120,12 @@ NXThemesEditor.editElement = function(info) {
          },
          onSuccess: function(r) {
              NXThemesEditor.setEditorPerspective("element editor");
-             NXThemes.getViewById("element editor tabs").switchTo("element editor perspectives/edit properties");             
+             NXThemes.getViewById("element editor tabs").switchTo("element editor perspectives/edit properties");
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -143,7 +143,7 @@ NXThemesEditor.insertFragment = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -168,7 +168,7 @@ if (typeof NXThemesSkinManager == "undefined") {
 }
 
 NXThemesSkinManager.selectResourceBank = function(name) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_resource_bank"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_resource_bank";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -180,12 +180,12 @@ NXThemesSkinManager.selectResourceBank = function(name) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
       });
 };
 
 NXThemesSkinManager.activateSkin = function(theme, bank, collection, resource) {
-    var url = nxthemesBasePath + "/nxthemes-editor/activate_skin"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/activate_skin";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -200,7 +200,7 @@ NXThemesSkinManager.activateSkin = function(theme, bank, collection, resource) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
       });
 };
 
@@ -221,7 +221,7 @@ NXThemesEditor.changeElementStyle = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -238,7 +238,7 @@ NXThemesEditor.setSize = function(info) {
           width = value;
         }
       });
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_width"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_width";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -252,8 +252,8 @@ NXThemesEditor.setSize = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
-    });       
+         }
+    });
 };
 
 NXThemesEditor.updateElementProperties = function(info) {
@@ -266,26 +266,26 @@ NXThemesEditor.updateElementProperties = function(info) {
         if (name == "id") {
             id = value;
         } else {
-			if (name.match(":lines$") == ":lines") {
-				name = name.replace(/:lines$/, '');
-				var lines = value.split(/\r|\n|\r\n/);
-				value = "";
-				var len = lines.length;
-				for (i=0; i<len; i++) {
-					var line = lines[i];
-					value += '"' + line.replace(/"/g, '""') + '"';
-				    if (i < len - 1) {
-						value += ',';
-					}
-				}
-			}
+            if (name.match(":lines$") == ":lines") {
+                name = name.replace(/:lines$/, '');
+                var lines = value.split(/\r|\n|\r\n/);
+                value = "";
+                var len = lines.length;
+                for (i=0; i<len; i++) {
+                    var line = lines[i];
+                    value += '"' + line.replace(/"/g, '""') + '"';
+                    if (i < len - 1) {
+                        value += ',';
+                    }
+                }
+            }
             if (i.type == 'checkbox') {
                 value = value == 'on' ? "true" : "false";
             }
-        	propertyMap.set(name, value);
+            propertyMap.set(name, value);
         }
     });
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_properties"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_properties";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -300,7 +300,7 @@ NXThemesEditor.updateElementProperties = function(info) {
          onFailure: function(r) {
              NXThemes.getViewById("element properties").refresh();
              NXThemesEditor.writeMessage("Properties could not be updated.");
-         }         
+         }
     });
 };
 
@@ -320,7 +320,7 @@ NXThemesEditor.updateElementWidget = function(info) {
     if (!viewName) {
         return;
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_widget"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_widget";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -334,7 +334,7 @@ NXThemesEditor.updateElementWidget = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -356,7 +356,7 @@ NXThemesEditor.updateElementDescription = function(info) {
     if (!description) {
       return;
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_description"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_description";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -370,8 +370,8 @@ NXThemesEditor.updateElementDescription = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
-    });         
+         }
+    });
 };
 
 
@@ -392,8 +392,8 @@ NXThemesEditor.updateElementStyle = function() {
           propertyMap.set(name.substr(9), value);
         }
     });
-    
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_style"; 
+
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_style";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -404,14 +404,14 @@ NXThemesEditor.updateElementStyle = function() {
          },
          onSuccess: function(r) {
              NXThemesStyleEditor.refreshCssPreview();
-			 NXThemes.getViewById("style properties").refresh();
+             NXThemes.getViewById("style properties").refresh();
              NXThemesEditor.refreshUndoActions();
              NXThemesEditor.writeMessage("Style updated.");
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -429,7 +429,7 @@ NXThemesEditor.updateElementStyleCss = function() {
           viewName = value;
         }
     });
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_style_css"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_style_css";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -445,7 +445,7 @@ NXThemesEditor.updateElementStyleCss = function() {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -465,7 +465,7 @@ NXThemesEditor.setElementVisibility = function(info) {
           perspectives = $F("perspectives");
         }
     });
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_visibility"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_visibility";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -481,7 +481,7 @@ NXThemesEditor.setElementVisibility = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -494,7 +494,7 @@ NXThemesEditor.setElementWidget = function(info) {
     if (!viewName) {
         return;
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_widget"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_widget";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -508,13 +508,13 @@ NXThemesEditor.setElementWidget = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesEditor.copyElement = function(info) {
     var id = NXThemesEditor.extractElementUid(info.target);
-    var url = nxthemesBasePath + "/nxthemes-editor/copy_element"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/copy_element";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -526,101 +526,13 @@ NXThemesEditor.copyElement = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesEditor.splitElement = function(info) {
     var id = NXThemesEditor.extractElementUid(info.target);
-    var url = nxthemesBasePath + "/nxthemes-editor/split_element"; 
-    new Ajax.Request(url, {
-         method: 'post',
-         parameters: {
-             id: id
-         },
-         onSuccess: function(r) {
-             NXThemesEditor.refreshCanvas();
-             NXThemesEditor.refreshUndoActions();
-         },
-         onFailure: function(r) {
-             var text = r.responseText;
-             window.alert(text);
-         }         
-    });       
-};
-
-NXThemesEditor.setElementPadding = function(info) {
-    var id = NXThemesEditor.extractElementUid(info.target);
-    var url = nxthemesBasePath + "/nxthemes-editor/select_element"; 
-    new Ajax.Request(url, {
-         method: 'post',
-         parameters: {
-             'id': id
-         },
-         onSuccess: function(r) {
-             NXThemesEditor.setEditorPerspective("padding editor");
-         },
-         onFailure: function(r) {
-             var text = r.responseText;
-             window.alert(text);
-         }         
-    });
-};
-
-NXThemesEditor.updateElementPadding = function(info) {
-    var form = Event.findElement(info, "form");
-    var id = null;
-    var propertyMap = $H();
-    $A(Form.getElements(form)).each(function(i) {
-        var name = i.name;
-        var value = $F(i);
-        propertyMap.set(i.name, value);
-    });    
-    var url = nxthemesBasePath + "/nxthemes-editor/update_element_layout"; 
-    new Ajax.Request(url, {
-         method: 'post',
-         parameters: {
-             property_map: Object.toJSON(propertyMap)
-         },
-         onSuccess: function(r) {
-             NXThemesEditor.refreshCanvas();
-             NXThemesEditor.refreshUndoActions();
-         },
-         onFailure: function(r) {
-             var text = r.responseText;
-             window.alert(text);
-         }         
-    });
-};
-
-NXThemesEditor.alignElement = function(info) {
-    var target = info.target;
-    var id = NXThemesEditor.extractElementUid(info.target);
-    if (id === null) {
-      return;
-    }
-    var position = info.options.choice;
-    var url = nxthemesBasePath + "/nxthemes-editor/align_element"; 
-    new Ajax.Request(url, {
-         method: 'post',
-         parameters: {
-             id: id,
-             position: position
-         },
-         onSuccess: function(r) {
-             NXThemesEditor.refreshCanvas();
-             NXThemesEditor.refreshUndoActions();
-         },
-         onFailure: function(r) {
-             var text = r.responseText;
-             window.alert(text);
-         }         
-    });     
-};
-
-NXThemesEditor.duplicateElement = function(info) {
-    var id = NXThemesEditor.extractElementUid(info.target);
-    var url = nxthemesBasePath + "/nxthemes-editor/duplicate_element"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/split_element";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -634,12 +546,100 @@ NXThemesEditor.duplicateElement = function(info) {
              var text = r.responseText;
              window.alert(text);
          }
-    });       
+    });
+};
+
+NXThemesEditor.setElementPadding = function(info) {
+    var id = NXThemesEditor.extractElementUid(info.target);
+    var url = nxthemesBasePath + "/nxthemes-editor/select_element";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             'id': id
+         },
+         onSuccess: function(r) {
+             NXThemesEditor.setEditorPerspective("padding editor");
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
+};
+
+NXThemesEditor.updateElementPadding = function(info) {
+    var form = Event.findElement(info, "form");
+    var id = null;
+    var propertyMap = $H();
+    $A(Form.getElements(form)).each(function(i) {
+        var name = i.name;
+        var value = $F(i);
+        propertyMap.set(i.name, value);
+    });
+    var url = nxthemesBasePath + "/nxthemes-editor/update_element_layout";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             property_map: Object.toJSON(propertyMap)
+         },
+         onSuccess: function(r) {
+             NXThemesEditor.refreshCanvas();
+             NXThemesEditor.refreshUndoActions();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
+};
+
+NXThemesEditor.alignElement = function(info) {
+    var target = info.target;
+    var id = NXThemesEditor.extractElementUid(info.target);
+    if (id === null) {
+      return;
+    }
+    var position = info.options.choice;
+    var url = nxthemesBasePath + "/nxthemes-editor/align_element";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             id: id,
+             position: position
+         },
+         onSuccess: function(r) {
+             NXThemesEditor.refreshCanvas();
+             NXThemesEditor.refreshUndoActions();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
+};
+
+NXThemesEditor.duplicateElement = function(info) {
+    var id = NXThemesEditor.extractElementUid(info.target);
+    var url = nxthemesBasePath + "/nxthemes-editor/duplicate_element";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             id: id
+         },
+         onSuccess: function(r) {
+             NXThemesEditor.refreshCanvas();
+             NXThemesEditor.refreshUndoActions();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
 };
 
 NXThemesEditor.pasteElement = function(info) {
     var destId = NXThemesEditor.extractElementUid(info.target);
-    var url = nxthemesBasePath + "/nxthemes-editor/paste_element"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/paste_element";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -653,7 +653,7 @@ NXThemesEditor.pasteElement = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }  
+         }
     });
 };
 
@@ -680,7 +680,7 @@ NXThemesEditor.selectTheme = function(name) {
     if (name) {
         NXThemes.setCookie("nxthemes.theme", name);
     } else {
-    	NXThemes.expireCookie("nxthemes.theme");
+        NXThemes.expireCookie("nxthemes.theme");
     }
 };
 
@@ -706,38 +706,38 @@ NXThemesEditor.selectPerspective = function(info) {
 };
 
 NXThemesEditor.addThemeToWorkspace = function(name, viewId) {
-    var url = nxthemesBasePath + "/nxthemes-editor/add_theme_to_workspace"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/add_theme_to_workspace";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              name: name
-         },          
+         },
          onSuccess: function(r) {
              NXThemes.getViewById(viewId).refresh();
-        	 NXThemesEditor.refreshThemeSelector();
+             NXThemesEditor.refreshThemeSelector();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesEditor.removeThemeFromWorkspace = function(name, viewId) {
-    var url = nxthemesBasePath + "/nxthemes-editor/remove_theme_from_workspace"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/remove_theme_from_workspace";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              name: name
-         },          
+         },
          onSuccess: function(r) {
              NXThemes.getViewById(viewId).refresh();
-        	 NXThemesEditor.refreshThemeSelector();
+             NXThemesEditor.refreshThemeSelector();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -778,7 +778,7 @@ NXThemesEditor.addTheme = function(viewid) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -809,8 +809,8 @@ NXThemesEditor.addPage = function(themeName) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }            
-    });    
+         }
+    });
 };
 
 NXThemesEditor.switchToCanvas = function() {
@@ -862,14 +862,14 @@ NXThemesEditor.addPreset = function(themeName, category, view_id) {
              var text = r.responseText;
              window.alert(text);
          }
-    });     
+    });
 };
 
 
 NXThemesEditor.editPreset = function(themeName, presetName, value, view_id) {
     var value = prompt("Enter a CSS value:", value);
     if (!value) {
-  	  return;
+        return;
     }
     var url = nxthemesBasePath + "/nxthemes-editor/edit_preset";
     new Ajax.Request(url, {
@@ -885,10 +885,10 @@ NXThemesEditor.editPreset = function(themeName, presetName, value, view_id) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
-    });      
+         }
+    });
 };
- 
+
 NXThemesEditor.addSection = function(info) {
     var target = Event.element(info);
     var id = target.getAttribute('sectionid') || target.getAttribute('pageid');
@@ -897,7 +897,7 @@ NXThemesEditor.addSection = function(info) {
          method: 'post',
          parameters: {
              id: id
-         },         
+         },
          onSuccess: function(r) {
              NXThemesEditor.refreshCanvas();
              NXThemesEditor.refreshUndoActions();
@@ -905,20 +905,20 @@ NXThemesEditor.addSection = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesEditor.alignSection = function(info, position) {
     var target = Event.element(info);
     var id = target.getAttribute('sectionid');;
-    var url = nxthemesBasePath + "/nxthemes-editor/align_element"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/align_element";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              id: id,
              position: position
-         }, 
+         },
          onSuccess: function(r) {
              NXThemesEditor.refreshCanvas();
              NXThemesEditor.refreshUndoActions();
@@ -926,8 +926,8 @@ NXThemesEditor.alignSection = function(info, position) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
-    }); 
+         }
+    });
 };
 
 NXThemesEditor.alignSectionLeft = function(info) {
@@ -966,19 +966,19 @@ NXThemesEditor.setAreaStyle = function(info) {
     } else if (property == 'border-right') {
       category = 'border';
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/select_style_category"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_style_category";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              category: category
-         },          
+         },
          onSuccess: function(r) {
              NXThemes.getControllerById('area style perspectives').switchTo('style chooser');
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -993,14 +993,14 @@ NXThemesEditor.updateAreaStyle = function(value) {
       if (value == null) {
           value = '';
       }
-      var url = nxthemesBasePath + "/nxthemes-editor/assign_style_property"; 
+      var url = nxthemesBasePath + "/nxthemes-editor/assign_style_property";
       new Ajax.Request(url, {
          method: 'post',
          parameters: {
              element_id: element_id,
              property: property,
              value: value
-         }, 
+         },
          onSuccess: function(r) {
              NXThemesEditor.refreshCanvas();
              NXThemesEditor.refreshUndoActions();
@@ -1008,26 +1008,26 @@ NXThemesEditor.updateAreaStyle = function(value) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
       });
   }
 };
 
 NXThemesEditor.setPresetGroup = function(select) {
     var group = select.value;
-    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_group"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_group";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              group: group
-         }, 
+         },
          onSuccess: function(r) {
              NXThemes.getViewById("area style chooser").refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1040,7 +1040,7 @@ NXThemesEditor.exit = function() {
   NXThemes.expireCookie("nxthemes.engine");
   NXThemes.expireCookie("nxthemes.mode");
   NXThemes.expireCookie("nxthemes.perspective");
-  var url = nxthemesBasePath + "/nxthemes-editor/clear_selections"; 
+  var url = nxthemesBasePath + "/nxthemes-editor/clear_selections";
   new Ajax.Request(url, {
          method: 'post',
          onSuccess: function(r) {
@@ -1049,16 +1049,16 @@ NXThemesEditor.exit = function() {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
   });
 };
 
 NXThemesEditor.repairTheme = function(src) {
-    var url = nxthemesBasePath + "/nxthemes-editor/repair_theme"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/repair_theme";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
-    	     src: src
+             src: src
          },
          onSuccess: function(r) {
              NXThemesEditor.refreshCanvas();
@@ -1068,7 +1068,7 @@ NXThemesEditor.repairTheme = function(src) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1079,7 +1079,7 @@ NXThemesEditor.loadTheme = function(src, confirmation) {
             return;
         }
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/load_theme"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/load_theme";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1095,7 +1095,7 @@ NXThemesEditor.loadTheme = function(src, confirmation) {
          onFailure: function(r) {
            var text = r.responseText;
            window.alert(text);
-         }          
+         }
     });
 };
 
@@ -1104,7 +1104,7 @@ NXThemesEditor.deleteTheme = function(src) {
     if (!ok) {
         return;
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/delete_theme"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/delete_theme";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1119,7 +1119,7 @@ NXThemesEditor.deleteTheme = function(src) {
          onFailure: function(r) {
            var text = r.responseText;
            window.alert(text);
-         }              
+         }
     });
 };
 
@@ -1140,7 +1140,7 @@ NXThemesEditor.refreshPageSelector = function() {
 };
 
 NXThemesEditor.undo =  function(theme_name) {
-    var url = nxthemesBasePath + "/nxthemes-editor/undo"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/undo";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1158,10 +1158,10 @@ NXThemesEditor.undo =  function(theme_name) {
                    break;
                case "element editor":
                    NXThemes.getViewById("element editor").refresh();
-                   break;                   
+                   break;
                case "canvas editor":
                    NXThemesEditor.refreshCanvas();
-                   break;                                      
+                   break;
            }
            NXThemesEditor.refreshUndoActions();
            NXThemesEditor.refreshPageSelector();
@@ -1170,7 +1170,7 @@ NXThemesEditor.undo =  function(theme_name) {
          onFailure: function(r) {
            var text = r.responseText;
            window.alert(text);
-         }              
+         }
     });
 };
 
@@ -1198,7 +1198,7 @@ NXThemes.addActions({
     'add section': NXThemesEditor.addSection,
     'align section left': NXThemesEditor.alignSectionLeft,
     'align section center': NXThemesEditor.alignSectionCenter,
-    'align section right': NXThemesEditor.alignSectionRight,        
+    'align section right': NXThemesEditor.alignSectionRight,
     'align element': NXThemesEditor.alignElement,
     'split element': NXThemesEditor.splitElement,
     'set element padding': NXThemesEditor.setElementPadding,
@@ -1233,38 +1233,38 @@ NXThemesPresetManager.refresh = function() {
 };
 
 NXThemesPresetManager.setEditMode = function(mode, button) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_manager_mode"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_manager_mode";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              mode: mode
          },
          onSuccess: function(r) {
-        	 NXThemesPresetManager.refresh();
-		 NXThemes.getControllerById("theme buttons").select(button);
+             NXThemesPresetManager.refresh();
+         NXThemes.getControllerById("theme buttons").select(button);
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 
 NXThemesPresetManager.selectPresetCategory = function(category) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_category"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_category";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              category: category
          },
          onSuccess: function(r) {
-        	 NXThemesPresetManager.refresh();
+             NXThemesPresetManager.refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1277,10 +1277,10 @@ NXThemesPresetManager.updatePresets = function(form) {
         if (name.startsWith('preset_')) {
             propertyMap.set(name.substr(7), value);
         } else if (name == "theme_name") {
-        	themeName = value;
+            themeName = value;
         }
     });
-    var url = nxthemesBasePath + "/nxthemes-editor/update_presets"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_presets";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1288,14 +1288,14 @@ NXThemesPresetManager.updatePresets = function(form) {
              theme_name: themeName
          },
          onSuccess: function(r) {
-        	 NXThemes.getViewById("preset manager").refresh();
-        	 NXThemesEditor.refreshUndoActions();
+             NXThemes.getViewById("preset manager").refresh();
+             NXThemesEditor.refreshUndoActions();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
-    });   
+         }
+    });
 }
 
 
@@ -1308,7 +1308,7 @@ NXThemesPresetManager.editPreset = function(info) {
   var value = data.get('value');
   value = prompt("Enter a CSS value:", value);
   if (!value) {
-	  return;
+      return;
   }
   var url = nxthemesBasePath + "/nxthemes-editor/edit_preset";
   new Ajax.Request(url, {
@@ -1325,8 +1325,8 @@ NXThemesPresetManager.editPreset = function(info) {
        onFailure: function(r) {
            var text = r.responseText;
            window.alert(text);
-       }       
-  });          
+       }
+  });
 }
 
 NXThemesPresetManager.renamePreset = function(info) {
@@ -1352,7 +1352,7 @@ NXThemesPresetManager.renamePreset = function(info) {
            var text = r.responseText;
            window.alert(text);
        }
-  });          
+  });
 }
 
 NXThemesPresetManager.copyPreset = function(info) {
@@ -1360,7 +1360,7 @@ NXThemesPresetManager.copyPreset = function(info) {
   var model = info.model;
   var data = model.getData();
   var id = data.get('id');
-  var url = nxthemesBasePath + "/nxthemes-editor/copy_preset"; 
+  var url = nxthemesBasePath + "/nxthemes-editor/copy_preset";
   new Ajax.Request(url, {
        method: 'post',
        parameters: {
@@ -1372,8 +1372,8 @@ NXThemesPresetManager.copyPreset = function(info) {
        onFailure: function(r) {
            var text = r.responseText;
            window.alert(text);
-       }       
-  });    
+       }
+  });
 }
 
 NXThemesPresetManager.pastePreset = function(info) {
@@ -1382,7 +1382,7 @@ NXThemesPresetManager.pastePreset = function(info) {
   var data = model.getData();
   var themeName = data.get('theme_name');
   var presetName = prompt("Enter a preset name:");
-  var url = nxthemesBasePath + "/nxthemes-editor/paste_preset"; 
+  var url = nxthemesBasePath + "/nxthemes-editor/paste_preset";
   new Ajax.Request(url, {
        method: 'post',
        parameters: {
@@ -1396,8 +1396,8 @@ NXThemesPresetManager.pastePreset = function(info) {
        onFailure: function(r) {
            var text = r.responseText;
            window.alert(text);
-       }  
-  });    
+       }
+  });
 }
 
 NXThemesPresetManager.deletePreset = function(info) {
@@ -1406,7 +1406,7 @@ NXThemesPresetManager.deletePreset = function(info) {
   var data = model.getData();
   var themeName = data.get('theme_name');
   var presetName = data.get('name');
-  var url = nxthemesBasePath + "/nxthemes-editor/delete_preset"; 
+  var url = nxthemesBasePath + "/nxthemes-editor/delete_preset";
   new Ajax.Request(url, {
        method: 'post',
        parameters: {
@@ -1420,14 +1420,14 @@ NXThemesPresetManager.deletePreset = function(info) {
        onFailure: function(r) {
            var text = r.responseText;
            window.alert(text);
-       }  
-  });    
+       }
+  });
 }
 
 NXThemesPresetManager.setPresetCategory = function(info) {
-	var target = Event.element(info);
-	var model = info.model;
-	var data = model.getData();
+    var target = Event.element(info);
+    var model = info.model;
+    var data = model.getData();
     var category = info.options.choice;
     if (!category) {
         return;
@@ -1450,14 +1450,14 @@ NXThemesPresetManager.setPresetCategory = function(info) {
              var text = r.responseText;
              window.alert(text);
          }
-    });         
+    });
 };
 
 NXThemesPresetManager.addMissingPreset = function(themeName, presetName) {
     var presetValue = prompt("Enter a CSS value:", "");
     if (!presetValue) {
         return;
-    } 
+    }
     var url = nxthemesBasePath + "/nxthemes-editor/add_preset";
     new Ajax.Request(url, {
          method: 'post',
@@ -1475,15 +1475,15 @@ NXThemesPresetManager.addMissingPreset = function(themeName, presetName) {
              var text = r.responseText;
              window.alert(text);
          }
-    });     
-    
+    });
+
 };
 
 NXThemesPresetManager.convertValueToPreset = function(themeName, category, presetValue) {
     var presetName = prompt("Enter a preset name:", "");
     if (!presetName) {
         return;
-    } 
+    }
     var url = nxthemesBasePath + "/nxthemes-editor/convert_to_preset";
     new Ajax.Request(url, {
          method: 'post',
@@ -1501,24 +1501,24 @@ NXThemesPresetManager.convertValueToPreset = function(themeName, category, prese
              var text = r.responseText;
              window.alert(text);
          }
-    });     
-    
+    });
+
 };
 
 NXThemesPresetManager.selectPresetGroup = function(group) {
-  var url = nxthemesBasePath + "/nxthemes-editor/select_preset_group"; 
+  var url = nxthemesBasePath + "/nxthemes-editor/select_preset_group";
   new Ajax.Request(url, {
        method: 'post',
        parameters: {
            group: group
        },
        onSuccess: function(r) {
-      	 NXThemesPresetManager.refresh();
+           NXThemesPresetManager.refresh();
        },
        onFailure: function(r) {
            var text = r.responseText;
            window.alert(text);
-       }         
+       }
   });
 };
 
@@ -1528,7 +1528,7 @@ NXThemesPresetManager.selectPresetGroup = function(group) {
 NXThemes.addActions({
     'edit preset': NXThemesPresetManager.editPreset,
     'set preset category': NXThemesPresetManager.setPresetCategory,
-    'rename preset': NXThemesPresetManager.renamePreset,    
+    'rename preset': NXThemesPresetManager.renamePreset,
     'copy preset': NXThemesPresetManager.copyPreset,
     'paste preset': NXThemesPresetManager.pastePreset,
     'delete preset': NXThemesPresetManager.deletePreset
@@ -1550,7 +1550,7 @@ NXThemesStyleEditor.refreshPreview = function() {
 };
 
 NXThemesStyleEditor.refreshCssPreview = function() {
-    var url = nxthemesBasePath + "/nxthemes-editor/render_css_preview"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/render_css_preview";
     new Ajax.Request(url, {
          method: 'get',
          onSuccess: function(r) {
@@ -1561,7 +1561,7 @@ NXThemesStyleEditor.refreshCssPreview = function() {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1610,7 +1610,7 @@ NXThemesStyleEditor.chooseStyleSelector = function(select) {
 
 NXThemesStyleEditor.setPresetGroup = function(select) {
     var group = select.value;
-    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_group"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_preset_group";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1623,29 +1623,29 @@ NXThemesStyleEditor.setPresetGroup = function(select) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesStyleEditor.setStyleSelector = function(selector) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_style_selector"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_style_selector";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              selector: selector
          },
          onSuccess: function(r) {
-        	 NXThemesStyleEditor.setStyleEditMode("form");
+             NXThemesStyleEditor.setStyleEditMode("form");
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesStyleEditor.createStyle = function() {
-    var url = nxthemesBasePath + "/nxthemes-editor/create_style"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/create_style";
     new Ajax.Request(url, {
          method: 'post',
          onSuccess: function(r) {
@@ -1656,7 +1656,7 @@ NXThemesStyleEditor.createStyle = function() {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1714,7 +1714,7 @@ NXThemesStyleEditor.selectTag = function(info) {
 };
 
 NXThemesStyleEditor.setCurrentStyleLayer = function(uid) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_style_layer"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_style_layer";
       new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1728,7 +1728,7 @@ NXThemesStyleEditor.setCurrentStyleLayer = function(uid) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
       });
 };
 
@@ -1736,7 +1736,7 @@ NXThemesStyleEditor.pickPropertyValue = function(info) {
     var target = info.target;
     var category = target.getAttribute('category');
     NXThemesStyleEditor.currentProperty = target.getAttribute('property');
-    var url = nxthemesBasePath + "/nxthemes-editor/select_style_category"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_style_category";
       new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1749,42 +1749,42 @@ NXThemesStyleEditor.pickPropertyValue = function(info) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
       });
 };
 
 
 NXThemesStyleEditor.toggleCssCategory = function(ctx, name){
-    var url = nxthemesBasePath + "/nxthemes-editor/toggle_css_category"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/toggle_css_category";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              name: name
          },
          onSuccess: function(req) {
-		   $$('.nxthemesStyleField').each(function(f) {
-		   	  if (name == f.getAttribute('category')) {
-			  	f.toggle();
-			  }
-		   });
+           $$('.nxthemesStyleField').each(function(f) {
+                 if (name == f.getAttribute('category')) {
+                  f.toggle();
+              }
+           });
            var closeButton = $(ctx).select('.nxthemesStyleCategoryClose')[0];
-		   var openButton = $(ctx).select('.nxthemesStyleCategoryOpen')[0];
+           var openButton = $(ctx).select('.nxthemesStyleCategoryOpen')[0];
            if (closeButton) {
-		   	 closeButton.className = 'nxthemesStyleCategoryOpen';
-		   }
-		   if (openButton) {
+                closeButton.className = 'nxthemesStyleCategoryOpen';
+           }
+           if (openButton) {
              openButton.className = 'nxthemesStyleCategoryClose';
            }
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 }
 
-NXThemesStyleEditor.expandAllCategories = function() {	
-    var url = nxthemesBasePath + "/nxthemes-editor/expand_css_categories"; 
+NXThemesStyleEditor.expandAllCategories = function() {
+    var url = nxthemesBasePath + "/nxthemes-editor/expand_css_categories";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1801,12 +1801,12 @@ NXThemesStyleEditor.expandAllCategories = function() {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
-NXThemesStyleEditor.collapseAllCategories = function() {    
-    var url = nxthemesBasePath + "/nxthemes-editor/collapse_css_categories"; 
+NXThemesStyleEditor.collapseAllCategories = function() {
+    var url = nxthemesBasePath + "/nxthemes-editor/collapse_css_categories";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1823,7 +1823,7 @@ NXThemesStyleEditor.collapseAllCategories = function() {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1834,7 +1834,7 @@ NXThemesStyleEditor.setStyleEditMode = function(mode, fromMode) {
     if (fromMode == 'css') {
       NXThemesEditor.updateElementStyleCss();
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/select_style_edit_mode"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_style_edit_mode";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1847,12 +1847,12 @@ NXThemesStyleEditor.setStyleEditMode = function(mode, fromMode) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesStyleEditor.setStylePropertyCategory = function(category) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_style_property_category"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_style_property_category";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1864,7 +1864,7 @@ NXThemesStyleEditor.setStylePropertyCategory = function(category) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1881,7 +1881,7 @@ NXThemesStyleEditor.makeElementUseNamedStyle = function(select) {
     var parameters = {
         id: id,
         theme_name: themeName
-    }    
+    }
     if (styleName) {
         parameters['style_name'] = styleName;
     }
@@ -1895,7 +1895,7 @@ NXThemesStyleEditor.makeElementUseNamedStyle = function(select) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1908,7 +1908,7 @@ NXThemesStyleEditor.createNamedStyle = function(id, currentThemeName, screenName
         window.alert("Style names cannot be empty.");
         return;
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/create_named_style"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/create_named_style";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -1923,7 +1923,7 @@ NXThemesStyleEditor.createNamedStyle = function(id, currentThemeName, screenName
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -1932,7 +1932,7 @@ NXThemesStyleEditor.deleteNamedStyle = function(id, currentThemeName, styleName)
     if (!ok) {
         return;
     }
-    var url = nxthemesBasePath + "/nxthemes-editor/delete_named_style"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/delete_named_style";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -2021,7 +2021,7 @@ NXThemes.addActions({
 // STYLE MANAGER
 
 if (typeof NXThemesStyleManager == "undefined") {
-	NXThemesStyleManager = {
+    NXThemesStyleManager = {
     };
 }
 
@@ -2033,11 +2033,11 @@ NXThemesStyleManager.deleteUnusedStyleView = function(info) {
         var name = i.name;
         var value = $F(i);
         if (name == "style_uid") {
-        	styleUid = value;
+            styleUid = value;
         } else if (name == "view_name") {
-        	viewName = value;
+            viewName = value;
         } else if (name == "theme_name") {
-        	themeName = value;
+            themeName = value;
         }
     });
     var url = nxthemesBasePath + "/nxthemes-editor/delete_style_view";
@@ -2056,30 +2056,30 @@ NXThemesStyleManager.deleteUnusedStyleView = function(info) {
              var text = r.responseText;
              window.alert(text);
          }
-    });     
+    });
 };
 
 NXThemesStyleManager.setEditMode = function(mode, button) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_style_manager_mode"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_style_manager_mode";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              mode: mode
          },
          onSuccess: function(req) {
-        	 NXThemes.getViewById("style manager").refresh();
-		 NXThemes.getControllerById("theme buttons").select(button);
+             NXThemes.getViewById("style manager").refresh();
+         NXThemes.getControllerById("theme buttons").select(button);
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesStyleManager.updateNamedStyleCSS = function(form) {
-	var style_uid = '';
-	var css_source = '';
+    var style_uid = '';
+    var css_source = '';
     $A(Form.getElements(form)).each(function(i) {
         var name = i.name;
         var value = $F(i);
@@ -2091,7 +2091,7 @@ NXThemesStyleManager.updateNamedStyleCSS = function(form) {
           theme_name = value;
         }
     });
-    var url = nxthemesBasePath + "/nxthemes-editor/update_named_style_css"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/update_named_style_css";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -2100,19 +2100,19 @@ NXThemesStyleManager.updateNamedStyleCSS = function(form) {
              'theme_name': theme_name
          },
          onSuccess: function(r) {
-        	 NXThemes.getViewById("style manager").refresh();
-        	 NXThemesEditor.refreshUndoActions();
+             NXThemes.getViewById("style manager").refresh();
+             NXThemesEditor.refreshUndoActions();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
-    });   
+         }
+    });
 }
 
 
 NXThemesStyleManager.restoreNamedStyle = function(form) {
-	var style_uid = '';
+    var style_uid = '';
     $A(Form.getElements(form)).each(function(i) {
         var name = i.name;
         var value = $F(i);
@@ -2122,7 +2122,7 @@ NXThemesStyleManager.restoreNamedStyle = function(form) {
           theme_name = value;
         }
     });
-    var url = nxthemesBasePath + "/nxthemes-editor/restore_named_style"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/restore_named_style";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -2130,14 +2130,14 @@ NXThemesStyleManager.restoreNamedStyle = function(form) {
              'theme_name': theme_name
          },
          onSuccess: function(r) {
-        	 NXThemes.getViewById("style manager").refresh();
-        	 NXThemesEditor.refreshUndoActions();
+             NXThemes.getViewById("style manager").refresh();
+             NXThemesEditor.refreshUndoActions();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
-    });   
+         }
+    });
 }
 
 
@@ -2150,7 +2150,7 @@ NXThemesStyleManager.setPageStyles = function(themeName, form) {
             propertyMap.set(name.substr(6), value);
         }
     });
-    var url = nxthemesBasePath + "/nxthemes-editor/set_page_styles"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/set_page_styles";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -2165,12 +2165,12 @@ NXThemesStyleManager.setPageStyles = function(themeName, form) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
-    });    
+         }
+    });
 }
 
 NXThemesStyleManager.selectNamedStyle = function(uid) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_named_style"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_named_style";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -2182,7 +2182,7 @@ NXThemesStyleManager.selectNamedStyle = function(uid) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
       });
 };
 
@@ -2191,24 +2191,24 @@ NXThemesStyleManager.setStyleInheritance = function(info) {
     var model = info.model;
     var data = model.getData();
     var id = data.get('id');
-    var themeName = data.get('theme_name');	
+    var themeName = data.get('theme_name');
     var parent = info.options.choice;
-    var url = nxthemesBasePath + "/nxthemes-editor/set_style_inheritance";	  
+    var url = nxthemesBasePath + "/nxthemes-editor/set_style_inheritance";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
-             theme_name: themeName,		 	
+             theme_name: themeName,
              style_name: id,
-			 ancestor_name: parent
+             ancestor_name: parent
          },
          onSuccess: function(r) {
              NXThemes.getViewById("style manager").refresh();
-             NXThemesEditor.refreshUndoActions();			 
+             NXThemesEditor.refreshUndoActions();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
       });
 };
 
@@ -2216,23 +2216,23 @@ NXThemesStyleManager.removeStyleInheritance = function(info) {
     var target = Event.element(info);
     var model = info.model;
     var data = model.getData();
-    var themeName = data.get('theme_name');	
-    var id = data.get('id');	
-	var url = nxthemesBasePath + "/nxthemes-editor/remove_style_inheritance";
+    var themeName = data.get('theme_name');
+    var id = data.get('id');
+    var url = nxthemesBasePath + "/nxthemes-editor/remove_style_inheritance";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
-		 	 theme_name: themeName,
+              theme_name: themeName,
              style_name: id
          },
          onSuccess: function(r) {
              NXThemes.getViewById("style manager").refresh();
-             NXThemesEditor.refreshUndoActions();			 
+             NXThemesEditor.refreshUndoActions();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
       });
 };
 
@@ -2273,7 +2273,7 @@ NXThemesFragmentFactory.FragmentPreview.prototype = Object.extend(new NXThemes.V
 
 NXThemesFragmentFactory.drawPreview = function() {
     var area = document.getElementById('fragmentPreviewArea');
-	var currentThemeName = area.getAttribute("theme");
+    var currentThemeName = area.getAttribute("theme");
     var options = {
       method: 'get',
       onSuccess: function(req) {
@@ -2283,9 +2283,9 @@ NXThemesFragmentFactory.drawPreview = function() {
     var url = window.location.href;
     var i = url.indexOf('?');
     var query_params = $H({
-		'theme': currentThemeName + '/~',
-		'engine': 'preview'
-		});
+        'theme': currentThemeName + '/~',
+        'engine': 'preview'
+        });
     if (i > 0) {
       var query_string = url.substr(i+1);
       query_params = query_params.update($H(query_string.toQueryParams()));
@@ -2296,41 +2296,41 @@ NXThemesFragmentFactory.drawPreview = function() {
 };
 
 NXThemesFragmentFactory.selectFragmentType = function(type) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_fragment_type"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_fragment_type";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
              type: type
          },
          onSuccess: function(r) {
-        	 NXThemes.getViewById("fragment factory").refresh();
+             NXThemes.getViewById("fragment factory").refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesFragmentFactory.selectView = function(view) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_fragment_view"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_fragment_view";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
-    	     view: view
+             view: view
          },
          onSuccess: function(r) {
-        	 NXThemes.getViewById("fragment factory").refresh();
+             NXThemes.getViewById("fragment factory").refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
 NXThemesFragmentFactory.selectStyle = function(style) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_fragment_style"; 
+    var url = nxthemesBasePath + "/nxthemes-editor/select_fragment_style";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
@@ -2342,7 +2342,7 @@ NXThemesFragmentFactory.selectStyle = function(style) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
 };
 
@@ -2353,7 +2353,7 @@ NXThemesFragmentFactory.addFragment = function(typeName, styleName, destId) {
          method: 'post',
          parameters: {
              type_name: typeName,
-			 style_name: styleName,
+             style_name: styleName,
              dest_id: destId
          },
          onSuccess: function(r) {
@@ -2364,7 +2364,7 @@ NXThemesFragmentFactory.addFragment = function(typeName, styleName, destId) {
          onFailure: function(r) {
              var text = r.responseText;
              window.alert(text);
-         }         
+         }
     });
     return false;
 };

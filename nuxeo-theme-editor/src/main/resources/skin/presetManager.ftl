@@ -1,6 +1,6 @@
 
 <div class="nxthemesThemeControlPanelScreen">
-    
+
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 
@@ -12,9 +12,9 @@
 
 <form class="nxthemesForm" onsubmit="return false">
   <div style="text-align: center; margin-top: -80px; padding-bottom: 10px">
-    <button onclick="NXThemesEditor.manageSkins()">Choose a skin</button> 
-    <button class="selected">Set theme options</button> 
-    <button onclick="NXThemesEditor.manageStyles()">Edit CSS</button> 
+    <button onclick="NXThemesEditor.manageSkins()">Choose a skin</button>
+    <button class="selected">Set theme options</button>
+    <button onclick="NXThemesEditor.manageStyles()">Edit CSS</button>
     <button onclick="NXThemesEditor.backToControlPanel()">Finish</button>
   </div>
 </form>
@@ -28,7 +28,7 @@
              Background</a></li>
          <li <#if selected_preset_category = 'border'>class="selected"</#if>>
              <a  href="javascript:NXThemesPresetManager.selectPresetCategory('border')">
-             Border</a></li>             
+             Border</a></li>
          <li <#if selected_preset_category = 'color'>class="selected"</#if>>
               <a href="javascript:NXThemesPresetManager.selectPresetCategory('color')">
               Color</a></li>
@@ -41,7 +41,7 @@
        </ul>
        <div style="clear: both"></div>
     </div>
-    
+
 
 
 
@@ -49,19 +49,19 @@
 
 <div class="nxthemesEditorFrame">
 
-<form class="nxthemesForm" 
+<form class="nxthemesForm"
       onsubmit="NXThemesPresetManager.updatePresets(this); return false">
 
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
-    
+
 <#list presets as preset_info>
   <p>
     <label>${preset_info.label}</label>
-    <input type="text" 
+    <input type="text"
         name="preset_${preset_info.name}"
         value="${preset_info.value}" />
     <span class="description">${preset_info.description}</span>
-  
+
     <!--
     <div class="preview"
        title="${preset_info.value?replace(r'${basePath}', '${basePath}')}"></div>
@@ -76,7 +76,7 @@
 <#else>
   <div>No options can be configured in this category.</div>
 </#if>
-  
+
 </form>
 
 

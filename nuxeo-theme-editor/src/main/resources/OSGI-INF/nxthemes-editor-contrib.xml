@@ -148,7 +148,7 @@
         nxthemes/editor/views/fragment-preview.json
       </path>
     </resource>
-	
+
     <resource name="canvas-mode-selector.json">
       <path>
         nxthemes/editor/controllers/canvas-mode-selector.json
@@ -190,7 +190,7 @@
     <resource name="style-menu.json">
       <path>nxthemes/editor/views/style-menu.json</path>
     </resource>
-	
+
     <resource name="style-manager-actions.json">
       <path>
         nxthemes/editor/controllers/style-manager-actions.json
@@ -265,7 +265,7 @@
       <resource>nxthemes-editor.js</resource>
       <resource>nxthemes-editor.css</resource>
     </view>
-	
+
     <view name="page frame" template-engine="freemarker">
       <engine>page-editor</engine>
       <element-type>page</element-type>
@@ -407,7 +407,7 @@
         nxthemes/editor/widgets/jsf/page-frame.xml
       </template>
     </view>
-	
+
     <view name="page frame" template-engine="jsf-facelets">
       <engine>page-editor</engine>
       <mode>area-styles-section</mode>
@@ -500,7 +500,7 @@
         <filter>control fragment visibility</filter>
         <filter>make draggable</filter>
         <filter>set element id</filter>
-        <filter>insert json model</filter>	
+        <filter>insert json model</filter>
       </renderer>
 
     </engine>
@@ -542,12 +542,12 @@
 
       <renderer element="fragment">
         <filter>add widget</filter>
-		<filter>set style</filter>
+        <filter>set style</filter>
         <filter>write fragment tag</filter>
       </renderer>
 
     </engine>
-	
+
   </extension>
 
   <extension target="org.nuxeo.theme.services.ThemeService"
@@ -581,5 +581,5 @@
     </preview>
 
   </extension>
-  
+
 </component>

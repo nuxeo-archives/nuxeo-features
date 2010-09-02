@@ -10,9 +10,9 @@
 
 <form class="nxthemesForm" onsubmit="return false">
   <div style="text-align: center; margin-top: -80px; padding-bottom: 10px">
-    <button onclick="NXThemesEditor.manageSkins()">Choose a skin</button> 
+    <button onclick="NXThemesEditor.manageSkins()">Choose a skin</button>
     <button onclick="NXThemesEditor.managePresets()">Set theme options</button>
-    <button class="selected">Edit CSS</button> 
+    <button class="selected">Edit CSS</button>
     <button onclick="NXThemesEditor.backToControlPanel()">Finish</button>
   </div>
 </form>
@@ -44,8 +44,8 @@
       onsubmit="NXThemesStyleManager.updateNamedStyleCSS(this); return false">
     <input type="hidden" name="style_uid" value="#{selected_named_style.uid}" />
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
-    
-<#if selected_named_style.customized>   
+
+<#if selected_named_style.customized>
   <div>
     <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
    style="border: 1px solid #999; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">${selected_named_style_css}</textarea>
@@ -53,7 +53,7 @@
   <div>
     <button type="submit">Save</button>
   </div>
-  
+
 <#else>
 
    <textarea disabled="disabled" id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
@@ -67,7 +67,7 @@ ${selected_named_style_css}
 
 </#if>
 </form>
-  
+
 
 <#if selected_named_style.remote & selected_named_style.customized>
  <form class="nxthemesForm" style="padding: 0; float: right"

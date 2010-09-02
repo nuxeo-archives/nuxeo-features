@@ -19,14 +19,14 @@
     <div id="nxthemesHeader">
 
       <!--  Status message -->
-      <div id="nxthemesStatusMessage" style="display: none"></div>   
-      
+      <div id="nxthemesStatusMessage" style="display: none"></div>
+
       <!--  theme selector -->
       <@nxthemes_panel identifier="theme selector"
         url="${basePath}/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
         visibleInPerspectives="canvas editor,padding editor" />
-        
+
       <!--  perspective selector -->
       <@nxthemes_panel identifier="perspective selector"
         url="${basePath}/nxthemes-editor/perspectiveSelector"
@@ -38,30 +38,30 @@
         url="${basePath}/nxthemes-editor/undoActions"
         controlledBy="editor perspectives"
         visibleInPerspectives="canvas editor,preset manager,style manager,element editor,skin manager" />
-      
+
 
       <div id="nxthemesMainButtons">
-                                                                         
+
         <@nxthemes_button identifier="quit button"
           link="javascript:NXThemesEditor.exit()"
           icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"
-          label="Quit" />  
+          label="Quit" />
 
       </div>
-    
+
       <div id="nxthemesLocalButtons">
 
         <@nxthemes_panel identifier="back to control panel"
           url="${basePath}/nxthemes-editor/backToControlPanel"
           controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor,preset library,theme browser,element editor,fragment factory" />       
-                
+          visibleInPerspectives="canvas editor,preset library,theme browser,element editor,fragment factory" />
+
         <!-- theme actions -->
         <@nxthemes_panel identifier="theme actions"
           url="${basePath}/nxthemes-editor/themeActions"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
-          
+
         <!-- view modes -->
         <@nxthemes_panel identifier="view modes"
           url="${basePath}/nxthemes-editor/viewModes"
@@ -73,11 +73,11 @@
     </div>
 
     <div id="nxthemesEditorArea">
-                  
+
       <div id="nxthemesWaitAnimation" style="display:none">
           <img src="${basePath}/skin/nxthemes-editor/img/loader.gif" alt="" width="16" height="16" /> LOADING ...
-      </div>   
-        
+      </div>
+
       <@nxthemes_model resource="theme-editor.json" />
 
       <!--  canvas area -->
@@ -97,7 +97,7 @@
       <@nxthemes_controller resource="context-menu-actions.json" />
       <@nxthemes_controller resource="toggle-context-menu.json" />
       <@nxthemes_view resource="context-menu.json" />
-      
+
       <!--  page selector -->
       <@nxthemes_panel identifier="page selector"
         url="${basePath}/nxthemes-editor/pageSelector"
@@ -107,7 +107,7 @@
     </div>
 
     <@nxthemes_controller resource="perspective-selector.json" />
-    
+
     <@nxthemes_controller resource="editor-perspectives.json" />
     <@nxthemes_controller resource="editor-buttons.json" />
     <@nxthemes_controller resource="theme-buttons.json" />
@@ -120,9 +120,9 @@
 
     <@nxthemes_controller resource="theme-switcher.json" />
     <@nxthemes_controller resource="page-switcher.json" />
-    
+
     <@nxthemes_controller resource="link-disabler.json" />
-    
+
     <!-- control panel -->
     <@nxthemes_panel identifier="control panel"
       url="${basePath}/nxthemes-editor/controlPanel"
@@ -134,7 +134,7 @@
       url="${basePath}/nxthemes-editor/presetManager"
       controlledBy="editor perspectives"
       visibleInPerspectives="preset manager" />
-      
+
     <!-- style manager -->
     <@nxthemes_controller resource="style-manager-actions.json" />
     <@nxthemes_panel identifier="style manager"
@@ -146,14 +146,14 @@
     <@nxthemes_panel identifier="skin manager"
       url="${basePath}/nxthemes-editor/skinManager"
       controlledBy="editor perspectives"
-      visibleInPerspectives="skin manager" />      
-    
+      visibleInPerspectives="skin manager" />
+
     <!-- theme chooser -->
     <@nxthemes_panel identifier="theme browser"
       url="${basePath}/nxthemes-editor/themeBrowser"
       controlledBy="editor perspectives"
       visibleInPerspectives="theme browser" />
-      
+
     <!-- element editor -->
     <@nxthemes_panel identifier="element editor"
       url="${basePath}/nxthemes-editor/elementEditor"
@@ -172,20 +172,20 @@
       url="${basePath}/nxthemes-editor/areaStyleChooser"
       controlledBy="area style perspectives,toolbox mover"
       visibleInPerspectives="style chooser" />
-    
+
     <!-- theme optimizer -->
     <@nxthemes_panel identifier="theme optimizer"
       url="${basePath}/nxthemes-editor/themeOptimizer"
       controlledBy="editor perspectives"
       visibleInPerspectives="theme optimizer" />
-      
-    
+
+
     <!-- fragment factory -->
     <@nxthemes_panel identifier="fragment factory"
       url="${basePath}/nxthemes-editor/fragmentFactory"
       controlledBy="editor perspectives"
       visibleInPerspectives="fragment factory" />
-      
+
 <#else>
   <script type="text/javascript"><!--
     NXThemesEditor.accessDenied();
