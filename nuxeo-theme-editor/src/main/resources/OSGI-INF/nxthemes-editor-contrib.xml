@@ -31,6 +31,10 @@
       <require>nxthemes-effects.js</require>
     </resource>
 
+    <resource name="jscolor.js">
+      <path>nxthemes/editor/scripts/jscolor.js</path>
+    </resource>
+
     <resource name="nxthemes-editor.css">
       <path>nxthemes/editor/styles/nxthemes-editor.css</path>
     </resource>
@@ -44,6 +48,12 @@
     <resource name="element-mover.json">
       <path>
         nxthemes/editor/controllers/element-mover.json
+      </path>
+    </resource>
+
+    <resource name="color-picker.json">
+      <path>
+        nxthemes/editor/controllers/color-picker.json
       </path>
     </resource>
 
@@ -148,7 +158,7 @@
         nxthemes/editor/views/fragment-preview.json
       </path>
     </resource>
-	
+
     <resource name="canvas-mode-selector.json">
       <path>
         nxthemes/editor/controllers/canvas-mode-selector.json
@@ -190,7 +200,7 @@
     <resource name="style-menu.json">
       <path>nxthemes/editor/views/style-menu.json</path>
     </resource>
-	
+
     <resource name="style-manager-actions.json">
       <path>
         nxthemes/editor/controllers/style-manager-actions.json
@@ -264,8 +274,9 @@
       <resource>nxthemes-controllers.js</resource>
       <resource>nxthemes-editor.js</resource>
       <resource>nxthemes-editor.css</resource>
+      <resource>jscolor.js</resource>
     </view>
-	
+
     <view name="page frame" template-engine="freemarker">
       <engine>page-editor</engine>
       <element-type>page</element-type>
@@ -397,6 +408,7 @@
       <resource>nxthemes-controllers.js</resource>
       <resource>nxthemes-editor.js</resource>
       <resource>nxthemes-editor.css</resource>
+      <resource>jscolor.js</resource>
     </view>
 
     <view name="page frame" template-engine="jsf-facelets">
@@ -407,7 +419,7 @@
         nxthemes/editor/widgets/jsf/page-frame.xml
       </template>
     </view>
-	
+
     <view name="page frame" template-engine="jsf-facelets">
       <engine>page-editor</engine>
       <mode>area-styles-section</mode>
@@ -477,6 +489,7 @@
 
       <renderer element="section">
         <filter>add widget</filter>
+        <filter>set element name</filter>
         <filter>remove scripts</filter>
         <filter>set style</filter>
         <filter>set layout</filter>
@@ -485,6 +498,7 @@
 
       <renderer element="cell">
         <filter>add widget</filter>
+        <filter>set element name</filter>
         <filter>set style</filter>
         <filter>set layout</filter>
         <filter>set element id</filter>
@@ -498,7 +512,7 @@
         <filter>control fragment visibility</filter>
         <filter>make draggable</filter>
         <filter>set element id</filter>
-        <filter>insert json model</filter>	
+        <filter>insert json model</filter>
       </renderer>
 
     </engine>
@@ -540,12 +554,12 @@
 
       <renderer element="fragment">
         <filter>add widget</filter>
-		<filter>set style</filter>
+        <filter>set style</filter>
         <filter>write fragment tag</filter>
       </renderer>
 
     </engine>
-	
+
   </extension>
 
   <extension target="org.nuxeo.theme.services.ThemeService"
@@ -579,5 +593,5 @@
     </preview>
 
   </extension>
-  
+
 </component>

@@ -70,4 +70,12 @@ public class PresetInfo {
         return preset.getCategory();
     }
 
+    public String getLabel() {
+        return preset.getLabel();
+    }
+
+    public String getDescription() {
+        return preset.getDescription();
+    }
+
 }
