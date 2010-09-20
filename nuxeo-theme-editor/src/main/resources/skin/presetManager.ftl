@@ -55,7 +55,7 @@
   <p>
     <label>${preset_info.label}</label>
     <input type="text"
-        <#if selected_preset_category = 'color'>class="color"</#if>
+        <#if selected_preset_category = 'color'>class="color" style="border-color: #333"</#if>
         name="preset_${preset_info.name}"
         value="${preset_info.value}" />
     <span class="description">${preset_info.description}</span>

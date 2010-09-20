@@ -32,7 +32,7 @@
     </resource>
 
     <resource name="jscolor.js">
-      <path>nxthemes/editor/scripts/jscolor/jscolor.js</path>
+      <path>nxthemes/editor/scripts/jscolor.js</path>
     </resource>
 
     <resource name="nxthemes-editor.css">
