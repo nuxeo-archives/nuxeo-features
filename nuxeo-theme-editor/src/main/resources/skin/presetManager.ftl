@@ -1,4 +1,3 @@
-
 <div class="nxthemesThemeControlPanelScreen">
 
 <#assign themeManager=This.getThemeManager()>
@@ -43,8 +42,6 @@
     </div>
 
 
-
-
 <#assign presets = This.getCustomPresets(current_theme_name, selected_preset_category)>
 
 <div class="nxthemesEditorFrame">
@@ -58,14 +55,11 @@
   <p>
     <label>${preset_info.label}</label>
     <input type="text"
+        <#if selected_preset_category = 'color'>class="color"</#if>
         name="preset_${preset_info.name}"
         value="${preset_info.value}" />
     <span class="description">${preset_info.description}</span>
 
-    <!--
-    <div class="preview"
-       title="${preset_info.value?replace(r'${basePath}', '${basePath}')}"></div>
-    -->
   </p>
 </#list>
 

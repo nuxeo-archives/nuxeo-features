@@ -2249,6 +2249,26 @@ if (typeof NXThemesFragmentFactory == "undefined") {
     }
 }
 
+// Controllers
+NXThemes.registerControllers({
+
+  'color picker': function(node, def) {
+    return new NXThemes.ColorPicker(node, def);
+  }
+
+});
+
+NXThemes.ColorPicker = Class.create();
+NXThemes.ColorPicker.prototype = Object.extend(new NXThemes.Controller(), {
+
+  register: function(view) {
+    jscolor.init();
+  }
+
+});
+
+
+
 // widgets
 NXThemes.registerWidgets({
 

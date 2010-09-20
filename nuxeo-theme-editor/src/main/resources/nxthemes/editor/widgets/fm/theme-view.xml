@@ -107,7 +107,7 @@
     </div>
 
     <@nxthemes_controller resource="perspective-selector.json" />
-
+    <@nxthemes_controller resource="color-picker.json" />
     <@nxthemes_controller resource="editor-perspectives.json" />
     <@nxthemes_controller resource="editor-buttons.json" />
     <@nxthemes_controller resource="theme-buttons.json" />
@@ -132,7 +132,7 @@
     <!-- preset manager -->
     <@nxthemes_panel identifier="preset manager"
       url="${basePath}/nxthemes-editor/presetManager"
-      controlledBy="editor perspectives"
+      controlledBy="editor perspectives,color picker"
       visibleInPerspectives="preset manager" />
 
     <!-- style manager -->

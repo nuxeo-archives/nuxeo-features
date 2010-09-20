@@ -31,6 +31,10 @@
       <require>nxthemes-effects.js</require>
     </resource>
 
+    <resource name="jscolor.js">
+      <path>nxthemes/editor/scripts/jscolor/jscolor.js</path>
+    </resource>
+
     <resource name="nxthemes-editor.css">
       <path>nxthemes/editor/styles/nxthemes-editor.css</path>
     </resource>
@@ -44,6 +48,12 @@
     <resource name="element-mover.json">
       <path>
         nxthemes/editor/controllers/element-mover.json
+      </path>
+    </resource>
+
+    <resource name="color-picker.json">
+      <path>
+        nxthemes/editor/controllers/color-picker.json
       </path>
     </resource>
 
@@ -264,6 +274,7 @@
       <resource>nxthemes-controllers.js</resource>
       <resource>nxthemes-editor.js</resource>
       <resource>nxthemes-editor.css</resource>
+      <resource>jscolor.js</resource>
     </view>
 
     <view name="page frame" template-engine="freemarker">
@@ -397,6 +408,7 @@
       <resource>nxthemes-controllers.js</resource>
       <resource>nxthemes-editor.js</resource>
       <resource>nxthemes-editor.css</resource>
+      <resource>jscolor.js</resource>
     </view>
 
     <view name="page frame" template-engine="jsf-facelets">
