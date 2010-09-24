@@ -61,6 +61,8 @@ public class SessionManager extends AbstractComponent {
 
     private static final String UNDO_BUFFER = "org.nuxeo.theme.editor.undo_buffer";
 
+    private static final String RESOURCE_BANK = "org.nuxeo.theme.editor.resource_bank";
+
     private static UserSession getUserSession() {
         return WebEngine.getActiveContext().getUserSession();
     }
@@ -205,6 +207,14 @@ public class SessionManager extends AbstractComponent {
                 undoBuffer);
     }
 
+    public static synchronized void setResourceBank(String name) {
+        getUserSession().put(RESOURCE_BANK, name);
+    }
+
+    public static synchronized String getResourceBank() {
+        return (String) getUserSession().get(RESOURCE_BANK);
+    }
+
     @SuppressWarnings("unchecked")
     public static synchronized List<String> getSelectedCssCategories() {
         List<String> categories = (List<String>) getUserSession().get(
@@ -212,7 +222,7 @@ public class SessionManager extends AbstractComponent {
         if (categories == null) {
             categories = new ArrayList<String>();
         }
-        return (List<String>) categories;
+        return categories;
     }
 
     public static synchronized void toggleCssCategory(String name) {
@@ -225,7 +235,8 @@ public class SessionManager extends AbstractComponent {
         setSelectedCssCategories(categories);
     }
 
-    public static synchronized void setSelectedCssCategories(List<String> categories) {
+    public static synchronized void setSelectedCssCategories(
+            List<String> categories) {
         getUserSession().put(SELECTED_CSS_CATEGORIES, categories);
     }
 
