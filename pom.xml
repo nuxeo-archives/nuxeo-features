@@ -950,7 +950,7 @@
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-connect-client-wrapper</artifactId>
-        <version>${nuxeo.features.version}</version>
+        <version>1.0-I20100916_0115</version>
       </dependency>
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
