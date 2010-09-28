@@ -21,6 +21,11 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import net.sf.json.JSONObject;
 
+import org.nuxeo.ecm.webengine.WebEngine;
+import org.nuxeo.ecm.webengine.forms.FormData;
+import org.nuxeo.ecm.webengine.model.Access;
+import org.nuxeo.ecm.webengine.model.WebObject;
+import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.theme.Manager;
 import org.nuxeo.theme.elements.Element;
 import org.nuxeo.theme.elements.ElementFormatter;
@@ -47,11 +52,6 @@ import org.nuxeo.theme.types.Type;
 import org.nuxeo.theme.types.TypeFamily;
 import org.nuxeo.theme.uids.Identifiable;
 import org.nuxeo.theme.views.ViewType;
-import org.nuxeo.ecm.webengine.WebEngine;
-import org.nuxeo.ecm.webengine.forms.FormData;
-import org.nuxeo.ecm.webengine.model.Access;
-import org.nuxeo.ecm.webengine.model.WebObject;
-import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 
 @WebObject(type = "nxthemes-editor", administrator = Access.GRANT)
 @Produces(MediaType.TEXT_HTML)
@@ -376,7 +376,7 @@ public class Main extends ModuleRoot {
 
     @GET
     @Path("skinManager")
-    public Object renderSkinPreview(
+    public Object renderSkinManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String bankName = getSelectedBankName();
@@ -408,6 +408,24 @@ public class Main extends ModuleRoot {
         }
     }
 
+    @GET
+    @Path("imageManager")
+    public Object renderImageManager(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String bankName = getSelectedBankName();
+        List<ResourceBank> banks = ThemeManager.getResourceBanks();
+        if (bankName == null && !banks.isEmpty()) {
+            bankName = banks.get(0).getName();
+        }
+        String currentThemeName = getCurrentThemeName(path, name);
+        String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
+        return getTemplate("imageManager.ftl").arg("current_skin_name",
+                currentSkinName).arg("current_theme_name", currentThemeName).arg(
+                "selected_bank_name", bankName).arg("images",
+                getBankImages(bankName)).arg("banks", banks);
+    }
+
     public static String getSelectedBankName() {
         return SessionManager.getResourceBank();
     }
@@ -421,9 +439,19 @@ public class Main extends ModuleRoot {
                         skin.get("collection"), skin.get("resource"),
                         skin.get("preview")));
             }
-            return info;
         }
-        return null;
+        return info;
+    }
+
+    public static List<String> getBankImages(String bankName) {
+        List<String> images = new ArrayList<String>();
+        if (bankName != null) {
+            ResourceBank resourceBank = ThemeManager.getResourceBank(bankName);
+            for (String imagePath : resourceBank.getImages()) {
+                images.add(imagePath);
+            }
+        }
+        return images;
     }
 
     public static SkinInfo getSkinInfo(String skinName) {
@@ -813,7 +841,7 @@ public class Main extends ModuleRoot {
         FormData form = ctx.getForm();
         String themeName = form.getString("theme_name");
         String property_map = form.getString("property_map");
-        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         try {
             for (Map.Entry<String, String> preset : propertyMap.entrySet()) {
                 Editor.editPreset(themeName, preset.getKey(), preset.getValue());
@@ -1008,7 +1036,7 @@ public class Main extends ModuleRoot {
         FormData form = ctx.getForm();
         String themeName = form.getString("theme_name");
         String property_map = form.getString("property_map");
-        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         try {
             Editor.setPageStyles(themeName, propertyMap);
         } catch (Exception e) {
@@ -1114,7 +1142,7 @@ public class Main extends ModuleRoot {
         FormData form = ctx.getForm();
         String id = form.getString("id");
         String property_map = form.getString("property_map");
-        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.updateElementProperties(element, propertyMap);
@@ -1205,7 +1233,7 @@ public class Main extends ModuleRoot {
         String path = form.getString("path");
         String viewName = form.getString("view_name");
         String property_map = form.getString("property_map");
-        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         Element element = ThemeManager.getElementById(id);
         Style currentStyleLayer = getSelectedStyleLayer();
         try {
@@ -1238,7 +1266,7 @@ public class Main extends ModuleRoot {
     public void updateElementPadding() {
         FormData form = ctx.getForm();
         String property_map = form.getString("property_map");
-        Map<String, String> propertyMap = (Map<String, String>) JSONObject.fromObject(property_map);
+        Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         Element element = getSelectedElement();
         try {
             Editor.updateElementLayout(element, propertyMap);

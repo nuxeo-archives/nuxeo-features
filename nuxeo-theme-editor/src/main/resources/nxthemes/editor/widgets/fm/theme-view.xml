@@ -148,6 +148,12 @@
       controlledBy="editor perspectives"
       visibleInPerspectives="skin manager" />
 
+    <!-- image manager -->
+    <@nxthemes_panel identifier="image manager"
+      url="${basePath}/nxthemes-editor/imageManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="image manager" />
+
     <!-- theme chooser -->
     <@nxthemes_panel identifier="theme browser"
       url="${basePath}/nxthemes-editor/themeBrowser"

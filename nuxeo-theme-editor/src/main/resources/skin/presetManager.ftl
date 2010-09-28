@@ -60,6 +60,7 @@
         value="${preset_info.value}" />
     <span class="description">${preset_info.description}</span>
 
+      <a href="" onclick="NXThemesEditor.setEditorPerspective('image manager')">SELECT IMAGE</a>
   </p>
 </#list>
 
