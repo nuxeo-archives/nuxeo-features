@@ -21,11 +21,6 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import net.sf.json.JSONObject;
 
-import org.nuxeo.ecm.webengine.WebEngine;
-import org.nuxeo.ecm.webengine.forms.FormData;
-import org.nuxeo.ecm.webengine.model.Access;
-import org.nuxeo.ecm.webengine.model.WebObject;
-import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.theme.Manager;
 import org.nuxeo.theme.elements.Element;
 import org.nuxeo.theme.elements.ElementFormatter;
@@ -52,6 +47,11 @@ import org.nuxeo.theme.types.Type;
 import org.nuxeo.theme.types.TypeFamily;
 import org.nuxeo.theme.uids.Identifiable;
 import org.nuxeo.theme.views.ViewType;
+import org.nuxeo.ecm.webengine.WebEngine;
+import org.nuxeo.ecm.webengine.forms.FormData;
+import org.nuxeo.ecm.webengine.model.Access;
+import org.nuxeo.ecm.webengine.model.WebObject;
+import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 
 @WebObject(type = "nxthemes-editor", administrator = Access.GRANT)
 @Produces(MediaType.TEXT_HTML)
@@ -369,8 +369,9 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
-        return getTemplate("controlPanel.ftl").arg("current_skin_name",
-                currentSkinName).arg("current_theme_name", currentThemeName);
+        SkinInfo currentSkin = getSkinInfo(currentSkinName);
+        return getTemplate("controlPanel.ftl").arg("current_skin", currentSkin).arg(
+                "current_theme_name", currentThemeName);
     }
 
     @GET
@@ -411,10 +412,29 @@ public class Main extends ModuleRoot {
         return SessionManager.getResourceBank();
     }
 
-    public static List<Map<String, String>> getBankSkins(String bankName) {
+    public static List<SkinInfo> getBankSkins(String bankName) {
+        List<SkinInfo> info = new ArrayList<SkinInfo>();
         if (bankName != null) {
             ResourceBank resourceBank = ThemeManager.getResourceBank(bankName);
-            return resourceBank.getSkins();
+            for (Map<String, String> skin : resourceBank.getSkins()) {
+                info.add(new SkinInfo(skin.get("name"), skin.get("bank"),
+                        skin.get("collection"), skin.get("resource"),
+                        skin.get("preview")));
+            }
+            return info;
+        }
+        return null;
+    }
+
+    public static SkinInfo getSkinInfo(String skinName) {
+        for (ResourceBank bank : ThemeManager.getResourceBanks()) {
+            for (Map<String, String> skin : bank.getSkins()) {
+                if (skinName.equals(skin.get("name"))) {
+                    return new SkinInfo(skin.get("name"), skin.get("bank"),
+                            skin.get("collection"), skin.get("resource"),
+                            skin.get("preview"));
+                }
+            }
         }
         return null;
     }
