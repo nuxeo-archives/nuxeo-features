@@ -58,9 +58,15 @@
         <#if selected_preset_category = 'color'>class="color" style="border-color: #333"</#if>
         name="preset_${preset_info.name}"
         value="${preset_info.value}" />
+    <#if selected_preset_category = 'background'>
+      <a class="nxthemesBrowseButton"
+         href="#" onclick="NXThemesEditor.setEditorPerspective('image manager')">Browse</a>
+    </#if>
+    <#if selected_preset_category = 'image'>
+      <a class="nxthemesBrowseButton"
+         href="#" onclick="NXThemesEditor.setEditorPerspective('image manager')">Browse</a>
+    </#if>
     <span class="description">${preset_info.description}</span>
-
-      <a href="" onclick="NXThemesEditor.setEditorPerspective('image manager')">SELECT IMAGE</a>
   </p>
 </#list>
 

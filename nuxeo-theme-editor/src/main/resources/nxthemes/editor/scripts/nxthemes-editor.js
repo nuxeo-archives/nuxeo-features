@@ -2390,4 +2390,14 @@ NXThemesFragmentFactory.addFragment = function(typeName, styleName, destId) {
 };
 
 
+// Image manager
+if (typeof NXThemesImageManager == "undefined") {
+    NXThemesImageManager = {
+    }
+}
+
+NXThemesImageManager.selectImage = function(path) {
+  NXThemes.getControllerById('editor perspectives').back();
+}
+
 
