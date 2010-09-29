@@ -56,15 +56,12 @@
     <label>${preset_info.label}</label>
     <input type="text"
         <#if selected_preset_category = 'color'>class="color" style="border-color: #333"</#if>
+        id="nxthemes_preset_${preset_info.name}"
         name="preset_${preset_info.name}"
         value="${preset_info.value}" />
-    <#if selected_preset_category = 'background'>
+    <#if selected_preset_category = 'background' | selected_preset_category = 'image'>
       <a class="nxthemesBrowseButton"
-         href="#" onclick="NXThemesEditor.setEditorPerspective('image manager')">Browse</a>
-    </#if>
-    <#if selected_preset_category = 'image'>
-      <a class="nxthemesBrowseButton"
-         href="#" onclick="NXThemesEditor.setEditorPerspective('image manager')">Browse</a>
+         href="javascript:void(0)" onclick="NXThemesEditor.selectEditField('nxthemes_preset_${preset_info.name}', 'image manager')">Browse</a>
     </#if>
     <span class="description">${preset_info.description}</span>
   </p>

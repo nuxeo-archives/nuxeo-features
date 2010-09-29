@@ -26,7 +26,7 @@
 <div class="album">
   <#list images as image>
     <a href="javascript:void(0)"
-       onclick="NXThemesImageManager.selectImage('${current_theme_name}', '${image}')">
+       onclick="NXThemesImageManager.selectImage('${current_edit_field}', '${image}')">
       <div class="imageSingle">
         <div class="image"><img src="${basePath}/theme-banks/${selected_bank_name}/image/${image}" /></div>
         <div class="footer">${image}</div>

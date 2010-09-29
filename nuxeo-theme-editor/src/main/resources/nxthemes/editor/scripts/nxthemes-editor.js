@@ -147,6 +147,25 @@ NXThemesEditor.insertFragment = function(info) {
     });
 };
 
+NXThemesEditor.selectEditField = function(fieldName, screen) {
+  var url = nxthemesBasePath + "/nxthemes-editor/select_edit_field";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             field_name: fieldName
+         },
+         onSuccess: function(r) {
+             NXThemesEditor.setEditorPerspective(screen);
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
+    return false;
+}
+
+
 NXThemesEditor.manageStyles = function() {
     NXThemesEditor.setEditorPerspective('style manager');
     NXThemesStyleManager.setEditMode('named styles', 'named_styles');
@@ -2396,8 +2415,10 @@ if (typeof NXThemesImageManager == "undefined") {
     }
 }
 
-NXThemesImageManager.selectImage = function(path) {
-  NXThemes.getControllerById('editor perspectives').back();
+
+NXThemesImageManager.selectImage = function(fieldName, path) {
+  $(fieldName).setValue("url('" + path + "')");
+  NXThemesEditor.setEditorPerspective('control panel');
 }
 
 

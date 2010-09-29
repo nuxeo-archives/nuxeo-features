@@ -422,8 +422,9 @@ public class Main extends ModuleRoot {
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("imageManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
-                "selected_bank_name", bankName).arg("images",
-                getBankImages(bankName)).arg("banks", banks);
+                "selected_bank_name", bankName).arg("current_edit_field",
+                getSelectedEditField()).arg("images", getBankImages(bankName)).arg(
+                "banks", banks);
     }
 
     public static String getSelectedBankName() {
@@ -1979,6 +1980,21 @@ public class Main extends ModuleRoot {
 
     public static void createFragmentPreview(String currentThemeName) {
         Editor.createFragmentPreview(currentThemeName);
+    }
+
+    /*
+     * Images
+     */
+    @POST
+    @Path("select_edit_field")
+    public void selectEditField() {
+        FormData form = ctx.getForm();
+        String fieldName = form.getString("field_name");
+        SessionManager.setSelectedEditField(fieldName);
+    }
+
+    public static String getSelectedEditField() {
+        return SessionManager.getSelectedEditField();
     }
 
 }
