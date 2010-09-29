@@ -2417,7 +2417,7 @@ if (typeof NXThemesImageManager == "undefined") {
 
 
 NXThemesImageManager.selectImage = function(fieldName, path) {
-  $(fieldName).setValue("url('" + path + "')");
+  $(fieldName).setValue("url(" + path + ")");
   NXThemes.getViewById('image manager').hide();
 }
 
