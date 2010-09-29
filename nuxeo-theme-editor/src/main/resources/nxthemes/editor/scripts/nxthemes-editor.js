@@ -155,7 +155,7 @@ NXThemesEditor.selectEditField = function(fieldName, screen) {
              field_name: fieldName
          },
          onSuccess: function(r) {
-             NXThemesEditor.setEditorPerspective(screen);
+             NXThemes.getViewById(screen).show();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -2418,7 +2418,7 @@ if (typeof NXThemesImageManager == "undefined") {
 
 NXThemesImageManager.selectImage = function(fieldName, path) {
   $(fieldName).setValue("url('" + path + "')");
-  NXThemesEditor.setEditorPerspective('control panel');
+  NXThemes.getViewById('image manager').hide();
 }
 
 
