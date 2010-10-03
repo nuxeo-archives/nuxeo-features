@@ -23,6 +23,9 @@
         <a href="javascript:NXThemesEditor.managePresets()">
           <img src="${basePath}/skin/nxthemes-editor/img/manage-presets-32.png" width="32" height="32" />
           <div>Set theme options</div></a>
+        <a href="javascript:NXThemesEditor.exit()">
+          <img src="${basePath}/skin/nxthemes-editor/img/quit-32.png" width="32" height="32" />
+          <div>Exit theme editor</div></a>
 
     </td>
     <td style="vertical-align: top; width: 25%">
@@ -47,9 +50,10 @@
         <a href="javascript:NXThemesEditor.switchToCanvas()">
           <img src="${basePath}/skin/nxthemes-editor/img/expert-mode-32.png" width="32" height="32" />
           <div>Switch to expert mode</div></a>
+
+
     </td>
   </tr>
 </table>
 
-</div>
 </div>

@@ -42,6 +42,11 @@
 
       <div id="nxthemesMainButtons">
 
+        <@nxthemes_button identifier="back to control panel"
+          link="javascript:NXThemesEditor.backToControlPanel()"
+          icon="${basePath}/skin/nxthemes-editor/img/back-14.png"
+          label="Back to control panel" />
+
         <@nxthemes_button identifier="quit button"
           link="javascript:NXThemesEditor.exit()"
           icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"
@@ -50,11 +55,6 @@
       </div>
 
       <div id="nxthemesLocalButtons">
-
-        <@nxthemes_panel identifier="back to control panel"
-          url="${basePath}/nxthemes-editor/backToControlPanel"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor,preset library,theme browser,element editor,fragment factory" />
 
         <!-- theme actions -->
         <@nxthemes_panel identifier="theme actions"

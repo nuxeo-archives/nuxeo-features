@@ -1,17 +1,8 @@
-<div class="nxthemesThemeControlPanelScreen">
+<@extends src="main.ftl">
 
-<div id="nxthemesSkinManager" class="nxthemesThemeControlPanel">
+<@block name="title">Choose a skin</@block>
 
-<form class="nxthemesForm" onsubmit="return false">
-  <div style="text-align: center; margin-top: -80px; padding-bottom: 10px">
-    <button class="selected">Choose a skin</button>
-    <button onclick="NXThemesEditor.managePresets()">Set theme options</button>
-    <button onclick="NXThemesEditor.manageStyles()">Edit CSS</button>
-    <button onclick="NXThemesEditor.backToControlPanel()">Finish</button>
-  </div>
-</form>
-
-<h1 class="nxthemesEditor">Choose a skin</h1>
+<@block name="content">
 
 <table class="nxthemesManageScreen">
   <tr>
@@ -49,5 +40,5 @@
 </table>
 
 
-</div>
-</div>
+</@block>
+</@extends>

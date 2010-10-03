@@ -1,4 +1,4 @@
-<div class="nxthemesThemeControlPanelScreen">
+<@extends src="main.ftl">
 
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
@@ -7,21 +7,19 @@
   <#assign selected_preset_category="background" />
 </#if>
 
-<div id="nxthemesPresetManager" class="nxthemesThemeControlPanel">
+<@block name="title">Set theme options</@block>
 
-<form class="nxthemesForm" onsubmit="return false">
-  <div style="text-align: center; margin-top: -80px; padding-bottom: 10px">
-    <button onclick="NXThemesEditor.manageSkins()">Choose a skin</button>
-    <button class="selected">Set theme options</button>
-    <button onclick="NXThemesEditor.manageStyles()">Edit CSS</button>
-    <button onclick="NXThemesEditor.backToControlPanel()">Finish</button>
-  </div>
-</form>
+<@block name="content">
 
-<h1 class="nxthemesEditor">Set theme options</h1>
+  <table class="nxthemesManageScreen">
+  <tr>
+    <th style="width: 25%;">Options</th>
+    <th style="width: 75%;">Properties: ${selected_preset_category}</th>
+  </tr>
+  <tr>
+  <td>
 
-    <div class="nxthemesTabs nxthemesEditTabs">
-       <ul>
+       <ul class="nxthemesSelector">
          <li <#if selected_preset_category = 'background'>class="selected"</#if>>
              <a  href="javascript:NXThemesPresetManager.selectPresetCategory('background')">
              Background</a></li>
@@ -38,18 +36,18 @@
              <a  href="javascript:NXThemesPresetManager.selectPresetCategory('image')">
              Image</a></li>
        </ul>
-       <div style="clear: both"></div>
-    </div>
 
+
+</td>
+<td>
 
 <#assign presets = This.getCustomPresets(current_theme_name, selected_preset_category)>
 
-<div class="nxthemesEditorFrame">
-
-<form class="nxthemesForm"
+<form class="nxthemesForm" style="background-color: #f9f9f9; border: 1px solid #eee; padding: 10px"
       onsubmit="NXThemesPresetManager.updatePresets(this); return false">
 
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
+
 
 <#list presets as preset_info>
   <p>
@@ -69,7 +67,7 @@
 
 <#if presets>
   <div>
-    <button type="submit">Save options</button>
+    <button type="submit">Save</button>
   </div>
 <#else>
   <div>No options can be configured in this category.</div>
@@ -78,6 +76,9 @@
 </form>
 
 
-</div>
+</td>
+</tr>
+</table>
 
-</div>
+</@block>
+</@extends>
