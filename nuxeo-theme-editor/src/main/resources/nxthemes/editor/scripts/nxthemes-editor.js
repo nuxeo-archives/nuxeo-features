@@ -175,6 +175,10 @@ NXThemesEditor.manageSkins = function() {
     NXThemesEditor.setEditorPerspective('skin manager');
 };
 
+NXThemesEditor.manageThemeBanks = function() {
+    NXThemesEditor.setEditorPerspective('bank manager');
+};
+
 NXThemesEditor.setEditorPerspective = function(perspective) {
     NXThemes.getControllerById('editor perspectives').switchTo(perspective);
 };

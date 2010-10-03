@@ -376,6 +376,26 @@ public class Main extends ModuleRoot {
                 getBankSkins(bankName)).arg("banks", banks);
     }
 
+    @GET
+    @Path("bankManager")
+    public Object renderBankManager(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String bankName = getSelectedBankName();
+        List<ResourceBank> banks = ThemeManager.getResourceBanks();
+        ResourceBank selectedBank = null;
+        if (bankName == null && !banks.isEmpty()) {
+            bankName = banks.get(0).getName();
+            selectedBank = ThemeManager.getResourceBank(bankName);
+        }
+        boolean connected = false;
+
+        String currentThemeName = getCurrentThemeName(path, name);
+        return getTemplate("bankManager.ftl").arg("current_theme_name",
+                currentThemeName).arg("selected_bank", selectedBank).arg(
+                "banks", banks).arg("connected", connected);
+    }
+
     @POST
     @Path("activate_skin")
     public void activateSkin() {

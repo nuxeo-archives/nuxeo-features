@@ -153,6 +153,12 @@
       controlledBy="editor perspectives"
       visibleInPerspectives="skin manager" />
 
+    <!-- bank manager -->
+    <nxthemes:panel identifier="bank manager"
+      url="%{contextPath}/site/nxthemes-editor/bankManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="bank manager" />
+
     <!-- image manager -->
     <nxthemes:panel identifier="image manager"
       url="%{contextPath}/site/nxthemes-editor/imageManager"
