@@ -1,12 +1,14 @@
 <@extends src="main.ftl">
 
+<#assign screen="style-manager" />
+
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 <#if selected_named_style>
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
-<@block name="title">Choose a skin</@block>
+<@block name="title">Edit CSS</@block>
 
 <@block name="content">
 

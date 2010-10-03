@@ -1,5 +1,7 @@
 <@extends src="main.ftl">
 
+<#assign screen="skin-manager" />
+
 <@block name="title">Choose a skin</@block>
 
 <@block name="content">

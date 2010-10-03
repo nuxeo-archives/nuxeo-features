@@ -1,5 +1,7 @@
 <@extends src="main.ftl">
 
+<#assign screen="preset-manager" />
+
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 
