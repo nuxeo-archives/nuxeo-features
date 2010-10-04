@@ -354,8 +354,12 @@ public class Main extends ModuleRoot {
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         SkinInfo currentSkin = getSkinInfo(currentSkinName);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
         return getTemplate("controlPanel.ftl").arg("current_skin", currentSkin).arg(
-                "current_theme_name", currentThemeName);
+                "current_theme_name", currentThemeName).arg("theme",
+                currentThemeDef);
     }
 
     @GET
