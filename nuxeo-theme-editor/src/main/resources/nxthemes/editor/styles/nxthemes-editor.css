@@ -1804,8 +1804,8 @@ table.fragmentFactory td {
 }
 
 .album .imageSingleSelected {
-  border: 1px solid #ccc;
-  background-color: #f0f0f0;
+  border: 1px solid #eee;
+  background-color: #f6f6f6;
 }
 
 .album .imageSingle .image {
@@ -1816,11 +1816,11 @@ table.fragmentFactory td {
 
 .album .imageSingle:hover {
   cursor: pointer;
-  border: 1px solid #000;
+  border: 1px solid #ccc;
 }
 
 .album .imageSingle:hover .footer {
-  color: #999;
+  color: #000;
   text-decoration: none;
 }
 
@@ -1828,7 +1828,7 @@ table.fragmentFactory td {
   text-align: center;
   color: #333;
   padding-bottom: 2px;
-  font: bold 12px tahoma;
+  font: normal 11px Tahoma;
 }
 
 .album .imageSingle img {

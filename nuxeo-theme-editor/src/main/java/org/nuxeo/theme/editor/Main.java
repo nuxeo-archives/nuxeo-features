@@ -358,9 +358,14 @@ public class Main extends ModuleRoot {
 
         String selectedBankName = getSelectedBankName();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
-        ResourceBank selectedBank = ThemeManager.getResourceBank(selectedBankName);
-        if (selectedBankName == null && !banks.isEmpty()) {
-            selectedBank = banks.get(0);
+        ResourceBank selectedBank = null;
+        if (selectedBankName == null) {
+            if (!banks.isEmpty()) {
+                selectedBank = banks.get(0);
+                selectedBankName = selectedBank.getName();
+            }
+        } else {
+            selectedBank = ThemeManager.getResourceBank(selectedBankName);
         }
 
         String currentThemeName = getCurrentThemeName(path, name);
@@ -378,9 +383,13 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String selectedBankName = getSelectedBankName();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
-        ResourceBank selectedBank = ThemeManager.getResourceBank(selectedBankName);
-        if (selectedBankName == null && !banks.isEmpty()) {
-            selectedBank = banks.get(0);
+        ResourceBank selectedBank = null;
+        if (selectedBankName == null) {
+            if (!banks.isEmpty()) {
+                selectedBank = banks.get(0);
+            }
+        } else {
+            selectedBank = ThemeManager.getResourceBank(selectedBankName);
         }
 
         boolean connected = false;
