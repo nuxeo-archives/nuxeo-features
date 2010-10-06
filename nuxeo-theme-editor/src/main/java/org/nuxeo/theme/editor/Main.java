@@ -112,29 +112,17 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         List<Style> styles = getNamedStyles(path, name);
-
-        Style selectedStyle = getSelectedNamedStyle();
-        if (!styles.contains(selectedStyle) && !styles.isEmpty()) {
-            selectedStyle = styles.get(0);
-        }
-        List<Style> rootStyles = new ArrayList<Style>();
-        for (Style style : styles) {
-            if (ThemeManager.getAncestorFormatOf(style) == null) {
-                rootStyles.add(style);
-            }
-        }
-
         String currentThemeName = getCurrentThemeName(path, name);
+        Style themeSkin = getThemeSkin(currentThemeName);
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
         return getTemplate("styleManager.ftl").arg("theme", currentThemeDef).arg(
                 "named_styles", styles).arg("style_manager_mode",
-                getStyleManagerMode()).arg("selected_named_style",
-                selectedStyle).arg("selected_named_style_css",
-                getRenderedPropertiesForNamedStyle(selectedStyle)).arg(
+                getStyleManagerMode()).arg("theme_skin", themeSkin).arg(
+                "theme_skin_css", getRenderedPropertiesForNamedStyle(themeSkin)).arg(
                 "current_theme_name", currentThemeName).arg("page_styles",
-                getPageStyles(currentThemeName)).arg("root_styles", rootStyles);
+                getPageStyles(currentThemeName));
     }
 
     @GET
@@ -367,17 +355,20 @@ public class Main extends ModuleRoot {
     public Object renderSkinManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String bankName = getSelectedBankName();
+
+        String selectedBankName = getSelectedBankName();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
-        if (bankName == null && !banks.isEmpty()) {
-            bankName = banks.get(0).getName();
+        ResourceBank selectedBank = ThemeManager.getResourceBank(selectedBankName);
+        if (selectedBankName == null && !banks.isEmpty()) {
+            selectedBank = banks.get(0);
         }
+
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("skinManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
-                "selected_bank_name", bankName).arg("skins",
-                getBankSkins(bankName)).arg("banks", banks);
+                "selected_bank", selectedBank).arg("skins",
+                getBankSkins(selectedBankName)).arg("banks", banks);
     }
 
     @GET
@@ -385,13 +376,13 @@ public class Main extends ModuleRoot {
     public Object renderBankManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String bankName = getSelectedBankName();
+        String selectedBankName = getSelectedBankName();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
-        ResourceBank selectedBank = null;
-        if (bankName == null && !banks.isEmpty()) {
-            bankName = banks.get(0).getName();
-            selectedBank = ThemeManager.getResourceBank(bankName);
+        ResourceBank selectedBank = ThemeManager.getResourceBank(selectedBankName);
+        if (selectedBankName == null && !banks.isEmpty()) {
+            selectedBank = banks.get(0);
         }
+
         boolean connected = false;
 
         String currentThemeName = getCurrentThemeName(path, name);
@@ -1403,6 +1394,26 @@ public class Main extends ModuleRoot {
             }
         }
         return pageStyles;
+    }
+
+    public static Style getThemeSkin(String themeName) {
+        List<PageElement> pages = Manager.getThemeManager().getPagesOf(
+                themeName);
+        if (pages.isEmpty()) {
+            return null;
+        }
+        for (PageElement page : pages) {
+            Style namedStyle = null;
+            try {
+                namedStyle = Editor.getNamedStyleOf(page);
+            } catch (ThemeException e) {
+                e.printStackTrace();
+            }
+            if (namedStyle != null) {
+                return namedStyle;
+            }
+        }
+        return null;
     }
 
     public static List<FragmentType> getFragments(String applicationPath) {

@@ -147,7 +147,7 @@ NXThemesEditor.insertFragment = function(info) {
     });
 };
 
-NXThemesEditor.selectEditField = function(fieldName, screen) {
+NXThemesEditor.selectEditField = function(fieldName, screenName) {
   var url = nxthemesBasePath + "/nxthemes-editor/select_edit_field";
     new Ajax.Request(url, {
          method: 'post',
@@ -155,7 +155,7 @@ NXThemesEditor.selectEditField = function(fieldName, screen) {
              field_name: fieldName
          },
          onSuccess: function(r) {
-             NXThemes.getViewById(screen).show();
+             NXThemes.getViewById(screenName).show();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -190,7 +190,7 @@ if (typeof NXThemesSkinManager == "undefined") {
     }
 }
 
-NXThemesSkinManager.selectResourceBank = function(name) {
+NXThemesEditor.selectResourceBank = function(name, screenName) {
     var url = nxthemesBasePath + "/nxthemes-editor/select_resource_bank";
     new Ajax.Request(url, {
          method: 'post',
@@ -198,7 +198,7 @@ NXThemesSkinManager.selectResourceBank = function(name) {
              name: name
          },
          onSuccess: function(r) {
-             NXThemes.getViewById("skin manager").refresh();
+             NXThemes.getViewById(screenName).refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -218,7 +218,7 @@ NXThemesSkinManager.activateSkin = function(theme, bank, collection, resource) {
              resource: resource
          },
          onSuccess: function(r) {
-             NXThemesEditor.backToControlPanel();
+             NXThemesEditor.manageSkins();
          },
          onFailure: function(r) {
              var text = r.responseText;

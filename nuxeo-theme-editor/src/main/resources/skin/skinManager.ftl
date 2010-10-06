@@ -16,8 +16,8 @@
 
 <ul class="nxthemesSelector">
 <#list banks as bank>
-  <li <#if bank.name = selected_bank_name>class="selected"</#if>>
-    <a href="javascript:NXThemesSkinManager.selectResourceBank('${bank.name}')">
+  <li <#if bank.name = selected_bank.name>class="selected"</#if>>
+    <a href="javascript:NXThemesEditor.selectResourceBank('${bank.name}', 'skin manager')">
     <img src="${basePath}/skin/nxthemes-editor/img/bank-16.png" width="16" height="16"/> ${bank.name}</a></li>
 </#list>
 </ul>
@@ -29,7 +29,7 @@
   <#list skins as skin>
     <a href="javascript:void(0)"
        onclick="NXThemesSkinManager.activateSkin('${current_theme_name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">
-      <div class="imageSingle <#if current_skin_name=skin.name>selected</#if>">
+      <div class="imageSingle <#if current_skin_name=skin.name>imageSingleSelected</#if>">
         <div class="image"><img src="${skin.preview}" /></div>
         <div class="footer">${skin.name}</div>
       </div>
@@ -40,7 +40,6 @@
 </td>
 </tr>
 </table>
-
 
 </@block>
 </@extends>

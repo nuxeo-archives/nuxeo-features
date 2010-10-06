@@ -1023,13 +1023,12 @@ ul.nxthemesSelector li a {
   text-decoration: none;
   color: #000;
   display: block;
-  padding: 4px;
+  padding: 5px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 13px;
   color: #000;
-  border: 1px solid #fff;
 }
 
 ul.nxthemesSelector li a:hover {
@@ -1050,7 +1049,6 @@ ul.nxthemesSelector li a:hover span.info {
 
 ul.nxthemesSelector li.selected a {
   background-color: #eee;
-  border: 1px solid #ddd;
 }
 
 ul.nxthemesSelector li.selected a:hover {
@@ -1800,13 +1798,14 @@ table.fragmentFactory td {
   margin: 10px;
   width: 212px;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
   -moz-border-radius: 4px;
   background-color: #fff;
 }
 
-.album .selected {
-   border: 1px solid #ccc;
+.album .imageSingleSelected {
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
 }
 
 .album .imageSingle .image {
@@ -1816,21 +1815,20 @@ table.fragmentFactory td {
  }
 
 .album .imageSingle:hover {
-  background-color: #ffc;
-  border: 1px solid #fc0;
   cursor: pointer;
+  border: 1px solid #000;
 }
 
 .album .imageSingle:hover .footer {
-  color: #900;
+  color: #999;
   text-decoration: none;
 }
 
 .album .footer {
   text-align: center;
-  color: #666;
+  color: #333;
   padding-bottom: 2px;
-  font: bold 11px tahoma;
+  font: bold 12px tahoma;
 }
 
 .album .imageSingle img {

@@ -42,11 +42,6 @@
 
       <div id="nxthemesMainButtons">
 
-        <@nxthemes_button identifier="back to control panel"
-          link="javascript:NXThemesEditor.backToControlPanel()"
-          icon="${basePath}/skin/nxthemes-editor/img/back-14.png"
-          label="Back to control panel" />
-
         <@nxthemes_button identifier="quit button"
           link="javascript:NXThemesEditor.exit()"
           icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"
