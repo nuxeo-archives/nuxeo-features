@@ -218,7 +218,7 @@ NXThemesSkinManager.activateSkin = function(theme, bank, collection, resource) {
              resource: resource
          },
          onSuccess: function(r) {
-             NXThemesEditor.switchToCanvas();
+             NXThemesEditor.backToControlPanel();
          },
          onFailure: function(r) {
              var text = r.responseText;
