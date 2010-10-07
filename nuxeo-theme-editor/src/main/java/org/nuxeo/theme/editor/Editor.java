@@ -50,7 +50,6 @@ import org.nuxeo.theme.themes.ThemeManager;
 import org.nuxeo.theme.themes.ThemeSerializer;
 import org.nuxeo.theme.types.TypeFamily;
 import org.nuxeo.theme.types.TypeRegistry;
-import org.nuxeo.theme.views.ViewType;
 
 public class Editor {
 
@@ -214,24 +213,42 @@ public class Editor {
                     TypeFamily.FORMAT, "style");
             style = (Style) ElementFormatter.getFormatByType(element, styleType);
         }
-        if (style.getName() != null || "".equals(viewName)) {
+        if (style.isNamed() || "".equals(viewName)) {
             viewName = "*";
         }
-        org.nuxeo.theme.html.Utils.loadCss(style, cssSource, viewName);
-
+        org.nuxeo.theme.Utils.loadCss(style, cssSource, viewName);
         saveTheme(themeName);
     }
 
     public static void updateNamedStyleCss(Style style, String cssSource,
             String themeName) throws ThemeException {
-
         saveToUndoBuffer(themeName, "update style properties");
-
         if (style == null || style.getName() == null) {
             throw new ThemeException("A named style is required.");
         }
         final String viewName = "*";
-        org.nuxeo.theme.html.Utils.loadCss(style, cssSource, viewName);
+        org.nuxeo.theme.Utils.loadCss(style, cssSource, viewName);
+        // if the style came from a resource bank, it has now been customized.
+        if (style.isRemote()) {
+            style.setCustomized(true);
+        }
+        saveTheme(themeName);
+    }
+
+    public static void restoreNamedStyle(Style style, String themeName)
+            throws ThemeException {
+        saveToUndoBuffer(themeName, "restore style");
+        if (style == null || style.getName() == null) {
+            throw new ThemeException("A named style is required.");
+        }
+        if (!style.isRemote()) {
+            throw new ThemeException(
+                    "A style from a remote resource bank is required.");
+        }
+        // if the style came from a resource bank, it has now been customized.
+        ThemeManager.loadRemoteStyle(style);
+
+        style.setCustomized(false);
         saveTheme(themeName);
     }
 
@@ -679,7 +696,8 @@ public class Editor {
         themeManager.setNamedObject(themeName, "style", style);
 
         if (element != null) {
-            themeManager.makeElementUseNamedStyle(element, styleName, themeName);
+            themeManager.makeElementUseNamedStyle(element, styleName,
+                    themeName, false);
         }
 
         saveTheme(themeName);
@@ -705,7 +723,7 @@ public class Editor {
         Style inheritedStyle = (Style) themeManager.getNamedObject(themeName,
                 "style", styleName);
         themeManager.deleteFormat(inheritedStyle);
-        themeManager.makeElementUseNamedStyle(element, null, themeName);
+        themeManager.makeElementUseNamedStyle(element, null, themeName, false);
         themeManager.removeNamedObject(themeName, "style", styleName);
         saveTheme(themeName);
     }
@@ -765,7 +783,8 @@ public class Editor {
         if (PresetManager.getCustomPreset(themeName, presetName) != null) {
             throw new ThemeException("Preset name already taken: " + presetName);
         }
-        PresetManager.createCustomPreset(themeName, presetName, category, value);
+        PresetManager.createCustomPreset(themeName, presetName, category,
+                value, "", "");
         saveTheme(themeName);
         return presetName;
     }
@@ -1017,10 +1036,10 @@ public class Editor {
             Style style = (Style) FormatFactory.create("style");
             ElementFormatter.setFormat(fragment, style);
 
-            themeManager.makeElementUseNamedStyle(fragment, styleName,
-                    currentThemeName);
-
             String themeName = currentThemeName.split("/")[0];
+            themeManager.makeElementUseNamedStyle(fragment, styleName,
+                    themeName, false);
+
             themeManager.fillScratchPage(themeName, fragment);
 
         } catch (Exception e) {
@@ -1028,6 +1047,53 @@ public class Editor {
         }
         // Clean cache
         themeManager.themeModified(currentThemeName);
+    }
+
+    /*
+     * Skin management
+     */
+    public static void activateSkin(String themeName, String bankName,
+            String collectionName, String resourceName) throws ThemeException {
+
+        ThemeManager themeManager = Manager.getThemeManager();
+        String styleName = String.format("%s (%s)", resourceName,
+                collectionName);
+
+        final boolean preserveInheritance = true;
+        for (PageElement page : themeManager.getPagesOf(themeName)) {
+            try {
+                themeManager.makeElementUseNamedStyle(page, styleName,
+                        themeName, preserveInheritance);
+            } catch (ThemeException e) {
+                throw new ThemeException(e.getMessage(), e);
+            }
+        }
+        saveTheme(themeName);
+    }
+
+    public static String getCurrentSkinName(final String themeName) {
+        ThemeManager themeManager = Manager.getThemeManager();
+        final FormatType styleType = (FormatType) Manager.getTypeRegistry().lookup(
+                TypeFamily.FORMAT, "style");
+        String skinName = null;
+        String previousSkinName = null;
+        for (PageElement page : themeManager.getPagesOf(themeName)) {
+            Style style = (Style) ElementFormatter.getFormatByType(page,
+                    styleType);
+            if (style == null) {
+                return null;
+            }
+            Style ancestorStyle = (Style) ThemeManager.getAncestorFormatOf(style);
+            if (ancestorStyle == null || !ancestorStyle.isNamed()) {
+                return null;
+            }
+            skinName = ancestorStyle.getName();
+            if (previousSkinName != null && !skinName.equals(previousSkinName)) {
+                return null;
+            }
+            previousSkinName = skinName;
+        }
+        return skinName;
     }
 
 }
