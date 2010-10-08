@@ -26,8 +26,9 @@
 </td>
 <td>
   <#if current_skin>
+    <#assign bank=Root.getResourceBank(current_skin.bank) />
     <p class="nxthemesEditor">You are currently using the <strong>${current_skin.name}</strong> skin.</p>
-    <img style="border: 1px solid #eee; padding: 10px" src="${current_skin.preview}" />
+    <img style="border: 1px solid #eee; padding: 10px" src="${bank.connectionUrl}/style/${current_skin.collection}/${current_skin.resource}/preview"" />
   <#else>
     <p class="nxthemesEditor">You have not selected a theme skin yet.</p>
   </#if>

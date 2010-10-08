@@ -14,7 +14,7 @@
 
 <ul class="nxthemesSelector">
 <#list banks as bank>
-  <li <#if bank.name = selected_bank_name>class="selected"</#if>>
+  <li <#if bank.name = selected_bank.name>class="selected"</#if>>
     <a href="javascript:NXThemesSkinManager.selectResourceBank('${bank.name}')">
     <img src="${basePath}/skin/nxthemes-editor/img/bank-16.png" width="16" height="16"/> ${bank.name}</a></li>
 </#list>
@@ -28,7 +28,7 @@
     <a href="javascript:void(0)"
        onclick="NXThemesImageManager.selectImage('${current_edit_field}', '${image}')">
       <div class="imageSingle">
-        <div class="image"><img src="${basePath}/theme-banks/${selected_bank_name}/image/${image}" /></div>
+        <div class="image"><img src="${selected_bank.connectionUrl}/image/${image}" /></div>
         <div class="footer">${image}</div>
       </div>
     </a>

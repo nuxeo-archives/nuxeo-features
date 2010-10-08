@@ -356,24 +356,15 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
 
-        String selectedBankName = getSelectedBankName();
+        ResourceBank selectedBank = getSelectedBank();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
-        ResourceBank selectedBank = null;
-        if (selectedBankName == null) {
-            if (!banks.isEmpty()) {
-                selectedBank = banks.get(0);
-                selectedBankName = selectedBank.getName();
-            }
-        } else {
-            selectedBank = ThemeManager.getResourceBank(selectedBankName);
-        }
 
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("skinManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
                 "selected_bank", selectedBank).arg("skins",
-                getBankSkins(selectedBankName)).arg("banks", banks);
+                getBankSkins(selectedBank.getName())).arg("banks", banks);
     }
 
     @GET
@@ -381,6 +372,19 @@ public class Main extends ModuleRoot {
     public Object renderBankManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
+
+        ResourceBank selectedBank = getSelectedBank();
+        boolean connected = false;
+
+        List<ResourceBank> banks = ThemeManager.getResourceBanks();
+
+        String currentThemeName = getCurrentThemeName(path, name);
+        return getTemplate("bankManager.ftl").arg("current_theme_name",
+                currentThemeName).arg("selected_bank", selectedBank).arg(
+                "banks", banks).arg("connected", connected);
+    }
+
+    private ResourceBank getSelectedBank() {
         String selectedBankName = getSelectedBankName();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
         ResourceBank selectedBank = null;
@@ -391,13 +395,7 @@ public class Main extends ModuleRoot {
         } else {
             selectedBank = ThemeManager.getResourceBank(selectedBankName);
         }
-
-        boolean connected = false;
-
-        String currentThemeName = getCurrentThemeName(path, name);
-        return getTemplate("bankManager.ftl").arg("current_theme_name",
-                currentThemeName).arg("selected_bank", selectedBank).arg(
-                "banks", banks).arg("connected", connected);
+        return selectedBank;
     }
 
     @POST
@@ -421,18 +419,17 @@ public class Main extends ModuleRoot {
     public Object renderImageManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String bankName = getSelectedBankName();
+
+        ResourceBank selectedBank = getSelectedBank();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
-        if (bankName == null && !banks.isEmpty()) {
-            bankName = banks.get(0).getName();
-        }
+
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("imageManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
-                "selected_bank_name", bankName).arg("current_edit_field",
-                getSelectedEditField()).arg("images", getBankImages(bankName)).arg(
-                "banks", banks);
+                "current_edit_field", getSelectedEditField()).arg(
+                "selected_bank", selectedBank).arg("images",
+                getBankImages(selectedBank.getName())).arg("banks", banks);
     }
 
     public static String getSelectedBankName() {
@@ -482,6 +479,10 @@ public class Main extends ModuleRoot {
         FormData form = ctx.getForm();
         String name = form.getString("name");
         SessionManager.setResourceBank(name);
+    }
+
+    public ResourceBank getResourceBank(String bankName) {
+        return ThemeManager.getResourceBank(bankName);
     }
 
     @GET
