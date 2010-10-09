@@ -3,6 +3,8 @@
 
 <div id="nxthemesPresetManager" class="nxthemesThemeControlPanel">
 
+<h1 class="nxthemesEditor">Theme configuration</h1>
+
 <table class="nxthemesManageScreen">
 <tr>
 <td style="width: 20%; vertical-align: top; border-right: 1px solid #eee;">

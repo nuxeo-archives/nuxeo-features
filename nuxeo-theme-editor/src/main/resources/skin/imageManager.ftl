@@ -7,7 +7,9 @@
 <table class="nxthemesManageScreen">
   <tr>
     <th style="width: 25%;">Theme bank</th>
-    <th style="width: 75%;">Images</th>
+    <th style="width: 75%;">Images
+    Upload an image
+    </th>
   </tr>
   <tr>
   <td>

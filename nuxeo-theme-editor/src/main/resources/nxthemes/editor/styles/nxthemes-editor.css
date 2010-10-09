@@ -743,6 +743,7 @@ div.nxthemesEditorFrame {
 .nxthemesForm {
   font-family: Arial, sans-serif;
   padding: 0.2em;
+  -moz-border-radius: 4px;
 }
 
 .nxthemesForm div {
@@ -753,19 +754,19 @@ div.nxthemesEditorFrame {
   text-transform: uppercase;
   font: 11px Arial, sans-serif;
   margin: 15px 0 0 0;
-  padding: 1px 8px;
-  -moz-border-radius: 11px;
-  -webkit-border-radius: 11px;
-  border-radius: 11px;
+  padding: 1px 10px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
   border: 1px solid #ccc;
   background: #f2f2f2 url(${basePath}/skin/nxthemes-editor/img/white-button-bg.png) repeat-x left top;
   color: #333;
 }
 
 .nxthemesForm button:hover {
-  background: #f2f2f2 url(${basePath}/skin/nxthemes-editor/img/white-button-bg.png) repeat-x left bottom;
-  border-color: #999;
-  color: #444;
+  background-position: left bottom;
+  border-color: #ccc;
+  color: #666;
   cursor: pointer;
 }
 
@@ -1647,8 +1648,10 @@ table.fragmentFactory td {
 .nxthemesManageScreen th {
   text-align: left;
   color: #fff;
-  background: #000 url(${basePath}/skin/nxthemes-editor/img/th-bg.png) repeat-x;
   padding: 4px 13px;
+  background: #666;
+  -moz-border-radius: 4px;
+}
 }
 
 .nxthemesManageScreen td {
@@ -1798,14 +1801,15 @@ table.fragmentFactory td {
   margin: 10px;
   width: 212px;
   text-align: center;
-  border: 1px solid #eee;
+  border: 2px solid #fff;
   -moz-border-radius: 4px;
   background-color: #fff;
 }
 
 .album .imageSingleSelected {
-  border: 1px solid #eee;
+  border: 2px solid #666;
   background-color: #f6f6f6;
+  font-weight: bold;
 }
 
 .album .imageSingle .image {
@@ -1816,7 +1820,6 @@ table.fragmentFactory td {
 
 .album .imageSingle:hover {
   cursor: pointer;
-  border: 1px solid #ccc;
 }
 
 .album .imageSingle:hover .footer {
@@ -1829,6 +1832,11 @@ table.fragmentFactory td {
   color: #333;
   padding-bottom: 2px;
   font: normal 11px Tahoma;
+}
+
+.album .imageSingleSelected .footer {
+  font-weight: bold!important;
+  color: #666;
 }
 
 .album .imageSingle img {
@@ -1905,12 +1913,17 @@ table.fragmentFactory td {
 }
 
 a.nxthemesBrowseButton {
+  background: #f2f2f2 url(${basePath}/skin/nxthemes-editor/img/white-button-bg.png) repeat-x left top;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  padding: 1px 7px;
-  border: 1px solid #999;
-  background-color: #eee;
+  padding: 1px 8px;
+  border: 1px solid #ccc;
   text-decoration: none;
-  color: #000;
+  color: #333;
+}
+
+a.nxthemesBrowseButton:hover {
+  background-position: left bottom;
+  color: #666;
 }

@@ -13,7 +13,7 @@
 </tr>
 <tr>
 <td>
-  <p class="nxthemesEditor">Name: <strong>${current_theme_name}</strong></p>
+  <p class="nxthemesEditor">Theme name: <strong>${current_theme_name}</strong></p>
   <p class="nxthemesEditor">Source: <strong>${theme.src}</strong></p>
   <p class="nxthemesEditor">Last saved: <strong>${theme.lastSaved}</strong></p>
   <p class="nxthemesEditor">Compatibility:
