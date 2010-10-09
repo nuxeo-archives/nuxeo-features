@@ -1652,7 +1652,6 @@ table.fragmentFactory td {
   background: #666;
   -moz-border-radius: 4px;
 }
-}
 
 .nxthemesManageScreen td {
   vertical-align: top;
@@ -1807,8 +1806,7 @@ table.fragmentFactory td {
 }
 
 .album .imageSingleSelected {
-  border: 2px solid #666;
-  background-color: #f6f6f6;
+  border: 2px solid #fc0;
   font-weight: bold;
 }
 
@@ -1868,17 +1866,6 @@ table.fragmentFactory td {
   min-height: 120%;
 }
 
-.nxthemesThemeControlPanelScreen button {
-  border: 1px solid #000;
-  color: #000;
-}
-
-.nxthemesThemeControlPanelScreen button.selected, .nxthemesThemeControlPanelScreen button:hover {
-  background: #fff;
-  border: 1px solid #000;
-  color: #000;
-}
-
 .nxthemesThemeControlPanel {
   background-color: #fff;
   border: 0px solid #000;
@@ -1912,18 +1899,35 @@ table.fragmentFactory td {
   padding: 16px;
 }
 
-a.nxthemesBrowseButton {
+a.nxthemesActionButton {
   background: #f2f2f2 url(${basePath}/skin/nxthemes-editor/img/white-button-bg.png) repeat-x left top;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
   padding: 1px 8px;
   border: 1px solid #ccc;
   text-decoration: none;
   color: #333;
+  font-size: 12px;
 }
 
-a.nxthemesBrowseButton:hover {
+a.nxthemesActionButton:hover {
   background-position: left bottom;
   color: #666;
+}
+
+
+.nxthemesThemeControlPanel fieldset {
+  -moz-border-radius: 3px;
+  border: 1px solid #ccc;
+  margin: 3px 0 10px 0;
+  padding: 0 6px;
+  background-color: #fcfcfc;
+}
+
+
+.nxthemesThemeControlPanel legend {
+  padding: 0 2px;
+  font-weigt: bold;
+  font-size: 14px;
 }
