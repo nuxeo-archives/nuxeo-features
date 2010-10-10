@@ -32,6 +32,10 @@
   <#else>
     <p class="nxthemesEditor">You have not selected a theme skin yet.</p>
   </#if>
+  <p>
+    <a class="nxthemesActionButton"
+     href="javascript:NXThemesEditor.manageSkins()">Change skin</a>
+  </p>
   </legend>
 
 </td>
@@ -45,6 +49,10 @@
     ${preset_info.value}
   </p>
 </#list>
+  <p>
+    <a class="nxthemesActionButton"
+     href="javascript:NXThemesEditor.managePresets()">Set theme options</a>
+  </p>
 </fieldset>
 
 <fieldset><legend>CSS</legend>
@@ -54,6 +62,12 @@
 <#else>
  <p class="nxthemesEditor">No CSS customization were made</p>
 </#if>
+
+  <p>
+    <a class="nxthemesActionButton"
+     href="javascript:NXThemesEditor.manageStyles()">Edit CSS</a>
+  </p>
+
 </fieldset>
 
 </td>

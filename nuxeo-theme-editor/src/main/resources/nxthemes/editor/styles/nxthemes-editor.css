@@ -1901,13 +1901,13 @@ table.fragmentFactory td {
 
 a.nxthemesActionButton {
   background: #f2f2f2 url(${basePath}/skin/nxthemes-editor/img/white-button-bg.png) repeat-x left top;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  padding: 1px 8px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 2px 8px;
   border: 1px solid #ccc;
   text-decoration: none;
-  color: #333;
+  color: #000;
   font-size: 12px;
 }
 
@@ -1916,15 +1916,13 @@ a.nxthemesActionButton:hover {
   color: #666;
 }
 
-
 .nxthemesThemeControlPanel fieldset {
-  -moz-border-radius: 3px;
-  border: 1px solid #ccc;
+  -moz-border-radius: 4px;
+  border: 1px solid #ddd;
   margin: 3px 0 10px 0;
   padding: 0 6px;
-  background-color: #fcfcfc;
+  background-color: #fefefe;
 }
-
 
 .nxthemesThemeControlPanel legend {
   padding: 0 2px;
