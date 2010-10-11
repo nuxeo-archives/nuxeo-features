@@ -432,6 +432,14 @@ public class Main extends ModuleRoot {
                 getBankImages(selectedBank.getName())).arg("banks", banks);
     }
 
+    @GET
+    @Path("imageUploaded")
+    public Object renderImageUploaded(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("imageUploaded.ftl");
+    }
+
     public static String getSelectedBankName() {
         return SessionManager.getResourceBank();
     }
