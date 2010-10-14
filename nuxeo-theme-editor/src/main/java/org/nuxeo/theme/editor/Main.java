@@ -94,21 +94,19 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("presetManager")
-    public Object renderPresetManager(
+    @Path("themeOptions")
+    public Object renderThemeOptions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("presetManager.ftl").arg("current_theme_name",
-                getCurrentThemeName(path, name)).arg("preset_manager_mode",
-                getPresetManagerMode()).arg("selected_preset_category",
-                getSelectedPresetCategory()).arg("preset_groups",
-                getPresetGroups(null)).arg("selected_preset_group",
-                getSelectedPresetGroup());
+        return getTemplate("themeOptions.ftl").arg("current_theme_name",
+                getCurrentThemeName(path, name)).arg(
+                "selected_theme_options_category",
+                getSelectedThemeOptionsCategory());
     }
 
     @GET
-    @Path("styleManager")
-    public Object renderStyleManager(
+    @Path("cssEditor")
+    public Object renderCssEditor(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         List<Style> styles = getNamedStyles(path, name);
@@ -117,12 +115,11 @@ public class Main extends ModuleRoot {
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
-        return getTemplate("styleManager.ftl").arg("theme", currentThemeDef).arg(
+        return getTemplate("cssEditor.ftl").arg("theme", currentThemeDef).arg(
                 "named_styles", styles).arg("style_manager_mode",
                 getStyleManagerMode()).arg("theme_skin", themeSkin).arg(
                 "theme_skin_css", getRenderedPropertiesForNamedStyle(themeSkin)).arg(
-                "current_theme_name", currentThemeName).arg("page_styles",
-                getPageStyles(currentThemeName));
+                "current_theme_name", currentThemeName);
     }
 
     @GET
@@ -335,8 +332,8 @@ public class Main extends ModuleRoot {
 
     // Control panel
     @GET
-    @Path("controlPanel")
-    public Object renderControlPanel(
+    @Path("dashboard")
+    public Object renderDashboard(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
@@ -345,7 +342,7 @@ public class Main extends ModuleRoot {
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
-        return getTemplate("controlPanel.ftl").arg("current_skin", currentSkin).arg(
+        return getTemplate("dashboard.ftl").arg("current_skin", currentSkin).arg(
                 "current_theme_name", currentThemeName).arg("theme",
                 currentThemeDef);
     }
@@ -1045,6 +1042,14 @@ public class Main extends ModuleRoot {
         FormData form = ctx.getForm();
         String category = form.getString("category");
         SessionManager.setPresetCategory(category);
+    }
+
+    @POST
+    @Path("select_theme_options_category")
+    public void selectThemeOptionsCategory() {
+        FormData form = ctx.getForm();
+        String category = form.getString("category");
+        SessionManager.setThemeOptionsCategory(category);
     }
 
     @POST
@@ -1879,6 +1884,10 @@ public class Main extends ModuleRoot {
 
     public static String getSelectedPresetCategory() {
         return SessionManager.getPresetCategory();
+    }
+
+    public static String getSelectedThemeOptionsCategory() {
+        return SessionManager.getThemeOptionsCategory();
     }
 
     public static String getSelectedStyleCategory() {

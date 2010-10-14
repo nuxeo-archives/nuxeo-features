@@ -1,6 +1,6 @@
 <@extends src="main.ftl">
 
-<#assign screen="style-manager" />
+<#assign screen="css-editor" />
 
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
@@ -21,7 +21,7 @@
   <td>
 
   <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
-      onsubmit="NXThemesStyleManager.updateNamedStyleCSS(this); return false">
+      onsubmit="NXThemesCssEditor.updateNamedStyleCSS(this); return false">
     <input type="hidden" name="style_uid" value="#{theme_skin.uid}" />
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
 
@@ -50,7 +50,7 @@ ${theme_skin_css}
 
 <#if theme_skin.remote & theme_skin.customized>
   <form class="nxthemesForm" style="padding: 0; float: right"
-      onsubmit="NXThemesStyleManager.restoreNamedStyle(this); return false">
+      onsubmit="NXThemesCssEditor.restoreNamedStyle(this); return false">
     <input type="hidden" name="style_uid" value="#{theme_skin.uid}" />
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
     <div>

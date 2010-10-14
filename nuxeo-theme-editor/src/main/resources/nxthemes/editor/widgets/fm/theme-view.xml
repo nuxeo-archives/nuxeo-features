@@ -118,24 +118,23 @@
 
     <@nxthemes_controller resource="link-disabler.json" />
 
-    <!-- control panel -->
-    <@nxthemes_panel identifier="control panel"
-      url="${basePath}/nxthemes-editor/controlPanel"
+    <!-- dashboard -->
+    <@nxthemes_panel identifier="dashboard"
+      url="${basePath}/nxthemes-editor/dashboard"
       controlledBy="editor perspectives"
-      visibleInPerspectives="control panel" />
+      visibleInPerspectives="dashboard" />
 
-    <!-- preset manager -->
-    <@nxthemes_panel identifier="preset manager"
-      url="${basePath}/nxthemes-editor/presetManager"
+    <!-- theme options -->
+    <@nxthemes_panel identifier="theme options"
+      url="${basePath}/nxthemes-editor/themeOptions"
       controlledBy="editor perspectives,color picker"
-      visibleInPerspectives="preset manager" />
+      visibleInPerspectives="theme options" />
 
-    <!-- style manager -->
-    <@nxthemes_controller resource="style-manager-actions.json" />
-    <@nxthemes_panel identifier="style manager"
-      url="${basePath}/nxthemes-editor/styleManager"
-      controlledBy="editor perspectives,style manager actions"
-      visibleInPerspectives="style manager" />
+    <!-- css editor -->
+    <@nxthemes_panel identifier="css editor"
+      url="${basePath}/nxthemes-editor/cssEditor"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="css editor" />
 
     <!-- skin manager -->
     <@nxthemes_panel identifier="skin manager"
@@ -143,7 +142,7 @@
       controlledBy="editor perspectives"
       visibleInPerspectives="skin manager" />
 
-    <!-- skin manager -->
+    <!-- bank manager -->
     <@nxthemes_panel identifier="bank manager"
       url="${basePath}/nxthemes-editor/bankManager"
       controlledBy="editor perspectives"

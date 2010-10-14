@@ -51,7 +51,7 @@
 </#list>
   <p>
     <a class="nxthemesActionButton"
-     href="javascript:NXThemesEditor.managePresets()">Set theme options</a>
+     href="javascript:NXThemesEditor.setThemeOptions()">Set theme options</a>
   </p>
 </fieldset>
 
@@ -65,7 +65,7 @@
 
   <p>
     <a class="nxthemesActionButton"
-     href="javascript:NXThemesEditor.manageStyles()">Edit CSS</a>
+     href="javascript:NXThemesEditor.editCss()">Edit CSS</a>
   </p>
 
 </fieldset>

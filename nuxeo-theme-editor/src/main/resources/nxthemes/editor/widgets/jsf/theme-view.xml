@@ -123,24 +123,23 @@
 
     <nxthemes:controller resource="link-disabler.json" />
 
-    <!-- control panel -->
-    <nxthemes:panel identifier="control panel"
-      url="%{contextPath}/site/nxthemes-editor/controlPanel"
+    <!-- dashboard -->
+    <nxthemes:panel identifier="dashboard"
+      url="%{contextPath}/site/nxthemes-editor/dashboard"
       controlledBy="editor perspectives"
-      visibleInPerspectives="control panel" />
+      visibleInPerspectives="dashboard" />
 
-    <!-- preset manager -->
-    <nxthemes:panel identifier="preset manager"
-      url="%{contextPath}/site/nxthemes-editor/presetManager"
+    <!-- theme options -->
+    <nxthemes:panel identifier="theme options"
+      url="%{contextPath}/site/nxthemes-editor/themeOptions"
       controlledBy="editor perspectives,color picker"
-      visibleInPerspectives="preset manager" />
+      visibleInPerspectives="theme options" />
 
-    <!-- style manager -->
-    <nxthemes:controller resource="style-manager-actions.json" />
-    <nxthemes:panel identifier="style manager"
-      url="%{contextPath}/site/nxthemes-editor/styleManager"
-      controlledBy="editor perspectives,style manager actions"
-      visibleInPerspectives="style manager" />
+    <!-- css editor -->
+    <nxthemes:panel identifier="css editor"
+      url="%{contextPath}/site/nxthemes-editor/cssEditor"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="css editor" />
 
     <!-- skin manager -->
     <nxthemes:panel identifier="skin manager"

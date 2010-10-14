@@ -65,6 +65,8 @@ public class SessionManager extends AbstractComponent {
 
     private static final String SELECTED_EDIT_FIELD = "org.nuxeo.theme.editor.edit_field";
 
+    private static final String SELECTED_THEME_OPTIONS_CATEGORY = "org.nuxeo.theme.editor.theme_options_category";
+
     private static UserSession getUserSession() {
         return WebEngine.getActiveContext().getUserSession();
     }
@@ -248,6 +250,14 @@ public class SessionManager extends AbstractComponent {
 
     public static synchronized void setSelectedEditField(String fieldName) {
         getUserSession().put(SELECTED_EDIT_FIELD, fieldName);
+    }
+
+    public static void setThemeOptionsCategory(String category) {
+        getUserSession().put(SELECTED_THEME_OPTIONS_CATEGORY, category);
+    }
+
+    public static String getThemeOptionsCategory() {
+        return (String) getUserSession().get(SELECTED_THEME_OPTIONS_CATEGORY);
     }
 
 }
