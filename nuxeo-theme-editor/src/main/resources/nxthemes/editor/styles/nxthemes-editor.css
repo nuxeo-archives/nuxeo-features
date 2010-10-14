@@ -212,14 +212,6 @@ html, body {
   padding-bottom: 35px;
 }
 
-#nxthemesThemeActions {
-  position: absolute;
-  width: 150px;
-  margin-top: 10px;
-  margin-left: 2px;
-  z-index: 2;
-}
-
 /* Footer */
 
 #nxthemesPageSelector {

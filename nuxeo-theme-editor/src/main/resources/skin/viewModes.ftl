@@ -1,28 +1,29 @@
 <#assign view_mode = Context.getCookie("nxthemes.mode", "wysiwyg") />
 
-<div class="nxthemesButtonSelector" style="text-align: right; margin: 3px; padding-right: 10px">
+<#setting url_escaping_charset='UTF-8'>
 
-  <#if view_mode == "wysiwyg">
-    <a href="javascript:NXThemesEditor.setViewMode('fragment')">+ show fragments</a>
-  </#if>
-  <#if view_mode == "fragment">
-    <a href="javascript:NXThemesEditor.setViewMode('wysiwyg')">- hide fragments</a>
-  </#if>
+<@nxthemes_button identifier="view_modes"
+  classNames="dropList"
+  menu="nxthemesViewModes"
+  label="View" />
 
-  <a href="javascript:<#if view_mode != "wysiwyg" && view_mode != "fragment">NXThemesEditor.setViewMode('wysiwyg')<#else>void(0)</#if>" class="<#if view_mode == "wysiwyg" || view_mode == "fragment">selected</#if>">&#171; normal view</a>
+<div id="nxthemesViewModes" style="display: none; position: absolute;
+  width: 170px;
+  margin-top: 10px;
+  margin-left: 2px;
+  z-index: 2;">
+  <ul class="nxthemesDropDownMenu">
+    <li<#if view_mode == "wysiwyg"> class="selected"</#if>><a href="javascript:NXThemesEditor.setViewMode('wysiwyg')">Normal view</a></li>
+    <li<#if view_mode == "fragment"> class="selected"</#if>><a href="javascript:NXThemesEditor.setViewMode('fragment')">Fragments</a></li>
+    <li<#if view_mode == "layout"> class="selected"</#if>><a href="javascript:NXThemesEditor.setViewMode('layout')">Page layout</a></li>
+    <li<#if view_mode == "area-styles-page" || view_mode == "area-styles-section" || view_mode == "area-styles-cell"> class="selected"</#if>><a href="javascript:NXThemesEditor.setViewMode('area-styles-page')">Area styles</a></li>
+  </ul>
+</div>
 
-  &nbsp;
-
-  <a href="javascript:NXThemesEditor.setViewMode('layout')" class="<#if view_mode == "layout">selected</#if>">layout</a>
-
-  &nbsp;
-
-  <a href="javascript:NXThemesEditor.setViewMode('area-styles-cell')" class="<#if view_mode == "area-styles-cell" || view_mode == "area-styles-page" || view_mode ==
- "area-styles-section" || view_mode == "area-styles-cell">selected</#if>">area styles &#187;</a>
+<div class="nxthemesButtonSelector" style="dispay: none; position: absolute; top: 2px; right: 20px;">
   <#if view_mode == "area-styles-page" || view_mode == "area-styles-section" || view_mode == "area-styles-cell"> |
     <a href="javascript:NXThemesEditor.setViewMode('area-styles-page')" class="<#if view_mode == "area-styles-page">selected</#if>">page</a>
     <a href="javascript:NXThemesEditor.setViewMode('area-styles-section')" class="<#if view_mode == "area-styles-section">selected</#if>">sections</a>
     <a href="javascript:NXThemesEditor.setViewMode('area-styles-cell')" class="<#if view_mode == "area-styles-cell">selected</#if>">cells</a>
   </#if>
 </div>
-
