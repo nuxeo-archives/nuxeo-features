@@ -9,16 +9,17 @@
 
 <@block name="content">
 
-<#if theme_skin>
 
-<#assign theme_skin_name = theme_skin.name>
 
 <table class="nxthemesManageScreen">
   <tr>
-    <th>Skin: ${theme_skin.name}</th>
+    <th>Skin: <#if theme_skin>${theme_skin.name}</#if></th>
   </tr>
   <tr>
   <td>
+
+<#if theme_skin>
+<#assign theme_skin_name = theme_skin.name>
 
   <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
       onsubmit="NXThemesCssEditor.updateNamedStyleCSS(this); return false">
@@ -59,13 +60,15 @@ ${theme_skin_css}
   </form>
 </#if>
 
+<#else>
+  <p>No skin available.</p>
+</#if>
+
 </td>
 </tr>
 </table>
 
-<#else>
-  <p>First select a skin.</p>
-</#if>
+
 
 </@block>
 </@extends>

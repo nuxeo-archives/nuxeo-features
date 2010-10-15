@@ -363,13 +363,16 @@ public class Main extends ModuleRoot {
 
         ResourceBank selectedBank = getSelectedBank();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
-
+        List<SkinInfo> skins = new ArrayList<SkinInfo>();
+        if (selectedBank != null) {
+            skins = getBankSkins(selectedBank.getName());
+        }
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("skinManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
-                "selected_bank", selectedBank).arg("skins",
-                getBankSkins(selectedBank.getName())).arg("banks", banks);
+                "selected_bank", selectedBank).arg("skins", skins).arg("banks",
+                banks);
     }
 
     @GET
@@ -427,14 +430,17 @@ public class Main extends ModuleRoot {
 
         ResourceBank selectedBank = getSelectedBank();
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
-
+        List<String> images = new ArrayList<String>();
+        if (selectedBank != null) {
+            images = getBankImages(selectedBank.getName());
+        }
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("imageManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
                 "current_edit_field", getSelectedEditField()).arg(
-                "selected_bank", selectedBank).arg("images",
-                getBankImages(selectedBank.getName())).arg("banks", banks);
+                "selected_bank", selectedBank).arg("images", images).arg(
+                "banks", banks);
     }
 
     @GET

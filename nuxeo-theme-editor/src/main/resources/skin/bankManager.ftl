@@ -8,7 +8,7 @@
 
 <table class="nxthemesManageScreen">
   <tr>
-    <th style="width: 75%;">Bank properties: ${selected_bank.name}</th>
+    <th style="width: 75%;">Bank properties: <#if selected_bank>${selected_bank.name}</#if></th>
     <th style="width: 25%;">Theme banks</th>
   </tr>
   <tr>
@@ -32,6 +32,11 @@
   </p>
   </#if>
   </form>
+
+<#else>
+
+  <p>No theme bank available.</p>
+
 </#if>
 
 </td>

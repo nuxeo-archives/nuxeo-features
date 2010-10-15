@@ -8,12 +8,13 @@
 
 <table class="nxthemesManageScreen">
   <tr>
-      <th style="width: 75%;">Available skins</th>
+    <th style="width: 75%;">Available skins</th>
     <th style="width: 25%;">Theme bank</th>
-
   </tr>
   <tr>
   <td>
+
+<#if skins>
 
 <div class="album">
   <#list skins as skin>
@@ -27,6 +28,10 @@
   </#list>
 </div>
 
+<#else>
+
+<p>No skin available</p>
+</#if>
 </td>
 
   <td>
