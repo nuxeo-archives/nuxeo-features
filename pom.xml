@@ -44,6 +44,7 @@
     <module>nuxeo-platform-publisher</module>
     <module>nuxeo-platform-forum</module>
     <module>nuxeo-theme-editor</module>
+    <module>nuxeo-theme-bank</module>
     <module>nuxeo-platform-webwidgets</module>
     <module>nuxeo-platform-userworkspace</module>
     <module>nuxeo-platform-virtualnavigation</module>
@@ -581,6 +582,11 @@
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-theme-editor</artifactId>
+        <version>${nuxeo.theme.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-theme-bank</artifactId>
         <version>${nuxeo.theme.version}</version>
       </dependency>
       <dependency>
