@@ -1593,7 +1593,7 @@ public class Main extends ModuleRoot {
         Properties properties = style.getPropertiesFor(viewName, path);
 
         int idx = 0;
-        Properties cssProperties = org.nuxeo.theme.html.Utils.getCssProperties();
+        Properties cssProperties = org.nuxeo.theme.html.CSSUtils.getCssProperties();
         if (properties != null) {
             Enumeration<?> propertyNames = properties.propertyNames();
             while (propertyNames.hasMoreElements()) {
@@ -1629,7 +1629,7 @@ public class Main extends ModuleRoot {
             viewName = "*";
         }
         Properties styleProperties = style.getPropertiesFor(viewName, path);
-        Properties cssProperties = org.nuxeo.theme.html.Utils.getCssProperties();
+        Properties cssProperties = org.nuxeo.theme.html.CSSUtils.getCssProperties();
         Properties cssStyleCategories = org.nuxeo.theme.editor.Utils.getCssStyleCategories();
         Enumeration<?> cssStyleCategoryNames = cssStyleCategories.propertyNames();
 
@@ -1739,7 +1739,7 @@ public class Main extends ModuleRoot {
         boolean IGNORE_VIEW_NAME = true;
         boolean IGNORE_CLASSNAME = true;
         boolean INDENT = true;
-        return org.nuxeo.theme.html.Utils.styleToCss(style, viewNames,
+        return org.nuxeo.theme.html.CSSUtils.styleToCss(style, viewNames,
                 RESOLVE_PRESETS, IGNORE_VIEW_NAME, IGNORE_CLASSNAME, INDENT);
     }
 
@@ -1751,7 +1751,7 @@ public class Main extends ModuleRoot {
         boolean IGNORE_VIEW_NAME = false;
         boolean IGNORE_CLASSNAME = true;
         boolean INDENT = true;
-        return org.nuxeo.theme.html.Utils.styleToCss(style,
+        return org.nuxeo.theme.html.CSSUtils.styleToCss(style,
                 style.getSelectorViewNames(), RESOLVE_PRESETS,
                 IGNORE_VIEW_NAME, IGNORE_CLASSNAME, INDENT);
     }
@@ -1872,8 +1872,8 @@ public class Main extends ModuleRoot {
     public static String renderStyleView(Style style, String viewName) {
         List<String> viewNames = new ArrayList<String>();
         viewNames.add(viewName);
-        return org.nuxeo.theme.html.Utils.styleToCss(style, viewNames, false,
-                true, true, true);
+        return org.nuxeo.theme.html.CSSUtils.styleToCss(style, viewNames,
+                false, true, true, true);
     }
 
     public static List<String> getHardcodedColors(String themeName) {
