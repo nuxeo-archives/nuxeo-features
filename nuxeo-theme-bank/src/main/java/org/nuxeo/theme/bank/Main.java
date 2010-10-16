@@ -88,7 +88,10 @@ public class Main extends ModuleRoot {
     @GET
     @Path("{bank}/view")
     public Object displayBankView(@PathParam("bank") String bank) {
-        return getTemplate("bank.ftl").arg("bank", bank);
+        return getTemplate("bank.ftl").arg("bank", bank).arg("styles",
+                getCollections(bank, "style")).arg("presets",
+                getCollections(bank, "preset")).arg("images",
+                getCollections(bank, "image"));
     }
 
     @GET

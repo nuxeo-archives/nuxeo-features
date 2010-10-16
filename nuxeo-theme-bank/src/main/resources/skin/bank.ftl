@@ -6,26 +6,30 @@
 
   <@block name="content">
       <h1>Bank: ${bank}</h1>
-      <div class="album">
-        <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-style')">
-          <div class="imageSingle">
-            <div class="image"></div>
-            <div class="footer">style</div>
-          </div>
-        </a>
-        <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-preset')">
-          <div class="imageSingle">
-            <div class="image"></div>
-            <div class="footer">preset</div>
-          </div>
-        </a>
-        <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-image')">
-          <div class="imageSingle">
-            <div class="image"></div>
-            <div class="footer">image</div>
-          </div>
-        </a>
 
+      <h2>Style collections</h2>
+      <ul>
+      <#list styles as style>
+        <li><a href="javascript:top.navtree.openBranch('${bank}-style-${style}')">
+        <img src="${skinPath}/img/collection.png" width="16" height="16" /> ${style}</a></li>
+      </#list>
+      </ul>
+
+      <h2>Preset collections</h2>
+      <ul>
+      <#list presets as preset>
+        <li><a href="javascript:top.navtree.openBranch('${bank}-preset-${preset}')">
+        <img src="${skinPath}/img/collection.png" width="16" height="16" /> ${preset}</a></li>
+      </#list>
+      </ul>
+
+      <h2>Image collections</h2>
+      <ul>
+      <#list images as image>
+        <li><a href="javascript:top.navtree.openBranch('${bank}-image-${image}')">
+        <img src="${skinPath}/img/collection.png" width="16" height="16" /> ${image}</a></li>
+      </#list>
+      </ul>
     </div>
 
   </@block>

@@ -58,7 +58,7 @@
                 "collection" : {
                     valid_children: ["style", "image", "preset"],
                     icon: {
-                        image: "${basePath}/theme-banks/skin/img/folder.png"
+                        image: "${basePath}/theme-banks/skin/img/collection.png"
                     }
                 },
                 "skins" : {
