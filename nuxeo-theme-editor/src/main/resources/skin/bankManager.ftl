@@ -6,15 +6,28 @@
 
 <@block name="content">
 
+<div class="window">
+<div class="title">Manage banks</div>
+<div class="body">
+
 <table class="nxthemesManageScreen">
-  <tr>
-    <th style="width: 75%;">Bank properties: <#if selected_bank>${selected_bank.name}</#if></th>
-    <th style="width: 25%;">Theme banks</th>
-  </tr>
-  <tr>
+<tr>
+  <td style="width: 20%">
 
-<td>
+<ul class="nxthemesSelector">
+<#list banks as bank>
+  <li <#if bank.name = selected_bank.name>class="selected"</#if>>
+    <a href="javascript:NXThemesEditor.selectResourceBank('${bank.name}', 'bank manager')">
+    <img src="${basePath}/skin/nxthemes-editor/img/bank-16.png" width="16" height="16"/> ${bank.name}</a></li>
+</#list>
+</ul>
 
+</td>
+
+  <td style="width: 1%">
+  </td>
+
+  <td style="width: 79%">
 <#if selected_bank>
 
   <form class="nxthemesForm">
@@ -41,20 +54,13 @@
 
 </td>
 
-  <td>
 
-<ul class="nxthemesSelector">
-<#list banks as bank>
-  <li <#if bank.name = selected_bank.name>class="selected"</#if>>
-    <a href="javascript:NXThemesEditor.selectResourceBank('${bank.name}', 'bank manager')">
-    <img src="${basePath}/skin/nxthemes-editor/img/bank-16.png" width="16" height="16"/> ${bank.name}</a></li>
-</#list>
-</ul>
-
-</td>
 
 </tr>
 </table>
+
+</div>
+</div>
 
 </@block>
 </@extends>

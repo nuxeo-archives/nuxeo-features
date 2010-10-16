@@ -9,14 +9,9 @@
 
 <@block name="content">
 
-
-
-<table class="nxthemesManageScreen">
-  <tr>
-    <th>Skin: <#if theme_skin>${theme_skin.name}</#if></th>
-  </tr>
-  <tr>
-  <td>
+<div class="window">
+<div class="title">Edit CSS</div>
+<div class="body">
 
 <#if theme_skin>
 <#assign theme_skin_name = theme_skin.name>
@@ -29,7 +24,7 @@
 <#if theme_skin.customized>
   <div>
     <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
-   style="border: 1px solid #999; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">${theme_skin_css}</textarea>
+   style="margin-bottom: 10px; border: none; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">${theme_skin_css}</textarea>
   </div>
   <div style="float: left">
     <button type="submit">Save</button>
@@ -38,7 +33,7 @@
 <#else>
 
    <textarea disabled="disabled" id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
-   style="cursor: default; border: 1px solid #eee; background-color: #fcfcfc; color: #666; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">
+   style="margin-bottom: 10px; cursor: default; border: none; color: #666; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">
 ${theme_skin_css}
 </textarea>
 
@@ -64,11 +59,8 @@ ${theme_skin_css}
   <p>No skin available.</p>
 </#if>
 
-</td>
-</tr>
-</table>
-
-
+</div>
+</div>
 
 </@block>
 </@extends>

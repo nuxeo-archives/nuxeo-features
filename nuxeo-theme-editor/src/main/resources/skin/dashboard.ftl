@@ -4,24 +4,26 @@
 
 <#assign screen="control-panel" />
 
-<@block name="title">Overview</@block>
+<@block name="title">Dashboard</@block>
 
 <@block name="content">
 
 <table class="nxthemesManageScreen">
-<tr>
-  <th style="width: 40%;">Theme details</th>
-  <th style="width: 60%;">Customizations</th>
-</tr>
-<tr>
-<td>
 
-  <fieldset><legend>General</legend>
+<tr>
+<td style="width: 49%">
+
+<div class="window">
+<div class="title">General</div>
+<div class="body">
   <p class="nxthemesEditor">Theme name: <strong>${current_theme_name}</strong></p>
   <p class="nxthemesEditor">Source: <strong>${theme.src}</strong></p>
-  </fieldset>
+</div>
+</div>
 
-  <fieldset><legend>Skin</legend>
+<div class="window">
+<div class="title">Skin</div>
+<div class="body">
   <#if current_skin>
     <#assign bank=Root.getResourceBank(current_skin.bank) />
     <p class="nxthemesEditor">Current skin: <strong>${current_skin.name}</strong>
@@ -32,30 +34,40 @@
   <#else>
     <p class="nxthemesEditor">You have not selected a theme skin yet.</p>
   </#if>
-  <p>
-    <a class="nxthemesActionButton"
-     href="javascript:NXThemesEditor.manageSkins()">Change skin</a>
+  <p class="nxthemesEditor">
+    <button class="nxthemesActionButton"
+     onclick="NXThemesEditor.manageSkins()">Change skin</button>
   </p>
-  </legend>
+</div>
+</div>
 
 </td>
-<td>
 
-<fieldset><legend>Theme options</legend>
+<td style="width: 1%">
+</td>
+
+<td style="width: 49%">
+
+<div class="window">
+<div class="title">Theme options</div>
+<div class="body">
 <#assign presets = This.getCustomPresets(current_theme_name, null)>
 <#list presets as preset_info>
-  <p>
+  <p class="nxthemesEditor">
     <strong title="${preset_info.description}">${preset_info.label}</strong>:
     ${preset_info.value}
   </p>
 </#list>
-  <p>
-    <a class="nxthemesActionButton"
-     href="javascript:NXThemesEditor.setThemeOptions()">Set theme options</a>
+  <p class="nxthemesEditor">
+    <button class="nxthemesActionButton"
+     onclick="NXThemesEditor.setThemeOptions()">Set theme options</button>
   </p>
-</fieldset>
+</div>
+</div>
 
-<fieldset><legend>CSS</legend>
+<div class="window">
+<div class="title">CSS</div>
+<div class="body">
 <#assign theme_skin = Root.getThemeSkin(current_theme_name) />
 <#if theme_skin & theme_skin.customized>
  <p class="nxthemesEditor">You have customized the skin's CSS</p>
@@ -63,16 +75,18 @@
  <p class="nxthemesEditor">No CSS customization were made</p>
 </#if>
 
-  <p>
-    <a class="nxthemesActionButton"
-     href="javascript:NXThemesEditor.editCss()">Edit CSS</a>
+  <p class="nxthemesEditor">
+    <button class="nxthemesActionButton"
+     onclick="NXThemesEditor.editCss()">Edit CSS</button>
   </p>
 
-</fieldset>
+</div>
+</div>
 
 </td>
 </tr>
 </table>
+
 
 </@block>
 </@extends>
