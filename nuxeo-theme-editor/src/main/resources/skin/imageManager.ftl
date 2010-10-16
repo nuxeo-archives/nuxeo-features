@@ -4,16 +4,13 @@
 
 <h1 class="nxthemesEditor">Choose an image</h1>
 
-
-
 <table class="nxthemesManageScreen">
   <tr>
     <th style="width: 75%;">Images</th>
     <th style="width: 25%;">Theme bank</th>
   </tr>
   <tr>
-
-<td>
+  <td>
 
 <div class="album">
   <#list images as image>
@@ -28,7 +25,7 @@
 </div>
 
 <div
-  <#if (Context.principal)>
+  <#if selected_bank>
     <iframe id="upload_target" name="upload_target" src="" style="display: none"></iframe>
 
      <h2 class="nxthemesEditor">Upload an image</h2>
