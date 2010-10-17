@@ -291,21 +291,22 @@ public class Main extends ModuleRoot {
             @PathParam("collection") String collection,
             @PathParam("resource") String resource,
             @PathParam("action") String action) {
-        File file;
-        try {
-            file = BankManager.getStyleFile(bank, collection, resource);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
-        String content;
-        try {
-            content = BankUtils.getFileContent(file);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
-        return getTemplate("style.ftl").arg("content", content).arg("bank",
-                bank).arg("resource", resource).arg("collection", collection).arg(
-                "action", action);
+        return getTemplate("style.ftl").arg("content",
+                getStyleContent(bank, collection, resource)).arg("bank", bank).arg(
+                "resource", resource).arg("collection", collection).arg(
+                "action", action).arg("is_skin", true);
+    }
+
+    @GET
+    @Path("{bank}/{collection}/skin/{resource}/{action}")
+    public Object renderSkin(@PathParam("bank") String bank,
+            @PathParam("collection") String collection,
+            @PathParam("resource") String resource,
+            @PathParam("action") String action) {
+        return getTemplate("style.ftl").arg("content",
+                getStyleContent(bank, collection, resource)).arg("bank", bank).arg(
+                "resource", resource).arg("collection", collection).arg(
+                "action", action).arg("is_skin", true);
     }
 
     @GET
@@ -327,6 +328,23 @@ public class Main extends ModuleRoot {
         return Response.ok().entity(streamFile(file)).lastModified(
                 new Date(file.lastModified())).header("Cache-Control", "public").header(
                 "Server", SERVER_ID).type(mimeType).build();
+    }
+
+    public String getStyleContent(String bank, String collection,
+            String resource) {
+        File file;
+        try {
+            file = BankManager.getStyleFile(bank, collection, resource);
+        } catch (IOException e) {
+            throw new ThemeBankException(e.getMessage(), e);
+        }
+        String content;
+        try {
+            content = BankUtils.getFileContent(file);
+        } catch (IOException e) {
+            throw new ThemeBankException(e.getMessage(), e);
+        }
+        return content;
     }
 
     /*
