@@ -205,3 +205,14 @@ input.textInput:focus {
   border-top: 1px solid #fc0;
   border: 1px solid #fc0;
 }
+
+.tree li a:hover {
+  background-color: #ffc;
+}
+
+.tree li a.clicked {
+  background-color: #fff !important;
+  border-color: #eee !important;
+  color: #333 !important;
+  font-weight: bold;
+}

@@ -88,10 +88,7 @@ public class Main extends ModuleRoot {
     @GET
     @Path("{bank}/view")
     public Object displayBankView(@PathParam("bank") String bank) {
-        return getTemplate("bank.ftl").arg("bank", bank).arg("styles",
-                getCollections(bank, "style")).arg("presets",
-                getCollections(bank, "preset")).arg("images",
-                getCollections(bank, "image"));
+        return getTemplate("bank.ftl").arg("bank", bank);
     }
 
     @GET
@@ -175,10 +172,9 @@ public class Main extends ModuleRoot {
     public String listBankSkins(@PathParam("bank") String bankName) {
         JSONArray skins = new JSONArray();
         try {
-            for (String collection : BankManager.getCollections(bankName,
-                    "style")) {
+            for (String collection : BankManager.getCollections(bankName)) {
                 Map<String, Object> info = BankManager.getInfo(bankName,
-                        "style", collection);
+                        collection, "style");
                 if (info == null) {
                     continue;
                 }
@@ -206,16 +202,10 @@ public class Main extends ModuleRoot {
         return skins.toString();
     }
 
-    @GET
-    @Path("{bank}/skins/view")
-    public Object getBankSkinsView(@PathParam("bank") String bank) {
-        return getTemplate("skins.ftl").arg("bank", bank);
-    }
-
     public List<String> listSkinsInCollection(String bankName, String collection) {
         Map<String, Object> info;
         try {
-            info = BankManager.getInfo(bankName, "style", collection);
+            info = BankManager.getInfo(bankName, collection, "style");
         } catch (IOException e) {
             throw new ThemeBankException(e.getMessage(), e);
         }
@@ -237,43 +227,50 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("{bank}/style/view")
-    public Object getStyleCollectionsView(@PathParam("bank") String bank,
+    @Path("{bank}/{collection}/view")
+    public Object getCollectionView(@PathParam("bank") String bank,
             @PathParam("collection") String collection) {
-        return getTemplate("styleCollections.ftl").arg("collections",
-                getCollections(bank, "style")).arg("collection", collection).arg(
+        return getTemplate("collection.ftl").arg("collection", collection).arg(
                 "bank", bank);
     }
 
     @GET
-    @Path("{bank}/style/{collection}/view")
-    public Object getStyleCollectionView(@PathParam("bank") String bank,
-            @PathParam("collection") String collection) {
+    @Path("{bank}/{collection}/{type}/info")
+    public Object getPresetCollectionInfo(@PathParam("bank") String bank,
+            @PathParam("collection") String collection,
+            @PathParam("type") String typeName) {
         try {
-            Object info = BankManager.getInfo(bank, "style", collection);
-            return getTemplate("styleCollection.ftl").arg("info", info).arg(
-                    "styles",
-                    BankManager.getItemsInCollection(bank, "style", collection)).arg(
-                    "collection", collection).arg("bank", bank);
+            return BankManager.getInfoFile(bank, collection, typeName);
         } catch (IOException e) {
             throw new ThemeBankException(e.getMessage(), e);
         }
     }
 
     @GET
-    @Path("{bank}/style/{collection}/info")
-    public Object getStyleCollectionInfo(@PathParam("bank") String bank,
+    @Path("{bank}/{collection}/style/view")
+    public Object getStyleCollectionsView(@PathParam("bank") String bank,
             @PathParam("collection") String collection) {
-        try {
-            return BankManager.getInfoFile(bank, "style", collection);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
+        return getStyleCollections(bank, collection, false);
+    }
+
+    @GET
+    @Path("{bank}/{collection}/skin/view")
+    public Object getSkinsCollectionsView(@PathParam("bank") String bank,
+            @PathParam("collection") String collection) {
+        return getStyleCollections(bank, collection, true);
+    }
+
+    public Object getStyleCollections(String bank, String collection,
+            Boolean skins_only) {
+        return getTemplate("styleCollection.ftl").arg("styles",
+                getItemsInCollection(bank, collection, "style")).arg("skins",
+                listSkinsInCollection(bank, collection)).arg("collection",
+                collection).arg("bank", bank).arg("skins_only", skins_only);
     }
 
     @GET
     @Produces("text/css")
-    @Path("{bank}/style/{collection}/{resource}")
+    @Path("{bank}/{collection}/style/{resource}")
     public Response getStyle(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("resource") String resource) {
@@ -289,7 +286,7 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("{bank}/style/{collection}/{resource}/{action}")
+    @Path("{bank}/{collection}/style/{resource}/{action}")
     public Object renderStyle(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("resource") String resource,
@@ -312,7 +309,7 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("{bank}/style/{collection}/{resource}/preview")
+    @Path("{bank}/{collection}/style/{resource}/preview")
     public Object displayStylePreview(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("resource") String resource) {
@@ -335,47 +332,23 @@ public class Main extends ModuleRoot {
     /*
      * Presets
      */
-    @GET
-    @Path("{bank}/preset/view")
-    public Object getPresetCollectionsView(@PathParam("bank") String bank,
-            @PathParam("collection") String collection) {
-        return getTemplate("presetCollections.ftl").arg("collections",
-                getCollections(bank, "preset")).arg("collection", collection).arg(
-                "bank", bank);
-    }
 
     @GET
-    @Path("{bank}/preset/{collection}/view")
+    @Path("{bank}/{collection}/preset/view")
     public Object getPresetCollectionView(@PathParam("bank") String bank,
             @PathParam("collection") String collection) {
-        try {
-            return getTemplate("presetCollection.ftl").arg(
-                    "presets",
-                    BankManager.getItemsInCollection(bank, "preset", collection)).arg(
-                    "collection", collection).arg("bank", bank);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
-    }
-
-    @GET
-    @Path("{bank}/preset/{collection}/info")
-    public Object getPresetCollectionInfo(@PathParam("bank") String bank,
-            @PathParam("collection") String collection) {
-        try {
-            return BankManager.getInfoFile(bank, "preset", collection);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
+        return getTemplate("presetCollection.ftl").arg("presets",
+                getItemsInCollection(bank, collection, "preset")).arg(
+                "collection", collection).arg("bank", bank);
     }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("{bank}/preset/{collection}/{category}")
+    @Path("{bank}/{collection}/preset/{category}")
     public Response getPreset(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("category") String category) {
-        String path = String.format("%s/preset/%s/%s", bank, collection,
+        String path = String.format("%s/%s/preset/%s", bank, collection,
                 category);
         File file;
         try {
@@ -406,11 +379,11 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("{bank}/preset/{collection}/{category}/view")
+    @Path("{bank}/{collection}/preset/{category}/view")
     public Object getPresetView(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("category") String category) {
-        String path = String.format("%s/preset/%s/%s", bank, collection,
+        String path = String.format("%s/%s/preset/%s", bank, collection,
                 category);
         File file;
         try {
@@ -445,41 +418,18 @@ public class Main extends ModuleRoot {
     /*
      * Images
      */
-    @GET
-    @Path("{bank}/image/view")
-    public Object getImageCollectionsView(@PathParam("bank") String bank,
-            @PathParam("collection") String collection) {
-        return getTemplate("imageCollections.ftl").arg("collections",
-                getCollections(bank, "image")).arg("collection", collection).arg(
-                "bank", bank);
-    }
 
     @GET
-    @Path("{bank}/image/{collection}/view")
+    @Path("{bank}/{collection}/image/view")
     public Object getImageCollectionView(@PathParam("bank") String bank,
             @PathParam("collection") String collection) {
-        try {
-            return getTemplate("imageCollection.ftl").arg("images",
-                    BankManager.getItemsInCollection(bank, "image", collection)).arg(
-                    "collection", collection).arg("bank", bank);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
+        return getTemplate("imageCollection.ftl").arg("images",
+                getItemsInCollection(bank, collection, "image")).arg(
+                "collection", collection).arg("bank", bank);
     }
 
     @GET
-    @Path("{bank}/image/{collection}/info")
-    public Object getImageCollectionInfo(@PathParam("bank") String bank,
-            @PathParam("collection") String collection) {
-        try {
-            return BankManager.getInfoFile(bank, "image", collection);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
-    }
-
-    @GET
-    @Path("{bank}/image/{collection}/{resource}")
+    @Path("{bank}/{collection}/image/{resource}")
     public Response getImage(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("resource") String resource) {
@@ -500,11 +450,11 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("{bank}/image/{collection}/{resource}/view")
+    @Path("{bank}/{collection}/image/{resource}/view")
     public Object getImageView(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("resource") String resource) {
-        String path = String.format("%s/image/%s/%s", bank, collection,
+        String path = String.format("%s/%s/image/%s", bank, collection,
                 resource);
         return getTemplate("image.ftl").arg("path", path).arg("bank", bank).arg(
                 "resource", resource).arg("collection", collection);
@@ -536,7 +486,7 @@ public class Main extends ModuleRoot {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("json/tree")
-    public String getTree() {
+    public String getTree() throws IOException {
         JSONArray tree = new JSONArray();
 
         for (String bankName : BankManager.getBankNames()) {
@@ -553,128 +503,89 @@ public class Main extends ModuleRoot {
             bankNode.put("attributes", bankAttributes);
             bankNode.put("data", bankMap);
 
-            JSONArray folderTypes = new JSONArray();
-            folderTypes.add(getNavTreeNode(bankName, "style"));
-            folderTypes.add(getNavTreeNode(bankName, "preset"));
-            folderTypes.add(getNavTreeNode(bankName, "image"));
-            folderTypes.add(getNavTreeNode(bankName, "skins"));
-            bankNode.put("children", folderTypes);
+            JSONArray childrenNodes = new JSONArray();
+            for (String collection : getCollections(bankName)) {
+                childrenNodes.add(getNavTreeCollectionNode(bankName, collection));
+            }
+            bankNode.put("children", childrenNodes);
 
             tree.add(bankNode);
         }
         return tree.toString();
     }
 
-    private JSONObject getNavTreeNode(String bankName, String typeName) {
-        JSONObject folderTypeNode = new JSONObject();
-        JSONObject folderTypeMap = new JSONObject();
-        folderTypeMap.put("title", typeName);
+    private JSONObject getNavTreeCollectionNode(String bankName,
+            String collection) {
 
-        JSONObject folderTypeAttributes = new JSONObject();
-        String folderTypeName = "folder";
-        if ("skins".equals(typeName)) {
-            folderTypeName = "skins";
-        }
-        folderTypeAttributes.put("rel", folderTypeName);
-        folderTypeAttributes.put("path",
-                String.format("/%s/%s", bankName, typeName));
-        folderTypeAttributes.put("id",
-                BankUtils.getDomId(String.format("%s-%s", bankName, typeName)));
-        folderTypeNode.put("attributes", folderTypeAttributes);
-        folderTypeNode.put("data", folderTypeMap);
+        JSONObject collectionNode = new JSONObject();
 
-        if ("skins".equals(typeName)) {
-            JSONArray skinItems = new JSONArray();
-            try {
-                for (String c : BankManager.getCollections(bankName, "style")) {
-                    Map<String, Object> info = BankManager.getInfo(bankName,
-                            "style", c);
-                    if (info == null) {
+        JSONObject collectionMap = new JSONObject();
+        collectionMap.put("title", collection);
+
+        JSONObject collectionAttributes = new JSONObject();
+        collectionAttributes.put("rel", "collection");
+        collectionAttributes.put("path",
+                String.format("/%s/%s", bankName, collection));
+        collectionAttributes.put(
+                "id",
+                BankUtils.getDomId(String.format("%s-%s", bankName, collection)));
+
+        collectionNode.put("data", collectionMap);
+        collectionNode.put("attributes", collectionAttributes);
+
+        JSONArray folderTypeNodes = new JSONArray();
+        final String[] TYPE_NAMES = { "skin", "style", "preset", "image" };
+        for (String typeName : TYPE_NAMES) {
+            JSONObject folderTypeNode = new JSONObject();
+            JSONObject folderTypeMap = new JSONObject();
+            folderTypeMap.put("title", typeName);
+
+            JSONObject folderTypeAttributes = new JSONObject();
+            folderTypeAttributes.put("rel", "folder");
+            folderTypeAttributes.put("path",
+                    String.format("/%s/%s/%s", bankName, collection, typeName));
+            folderTypeAttributes.put("id", BankUtils.getDomId(String.format(
+                    "%s-%s-%s", bankName, collection, typeName)));
+
+            folderTypeNode.put("attributes", folderTypeAttributes);
+            folderTypeNode.put("data", folderTypeMap);
+
+            JSONArray items = new JSONArray();
+            List<String> skins = listSkinsInCollection(bankName, collection);
+            String effectiveTypeName = "skin".equals(typeName) ? "style"
+                    : typeName;
+            for (String item : getItemsInCollection(bankName, collection,
+                    effectiveTypeName)) {
+
+                if ("skin".equals(typeName)) {
+                    if (!skins.contains(item)) {
                         continue;
                     }
-                    for (Map.Entry<String, Object> entry : info.entrySet()) {
-                        String resource = entry.getKey();
-                        Map value = (Map) entry.getValue();
-                        Boolean isSkin = false;
-                        if (value.containsKey("skin")) {
-                            isSkin = (Boolean) value.get("skin");
-                        }
-                        if (!isSkin) {
-                            continue;
-                        }
-                        JSONObject itemNode = new JSONObject();
-                        JSONObject itemMap = new JSONObject();
-                        itemMap.put("title", resource);
-
-                        JSONObject itemAttributes = new JSONObject();
-                        itemAttributes.put("rel", "skin");
-                        itemAttributes.put("path", String.format(
-                                "/%s/style/%s/%s", bankName, c, resource));
-                        itemAttributes.put("id",
-                                BankUtils.getDomId(String.format("%s-%s-%s-%s",
-                                        bankName, typeName, c, resource)));
-                        itemNode.put("attributes", itemAttributes);
-                        itemNode.put("data", itemMap);
-
-                        skinItems.add(itemNode);
+                } else if ("style".equals(typeName)) {
+                    if (skins.contains(item)) {
+                        continue;
                     }
                 }
-            } catch (IOException e) {
-                throw new ThemeBankException(e.getMessage(), e);
+                JSONObject itemNode = new JSONObject();
+                JSONObject itemMap = new JSONObject();
+                itemMap.put("title", item);
+
+                JSONObject itemAttributes = new JSONObject();
+                itemAttributes.put("rel", typeName);
+                itemAttributes.put("path", String.format("/%s/%s/%s/%s",
+                        bankName, collection, typeName, item));
+                itemAttributes.put("id", BankUtils.getDomId(String.format(
+                        "%s-%s-%s-%s", bankName, collection, typeName, item)));
+                itemNode.put("attributes", itemAttributes);
+                itemNode.put("data", itemMap);
+
+                items.add(itemNode);
             }
-            folderTypeNode.put("children", skinItems);
-        } else {
-            JSONArray collections = new JSONArray();
-            for (String c : getCollections(bankName, typeName)) {
-                JSONArray items = new JSONArray();
-
-                JSONObject collectionNode = new JSONObject();
-                JSONObject collectionMap = new JSONObject();
-                collectionMap.put("title", c);
-
-                JSONObject collectionAttributes = new JSONObject();
-                collectionAttributes.put("rel", "collection");
-                collectionAttributes.put("path",
-                        String.format("/%s/%s/%s", bankName, typeName, c));
-                collectionAttributes.put("id",
-                        BankUtils.getDomId(String.format("%s-%s-%s", bankName,
-                                typeName, c)));
-                collectionNode.put("attributes", collectionAttributes);
-                collectionNode.put("data", collectionMap);
-
-                Boolean isStyle = "style".equals(typeName);
-                List<String> skins = new ArrayList<String>();
-                if (isStyle) {
-                    skins = listSkinsInCollection(bankName, c);
-                }
-
-                for (String item : getItemsInCollection(bankName, typeName, c)) {
-
-                    String effectiveTypeName = typeName;
-                    if (isStyle && skins.contains(item)) {
-                        effectiveTypeName = "skin";
-                    }
-                    JSONObject itemNode = new JSONObject();
-                    JSONObject itemMap = new JSONObject();
-                    itemMap.put("title", item);
-
-                    JSONObject itemAttributes = new JSONObject();
-                    itemAttributes.put("rel", effectiveTypeName);
-                    itemAttributes.put("path", String.format("/%s/%s/%s/%s",
-                            bankName, typeName, c, item));
-                    itemAttributes.put("id", BankUtils.getDomId(String.format(
-                            "%s-%s-%s-%s", bankName, typeName, c, item)));
-                    itemNode.put("attributes", itemAttributes);
-                    itemNode.put("data", itemMap);
-
-                    items.add(itemNode);
-                }
-                collectionNode.put("children", items);
-                collections.add(collectionNode);
-            }
-            folderTypeNode.put("children", collections);
+            folderTypeNode.put("children", items);
+            folderTypeNodes.add(folderTypeNode);
         }
-        return folderTypeNode;
+        collectionNode.put("children", folderTypeNodes);
+        return collectionNode;
     }
 
     /*
@@ -703,18 +614,18 @@ public class Main extends ModuleRoot {
         };
     }
 
-    public static List<String> getCollections(String bank, String typeName) {
+    public static List<String> getCollections(String bank) {
         try {
-            return BankManager.getCollections(bank, typeName);
+            return BankManager.getCollections(bank);
         } catch (IOException e) {
             throw new ThemeBankException(e.getMessage(), e);
         }
     }
 
     public static List<String> getItemsInCollection(String bank,
-            String typeName, String collection) {
+            String collection, String typeName) {
         try {
-            return BankManager.getItemsInCollection(bank, typeName, collection);
+            return BankManager.getItemsInCollection(bank, collection, typeName);
         } catch (IOException e) {
             throw new ThemeBankException(e.getMessage(), e);
         }

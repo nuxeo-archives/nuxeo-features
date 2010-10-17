@@ -6,7 +6,7 @@
 
   <@block name="content">
     <h1>Preset: ${collection} ${category}
-      <a style="float: right" href="${Root.getPath()}/${bank}/preset/${collection}/${category}/view">Refresh</a>
+      <a style="float: right" href="${Root.getPath()}/${bank}/${collection}/preset/${category}/view">Refresh</a>
     </h1>
     <table class="properties">
     <#list properties?keys as key>

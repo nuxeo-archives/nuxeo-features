@@ -8,8 +8,8 @@
 <frameset rows="32, *" frameborder="no">
   <frame name="actionbar" src="${Root.getPath()}/actionbar" style="background-color: #666">
 
-  <frameset cols="220, *" frameborder="yes" framespacing="10">
-    <frame name="navtree" src="${Root.getPath()}/navtree">
+  <frameset cols="200, *" frameborder="yes" framespacing="10" border="2" >
+    <frame name="navtree" src="${Root.getPath()}/navtree" style="background-color: #eee">
     <#if bank>
       <frame name="main" src="${Root.getPath()}/${bank}/view">
     <#else>

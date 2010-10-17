@@ -61,7 +61,7 @@ public class Management extends DefaultObject {
         if (!fileItem.isFormField()) {
             final byte[] fileData = fileItem.get();
             final String filename = fileItem.getName();
-            final String path = String.format("%s/image/%s", bank, collection);
+            final String path = String.format("%s/%s/image", bank, collection);
             try {
                 BankManager.createFile(path, filename, fileData);
             } catch (IOException e) {
@@ -84,7 +84,7 @@ public class Management extends DefaultObject {
         String collection = form.getString("collection");
         String resource = form.getString("resource");
 
-        final String path = String.format("%s/style/%s", bank, collection);
+        final String path = String.format("%s/%s/style", bank, collection);
 
         try {
             BankManager.editFile(path, resource, css);
@@ -103,7 +103,7 @@ public class Management extends DefaultObject {
 
         String resource = form.getString("resource");
         String collection = form.getString("collection");
-        final String path = String.format("%s/style/%s", bank, collection);
+        final String path = String.format("%s/%s/style", bank, collection);
         String fileName = String.format("%s.css", resource);
 
         try {

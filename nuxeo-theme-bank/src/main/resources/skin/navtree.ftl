@@ -18,7 +18,7 @@
     $(document).ready(function() {
 
           $("#navtree").tree({
-            plugins : ["themes", "ui", "cookies"],
+            plugins : ["themes", "ui"],
             ui : {
               theme_name: "classic"
             },
@@ -44,27 +44,21 @@
                     draggable : false
                 },
                 "bank" : {
-                    valid_children: ["folder"],
+                    valid_children: ["collection"],
                     icon: {
                         image: "${basePath}/theme-banks/skin/img/bank.png"
                     }
                 },
-                "folder" : {
-                    valid_children: ["collection"],
-                    icon: {
-                        image: "${basePath}/theme-banks/skin/img/folder.png"
-                    }
-                },
                 "collection" : {
-                    valid_children: ["style", "image", "preset"],
+                    valid_children: ["folder"],
                     icon: {
                         image: "${basePath}/theme-banks/skin/img/collection.png"
                     }
                 },
-                "skins" : {
-                    valid_children : "none",
+                "folder" : {
+                    valid_children : ["skin", "style", "preset", "image"],
                     icon: {
-                        image: "${basePath}/theme-banks/skin/img/skins.png"
+                        image: "${basePath}/theme-banks/skin/img/folder.png"
                     }
                 },
                 "style" : {

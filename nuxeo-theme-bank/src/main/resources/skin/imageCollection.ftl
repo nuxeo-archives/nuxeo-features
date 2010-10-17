@@ -24,10 +24,10 @@
 
   <@block name="content">
 
-    <#assign redirect_url="${Root.getPath()}/${bank}/image/${collection}/view" />
+    <#assign redirect_url="${Root.getPath()}/${bank}/${collection}/image/view" />
 
     <h1>Image collection: ${collection}
-      <a style="float: right;" href="${Root.getPath()}/${bank}/image/${collection}/view">Refresh</a>
+      <a style="float: right;" href="${Root.getPath()}/${bank}/${collection}/image/view">Refresh</a>
       <#if (Context.principal)>
         <a style="float: right; margin-right: 5px" href="javascript:void(0)" onclick="showImageUploadForm()">Upload image</a>
       </#if>
@@ -51,9 +51,9 @@
 
     <div class="album" id="imageGallery">
       <#list images as image>
-        <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-image-${collection}-${image}')">
+        <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-${collection}-image-${image}')">
           <div class="imageSingle">
-            <div class="image"><img src="${Root.getPath()}/${bank}/image/${collection}/${image}"></div>
+            <div class="image"><img src="${Root.getPath()}/${bank}/${collection}/image/${image}"></div>
             <div class="footer">${image}</div>
           </div>
         </a>

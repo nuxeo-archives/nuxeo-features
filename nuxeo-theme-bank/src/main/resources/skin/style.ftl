@@ -19,14 +19,14 @@
 
   <@block name="content">
     <h1>Style: ${resource?replace('.css', '')}
-      <a style="float: right" href="${Root.getPath()}/${bank}/style/${collection}/${resource}/${action}">Refresh</a>
+      <a style="float: right" href="${Root.getPath()}/${bank}/${collection}/style/${resource}/${action}">Refresh</a>
       <#if Context.principal>
         <#if action = 'edit'>
           <a style="float: right; margin-right: 5px"
-             href="${Root.getPath()}/${bank}/style/${collection}/${resource}/view">Cancel</a>
+             href="${Root.getPath()}/${bank}/${collection}/style/${resource}/view">Cancel</a>
         <#else>
           <a style="float: right; margin-right: 5px"
-             href="${Root.getPath()}/${bank}/style/${collection}/${resource}/edit">Edit</a>
+             href="${Root.getPath()}/${bank}/${collection}/style/${resource}/edit">Edit</a>
         </#if>
       </#if>
 
@@ -40,7 +40,7 @@ ${content}
     </#if>
 
     <#if action = 'edit'>
-    <#assign redirect_url="${Root.getPath()}/${bank}/style/${collection}/${resource}/view" />
+    <#assign redirect_url="${Root.getPath()}/${bank}/${collection}/style/${resource}/view" />
     <form action="${Root.getPath()}/${bank}/manage/saveCss" method="post">
       <div>
         <textarea style="width: 100%; height: 300px" class="" name="css">${content}</textarea>

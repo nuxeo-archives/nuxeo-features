@@ -22,17 +22,18 @@
 
   <@block name="content">
 
-    <#assign redirect_url="${Root.getPath()}/${bank}/style/${collection}/view" />
+    <#assign view=skins_only?string("skin", "style") />
+    <#assign redirect_url="${Root.getPath()}/${bank}/${collection}/${view}/view" />
 
     <h1>Style collection: ${collection}
-      <a style="float: right" href="${Root.getPath()}/${bank}/style/${collection}/view">Refresh</a>
+      <a style="float: right" href="${Root.getPath()}/${bank}/${collection}/${view}/view">Refresh</a>
       <#if (Context.principal)>
-        <a style="float: right; margin-right: 5px" href="javascript:void(0)" onclick="showStyleCreateForm()">New style</a>
+        <a style="float: right; margin-right: 5px" href="javascript:void(0)" onclick="showStyleCreateForm()">New ${view}</a>
       </#if>
     </h1>
 
     <#if (Context.principal)>
-    <form style="display: none" id="styleCreateForm" action="${Root.path}/${bank}/manage/createStyle"
+    <form style="display: none" id="styleCreateForm" action="${Root.path}/${bank}/${collection}/manage/createStyle"
            method="post">
       <h2>Create a new style</h2>
       <p>
@@ -50,21 +51,35 @@
     </form>
     </#if>
 
+
     <div class="album" id="styleGallery">
-      <#list styles as style>
-        <#assign style_info=info[style] />
-        <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-style-${collection}-${style}')">
+
+    <#if skins_only>
+      <#list skins as style>
+        <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-${collection}-${view}-${style}')">
         <div class="imageSingle">
-          <div class="image"><img src="${Root.getPath()}/${bank}/style/${collection}/${style}/preview"></div>
-          <div class="footer"><div>${style}
-            <#if style_info>
-               (${style_info.description})
-            </#if>
-            </div>
+          <div class="image"><img src="${Root.getPath()}/${bank}/${collection}/style/${style}/preview"></div>
+          <div class="footer"><div>${style}</div>
           </div>
         </div>
         </a>
       </#list>
+
+    <#else>
+      <#list styles as style>
+        <#if !skins?seq_contains(style)>
+        <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-${collection}-${view}-${style}')">
+        <div class="imageSingle">
+          <div class="image"><img src="${Root.getPath()}/${bank}/${collection}/style/${style}/preview"></div>
+          <div class="footer"><div>${style}</div>
+          </div>
+        </div>
+        </a>
+        </#if>
+      </#list>
+
+    </#if>
+
     </div>
 
   </@block>
