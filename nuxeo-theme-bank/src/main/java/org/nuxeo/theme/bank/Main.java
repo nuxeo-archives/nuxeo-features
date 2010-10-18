@@ -20,10 +20,7 @@
 package org.nuxeo.theme.bank;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,15 +32,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.common.utils.FileUtils;
@@ -114,7 +108,7 @@ public class Main extends ModuleRoot {
         if (mimeType == null) {
             mimeType = "application/octet-stream";
         }
-        return Response.ok().entity(streamFile(file)).lastModified(
+        return Response.ok().entity(Utils.streamFile(file)).lastModified(
                 new Date(file.lastModified())).header("Cache-Control", "public").header(
                 "Server", SERVER_ID).type(mimeType).build();
     }
@@ -263,9 +257,10 @@ public class Main extends ModuleRoot {
     public Object getStyleCollections(String bank, String collection,
             Boolean skins_only) {
         return getTemplate("styleCollection.ftl").arg("styles",
-                getItemsInCollection(bank, collection, "style")).arg("skins",
-                listSkinsInCollection(bank, collection)).arg("collection",
-                collection).arg("bank", bank).arg("skins_only", skins_only);
+                Utils.getItemsInCollection(bank, collection, "style")).arg(
+                "skins", listSkinsInCollection(bank, collection)).arg(
+                "collection", collection).arg("bank", bank).arg("skins_only",
+                skins_only);
     }
 
     @GET
@@ -280,7 +275,7 @@ public class Main extends ModuleRoot {
         } catch (IOException e) {
             throw new ThemeBankException(e.getMessage(), e);
         }
-        return Response.ok().entity(streamFile(file)).lastModified(
+        return Response.ok().entity(Utils.streamFile(file)).lastModified(
                 new Date(file.lastModified())).header("Cache-Control", "public").header(
                 "Server", SERVER_ID).build();
     }
@@ -325,7 +320,7 @@ public class Main extends ModuleRoot {
         if (mimeType == null) {
             mimeType = "application/octet-stream";
         }
-        return Response.ok().entity(streamFile(file)).lastModified(
+        return Response.ok().entity(Utils.streamFile(file)).lastModified(
                 new Date(file.lastModified())).header("Cache-Control", "public").header(
                 "Server", SERVER_ID).type(mimeType).build();
     }
@@ -356,7 +351,7 @@ public class Main extends ModuleRoot {
     public Object getPresetCollectionView(@PathParam("bank") String bank,
             @PathParam("collection") String collection) {
         return getTemplate("presetCollection.ftl").arg("presets",
-                getItemsInCollection(bank, collection, "preset")).arg(
+                Utils.getItemsInCollection(bank, collection, "preset")).arg(
                 "collection", collection).arg("bank", bank);
     }
 
@@ -442,7 +437,7 @@ public class Main extends ModuleRoot {
     public Object getImageCollectionView(@PathParam("bank") String bank,
             @PathParam("collection") String collection) {
         return getTemplate("imageCollection.ftl").arg("images",
-                getItemsInCollection(bank, collection, "image")).arg(
+                Utils.getItemsInCollection(bank, collection, "image")).arg(
                 "collection", collection).arg("bank", bank);
     }
 
@@ -462,7 +457,7 @@ public class Main extends ModuleRoot {
         if (mimeType == null) {
             mimeType = "application/octet-stream";
         }
-        return Response.ok().entity(streamFile(file)).lastModified(
+        return Response.ok().entity(Utils.streamFile(file)).lastModified(
                 new Date(file.lastModified())).header("Cache-Control", "public").header(
                 "Server", SERVER_ID).type(mimeType).build();
     }
@@ -482,171 +477,18 @@ public class Main extends ModuleRoot {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{bank}/json/images")
     public String listImages(@PathParam("bank") String bank) {
-        String path = String.format("%s/image/", bank);
-        JSONArray index = new JSONArray();
-        File file;
         try {
-            file = BankManager.getFile(path);
+            return Utils.listImages(bank);
         } catch (IOException e) {
             throw new ThemeBankException(e.getMessage(), e);
         }
-        for (File c : file.listFiles()) {
-            if (!c.isDirectory()) {
-                continue;
-            }
-            for (File i : c.listFiles()) {
-                index.add(String.format("%s/%s", c.getName(), i.getName()));
-            }
-        }
-        return index.toString();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("json/tree")
     public String getTree() throws IOException {
-        JSONArray tree = new JSONArray();
-
-        for (String bankName : BankManager.getBankNames()) {
-            JSONObject bankNode = new JSONObject();
-            bankNode.put("state", "open");
-
-            JSONObject bankMap = new JSONObject();
-            bankMap.put("title", bankName);
-
-            JSONObject bankAttributes = new JSONObject();
-            bankAttributes.put("rel", "bank");
-            bankAttributes.put("path", String.format("/%s", bankName));
-            bankAttributes.put("id", BankUtils.getDomId(bankName));
-            bankNode.put("attributes", bankAttributes);
-            bankNode.put("data", bankMap);
-
-            JSONArray childrenNodes = new JSONArray();
-            for (String collection : getCollections(bankName)) {
-                childrenNodes.add(getNavTreeCollectionNode(bankName, collection));
-            }
-            bankNode.put("children", childrenNodes);
-
-            tree.add(bankNode);
-        }
-        return tree.toString();
-    }
-
-    private JSONObject getNavTreeCollectionNode(String bankName,
-            String collection) {
-
-        JSONObject collectionNode = new JSONObject();
-
-        JSONObject collectionMap = new JSONObject();
-        collectionMap.put("title", collection);
-
-        JSONObject collectionAttributes = new JSONObject();
-        collectionAttributes.put("rel", "collection");
-        collectionAttributes.put("path",
-                String.format("/%s/%s", bankName, collection));
-        collectionAttributes.put(
-                "id",
-                BankUtils.getDomId(String.format("%s-%s", bankName, collection)));
-
-        collectionNode.put("data", collectionMap);
-        collectionNode.put("attributes", collectionAttributes);
-
-        JSONArray folderTypeNodes = new JSONArray();
-        final String[] TYPE_NAMES = { "skin", "style", "preset", "image" };
-        for (String typeName : TYPE_NAMES) {
-            JSONObject folderTypeNode = new JSONObject();
-            JSONObject folderTypeMap = new JSONObject();
-            folderTypeMap.put("title", typeName);
-
-            JSONObject folderTypeAttributes = new JSONObject();
-            folderTypeAttributes.put("rel", "folder");
-            folderTypeAttributes.put("path",
-                    String.format("/%s/%s/%s", bankName, collection, typeName));
-            folderTypeAttributes.put("id", BankUtils.getDomId(String.format(
-                    "%s-%s-%s", bankName, collection, typeName)));
-
-            folderTypeNode.put("attributes", folderTypeAttributes);
-            folderTypeNode.put("data", folderTypeMap);
-
-            JSONArray items = new JSONArray();
-            List<String> skins = listSkinsInCollection(bankName, collection);
-            String effectiveTypeName = "skin".equals(typeName) ? "style"
-                    : typeName;
-            for (String item : getItemsInCollection(bankName, collection,
-                    effectiveTypeName)) {
-
-                if ("skin".equals(typeName)) {
-                    if (!skins.contains(item)) {
-                        continue;
-                    }
-                } else if ("style".equals(typeName)) {
-                    if (skins.contains(item)) {
-                        continue;
-                    }
-                }
-                JSONObject itemNode = new JSONObject();
-                JSONObject itemMap = new JSONObject();
-                itemMap.put("title", item);
-
-                JSONObject itemAttributes = new JSONObject();
-                itemAttributes.put("rel", typeName);
-                itemAttributes.put("path", String.format("/%s/%s/%s/%s",
-                        bankName, collection, typeName, item));
-                itemAttributes.put("id", BankUtils.getDomId(String.format(
-                        "%s-%s-%s-%s", bankName, collection, typeName, item)));
-                itemNode.put("attributes", itemAttributes);
-                itemNode.put("data", itemMap);
-
-                items.add(itemNode);
-            }
-            folderTypeNode.put("children", items);
-            folderTypeNodes.add(folderTypeNode);
-        }
-        collectionNode.put("children", folderTypeNodes);
-        return collectionNode;
-    }
-
-    /*
-     * API
-     */
-    public static List<String> getBankNames() {
-        return BankManager.getBankNames();
-    }
-
-    public static StreamingOutput streamFile(final File file) {
-        return new StreamingOutput() {
-            @Override
-            public void write(OutputStream out) throws IOException,
-                    WebApplicationException {
-                InputStream in = null;
-                try {
-                    in = new FileInputStream(file);
-                    IOUtils.copy(in, out);
-                } catch (Exception e) {
-                    throw new WebApplicationException(e,
-                            Response.Status.INTERNAL_SERVER_ERROR);
-                } finally {
-                    IOUtils.closeQuietly(in);
-                }
-            }
-        };
-    }
-
-    public static List<String> getCollections(String bank) {
-        try {
-            return BankManager.getCollections(bank);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
-    }
-
-    public static List<String> getItemsInCollection(String bank,
-            String collection, String typeName) {
-        try {
-            return BankManager.getItemsInCollection(bank, collection, typeName);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
+        return Utils.getNavTree();
     }
 
     private Object noPreview() {
