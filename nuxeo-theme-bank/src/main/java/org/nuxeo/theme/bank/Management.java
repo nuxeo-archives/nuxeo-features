@@ -100,12 +100,11 @@ public class Management extends DefaultObject {
     }
 
     @POST
-    @Path("createStyle")
-    public Object createStyle() {
+    @Path("{collection}/createStyle")
+    public Object createStyle(@PathParam("collection") String collection) {
         FormData form = ctx.getForm();
 
         String resource = form.getString("resource");
-        String collection = form.getString("collection");
         final String path = String.format("%s/%s/style", bank, collection);
         String fileName = String.format("%s.css", resource);
 

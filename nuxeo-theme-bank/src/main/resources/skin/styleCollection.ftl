@@ -32,8 +32,8 @@
       </#if>
     </h1>
 
-    <#if (Context.principal)>
-    <form style="display: none" id="styleCreateForm" action="${Root.path}/${bank}/${collection}/manage/createStyle"
+    <#if Context.principal>
+    <form style="display: none" id="styleCreateForm" action="${Root.path}/${bank}/manage/${collection}/createStyle"
            method="post">
       <h2>Create a new style</h2>
       <p>

@@ -31,9 +31,9 @@ h1 a:hover {
 }
 
 h2 {
-  font: bold 11px Tahoma, sans-serif;
+  font: bold 12px Tahoma, sans-serif;
   border-bottom: 1px solid #ddd;
-  padding: 3px 10px;
+  padding: 3px 0;
   margin: 0;
 }
 
@@ -189,10 +189,6 @@ textarea:focus {
   border-color: #fc0;
 }
 
-button {
-  font-weight: bold;
-}
-
 input.textInput {
   border: 1px solid #eee;
   border-top: 1px solid #ccc;
@@ -215,4 +211,8 @@ input.textInput:focus {
   border-color: #eee !important;
   color: #333 !important;
   font-weight: bold;
+}
+
+form {
+  padding: 10px 15px;
 }
