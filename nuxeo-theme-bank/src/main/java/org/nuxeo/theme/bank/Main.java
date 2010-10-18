@@ -257,10 +257,9 @@ public class Main extends ModuleRoot {
     public Object getStyleCollections(String bank, String collection,
             Boolean skins_only) {
         return getTemplate("styleCollection.ftl").arg("styles",
-                Utils.getItemsInCollection(bank, collection, "style")).arg(
-                "skins", listSkinsInCollection(bank, collection)).arg(
-                "collection", collection).arg("bank", bank).arg("skins_only",
-                skins_only);
+                getItemsInCollection(bank, collection, "style")).arg("skins",
+                listSkinsInCollection(bank, collection)).arg("collection",
+                collection).arg("bank", bank).arg("skins_only", skins_only);
     }
 
     @GET
@@ -351,7 +350,7 @@ public class Main extends ModuleRoot {
     public Object getPresetCollectionView(@PathParam("bank") String bank,
             @PathParam("collection") String collection) {
         return getTemplate("presetCollection.ftl").arg("presets",
-                Utils.getItemsInCollection(bank, collection, "preset")).arg(
+                getItemsInCollection(bank, collection, "preset")).arg(
                 "collection", collection).arg("bank", bank);
     }
 
@@ -437,7 +436,7 @@ public class Main extends ModuleRoot {
     public Object getImageCollectionView(@PathParam("bank") String bank,
             @PathParam("collection") String collection) {
         return getTemplate("imageCollection.ftl").arg("images",
-                Utils.getItemsInCollection(bank, collection, "image")).arg(
+                getItemsInCollection(bank, collection, "image")).arg(
                 "collection", collection).arg("bank", bank);
     }
 
@@ -493,6 +492,30 @@ public class Main extends ModuleRoot {
 
     private Object noPreview() {
         return redirect(ctx.getModulePath() + "/skin/img/no-preview.png");
+    }
+
+    /*
+     * API
+     */
+    public static List<String> getBankNames() {
+        return BankManager.getBankNames();
+    }
+
+    public static List<String> getCollections(String bank) {
+        try {
+            return BankManager.getCollections(bank);
+        } catch (IOException e) {
+            throw new ThemeBankException(e.getMessage(), e);
+        }
+    }
+
+    public static List<String> getItemsInCollection(String bank,
+            String collection, String typeName) {
+        try {
+            return BankManager.getItemsInCollection(bank, collection, typeName);
+        } catch (IOException e) {
+            throw new ThemeBankException(e.getMessage(), e);
+        }
     }
 
 }

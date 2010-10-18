@@ -139,7 +139,7 @@ public class Utils {
             bankNode.put("data", bankMap);
 
             JSONArray childrenNodes = new JSONArray();
-            for (String collection : getCollections(bankName)) {
+            for (String collection : BankManager.getCollections(bankName)) {
                 childrenNodes.add(getNavTreeCollectionNode(bankName, collection));
             }
             bankNode.put("children", childrenNodes);
@@ -150,7 +150,7 @@ public class Utils {
     }
 
     private static JSONObject getNavTreeCollectionNode(String bankName,
-            String collection) {
+            String collection) throws IOException {
 
         JSONObject collectionNode = new JSONObject();
 
@@ -189,8 +189,8 @@ public class Utils {
             List<String> skins = listSkinsInCollection(bankName, collection);
             String effectiveTypeName = "skin".equals(typeName) ? "style"
                     : typeName;
-            for (String item : getItemsInCollection(bankName, collection,
-                    effectiveTypeName)) {
+            for (String item : BankManager.getItemsInCollection(bankName,
+                    collection, effectiveTypeName)) {
 
                 if ("skin".equals(typeName)) {
                     if (!skins.contains(item)) {
@@ -224,12 +224,8 @@ public class Utils {
     }
 
     /*
-     * API
+     * IO
      */
-    public static List<String> getBankNames() {
-        return BankManager.getBankNames();
-    }
-
     public static StreamingOutput streamFile(final File file) {
         return new StreamingOutput() {
             @Override
@@ -247,23 +243,6 @@ public class Utils {
                 }
             }
         };
-    }
-
-    public static List<String> getCollections(String bank) {
-        try {
-            return BankManager.getCollections(bank);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
-    }
-
-    public static List<String> getItemsInCollection(String bank,
-            String collection, String typeName) {
-        try {
-            return BankManager.getItemsInCollection(bank, collection, typeName);
-        } catch (IOException e) {
-            throw new ThemeBankException(e.getMessage(), e);
-        }
     }
 
 }
