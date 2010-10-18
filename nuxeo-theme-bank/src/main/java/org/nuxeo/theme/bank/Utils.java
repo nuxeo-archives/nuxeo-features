@@ -72,7 +72,6 @@ public class Utils {
     /*
      * JSON calls
      */
-
     public static String listBankSkins(String bankName) {
         JSONArray skins = new JSONArray();
         try {

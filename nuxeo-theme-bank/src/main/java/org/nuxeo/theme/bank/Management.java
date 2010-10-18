@@ -23,8 +23,11 @@ import java.io.IOException;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
@@ -114,5 +117,23 @@ public class Management extends DefaultObject {
 
         String redirectUrl = form.getString("redirect_url");
         return redirect(redirectUrl);
+    }
+
+    @POST
+    @Path("{collection}/download")
+    public Response downloadCollection(
+            @PathParam("collection") String collection) {
+        byte[] data;
+        try {
+            data = BankManager.exportBankData(bank, collection);
+        } catch (IOException e) {
+            throw new ThemeBankException(e.getMessage(), e);
+        }
+        String filename = String.format("%s.zip", collection.replace(" ", "-"));
+        ResponseBuilder builder = Response.ok(new String(data));
+        builder.header("Content-disposition",
+                String.format("attachment; filename=%s", filename));
+        builder.type("application/zip");
+        return builder.build();
     }
 }
