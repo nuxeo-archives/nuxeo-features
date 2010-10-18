@@ -1327,7 +1327,7 @@ form.nxthemesInheritedStyles label {
   padding-right: 4px;
 }
 
-form.nxthemesInheritedStyles select,
+form.nxthemesInheritedStyles select {
   background-color: #fff;
 }
 
@@ -1667,17 +1667,16 @@ a.nxthemesActionButton img {
   left: 110px;
 }
 
-
 .nxthemesManageScreen {
   width: 100%;
 }
 
 .nxthemesManageScreen th {
-  -moz-border-radius: 10px;
-  background: #666;
-  color: #fff;
-  padding: 3px 16px;
+  background: #fff;
+  color: #666;
+  padding: 8px 3px 2px 3px;
   text-align: left;
+  border-bottom: 1px solid #ccc;
 }
 
 .nxthemesManageScreen td {

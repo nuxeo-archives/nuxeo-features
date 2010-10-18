@@ -11,6 +11,10 @@
 <div class="body">
 
 <table class="nxthemesManageScreen">
+  <tr>
+    <th style="width: 25%;">Theme banks</th>
+    <th style="width: 75%;">Settings</th>
+  </tr>
 <tr>
   <td style="width: 20%">
 
@@ -23,9 +27,6 @@
 </ul>
 
 </td>
-
-  <td style="width: 1%">
-  </td>
 
   <td style="width: 79%">
 <#if selected_bank>

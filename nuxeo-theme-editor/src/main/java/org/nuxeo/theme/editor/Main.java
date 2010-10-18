@@ -361,18 +361,18 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
 
-        ResourceBank selectedBank = getSelectedBank();
-        List<ResourceBank> banks = ThemeManager.getResourceBanks();
+        String currentThemeName = getCurrentThemeName(path, name);
+        ResourceBank selectedBank = getCurrentThemeBank(currentThemeName);
+
         List<SkinInfo> skins = new ArrayList<SkinInfo>();
         if (selectedBank != null) {
             skins = getBankSkins(selectedBank.getName());
         }
-        String currentThemeName = getCurrentThemeName(path, name);
+
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("skinManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
-                "selected_bank", selectedBank).arg("skins", skins).arg("banks",
-                banks);
+                "selected_bank", selectedBank).arg("skins", skins);
     }
 
     @GET
@@ -381,29 +381,30 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
 
-        ResourceBank selectedBank = getSelectedBank();
+        String currentThemeName = getCurrentThemeName(path, name);
+        ResourceBank selectedBank = getCurrentThemeBank(currentThemeName);
         boolean connected = false;
 
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
 
-        String currentThemeName = getCurrentThemeName(path, name);
         return getTemplate("bankManager.ftl").arg("current_theme_name",
                 currentThemeName).arg("selected_bank", selectedBank).arg(
                 "banks", banks).arg("connected", connected);
     }
 
-    private ResourceBank getSelectedBank() {
-        String selectedBankName = getSelectedBankName();
-        List<ResourceBank> banks = ThemeManager.getResourceBanks();
-        ResourceBank selectedBank = null;
-        if (selectedBankName == null) {
-            if (!banks.isEmpty()) {
-                selectedBank = banks.get(0);
+    private ResourceBank getCurrentThemeBank(String themeName) {
+        ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptorByThemeName(themeName);
+        if (themeDescriptor != null) {
+            String selectedBankName = themeDescriptor.getResourceBankName();
+            if (selectedBankName != null) {
+                try {
+                    return ThemeManager.getResourceBank(selectedBankName);
+                } catch (ThemeException e) {
+                    return null;
+                }
             }
-        } else {
-            selectedBank = ThemeManager.getResourceBank(selectedBankName);
         }
-        return selectedBank;
+        return null;
     }
 
     @POST
@@ -427,20 +428,17 @@ public class Main extends ModuleRoot {
     public Object renderImageManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-
-        ResourceBank selectedBank = getSelectedBank();
-        List<ResourceBank> banks = ThemeManager.getResourceBanks();
+        String currentThemeName = getCurrentThemeName(path, name);
+        ResourceBank selectedBank = getCurrentThemeBank(currentThemeName);
         List<String> images = new ArrayList<String>();
         if (selectedBank != null) {
             images = getBankImages(selectedBank.getName());
         }
-        String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("imageManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
                 "current_edit_field", getSelectedEditField()).arg(
-                "selected_bank", selectedBank).arg("images", images).arg(
-                "banks", banks);
+                "selected_bank", selectedBank);
     }
 
     @GET
@@ -451,18 +449,19 @@ public class Main extends ModuleRoot {
         return getTemplate("imageUploaded.ftl");
     }
 
-    public static String getSelectedBankName() {
-        return SessionManager.getResourceBank();
-    }
-
     public static List<SkinInfo> getBankSkins(String bankName) {
         List<SkinInfo> info = new ArrayList<SkinInfo>();
         if (bankName != null) {
-            ResourceBank resourceBank = ThemeManager.getResourceBank(bankName);
-            for (Map<String, String> skin : resourceBank.getSkins()) {
-                info.add(new SkinInfo(skin.get("name"), skin.get("bank"),
-                        skin.get("collection"), skin.get("resource"),
-                        skin.get("preview")));
+            ResourceBank resourceBank;
+            try {
+                resourceBank = ThemeManager.getResourceBank(bankName);
+                for (Map<String, String> skin : resourceBank.getSkins()) {
+                    info.add(new SkinInfo(skin.get("name"), skin.get("bank"),
+                            skin.get("collection"), skin.get("resource"),
+                            skin.get("preview")));
+                }
+            } catch (ThemeException e) {
+                e.printStackTrace();
             }
         }
         return info;
@@ -471,9 +470,15 @@ public class Main extends ModuleRoot {
     public static List<String> getBankImages(String bankName) {
         List<String> images = new ArrayList<String>();
         if (bankName != null) {
-            ResourceBank resourceBank = ThemeManager.getResourceBank(bankName);
-            for (String imagePath : resourceBank.getImages()) {
-                images.add(imagePath);
+            ResourceBank resourceBank;
+            try {
+                resourceBank = ThemeManager.getResourceBank(bankName);
+                for (String imagePath : resourceBank.getImages()) {
+                    images.add(imagePath);
+                }
+            } catch (ThemeException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
         return images;
@@ -492,15 +497,7 @@ public class Main extends ModuleRoot {
         return null;
     }
 
-    @POST
-    @Path("select_resource_bank")
-    public void selectResourceBank() {
-        FormData form = ctx.getForm();
-        String name = form.getString("name");
-        SessionManager.setResourceBank(name);
-    }
-
-    public ResourceBank getResourceBank(String bankName) {
+    public ResourceBank getResourceBank(String bankName) throws ThemeException {
         return ThemeManager.getResourceBank(bankName);
     }
 

@@ -28,7 +28,7 @@
     <#assign bank=Root.getResourceBank(current_skin.bank) />
     <p class="nxthemesEditor">Current skin: <strong>${current_skin.name}</strong>
     <div style="margin: 10px;">
-    <img style="border: 1px solid #ccc;" src="${bank.connectionUrl}/style/${current_skin.collection}/${current_skin.resource}/preview"" />
+    <img style="border: 1px solid #ccc;" src="${bank.connectionUrl}/${current_skin.collection}/style/${current_skin.resource}/preview"" />
     <div>
     </p>
   <#else>

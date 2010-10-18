@@ -246,8 +246,14 @@ public class Editor {
                     "A style from a remote resource bank is required.");
         }
         // if the style came from a resource bank, it has now been customized.
-        ThemeManager.loadRemoteStyle(style);
-
+        ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptorByThemeName(themeName);
+        if (themeDescriptor == null) {
+            throw new ThemeException("Theme not found: " + themeName);
+        }
+        String resourceBankName = themeDescriptor.getResourceBankName();
+        if (resourceBankName != null) {
+            ThemeManager.loadRemoteStyle(resourceBankName, style);
+        }
         style.setCustomized(false);
         saveTheme(themeName);
     }
@@ -318,12 +324,12 @@ public class Editor {
     }
 
     public static void saveTheme(String themeName) throws ThemeException {
-        ThemeDescriptor themeDef = ThemeManager.getThemeDescriptorByThemeName(themeName);
-        if (themeDef == null) {
+        ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptorByThemeName(themeName);
+        if (themeDescriptor == null) {
             throw new ThemeException("Theme not found: " + themeName);
         }
-        if (themeDef.isSaveable()) {
-            String themeSrc = themeDef.getSrc();
+        if (themeDescriptor.isSaveable()) {
+            String themeSrc = themeDescriptor.getSrc();
             try {
                 ThemeManager.saveTheme(themeSrc);
             } catch (ThemeIOException e) {

@@ -61,8 +61,6 @@ public class SessionManager extends AbstractComponent {
 
     private static final String UNDO_BUFFER = "org.nuxeo.theme.editor.undo_buffer";
 
-    private static final String RESOURCE_BANK = "org.nuxeo.theme.editor.resource_bank";
-
     private static final String SELECTED_EDIT_FIELD = "org.nuxeo.theme.editor.edit_field";
 
     private static final String SELECTED_THEME_OPTIONS_CATEGORY = "org.nuxeo.theme.editor.theme_options_category";
@@ -209,14 +207,6 @@ public class SessionManager extends AbstractComponent {
             UndoBuffer undoBuffer) {
         getUserSession().put(String.format("%s.%s", UNDO_BUFFER, themeName),
                 undoBuffer);
-    }
-
-    public static synchronized void setResourceBank(String name) {
-        getUserSession().put(RESOURCE_BANK, name);
-    }
-
-    public static synchronized String getResourceBank() {
-        return (String) getUserSession().get(RESOURCE_BANK);
     }
 
     @SuppressWarnings("unchecked")

@@ -178,6 +178,10 @@ NXThemesEditor.manageThemeBanks = function() {
     NXThemesEditor.setEditorPerspective('bank manager');
 };
 
+NXThemesEditor.manageImages = function() {
+    NXThemesEditor.setEditorPerspective('image manager');
+};
+
 NXThemesEditor.setEditorPerspective = function(perspective) {
     NXThemes.getControllerById('editor perspectives').switchTo(perspective);
 };
@@ -188,23 +192,6 @@ if (typeof NXThemesSkinManager == "undefined") {
     NXThemesSkinManager = {
     }
 }
-
-NXThemesEditor.selectResourceBank = function(name, screenName) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_resource_bank";
-    new Ajax.Request(url, {
-         method: 'post',
-         parameters: {
-             name: name
-         },
-         onSuccess: function(r) {
-             NXThemes.getViewById(screenName).refresh();
-         },
-         onFailure: function(r) {
-             var text = r.responseText;
-             window.alert(text);
-         }
-      });
-};
 
 NXThemesSkinManager.activateSkin = function(theme, bank, collection, resource) {
     var url = nxthemesBasePath + "/nxthemes-editor/activate_skin";
