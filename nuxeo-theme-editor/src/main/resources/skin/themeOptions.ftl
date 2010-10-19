@@ -14,7 +14,7 @@
 <div class="title">Theme options</div>
 <div class="body">
 
-<form class="nxthemesForm"
+<form class="nxthemesForm" style="padding: 10px"
       onsubmit="NXThemesThemeOptions.updatePresets(this); return false">
 
     <input type="hidden" name="theme_name" value="${current_theme_name}" />

@@ -1034,6 +1034,7 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
   padding: 3px 10px;
 }
 
+
 ul.nxthemesSelector {
   list-style: none;
   margin: 0;
@@ -1052,13 +1053,15 @@ ul.nxthemesSelector li a {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  font-size: 13px;
-  color: #000;
+  font-size: 12px;
   border: 1px solid #fff;
 }
 
-ul.nxthemesSelector li a:hover {
-  background-color: #fcfcfc;
+ul.nxthemesSelector li a:hover,
+ul.nxthemesSelector li.selected a,
+ul.nxthemesSelector li.selected a:hover {
+  background-color: #eee;
+  border: 1px solid #ddd;
   color: #000;
 }
 
@@ -1073,15 +1076,6 @@ ul.nxthemesSelector li a:hover span.info {
   float: right;
 }
 
-ul.nxthemesSelector li.selected a {
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-}
-
-ul.nxthemesSelector li.selected a:hover {
-  background-color: #fcfcfc;
-  border: 1px solid #f3f3f3;
-}
 
 ul.nxthemesSelector li.disabled a {
   color: #999;
@@ -1812,17 +1806,7 @@ a.nxthemesActionButton img {
   margin: 2px 5px 2px 3px;
 }
 
-/* Image browser */
-
-.album {
-  width: 100%;
-  padding: 0;
-  float: left;
-  background-color: #fff;
-  -moz-border-radius: 8px;
-}
-
-.album .imageSingle {
+.nxthemesImageSingle, .nxthemesImageSingleSelected {
   float: left;
   margin: 10px;
   width: 212px;
@@ -1832,30 +1816,30 @@ a.nxthemesActionButton img {
   background-color: #fff;
 }
 
-.album .imageSingleSelected {
+.nxthemesImageSingleSelected {
   border: 2px solid #fc0;
   font-weight: bold;
 }
 
-.album .footer {
+.footer {
   text-align: center;
   color: #333;
   padding-bottom: 2px;
   font: normal 11px Tahoma;
 }
 
-.album .imageSingleSelected .footer {
+.nxthemesImageSingleSelected .footer {
   font-weight: bold!important;
   color: #666;
 }
 
-.album .imageSingle img {
+.nxthemesImageSingle img, .nxthemesImageSingleSelected img {
   max-width: 200px;
   max-height: 135px;
   border: none;
 }
 
-.imageFrame {
+.nxthemesImageFrame {
   margin: 15px 0;
   text-align: center;
   border: 1px solid #eee;
@@ -1928,86 +1912,73 @@ a.nxthemesActionButton:hover {
   color: #666;
 }
 
+
 .nxthemesThemeControlPanel .window {
-  -moz-border-radius: 10px;
-  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  border: 1px solid #666;
   background-color: #fff;
-  padding: 2px;
+  padding: 0;
   margin: 0 0 6px 0;
 }
 
 .nxthemesThemeControlPanel .window .title {
-  padding: 2px 10px;
+  padding: 3px 10px;
   font-weight: bold;
   font-size: 13px;
-  color: #000;
-  background: #eee;
-  border-bottom: 1px solid #ccc;
-  -moz-border-radius: 8px 8px 0 0;
+  color: #fff;
+  background: #666;
+  border:none;
+  border-bottom: 1px solid #000;
+  -moz-border-radius: 4px 4px 0 0;
 }
 
 .nxthemesThemeControlPanel .window .body {
   font-weight: normal;
   font-size: 12px;
-  -moz-border-radius: 10px;
   border: none;
   color: #333;
   padding: 3px 10px;
 }
 
 /* Image browser */
-.album {
-  width: 100%;
-  padding: 0;
-  float: left;
-  background-color: #f6f6f6;
-  -moz-border-radius: 8px;
-}
 
-.album .imageSingle {
+
+
+.nxthemesImageSingle {
   float: left;
-  margin: 10px;
+  margin: 5px;
   width: 212px;
   text-align: center;
-  border: 1px solid #999;
+  border: 1px solid #fff;
   -moz-border-radius: 4px;
   background-color: #fff;
+  padding: 2px;
 }
 
-.album .imageSingle .image {
+.nxthemesImageSingle a {
+  text-decoration: none;
+  color: #333;
+}
+
+.nxthemesImageSingle img {
   width: 200px;
   height: 135px;
   margin: 5px;
+  border: 1px solid #999;
  }
 
-.album .imageSingle:hover {
-  border: 1px solid #666;
-  cursor: pointer;
+.nxthemesImageSingle:hover {
+  background-color: #ffc;
+  border: 1px solid #fc0;
 }
 
-.album .imageSingle:hover .footer {
-  color: #666;
-  text-decoration: none;
+.nxthemesImageSingleSelected {
+  background-color: #ffc;
+  border: 1px solid #fc0;
 }
 
-.album .footer {
-  text-align: center;
-  color: #999;
-  padding-bottom: 2px;
-  font: bold 11px tahoma;
+.nxthemesImageSingleSelected img {
+  border: 1px solid #fff;
 }
 
-.album .imageSingle img {
-  max-width: 200px;
-  max-height: 135px;
-  border: none;
-}
-
-.imageFrame {
-  margin: 15px 0;
-  text-align: center;
-  border: 1px solid #eee;
-  -moz-border-radius: 4px;
-  padding: 20px;
-}
 

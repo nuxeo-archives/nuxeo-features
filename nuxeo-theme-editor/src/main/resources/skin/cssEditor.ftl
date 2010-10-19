@@ -59,6 +59,7 @@ ${theme_skin_css}
   <p>No skin available.</p>
 </#if>
 
+<div style="clear: both; padding: 5px"></div>
 </div>
 </div>
 

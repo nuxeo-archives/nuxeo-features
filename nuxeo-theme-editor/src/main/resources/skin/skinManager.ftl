@@ -6,38 +6,22 @@
 
 <@block name="content">
 
-<#assign skins=Root.getBankSkins(selected_bank.name) />
+<#assign skins=Root.getBankSkins(current_bank.name) />
 <#if skins>
 
 <div class="window">
 <div class="title">Choose a skin</div>
 <div class="body">
 
-<table class="nxthemesManageScreen">
-  <tr>
-    <th style="width: 25%;">Theme banks</th>
-    <th style="width: 75%;">Skins</th>
-  </tr>
-<tr>
-  <td style="width: 20%">
-
-</td>
-
-
-<td style="width: 79%">
-
-<div class="album">
+<div>
   <#list skins as skin>
-      <div class="imageSingle <#if current_skin_name=skin.name>imageSingleSelected</#if>">
-        <div class="image"><img src="${selected_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" /></div>
-        <div class="footer">${skin.name}</div>
-        <div style="padding: 5px">
-          <button <#if current_skin_name=skin.name>disabled="disabled"</#if> class="nxthemesActionButton"
-           onclick="NXThemesSkinManager.activateSkin('${current_theme_name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">Activate</button>
-        </div>
-      </div>
+    <div class="nxthemesImageSingle nxthemesImageSingle<#if current_skin_name=skin.name>Selected</#if>">
+      <a href="javascript:NXThemesSkinManager.activateSkin('${current_theme_name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">
+        <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
+        <div>${skin.name}</div>
+      </a>
+    </div>
   </#list>
-
 </div>
 
   <div style="clear: both"></div>
@@ -49,9 +33,6 @@
 </#if>
 
 
-</td>
-</tr>
-</table>
 
 </@block>
 </@extends>
