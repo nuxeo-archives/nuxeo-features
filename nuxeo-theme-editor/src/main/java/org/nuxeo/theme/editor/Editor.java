@@ -49,7 +49,6 @@ import org.nuxeo.theme.themes.ThemeIOException;
 import org.nuxeo.theme.themes.ThemeManager;
 import org.nuxeo.theme.themes.ThemeSerializer;
 import org.nuxeo.theme.types.TypeFamily;
-import org.nuxeo.theme.types.TypeRegistry;
 
 public class Editor {
 
@@ -504,45 +503,20 @@ public class Editor {
         return path;
     }
 
-    public static String addTheme(String name) throws ThemeException,
-            NodeException, ThemeIOException {
+    public static String addTheme(String name) throws ThemeException {
         ThemeManager themeManager = Manager.getThemeManager();
         if (themeManager.getThemeByName(name) != null) {
             throw new ThemeException("The theme name is already taken: " + name);
         }
-        ThemeElement theme = (ThemeElement) ElementFactory.create("theme");
-        theme.setName(name);
-        Format themeWidget = themeManager.createWidget();
-        themeWidget.setName("theme view");
-        ElementFormatter.setFormat(theme, themeWidget);
-        // default page
-        PageElement page = (PageElement) ElementFactory.create("page");
-        page.setName("default");
-        Format pageWidget = themeManager.createWidget();
-        pageWidget.setName("page frame");
-        Format pageLayout = themeManager.createLayout();
-        Format pageStyle = themeManager.createStyle();
-        ElementFormatter.setFormat(page, pageWidget);
-        ElementFormatter.setFormat(page, pageStyle);
-        ElementFormatter.setFormat(page, pageLayout);
-        theme.addChild(page);
-        // create a theme descriptor
-        ThemeDescriptor themeDescriptor = new ThemeDescriptor();
-        themeDescriptor.setName(name);
-        final String path = ThemeManager.getCustomThemePath(name);
-        if (path == null) {
-            throw new ThemeException("Could not get file path for theme: "
-                    + name);
+        return ThemeManager.createCustomTheme(name);
+    }
+
+    public String customizeTheme(String src) throws ThemeException {
+        ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptor(src);
+        if (themeDescriptor == null) {
+            throw new ThemeException("Theme not found: " + src);
         }
-        final String src = String.format("file://%s", path);
-        themeDescriptor.setSrc(src);
-        TypeRegistry typeRegistry = Manager.getTypeRegistry();
-        typeRegistry.register(themeDescriptor);
-        // register the theme
-        themeManager.registerTheme(theme);
-        // save the theme
-        ThemeManager.saveTheme(themeDescriptor.getSrc());
-        return String.format("%s/%s", name, "default");
+        return ThemeManager.customizeTheme(themeDescriptor);
     }
 
     public static void assignStyleProperty(Element element,
