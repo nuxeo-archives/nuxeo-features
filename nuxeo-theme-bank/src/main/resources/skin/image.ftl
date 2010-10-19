@@ -7,11 +7,11 @@
 
   <@block name="content">
     <h1>Image: ${collection}/${resource}
-      <a style="float: right" href="${Root.getPath()}/${bank}/${collection}/image/${resource}/view">Refresh</a>
+      <a style="float: right" href="${Root.getPath()}/${bank}/${collection}/${resource}/image/view">Refresh</a>
     </h1>
 
     <div class="imageFrame" id="imageFrame">
-      <img src="${Root.getPath()}/${path}" />
+      <img src="${Root.getPath()}/${bank}/${collection}/${resource}/image" />
     </div>
 
   </@block>

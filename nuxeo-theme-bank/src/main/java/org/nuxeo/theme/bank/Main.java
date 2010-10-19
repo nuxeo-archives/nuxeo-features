@@ -441,7 +441,7 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("{bank}/{collection}/image/{resource}")
+    @Path("{bank}/{collection}/{resource}/image")
     public Response getImage(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("resource") String resource) {
@@ -451,7 +451,7 @@ public class Main extends ModuleRoot {
         } catch (IOException e) {
             throw new ThemeBankException(e.getMessage(), e);
         }
-        String ext = FileUtils.getFileExtension(path);
+        String ext = FileUtils.getFileExtension(file.getPath());
         String mimeType = ctx.getEngine().getMimeType(ext);
         if (mimeType == null) {
             mimeType = "application/octet-stream";
@@ -466,10 +466,8 @@ public class Main extends ModuleRoot {
     public Object getImageView(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("resource") String resource) {
-        String path = String.format("%s/%s/image/%s", bank, collection,
-                resource);
-        return getTemplate("image.ftl").arg("path", path).arg("bank", bank).arg(
-                "resource", resource).arg("collection", collection);
+        return getTemplate("image.ftl").arg("bank", bank).arg("resource",
+                resource).arg("collection", collection);
     }
 
     @GET
