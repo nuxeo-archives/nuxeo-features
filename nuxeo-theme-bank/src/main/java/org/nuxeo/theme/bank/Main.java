@@ -485,6 +485,17 @@ public class Main extends ModuleRoot {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("{bank}/json/collections")
+    public String listCollections(@PathParam("bank") String bank) {
+        try {
+            return Utils.listCollections(bank);
+        } catch (IOException e) {
+            throw new ThemeBankException(e.getMessage(), e);
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("json/tree")
     public String getTree() throws IOException {
         return Utils.getNavTree();

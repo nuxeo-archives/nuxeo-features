@@ -120,6 +120,14 @@ public class Utils {
         return index.toString();
     }
 
+    public static String listCollections(String bank) throws IOException {
+        JSONArray index = new JSONArray();
+        for (String collection : BankManager.getCollections(bank)) {
+            index.add(collection);
+        }
+        return index.toString();
+    }
+
     public static String getNavTree() throws IOException {
         JSONArray tree = new JSONArray();
 
