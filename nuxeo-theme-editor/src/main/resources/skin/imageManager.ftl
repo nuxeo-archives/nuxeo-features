@@ -6,22 +6,64 @@
 
 <@block name="content">
 
+<style type="text/css">
+.album {
+  width: 100%;
+  padding: 0;
+  float: left;
+  background-color: #f6f6f6;
+  -moz-border-radius: 8px;
+}
+
+.album .imageSingle {
+  float: left;
+  margin: 2px;
+  width: 106px;
+  text-align: center;
+  border: 1px solid #999;
+  -moz-border-radius: 4px;
+  background-color: #fff;
+}
+
+.album .imageSingle .image {
+  width: 100px;
+  height: 70px;
+  margin: 5px;
+ }
+
+.album .imageSingle:hover {
+  border: 1px solid #666;
+  cursor: pointer;
+}
+
+.album .imageSingle:hover .footer {
+  color: #666;
+  text-decoration: none;
+}
+
+.album .imageSingle img {
+  max-width: 100px;
+  max-height: 70px;
+  border: none;
+}
+
+</style>
+
 <div class="window">
 <div class="title">Image library</div>
 <div class="body">
 
 <table class="nxthemesManageScreen">
   <tr>
-    <th style="width: 25%;">Collection</th>
-    <th style="width: 75%;">Images</th>
+    <th style="width: 20%;">Collection</th>
+    <th style="width: 80%;">Images</th>
   </tr>
   <tr>
   <td>
 
 <ul class="nxthemesSelector">
 <#list collections as collection>
-  <li>
-    <a href="javascript:NXThemesEditor.selectBankCollection('${collection}', 'image manager')">
+  <li><a href="javascript:NXThemesEditor.selectBankCollection('${collection}', 'image manager')">
     ${collection}</a></li>
 </#list>
 </ul>
@@ -30,15 +72,16 @@
 <td>
 
 <div>
-  <#list images as image>
-    <a href="javascript:void(0)"
-       onclick="NXThemesImageManager.selectImage('${current_edit_field}', '${image}')">
-      <div class="nxthemesImageSingle">
-        <img src="${current_bank.connectionUrl}/${image}/image" />
-        <div class="footer">${image}</div>
-      </div>
-    </a>
-  </#list>
+
+    <div class="album" id="imageGallery">
+      <#list images as image>
+        <a href="javascript:void(0)" onclick="NXThemesImageManager.selectImage('${current_edit_field}', '${image}')">
+          <div class="imageSingle" title="${image}">
+            <div class="image"><img src="${current_bank.connectionUrl}/${image}/image" /></div>
+          </div>
+        </a>
+      </#list>
+    </div>
 </div>
 
 

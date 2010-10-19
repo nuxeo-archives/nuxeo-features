@@ -137,13 +137,6 @@ table.properties td.preview {
   border: none;
 }
 
-.imageFrame {
-  margin: 15px 0;
-  text-align: center;
-  border: 1px solid #eee;
-  -moz-border-radius: 4px;
-  padding: 20px;
-}
 
 /* Action bar */
 

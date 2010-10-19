@@ -16,12 +16,12 @@
     <th style="width: 80%;">Settings</th>
   </tr>
 <tr>
-
+<td>
 <ul class="nxthemesSelector">
 <#list banks as bank>
   <li <#if bank.name = current_bank.name>class="selected"</#if>>
     <a href="javascript:NXThemesEditor.selectResourceBank('${bank.name}', 'bank manager')">
-    <img src="${basePath}/skin/nxthemes-editor/img/bank-16.png" width="16" height="16"/> ${bank.name}</a></li>
+    ${bank.name}</a></li>
 </#list>
 </ul>
 

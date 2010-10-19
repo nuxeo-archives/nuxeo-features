@@ -1037,7 +1037,7 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 ul.nxthemesSelector {
   list-style: none;
   margin: 0;
-  padding: 4px 0px;
+  padding: 2px 0px;
 }
 
 ul.nxthemesSelector li {
@@ -1809,18 +1809,6 @@ table.fragmentFactory td {
 .nxthemesImageSingleSelected {
   border: 2px solid #fc0;
   font-weight: bold;
-}
-
-.footer {
-  text-align: center;
-  color: #333;
-  padding-bottom: 2px;
-  font: normal 11px Tahoma;
-}
-
-.nxthemesImageSingleSelected .footer {
-  font-weight: bold!important;
-  color: #666;
 }
 
 .nxthemesImageSingle img, .nxthemesImageSingleSelected img {
