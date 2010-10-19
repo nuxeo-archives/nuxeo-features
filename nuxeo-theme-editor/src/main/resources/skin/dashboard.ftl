@@ -8,10 +8,10 @@
 
 <@block name="content">
 
-<table class="nxthemesManageScreen">
+<table style="width: 100%" cellspacing="0" cellpadding="0">
 
 <tr>
-<td style="width: 49%">
+<td style="width: 49%; vertical-align: top">
 
 <div class="window">
 <div class="title">General</div>
@@ -43,10 +43,10 @@
 
 </td>
 
-<td style="width: 1%">
+<td style="width: 2%">
 </td>
 
-<td style="width: 49%">
+<td style="width: 48%; vertical-align: top">
 
 <div class="window">
 <div class="title">Theme options</div>

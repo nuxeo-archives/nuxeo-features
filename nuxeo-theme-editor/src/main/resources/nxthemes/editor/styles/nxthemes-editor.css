@@ -1611,20 +1611,7 @@ table.fragmentFactory td {
   color: #666;
 }
 
-a.nxthemesActionButton {
-  background-color: #eee;
-  padding: 2px 3px;
-  border: 1px solid #ccc;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  border-radius: 4px;
-  color: #000 !important;
-  font-size: 11px;
-}
 
-a.nxthemesActionButton img {
-  vertical-align: top;
-}
 
 .nxthemesStyleTree {
   font: 12px arial;
@@ -1665,6 +1652,7 @@ a.nxthemesActionButton img {
   margin: 0;
   padding: 0;
   border-collapse: collapse;
+  width: 100%;
 }
 
 .nxthemesManageScreen th {
@@ -1836,17 +1824,7 @@ a.nxthemesActionButton img {
 }
 
 .nxthemesImageSingle img, .nxthemesImageSingleSelected img {
-  max-width: 200px;
-  max-height: 135px;
   border: none;
-}
-
-.nxthemesImageFrame {
-  margin: 15px 0;
-  text-align: center;
-  border: 1px solid #eee;
-  -moz-border-radius: 4px;
-  padding: 20px;
 }
 
 
@@ -1902,16 +1880,21 @@ a.nxthemesActionButton {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  padding: 2px 8px;
+  padding: 2px 10px;
   border: 1px solid #ccc;
   text-decoration: none;
   color: #000;
-  font-size: 12px;
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
 a.nxthemesActionButton:hover {
   background-position: left bottom;
   color: #666;
+}
+
+a.nxthemesActionButton img {
+  vertical-align: top;
 }
 
 

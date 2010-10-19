@@ -434,15 +434,20 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
+
+        List<String> collections = new ArrayList<String>();
         List<String> images = new ArrayList<String>();
         if (currentThemeBank != null) {
-            images = getBankImages(currentThemeBank.getName());
+            String bankName = currentThemeBank.getName();
+            collections = getBankCollections(bankName);
+            images = getBankImages(bankName);
         }
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("imageManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme_name", currentThemeName).arg(
                 "current_edit_field", getSelectedEditField()).arg(
-                "current_bank", currentThemeBank);
+                "current_bank", currentThemeBank).arg("images", images).arg(
+                "collections", collections);
     }
 
     @GET
