@@ -129,7 +129,7 @@ public class Management extends DefaultObject {
             throw new ThemeBankException(e.getMessage(), e);
         }
         String filename = String.format("%s.zip", collection.replace(" ", "-"));
-        ResponseBuilder builder = Response.ok(new String(data));
+        ResponseBuilder builder = Response.ok(data);
         builder.header("Content-disposition",
                 String.format("attachment; filename=%s", filename));
         builder.type("application/zip");
