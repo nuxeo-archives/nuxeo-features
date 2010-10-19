@@ -1034,11 +1034,10 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
   padding: 3px 10px;
 }
 
-
 ul.nxthemesSelector {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 4px 0px;
 }
 
 ul.nxthemesSelector li {
@@ -1661,21 +1660,24 @@ a.nxthemesActionButton img {
   left: 110px;
 }
 
+
 .nxthemesManageScreen {
-  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
 }
 
 .nxthemesManageScreen th {
   background: #fff;
-  color: #666;
-  padding: 8px 3px 2px 3px;
+  color: #333;
+  padding: 10px 8px 3px 8px;
   text-align: left;
   border-bottom: 1px solid #ccc;
 }
 
 .nxthemesManageScreen td {
   vertical-align: top;
-  padding: 0;
+  padding: 5px 6px;
   margin: 0;
 }
 
@@ -1918,7 +1920,7 @@ a.nxthemesActionButton:hover {
   border: 1px solid #666;
   background-color: #fff;
   padding: 0;
-  margin: 0 0 6px 0;
+  margin: 0 0 12px 0;
 }
 
 .nxthemesThemeControlPanel .window .title {

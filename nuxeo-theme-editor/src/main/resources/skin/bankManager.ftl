@@ -12,11 +12,10 @@
 
 <table class="nxthemesManageScreen">
   <tr>
-    <th style="width: 25%;">Theme banks</th>
-    <th style="width: 75%;">Settings</th>
+    <th style="width: 20%;">Theme banks</th>
+    <th style="width: 80%;">Settings</th>
   </tr>
 <tr>
-  <td style="width: 20%">
 
 <ul class="nxthemesSelector">
 <#list banks as bank>
@@ -27,8 +26,8 @@
 </ul>
 
 </td>
+<td>
 
-  <td style="width: 79%">
 <#if current_bank>
 
   <form class="nxthemesForm">
@@ -42,7 +41,7 @@
   <p>You are connected as bank manager</p>
   <#else>
   <p>
-    <button>Connect</button>
+    <a class="nxthemesActionButton" href="${current_bank.connectionUrl}">Connect</a>
   </p>
   </#if>
   </form>
