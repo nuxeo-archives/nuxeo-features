@@ -19,7 +19,7 @@
 <td>
 <ul class="nxthemesSelector">
 <#list banks as bank>
-  <li <#if bank.name = current_bank.name>class="selected"</#if>>
+  <li <#if current_bank && bank.name = current_bank.name>class="selected"</#if>>
     <a href="javascript:NXThemesEditor.selectResourceBank('${bank.name}', 'bank manager')">
     ${bank.name}</a></li>
 </#list>

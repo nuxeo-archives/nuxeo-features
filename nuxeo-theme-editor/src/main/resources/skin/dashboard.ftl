@@ -16,21 +16,26 @@
 <div class="window">
 <div class="title">General</div>
 <div class="body">
-  <p class="nxthemesEditor">Theme name: <strong>${current_theme_name}</strong></p>
-  <p class="nxthemesEditor">Source: <strong>${theme.src}</strong></p>
+  <#if current_theme>
+  <p class="nxthemesEditor">Theme name: <strong>${current_theme.name}</strong></p>
+  <p class="nxthemesEditor">Source: <strong>${current_theme.src}</strong></p>
+  </#if>
 </div>
 </div>
 
 <div class="window">
 <div class="title">Skin</div>
 <div class="body">
-  <#if current_skin>
+  <#if current_skin_name>
+    <#assign current_skin=Root.getSkinInfo(current_skin_name) />
+    <#if current_skin>
     <#assign bank=Root.getResourceBank(current_skin.bank) />
     <p class="nxthemesEditor">Current skin: <strong>${current_skin.name}</strong>
     <div style="margin: 10px;">
-    <img style="border: 1px solid #ccc;" src="${bank.connectionUrl}/${current_skin.collection}/style/${current_skin.resource}/preview"" />
+      <img style="border: 1px solid #ccc;" src="${bank.connectionUrl}/${current_skin.collection}/style/${current_skin.resource}/preview"" />
     <div>
     </p>
+    </#if>
   <#else>
     <p class="nxthemesEditor">You have not selected a theme skin yet.</p>
   </#if>
@@ -68,7 +73,8 @@
 <div class="window">
 <div class="title">CSS</div>
 <div class="body">
-<#assign theme_skin = Root.getThemeSkin(current_theme_name) />
+
+<#assign theme_skin = Root.getThemeSkin(current_theme.name) />
 <#if theme_skin & theme_skin.customized>
  <p class="nxthemesEditor">You have customized the skin's CSS</p>
 <#else>

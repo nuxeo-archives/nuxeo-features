@@ -1059,8 +1059,8 @@ ul.nxthemesSelector li a {
 ul.nxthemesSelector li a:hover,
 ul.nxthemesSelector li.selected a,
 ul.nxthemesSelector li.selected a:hover {
-  background-color: #eee;
-  border: 1px solid #ddd;
+  background-color: #eed;
+  border: 1px solid #ddc;
   color: #000;
 }
 
@@ -1954,4 +1954,13 @@ a.nxthemesActionButton img {
   border: 1px solid #fff;
 }
 
+.nxthemesInfoMessage {
+  margin: 0 3px 10px 3px;
+  padding: 4px 8px;
+  font-style: italic;
+  background-color: #eed;
+  border: 1px solid #ccb;
+  color: #333;
+  font-size: 13px;
+}
 

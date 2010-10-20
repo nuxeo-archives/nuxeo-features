@@ -3,6 +3,12 @@
 
 <div id="nxthemesPresetManager" class="nxthemesThemeControlPanel">
 
+<#if current_theme && !current_theme.saveable>
+  <div class="nxthemesInfoMessage">These are factory settings for the <strong>${current_theme.name}</strong> theme.
+  <button class="nxthemesActionButton"
+  onclick="NXThemesEditor.customizeTheme('${current_theme.src}', '${screen}')">Customize the theme</button>.</div>
+</#if>
+
 <table style="width: 100%">
 <tr>
 <td style="width: 19%; vertical-align: top;">

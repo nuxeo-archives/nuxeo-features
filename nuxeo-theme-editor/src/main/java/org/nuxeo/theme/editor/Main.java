@@ -127,7 +127,7 @@ public class Main extends ModuleRoot {
     public Object renderThemeBrowser(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        List<String> availableThemes = new ArrayList<String>();
+        List<ThemeDescriptor> availableThemes = new ArrayList<ThemeDescriptor>();
         List<ThemeInfo> workspaceThemes = getWorkspaceThemes(path, name);
         List<String> workspaceThemeNames = new ArrayList<String>();
         for (ThemeInfo theme : workspaceThemes) {
@@ -135,7 +135,7 @@ public class Main extends ModuleRoot {
         }
         for (ThemeDescriptor themeDef : ThemeManager.getThemeDescriptors()) {
             if (!workspaceThemeNames.contains(themeDef.getName())) {
-                availableThemes.add(themeDef.getName());
+                availableThemes.add(themeDef);
             }
         }
         return getTemplate("themeBrowser.ftl").arg("available_themes",
@@ -346,13 +346,12 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
-        SkinInfo currentSkin = getSkinInfo(currentSkinName);
         String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+        ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
-        return getTemplate("dashboard.ftl").arg("current_skin", currentSkin).arg(
-                "current_theme_name", currentThemeName).arg("theme",
-                currentThemeDef);
+        return getTemplate("dashboard.ftl").arg("current_theme",
+                currentThemeDescriptor).arg("current_skin_name",
+                currentSkinName);
     }
 
     @GET
@@ -363,8 +362,11 @@ public class Main extends ModuleRoot {
 
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
-
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
+
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
 
         List<SkinInfo> skins = new ArrayList<SkinInfo>();
         List<String> collections = new ArrayList<String>();
@@ -374,7 +376,7 @@ public class Main extends ModuleRoot {
             collections = getBankCollections(bankName);
         }
         return getTemplate("skinManager.ftl").arg("current_skin_name",
-                currentSkinName).arg("current_theme_name", currentThemeName).arg(
+                currentSkinName).arg("current_theme", currentThemeDescriptor).arg(
                 "current_bank", currentThemeBank).arg("skins", skins).arg(
                 "collections", collections);
     }
@@ -389,10 +391,14 @@ public class Main extends ModuleRoot {
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
         boolean connected = false;
 
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
 
-        return getTemplate("bankManager.ftl").arg("current_theme_name",
-                currentThemeName).arg("current_bank", currentThemeBank).arg(
+        return getTemplate("bankManager.ftl").arg("current_theme",
+                currentThemeDescriptor).arg("current_bank", currentThemeBank).arg(
                 "banks", banks).arg("connected", connected);
     }
 
@@ -442,9 +448,14 @@ public class Main extends ModuleRoot {
             collections = getBankCollections(bankName);
             images = getBankImages(bankName);
         }
+
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
         return getTemplate("imageManager.ftl").arg("current_skin_name",
-                currentSkinName).arg("current_theme_name", currentThemeName).arg(
+                currentSkinName).arg("current_theme", currentThemeDescriptor).arg(
                 "current_edit_field", getSelectedEditField()).arg(
                 "current_bank", currentThemeBank).arg("images", images).arg(
                 "collections", collections);
@@ -614,6 +625,17 @@ public class Main extends ModuleRoot {
         String name = ctx.getForm().getString("name");
         try {
             return Editor.addTheme(name);
+        } catch (Exception e) {
+            throw new ThemeEditorException(e.getMessage(), e);
+        }
+    }
+
+    @POST
+    @Path("customize_theme")
+    public String customizeTheme() {
+        String src = ctx.getForm().getString("src");
+        try {
+            return Editor.customizeTheme(src);
         } catch (Exception e) {
             throw new ThemeEditorException(e.getMessage(), e);
         }
@@ -1455,7 +1477,7 @@ public class Main extends ModuleRoot {
     public static Style getThemeSkin(String themeName) {
         List<PageElement> pages = Manager.getThemeManager().getPagesOf(
                 themeName);
-        if (pages.isEmpty()) {
+        if (pages == null || pages.isEmpty()) {
             return null;
         }
         for (PageElement page : pages) {

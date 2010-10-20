@@ -511,7 +511,7 @@ public class Editor {
         return ThemeManager.createCustomTheme(name);
     }
 
-    public String customizeTheme(String src) throws ThemeException {
+    public static String customizeTheme(String src) throws ThemeException {
         ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptor(src);
         if (themeDescriptor == null) {
             throw new ThemeException("Theme not found: " + src);
