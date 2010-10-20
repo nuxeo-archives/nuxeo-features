@@ -429,7 +429,7 @@ public class Main extends ModuleRoot {
             Editor.activateSkin(themeName, bankName, collectionName,
                     resourceName);
         } catch (Exception e) {
-            throw new ThemeEditorException(e.getMessage(), e);
+            throw new ThemeEditorException("Could not active skin", e);
         }
     }
 

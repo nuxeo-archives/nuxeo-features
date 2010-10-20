@@ -17,7 +17,7 @@
     <div style="padding: 10px 5px">
     <#list skins as skin>
       <div class="nxthemesImageSingle nxthemesImageSingle<#if current_skin_name=skin.name>Selected</#if>">
-        <a href="javascript:NXThemesSkinManager.activateSkin('${current_theme_name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">
+        <a href="javascript:NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">
           <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
           <div>${skin.name}</div>
         </a>
