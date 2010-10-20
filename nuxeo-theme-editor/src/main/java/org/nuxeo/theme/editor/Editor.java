@@ -508,7 +508,9 @@ public class Editor {
         if (themeManager.getThemeByName(name) != null) {
             throw new ThemeException("The theme name is already taken: " + name);
         }
-        return ThemeManager.createCustomTheme(name);
+        ThemeDescriptor themeDef = ThemeManager.createCustomTheme(name);
+        String themeName = themeDef.getName();
+        return String.format("%s/default", themeName);
     }
 
     public static String customizeTheme(String src) throws ThemeException {
@@ -516,7 +518,9 @@ public class Editor {
         if (themeDescriptor == null) {
             throw new ThemeException("Theme not found: " + src);
         }
-        return ThemeManager.customizeTheme(themeDescriptor);
+        ThemeDescriptor themeDef = ThemeManager.customizeTheme(themeDescriptor);
+        String themeName = themeDef.getName();
+        return String.format("%s/default", themeName);
     }
 
     public static void assignStyleProperty(Element element,
