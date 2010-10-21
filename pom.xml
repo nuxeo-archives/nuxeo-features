@@ -876,11 +876,6 @@
         <artifactId>nuxeo-webengine-gwt</artifactId>
         <version>${nuxeo.webengine.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-management</artifactId>
-        <version>${nuxeo.features.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>org.nuxeo.connect</groupId>
