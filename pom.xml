@@ -20,7 +20,7 @@
     <nuxeo.features.version>5.4.0-SNAPSHOT</nuxeo.features.version>
     <nuxeo.webengine.version>5.4.0-SNAPSHOT</nuxeo.webengine.version>
     <nuxeo.jsf.version>5.4.0-SNAPSHOT</nuxeo.jsf.version>
-    <nuxeo.connect.client.version>1.0-SNAPSHOT</nuxeo.connect.client.version>
+    <nuxeo.connect.client.version>1.0-I20100916_0115</nuxeo.connect.client.version>
   </properties>
 
   <modules>
@@ -49,11 +49,11 @@
     <module>nuxeo-platform-userworkspace</module>
     <module>nuxeo-platform-virtualnavigation</module>
     <module>nuxeo-opensocial</module>
+    <module>nuxeo-generic-wss-front</module>
     <module>nuxeo-generic-wss-handler</module>
     <module>nuxeo-platform-wss-backend</module>
     <module>nuxeo-automation</module>
     <module>nuxeo-features-test</module>
-    <module>nuxeo-platform-jboss-interceptors</module>
     <module>nuxeo-admin-center</module>
   </modules>
 
@@ -67,8 +67,8 @@
       <module>nuxeo-platform-webwidgets</module> <module>nuxeo-platform-userworkspace</module> 
       <module>nuxeo-platform-virtualnavigation</module> <module>nuxeo-opensocial</module> 
       <module>nuxeo-generic-wss-handler</module> <module>nuxeo-platform-wss-backend</module> 
-      <module>nuxeo-automation</module> <module>nuxeo-features-test</module> <module>nuxeo-platform-jboss-interceptors</module> 
-      <module>nuxeo-admin-center</module> </modules> </profile> -->
+      <module>nuxeo-automation</module> <module>nuxeo-features-test</module> <module>nuxeo-admin-center</module> 
+      </modules> </profile> -->
   </profiles>
 
   <dependencyManagement>
@@ -111,6 +111,11 @@
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-platform-annotations-web</artifactId>
+        <version>${nuxeo.features.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-platform-annotations-core-contrib</artifactId>
         <version>${nuxeo.features.version}</version>
       </dependency>
       <dependency>
@@ -161,6 +166,11 @@
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-platform-audit-facade</artifactId>
+        <version>${nuxeo.features.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-platform-audit-ws</artifactId>
         <version>${nuxeo.features.version}</version>
       </dependency>
       <dependency>
@@ -760,26 +770,6 @@
 
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-annotations-api</artifactId>
-        <version>${nuxeo.features.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-annotations-core</artifactId>
-        <version>${nuxeo.features.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-annotations-core-contrib</artifactId>
-        <version>${nuxeo.features.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-annotations-facade</artifactId>
-        <version>${nuxeo.features.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-platform-annotations-preview-plugin</artifactId>
         <version>${nuxeo.features.version}</version>
       </dependency>
@@ -796,11 +786,6 @@
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-platform-annotations-tests</artifactId>
-        <version>${nuxeo.features.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.ecm.platform</groupId>
-        <artifactId>nuxeo-platform-preview</artifactId>
         <version>${nuxeo.features.version}</version>
       </dependency>
 
@@ -917,6 +902,11 @@
         <version>${nuxeo.features.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.nuxeo.ecm.platform</groupId>
+        <artifactId>nuxeo-generic-wss-front</artifactId>
+        <version>${nuxeo.features.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-generic-wss-handler</artifactId>
