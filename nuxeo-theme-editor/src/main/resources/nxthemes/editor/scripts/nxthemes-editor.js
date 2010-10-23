@@ -1149,6 +1149,25 @@ NXThemesEditor.deleteTheme = function(src) {
     });
 };
 
+NXThemesEditor.refreshTheme = function(src) {
+    var url = nxthemesBasePath + "/nxthemes-editor/refresh_theme";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             src: src
+         },
+         onSuccess: function(r) {
+           NXThemesEditor.refreshCanvas();
+           NXThemesEditor.writeMessage("Theme refreshed.");
+         },
+         onFailure: function(r) {
+           var text = r.responseText;
+           window.alert(text);
+         }
+    });
+};
+
+
 NXThemesEditor.refreshCanvas = function() {
     NXThemes.getViewById("canvas area").refresh();
 };

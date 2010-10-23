@@ -3,7 +3,7 @@
 <@nxthemes_button identifier="tools"
   classNames="dropList"
   menu="nxthemesTools"
-  label="File" />
+  label="Tools" />
 
 <div id="nxthemesTools" style="display: none;position: absolute;
   width: 200px;

@@ -159,6 +159,18 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("mainActions")
+    public Object renderMainActions(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("mainActions.ftl").arg("theme", currentThemeDef);
+    }
+
+    @GET
     @Path("viewModes")
     public Object renderViewModes(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -564,10 +576,8 @@ public class Main extends ModuleRoot {
 
         ResponseBuilder builder = Response.ok(xml);
         if (download != null) {
-            builder.header(
-                    "Content-disposition",
-                    String.format("attachment; filename=theme-%s.xml",
-                            themeDef.getName()));
+            builder.header("Content-disposition", String.format(
+                    "attachment; filename=theme-%s.xml", themeDef.getName()));
         }
         builder.type("text/xml");
         return builder.build();
@@ -1030,6 +1040,18 @@ public class Main extends ModuleRoot {
         String src = form.getString("src");
         try {
             Editor.repairTheme(src);
+        } catch (Exception e) {
+            throw new ThemeEditorException(e.getMessage(), e);
+        }
+    }
+
+    @POST
+    @Path("refresh_theme")
+    public void refreshTheme() {
+        FormData form = ctx.getForm();
+        String src = form.getString("src");
+        try {
+            Editor.refreshTheme(src);
         } catch (Exception e) {
             throw new ThemeEditorException(e.getMessage(), e);
         }
@@ -1896,8 +1918,8 @@ public class Main extends ModuleRoot {
         String themeName = getCurrentThemeName(applicationPath, name);
         List<PresetInfo> presets = new ArrayList<PresetInfo>();
         List<PresetType> presetTypes = group == null ? PresetManager.getGlobalPresets(
-                group, category) : PresetManager.getCustomPresets(themeName,
-                category);
+                group, category)
+                : PresetManager.getCustomPresets(themeName, category);
         for (PresetType preset : presetTypes) {
             presets.add(new PresetInfo(preset));
         }

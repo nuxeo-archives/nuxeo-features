@@ -42,24 +42,19 @@
 
       <div id="nxthemesMainButtons">
 
-        <@nxthemes_button identifier="refresh button"
-          link="javascript:NXThemesEditor.refresh()"
-          icon="${basePath}/skin/nxthemes-editor/img/refresh-14.png"
-          label="Refresh" />
+        <!-- main actions -->
+        <@nxthemes_panel identifier="main actions"
+          url="%{contextPath}/site/nxthemes-editor/mainActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="canvas editor" />
 
       </div>
 
       <div id="nxthemesLocalButtons">
 
-        <!-- theme actions -->
+        <!-- file actions -->
         <@nxthemes_panel identifier="file actions"
           url="${basePath}/nxthemes-editor/fileActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor" />
-
-        <!-- view modes -->
-        <@nxthemes_panel identifier="view modes"
-          url="${basePath}/nxthemes-editor/viewModes"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
 
@@ -68,6 +63,12 @@
           url="${basePath}/nxthemes-editor/tools"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
+
+        <!-- view modes -->
+        <@nxthemes_panel identifier="view modes"
+          url="${basePath}/nxthemes-editor/viewModes"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="canvas editor" />          
 
       </div>
 

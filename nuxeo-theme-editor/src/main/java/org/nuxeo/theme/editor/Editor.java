@@ -341,6 +341,15 @@ public class Editor {
         themeManager.stylesModified(themeName);
     }
 
+    public static void refreshTheme(String themeName) throws ThemeException {
+        ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptorByThemeName(themeName);
+        if (themeDescriptor == null) {
+            throw new ThemeException("Theme not found: " + themeName);
+        }
+        final ThemeManager themeManager = Manager.getThemeManager();
+        themeManager.themeModified(themeName);
+    }
+
     public static String renderCssPreview(Element element, Style style,
             String viewName) {
         FormatType styleType = (FormatType) Manager.getTypeRegistry().lookup(
