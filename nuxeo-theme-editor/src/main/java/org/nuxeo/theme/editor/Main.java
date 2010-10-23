@@ -163,11 +163,7 @@ public class Main extends ModuleRoot {
     public Object renderMainActions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String currentThemeName = getCurrentThemeName(path, name);
-        String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
-                templateEngine, currentThemeName);
-        return getTemplate("mainActions.ftl").arg("theme", currentThemeDef);
+        return getTemplate("mainActions.ftl");
     }
 
     @GET
@@ -183,7 +179,11 @@ public class Main extends ModuleRoot {
     public Object renderTools(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("tools.ftl");
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("tools.ftl").arg("theme", currentThemeDef);
     }
 
     @GET

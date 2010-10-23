@@ -2,10 +2,10 @@
 
 <#if theme>
 
-<@nxthemes_button identifier="file_action"
+<@nxthemes_button identifier="theme_action"
   classNames="dropList"
   menu="nxthemesFileActions"
-  label="File" />
+  label="Theme actions" />
 
 <div id="nxthemesFileActions" style="display: none;position: absolute;
   width: 200px;
@@ -30,7 +30,6 @@
     <#if !theme.saveable><li><a href="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}', true)">Restore theme</a></li></#if>
     <li><a href="javascript:NXThemesEditor.deletePage('${current_page_path?js_string}')">Delete this page (${current_page_name})</a></li>
     <#if theme.custom><li><a href="javascript:NXThemesEditor.deleteTheme('${theme.src?js_string}')">Delete theme (${theme.name})</a></li></#if>
-    <li><a href="javascript:NXThemesEditor.exit()">Exit</a></li>
   </ul>
 </div>
 

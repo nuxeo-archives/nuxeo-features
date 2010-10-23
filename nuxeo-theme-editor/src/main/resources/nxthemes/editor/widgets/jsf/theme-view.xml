@@ -43,17 +43,7 @@
         visibleInPerspectives="canvas editor,preset manager,style manager,element editor,skin manager" />
 
       <div id="nxthemesMainButtons">
-
-        <!-- main actions -->
-        <nxthemes:panel identifier="main actions"
-          url="%{contextPath}/site/nxthemes-editor/mainActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor" />
-
-      </div>
-
-      <div id="nxthemesLocalButtons">
-
+          
         <!-- file actions -->
         <nxthemes:panel identifier="file actions"
           url="%{contextPath}/site/nxthemes-editor/fileActions"
@@ -65,13 +55,27 @@
           url="%{contextPath}/site/nxthemes-editor/tools"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
+            
+        <nxthemes:button identifier="exit button"
+          link="javascript:NXThemesEditor.exit()"
+          icon="%{contextPath}/site/skin/nxthemes-editor/img/quit-14.png"
+          label="Exit" />
+
+      </div>
+
+      <div id="nxthemesLocalButtons">
+
+        <!-- main actions -->
+        <nxthemes:panel identifier="main actions"
+          url="%{contextPath}/site/nxthemes-editor/mainActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="canvas editor" />
           
         <!-- view modes -->
         <nxthemes:panel identifier="view modes"
           url="%{contextPath}/site/nxthemes-editor/viewModes"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
-
 
       </div>
 
@@ -191,13 +195,6 @@
       url="%{contextPath}/site/nxthemes-editor/areaStyleChooser"
       controlledBy="area style perspectives,toolbox mover"
       visibleInPerspectives="style chooser" />
-
-    <!-- theme optimizer -->
-    <nxthemes:panel identifier="theme optimizer"
-      url="%{contextPath}/site/nxthemes-editor/themeOptimizer"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="theme optimizer" />
-
 
     <!-- fragment factory -->
     <nxthemes:panel identifier="fragment factory"

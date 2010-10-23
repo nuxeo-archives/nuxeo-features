@@ -41,17 +41,7 @@
 
 
       <div id="nxthemesMainButtons">
-
-        <!-- main actions -->
-        <@nxthemes_panel identifier="main actions"
-          url="%{contextPath}/site/nxthemes-editor/mainActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor" />
-
-      </div>
-
-      <div id="nxthemesLocalButtons">
-
+          
         <!-- file actions -->
         <@nxthemes_panel identifier="file actions"
           url="${basePath}/nxthemes-editor/fileActions"
@@ -61,6 +51,21 @@
         <!-- tools -->
         <@nxthemes_panel identifier="tools"
           url="${basePath}/nxthemes-editor/tools"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="canvas editor" />
+          
+        <@nxthemes_button identifier="exit button"
+          link="javascript:NXThemesEditor.exit()"
+          icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"
+          label="Exit" />
+
+      </div>
+
+      <div id="nxthemesLocalButtons">
+
+        <!-- main actions -->
+        <@nxthemes_panel identifier="main actions"
+          url="%{contextPath}/site/nxthemes-editor/mainActions"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
 
@@ -185,13 +190,6 @@
       url="${basePath}/nxthemes-editor/areaStyleChooser"
       controlledBy="area style perspectives,toolbox mover"
       visibleInPerspectives="style chooser" />
-
-    <!-- theme optimizer -->
-    <@nxthemes_panel identifier="theme optimizer"
-      url="${basePath}/nxthemes-editor/themeOptimizer"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="theme optimizer" />
-
 
     <!-- fragment factory -->
     <@nxthemes_panel identifier="fragment factory"
