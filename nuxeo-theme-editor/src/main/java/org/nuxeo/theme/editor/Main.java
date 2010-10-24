@@ -105,6 +105,50 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("presetManager")
+    public Object renderPresetManager(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("presetManager.ftl").arg("current_theme_name",
+                getCurrentThemeName(path, name)).arg("preset_manager_mode",
+                getPresetManagerMode()).arg("selected_preset_category",
+                getSelectedPresetCategory()).arg("preset_groups",
+                getPresetGroupsForSelectedCategory()).arg(
+                "selected_preset_group", getSelectedPresetGroup());
+    }
+
+    @GET
+    @Path("styleManager")
+    public Object renderStyleManager(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        List<Style> styles = getNamedStyles(path, name);
+
+        Style selectedStyle = getSelectedNamedStyle();
+        if (!styles.contains(selectedStyle) && !styles.isEmpty()) {
+            selectedStyle = styles.get(0);
+        }
+        List<Style> rootStyles = new ArrayList<Style>();
+        for (Style style : styles) {
+            if (ThemeManager.getAncestorFormatOf(style) == null) {
+                rootStyles.add(style);
+            }
+        }
+
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("styleManager.ftl").arg("theme", currentThemeDef).arg(
+                "named_styles", styles).arg("style_manager_mode",
+                getStyleManagerMode()).arg("selected_named_style",
+                selectedStyle).arg("selected_named_style_css",
+                getRenderedPropertiesForNamedStyle(selectedStyle)).arg(
+                "current_theme_name", currentThemeName).arg("page_styles",
+                getPageStyles(currentThemeName)).arg("root_styles", rootStyles);
+    }
+
+    @GET
     @Path("cssEditor")
     public Object renderCssEditor(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -486,7 +530,7 @@ public class Main extends ModuleRoot {
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
 
         List<String> collections = new ArrayList<String>();
-        List<String> images = new ArrayList<String>();
+        List<ImageInfo> images = new ArrayList<ImageInfo>();
         if (currentThemeBank != null) {
             String bankName = currentThemeBank.getName();
             collections = getBankCollections(bankName);
@@ -546,13 +590,22 @@ public class Main extends ModuleRoot {
         return collections;
     }
 
-    public static List<String> getBankImages(String bankName) {
-        List<String> images = new ArrayList<String>();
+    public static List<ImageInfo> getBankImages(String bankName) {
+        List<ImageInfo> images = new ArrayList<ImageInfo>();
         if (bankName != null) {
             ResourceBank resourceBank;
             try {
                 resourceBank = ThemeManager.getResourceBank(bankName);
-                images.addAll(resourceBank.getImages());
+                for (String name : resourceBank.getImages()) {
+                    String[] parts = name.split("/");
+                    if (parts.length != 2) {
+                        continue;
+                    }
+                    String collection = parts[0];
+                    String resource = parts[1];
+                    images.add(new ImageInfo(name, collection, resource));
+                }
+
             } catch (ThemeException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

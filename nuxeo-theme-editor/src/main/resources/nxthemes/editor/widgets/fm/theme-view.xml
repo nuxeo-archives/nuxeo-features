@@ -145,6 +145,18 @@
       url="${basePath}/nxthemes-editor/themeOptions"
       controlledBy="editor perspectives,color picker"
       visibleInPerspectives="theme options" />
+      
+    <!-- preset manager -->
+    <@nxthemes_panel identifier="preset manager"
+      url="${basePath}/nxthemes-editor/presetManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="preset manager" />
+
+    <!-- style manager -->
+    <@nxthemes_panel identifier="style manager"
+      url="${basePath}/nxthemes-editor/styleManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="style manager" />
 
     <!-- css editor -->
     <@nxthemes_panel identifier="css editor"

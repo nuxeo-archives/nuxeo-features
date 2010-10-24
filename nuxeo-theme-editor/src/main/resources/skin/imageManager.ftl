@@ -77,9 +77,9 @@
 
     <div class="album" id="imageGallery">
       <#list images as image>
-        <a href="javascript:void(0)" onclick="NXThemesImageManager.selectImage('${current_edit_field}', '${image}')">
-          <div class="imageSingle" title="${image}">
-            <div class="image"><img src="${current_bank.connectionUrl}/${image}/image" /></div>
+        <a href="javascript:void(0)" onclick="NXThemesImageManager.selectImage('${current_edit_field}', '${image.name}')">
+          <div class="imageSingle" title="${image.resource}">
+            <div class="image"><img src="${current_bank.connectionUrl}/${image.collection}/image/${image.resource}" /></div>
           </div>
         </a>
       </#list>
