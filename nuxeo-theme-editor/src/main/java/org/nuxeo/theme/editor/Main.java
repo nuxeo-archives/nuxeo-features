@@ -361,9 +361,12 @@ public class Main extends ModuleRoot {
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
+
+        ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
+
         return getTemplate("dashboard.ftl").arg("current_theme",
                 currentThemeDescriptor).arg("current_skin_name",
-                currentSkinName);
+                currentSkinName).arg("current_bank", currentThemeBank);
     }
 
     @GET
@@ -401,18 +404,23 @@ public class Main extends ModuleRoot {
 
         String currentThemeName = getCurrentThemeName(path, name);
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
-        boolean connected = false;
 
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
 
         ResourceBank selectedResourceBank = null;
-        String selectedResourceBankName = getSelectedResourceBank();
-        if (selectedResourceBankName != null) {
-            try {
-                selectedResourceBank = ThemeManager.getResourceBank(selectedResourceBankName);
-            } catch (ThemeException e) {
+        if (currentThemeBank != null) {
+            selectedResourceBank = currentThemeBank;
+        } else {
+            String selectedResourceBankName = getSelectedResourceBank();
+            if (selectedResourceBankName == null) {
                 if (!banks.isEmpty()) {
                     selectedResourceBank = banks.get(0);
+                }
+            } else {
+                try {
+                    selectedResourceBank = ThemeManager.getResourceBank(selectedResourceBankName);
+                } catch (ThemeException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -422,8 +430,7 @@ public class Main extends ModuleRoot {
 
         return getTemplate("bankManager.ftl").arg("current_theme",
                 currentThemeDescriptor).arg("current_bank", currentThemeBank).arg(
-                "banks", banks).arg("connected", connected).arg(
-                "selected_bank", selectedResourceBank);
+                "banks", banks).arg("selected_bank", selectedResourceBank);
     }
 
     private ResourceBank getCurrentThemeBank(String themeName) {

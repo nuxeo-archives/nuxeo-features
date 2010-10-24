@@ -1052,8 +1052,17 @@ public class Editor {
         String styleName = String.format("%s (%s)", resourceName,
                 collectionName);
 
+        final FormatType styleType = (FormatType) Manager.getTypeRegistry().lookup(
+                TypeFamily.FORMAT, "style");
+
         final boolean preserveInheritance = true;
         for (PageElement page : themeManager.getPagesOf(themeName)) {
+            Style style = (Style) ElementFormatter.getFormatByType(page,
+                    styleType);
+            if (style == null) {
+                style = themeManager.createStyle();
+                ElementFormatter.setFormat(page, style);
+            }
             try {
                 themeManager.makeElementUseNamedStyle(page, styleName,
                         themeName, preserveInheritance);

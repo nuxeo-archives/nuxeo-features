@@ -52,7 +52,7 @@
 </form>
 
 <#if !hasField>
-  <p>No theme options available</p>
+  <p>No theme options available for this theme</p>
 </#if>
 
 </div>

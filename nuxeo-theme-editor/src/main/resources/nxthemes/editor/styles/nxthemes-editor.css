@@ -1061,8 +1061,8 @@ ul.nxthemesSelector li a {
 ul.nxthemesSelector li a:hover,
 ul.nxthemesSelector li.selected a,
 ul.nxthemesSelector li.selected a:hover {
-  background-color: #eed;
-  border: 1px solid #ddc;
+  background-color: #eee;
+  border: 1px solid #ddd;
   color: #000;
 }
 
@@ -1881,6 +1881,7 @@ a.nxthemesActionButton {
 a.nxthemesActionButton:hover {
   background-position: left bottom;
   color: #666;
+  cursor: pointer;
 }
 
 a.nxthemesActionButton img {
@@ -1941,11 +1942,6 @@ a.nxthemesActionButton img {
   margin: 5px;
   border: 1px solid #999;
  }
-
-.nxthemesImageSingle:hover {
-  background-color: #ffc;
-  border: 1px solid #fc0;
-}
 
 .nxthemesImageSingleSelected {
   background-color: #ffc;

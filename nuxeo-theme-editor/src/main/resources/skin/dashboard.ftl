@@ -16,10 +16,13 @@
 <div class="window">
 <div class="title">General</div>
 <div class="body">
-  <#if current_theme>
+<#if current_theme>
   <p class="nxthemesEditor">Theme name: <strong>${current_theme.name}</strong></p>
-  <p class="nxthemesEditor">Source: <strong>${current_theme.src}</strong></p>
-  </#if>
+  <#if current_bank>
+    <p class="nxthemesEditor">Resource bank: <strong>${current_bank.name}</strong></p>
+  </#if>  
+  <p class="nxthemesEditor">Theme source: <strong>${current_theme.src}</strong></p>
+</#if>
 </div>
 </div>
 
@@ -41,7 +44,7 @@
   </#if>
   <p class="nxthemesEditor">
     <button class="nxthemesActionButton"
-     onclick="NXThemesEditor.manageSkins()">Change skin</button>
+     onclick="NXThemesEditor.manageSkins()">Choose skin</button>
   </p>
 </div>
 </div>
@@ -76,9 +79,9 @@
 
 <#assign theme_skin = Root.getThemeSkin(current_theme.name) />
 <#if theme_skin & theme_skin.customized>
- <p class="nxthemesEditor">You have customized the skin's CSS</p>
+ <p class="nxthemesEditor">You have customized the current skin</p>
 <#else>
- <p class="nxthemesEditor">No CSS customization were made</p>
+ <p class="nxthemesEditor">No CSS customizations have been made</p>
 </#if>
 
   <p class="nxthemesEditor">
@@ -92,7 +95,6 @@
 </td>
 </tr>
 </table>
-
 
 </@block>
 </@extends>

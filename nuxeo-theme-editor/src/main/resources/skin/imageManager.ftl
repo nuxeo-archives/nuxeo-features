@@ -53,6 +53,8 @@
 <div class="title">Image library</div>
 <div class="body">
 
+  <#if current_bank>
+  
 <table class="nxthemesManageScreen">
   <tr>
     <th style="width: 20%;">Collection</th>
@@ -90,15 +92,27 @@
 </tr>
 </table>
 
+
+  <#else>
+    <p>No bank selected</p>
+    <p>
+      <a href="javascript:NXThemesEditor.manageThemeBanks()"
+       class="nxthemesActionButton">Connect to a bank</a>
+    </p>
+  </#if>
+  
 </div>
 </div>
 
 
+<#if current_bank>
+  
 <div class="window">
 <div class="title">Upload images</div>
 <div class="body">
 <div>
-  <#if current_bank>
+
+    <p>Images will be added to the Custom collection</p>
     <iframe id="upload_target" name="upload_target" src="" style="display: none"></iframe>
 
 
@@ -114,12 +128,13 @@
       <button class="nxthemesActionButton">Upload</button>
       </p>
     </form>
-    </#if>
+
 </div>
 
 </div>
 </div>
 
+</#if>
 
 </@block>
 </@extends>

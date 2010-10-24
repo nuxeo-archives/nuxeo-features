@@ -27,13 +27,13 @@
    style="margin-bottom: 10px; border: none; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">${theme_skin_css}</textarea>
   </div>
   <div style="float: left">
-    <button type="submit">Save</button>
+    <button type="submit">Save changes</button>
   </div>
 
 <#else>
 
    <textarea disabled="disabled" id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
-   style="margin-bottom: 10px; cursor: default; border: none; color: #666; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">
+   style="margin-bottom: 10px; cursor: default; border: none; color: #999; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">
 ${theme_skin_css}
 </textarea>
 

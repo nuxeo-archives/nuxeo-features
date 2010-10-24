@@ -45,6 +45,7 @@ import org.apache.commons.logging.LogFactory;
 import org.nuxeo.common.utils.FileUtils;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.webengine.model.WebObject;
+import org.nuxeo.ecm.webengine.model.exceptions.WebResourceNotFoundException;
 import org.nuxeo.ecm.webengine.model.exceptions.WebSecurityException;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.theme.presets.PaletteIdentifyException;
@@ -544,6 +545,9 @@ public class Main extends ModuleRoot {
     public Object handleError(WebApplicationException e) {
         if (e instanceof WebSecurityException) {
             return Response.status(401).entity(getTemplate("session.ftl")).type(
+                    "text/html").build();
+        } else if (e instanceof WebResourceNotFoundException) {
+            return Response.status(404).entity(getTemplate("not_found.ftl")).type(
                     "text/html").build();
         } else {
             return super.handleError(e);
