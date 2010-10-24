@@ -28,12 +28,12 @@
 
     <h1>Image collection: ${collection}
       <a style="float: right;" href="${Root.getPath()}/${bank}/${collection}/image/view">Refresh</a>
-      <#if (Context.principal)>
+      <#if Root.isAdministrator()>
         <a style="float: right; margin-right: 5px" href="javascript:void(0)" onclick="showImageUploadForm()">Upload image</a>
       </#if>
     </h1>
 
-    <#if (Context.principal)>
+    <#if Root.isAdministrator()>
     <form style="display: none" id="uploadImageForm" action="${Root.path}/${bank}/manage/upload"
           enctype="multipart/form-data" method="post">
       <h2>Upload an image</h2>

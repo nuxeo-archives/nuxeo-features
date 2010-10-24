@@ -10,7 +10,7 @@
 
       <h1>Theme collection: ${collection}</h1>
 
-      <#if Context.principal>
+      <#if Root.isAdministrator()>
 
       <form action="${Root.getPath()}/${bank}/manage/${collection}/download" method="post">
       <h2>Collection export</h2>

@@ -56,7 +56,7 @@ public class TestUtils extends NXRuntimeTestCase {
     }
 
     public void testListSkinsInCollection() {
-        List<String> skins = Utils.listSkinsInCollection(BANK_NAME,
+        final List<String> skins = Utils.listSkinsInCollection(BANK_NAME,
                 COLLECTION_NAME);
         assertEquals("test.css", skins.get(0));
         assertEquals("skin-without-preview.css", skins.get(1));
@@ -64,7 +64,7 @@ public class TestUtils extends NXRuntimeTestCase {
 
     // JSON
     public void testListBankSkins() throws IOException {
-        String expected = org.nuxeo.theme.Utils.readResourceAsString("skins.json");
+        final String expected = org.nuxeo.theme.Utils.readResourceAsString("skins.json");
         assertEquals(expected, Utils.listBankSkins(BANK_NAME));
     }
 
@@ -74,7 +74,7 @@ public class TestUtils extends NXRuntimeTestCase {
     }
 
     public void testGetNavTree() throws IOException {
-        String expected = org.nuxeo.theme.Utils.readResourceAsString("navtree.json");
+        final String expected = org.nuxeo.theme.Utils.readResourceAsString("navtree.json");
         assertEquals(expected, Utils.getNavTree());
     }
 

@@ -20,7 +20,7 @@
   <@block name="content">
     <h1>Style: ${resource?replace('.css', '')}
       <a style="float: right" href="${Root.getPath()}/${bank}/${collection}/style/${resource}/${action}">Refresh</a>
-      <#if Context.principal>
+      <#if Root.isAdministrator()>
         <#if action = 'edit'>
           <a style="float: right; margin-right: 5px"
              href="${Root.getPath()}/${bank}/${collection}/style/${resource}/view">Cancel</a>

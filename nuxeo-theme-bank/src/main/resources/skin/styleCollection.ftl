@@ -27,12 +27,12 @@
 
     <h1>Style collection: ${collection}
       <a style="float: right" href="${Root.getPath()}/${bank}/${collection}/${view}/view">Refresh</a>
-      <#if (Context.principal)>
+      <#if Root.isAdministrator()>
         <a style="float: right; margin-right: 5px" href="javascript:void(0)" onclick="showStyleCreateForm()">New ${view}</a>
       </#if>
     </h1>
 
-    <#if Context.principal>
+    <#if Root.isAdministrator()>
     <form style="display: none" id="styleCreateForm" action="${Root.path}/${bank}/manage/${collection}/createStyle"
            method="post">
       <h2>Create a new style</h2>

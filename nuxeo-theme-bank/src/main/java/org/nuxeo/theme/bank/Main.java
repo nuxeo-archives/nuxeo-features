@@ -21,6 +21,7 @@ package org.nuxeo.theme.bank;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -41,7 +43,9 @@ import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.common.utils.FileUtils;
+import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.webengine.model.WebObject;
+import org.nuxeo.ecm.webengine.model.exceptions.WebSecurityException;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.theme.presets.PaletteIdentifyException;
 import org.nuxeo.theme.presets.PaletteParseException;
@@ -60,6 +64,14 @@ public class Main extends ModuleRoot {
     @GET
     public Object getIndex() {
         return getTemplate("index.ftl");
+    }
+
+    public boolean isAdministrator() {
+        Principal principal = ctx.getPrincipal();
+        if (principal == null) {
+            return false;
+        }
+        return ((NuxeoPrincipal) principal).isAdministrator();
     }
 
     /*
@@ -524,6 +536,17 @@ public class Main extends ModuleRoot {
             return BankManager.getItemsInCollection(bank, collection, typeName);
         } catch (IOException e) {
             throw new ThemeBankException(e.getMessage(), e);
+        }
+    }
+
+    // handle errors
+    @Override
+    public Object handleError(WebApplicationException e) {
+        if (e instanceof WebSecurityException) {
+            return Response.status(401).entity(getTemplate("session.ftl")).type(
+                    "text/html").build();
+        } else {
+            return super.handleError(e);
         }
     }
 
