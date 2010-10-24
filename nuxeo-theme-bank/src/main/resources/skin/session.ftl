@@ -11,7 +11,6 @@
 <#if Context.principal>
 
 <h1>Log out</h1>
-
 <p>You are logged in as: <b>${Context.principal}</b></p>
 
 <form action="${Root.path}/session/@@login" method="POST">

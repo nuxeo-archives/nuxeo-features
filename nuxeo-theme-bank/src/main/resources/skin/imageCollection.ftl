@@ -53,7 +53,7 @@
       <#list images as image>
         <a href="javascript:void(0)" onclick="top.navtree.openBranch('${bank}-${collection}-image-${image}')">
           <div class="imageSingle">
-            <div class="image"><img src="${Root.getPath()}/${bank}/${collection}/${image}/image"></div>
+            <div class="image"><img src="${Root.getPath()}/${bank}/${collection}/image/${image}"></div>
             <div class="footer">${image}</div>
           </div>
         </a>

@@ -44,8 +44,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.common.utils.FileUtils;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
+import org.nuxeo.ecm.webengine.WebException;
 import org.nuxeo.ecm.webengine.model.WebObject;
-import org.nuxeo.ecm.webengine.model.exceptions.WebResourceNotFoundException;
 import org.nuxeo.ecm.webengine.model.exceptions.WebSecurityException;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
 import org.nuxeo.theme.presets.PaletteIdentifyException;
@@ -53,6 +53,8 @@ import org.nuxeo.theme.presets.PaletteParseException;
 import org.nuxeo.theme.presets.PaletteParser;
 import org.nuxeo.theme.resources.BankManager;
 import org.nuxeo.theme.resources.BankUtils;
+
+import com.sun.jersey.api.NotFoundException;
 
 @WebObject(type = "theme-banks")
 @Produces(MediaType.TEXT_HTML)
@@ -454,7 +456,7 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("{bank}/{collection}/{resource}/image")
+    @Path("{bank}/{collection}/image/{resource}")
     public Response getImage(@PathParam("bank") String bank,
             @PathParam("collection") String collection,
             @PathParam("resource") String resource) {
@@ -544,12 +546,19 @@ public class Main extends ModuleRoot {
     @Override
     public Object handleError(WebApplicationException e) {
         if (e instanceof WebSecurityException) {
-            return Response.status(401).entity(getTemplate("session.ftl")).type(
-                    "text/html").build();
-        } else if (e instanceof WebResourceNotFoundException) {
+            return Response.status(401).entity(
+                    getTemplate("session.ftl").arg("redirect_url",
+                            ctx.getUrlPath())).type("text/html").build();
+        } else if (e instanceof NotFoundException) {
             return Response.status(404).entity(getTemplate("not_found.ftl")).type(
                     "text/html").build();
+        } else if (e instanceof WebException) {
+            return Response.status(500).entity(
+                    getTemplate("error.ftl").arg("stacktrace",
+                            ((WebException) e).getStackTraceString())).type(
+                    "text/html").build();
         } else {
+
             return super.handleError(e);
         }
     }
