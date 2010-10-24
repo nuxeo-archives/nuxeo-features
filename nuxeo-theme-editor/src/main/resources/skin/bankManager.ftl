@@ -19,8 +19,8 @@
 <td>
 <ul class="nxthemesSelector">
 <#list banks as bank>
-  <li <#if current_bank && bank.name = current_bank.name>class="selected"</#if>>
-    <a href="javascript:NXThemesEditor.selectResourceBank('${bank.name}', 'bank manager')">
+  <li <#if selected_bank && bank.name = selected_bank.name>class="selected"</#if>>
+    <a href="javascript:NXThemesEditor.selectResourceBank('${bank.name}', '${screen}')">
     ${bank.name}</a></li>
 </#list>
 </ul>
@@ -28,27 +28,36 @@
 </td>
 <td>
 
-<#if current_bank>
+<#if selected_bank>
 
   <form class="nxthemesForm">
   <p><label>Bank name</label>
-    <strong>${current_bank.name}</strong>
+    <strong>${selected_bank.name}</strong>
   </p>
   <p><label>Connection URL</label>
-    <strong>${current_bank.connectionUrl}</strong>
+    <strong>${selected_bank.connectionUrl}</strong>
   </p>
   <#if connected>
   <p>You are connected as bank manager</p>
   <#else>
-  <p>
-    <a class="nxthemesActionButton" href="${current_bank.connectionUrl}">Connect</a>
+  <p><label>Status</label>
+    <#if current_bank && current_bank.name = selected_bank.name>
+      <strong style="color: #0c0">Connected</strong>&nbsp;
+     <a class="nxthemesActionButton" href="javascript:void(0)"
+      onclick="NXThemesEditor.useResourceBank('${current_theme.src}', '', '${screen}')">
+      Disconnect
+      </a>      
+    <#else>
+     <strong style="color: #c00">Not connected</strong>&nbsp;
+     <a class="nxthemesActionButton" href="javascript:void(0)"
+      onclick="NXThemesEditor.useResourceBank('${current_theme.src}', '${selected_bank.name}', '${screen}')">
+      Connect
+      </a>
+    </#if>
   </p>
   </#if>
   </form>
 
-<#else>
-
-  <p>No theme bank available.</p>
 
 </#if>
 

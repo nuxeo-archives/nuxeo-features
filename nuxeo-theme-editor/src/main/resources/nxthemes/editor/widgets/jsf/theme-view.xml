@@ -43,7 +43,7 @@
         visibleInPerspectives="canvas editor,preset manager,style manager,element editor,skin manager" />
 
       <div id="nxthemesMainButtons">
-          
+
         <!-- file actions -->
         <nxthemes:panel identifier="file actions"
           url="%{contextPath}/site/nxthemes-editor/fileActions"
@@ -55,7 +55,11 @@
           url="%{contextPath}/site/nxthemes-editor/tools"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
-            
+
+       <nxthemes:button identifier="open_dashboard"
+          link="javascript:NXThemesEditor.openDashboard()"
+          label="Dashboard" />      
+                
         <nxthemes:button identifier="exit button"
           link="javascript:NXThemesEditor.exit()"
           icon="%{contextPath}/site/skin/nxthemes-editor/img/quit-14.png"

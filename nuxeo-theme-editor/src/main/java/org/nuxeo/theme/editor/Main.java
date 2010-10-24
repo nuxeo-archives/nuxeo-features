@@ -163,7 +163,11 @@ public class Main extends ModuleRoot {
     public Object renderMainActions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("mainActions.ftl");
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("mainActions.ftl").arg("theme", currentThemeDef);
     }
 
     @GET
@@ -179,11 +183,7 @@ public class Main extends ModuleRoot {
     public Object renderTools(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String currentThemeName = getCurrentThemeName(path, name);
-        String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
-                templateEngine, currentThemeName);
-        return getTemplate("tools.ftl").arg("theme", currentThemeDef);
+        return getTemplate("tools.ftl");
     }
 
     @GET
@@ -403,15 +403,27 @@ public class Main extends ModuleRoot {
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
         boolean connected = false;
 
+        List<ResourceBank> banks = ThemeManager.getResourceBanks();
+
+        ResourceBank selectedResourceBank = null;
+        String selectedResourceBankName = getSelectedResourceBank();
+        if (selectedResourceBankName != null) {
+            try {
+                selectedResourceBank = ThemeManager.getResourceBank(selectedResourceBankName);
+            } catch (ThemeException e) {
+                if (!banks.isEmpty()) {
+                    selectedResourceBank = banks.get(0);
+                }
+            }
+        }
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
 
-        List<ResourceBank> banks = ThemeManager.getResourceBanks();
-
         return getTemplate("bankManager.ftl").arg("current_theme",
                 currentThemeDescriptor).arg("current_bank", currentThemeBank).arg(
-                "banks", banks).arg("connected", connected);
+                "banks", banks).arg("connected", connected).arg(
+                "selected_bank", selectedResourceBank);
     }
 
     private ResourceBank getCurrentThemeBank(String themeName) {
@@ -430,6 +442,19 @@ public class Main extends ModuleRoot {
     }
 
     @POST
+    @Path("use_resource_bank")
+    public void useResourceBank() {
+        FormData form = ctx.getForm();
+        String themeSrc = form.getString("theme_src");
+        String bankName = form.getString("bank");
+        try {
+            Editor.useResourceBank(themeSrc, bankName);
+        } catch (Exception e) {
+            throw new ThemeEditorException("Could not use bank: " + bankName, e);
+        }
+    }
+
+    @POST
     @Path("activate_skin")
     public void activateSkin() {
         FormData form = ctx.getForm();
@@ -441,7 +466,7 @@ public class Main extends ModuleRoot {
             Editor.activateSkin(themeName, bankName, collectionName,
                     resourceName);
         } catch (Exception e) {
-            throw new ThemeEditorException("Could not active skin", e);
+            throw new ThemeEditorException("Could not activate skin", e);
         }
     }
 
@@ -862,6 +887,18 @@ public class Main extends ModuleRoot {
         FormData form = ctx.getForm();
         String style = form.getString("style");
         SessionManager.setFragmentStyle(style);
+    }
+
+    @POST
+    @Path("select_resource_bank")
+    public void selectResourceBank() {
+        FormData form = ctx.getForm();
+        String bankName = form.getString("bank");
+        SessionManager.setSelectedResourceBank(bankName);
+    }
+
+    public static String getSelectedResourceBank() {
+        return SessionManager.getSelectedResourceBank();
     }
 
     @POST

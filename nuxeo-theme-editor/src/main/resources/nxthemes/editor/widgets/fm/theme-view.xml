@@ -53,7 +53,11 @@
           url="${basePath}/nxthemes-editor/tools"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
-          
+
+        <@nxthemes_button identifier="open_dashboard"
+          link="javascript:NXThemesEditor.openDashboard()"
+          label="Dashboard" />      
+              
         <@nxthemes_button identifier="exit button"
           link="javascript:NXThemesEditor.exit()"
           icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"

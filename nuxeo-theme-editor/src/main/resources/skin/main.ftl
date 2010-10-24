@@ -3,11 +3,15 @@
 
 <div id="nxthemesPresetManager" class="nxthemesThemeControlPanel">
 
-<#if current_theme && !current_theme.saveable>
-  <div class="nxthemesInfoMessage">These are factory settings for the <strong>${current_theme.name}</strong> theme.
-  <button class="nxthemesActionButton"
-  onclick="NXThemesEditor.customizeTheme('${current_theme.src}', '${screen}')">Customize the theme</button>.</div>
-</#if>
+<div id="nxthemesTopBanner">
+<@block name="top banner">
+  <#if current_theme && !current_theme.saveable>
+    <div class="nxthemesInfoMessage">These are factory settings for the <strong>${current_theme.name}</strong> theme.
+    <button class="nxthemesActionButton"
+    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', '${screen}')">Customize the theme</button>.</div>
+  </#if>
+</@block>
+</div>
 
 <table style="width: 100%">
 <tr>
@@ -18,7 +22,7 @@
 <div class="body">
 
 <ul class="nxthemesSelector">
-  <li <#if screen="control-panel">class="selected"</#if><a href="javascript:NXThemesEditor.backToDashboard()">Dashboard</a></li>
+  <li <#if screen="control-panel">class="selected"</#if><a href="javascript:NXThemesEditor.openDashboard()">Dashboard</a></li>
   <li <#if screen="skin-manager">class="selected"</#if><a href="javascript:NXThemesEditor.manageSkins()">Skins</a></li>
   <li <#if screen="theme-options">class="selected"</#if><a href="javascript:NXThemesEditor.setThemeOptions()">Theme options</a></li>
 </ul>
@@ -28,11 +32,19 @@
 <div class="window">
 <div class="title">Advanced configuration</div>
 <div class="body">
-
 <ul class="nxthemesSelector">
   <li <#if screen="css-editor">class="selected"</#if><a href="javascript:NXThemesEditor.editCss()">CSS Editor</a></li>
   <li <#if screen="image-manager">class="selected"</#if><a href="javascript:NXThemesEditor.manageImages()">Image library</a></li>
   <li <#if screen="bank-manager">class="selected"</#if><a href="javascript:NXThemesEditor.manageThemeBanks()">Theme banks</a></li>
+</ul>
+</div>
+</div>
+
+<div class="window">
+<div class="title">Expert mode</div>
+<div class="body">
+<ul class="nxthemesSelector">
+  <li><a href="javascript:NXThemesEditor.openCanvas()">Theme editor</a></li>
 </ul>
 </div>
 </div>

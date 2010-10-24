@@ -166,6 +166,42 @@ NXThemesEditor.selectEditField = function(fieldName, screenName) {
 }
 
 
+NXThemesEditor.useResourceBank = function(themeSrc, bankName, screenName) {
+  var url = nxthemesBasePath + "/nxthemes-editor/use_resource_bank";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             bank: bankName,
+             theme_src: themeSrc
+         },
+         onSuccess: function(r) {
+             NXThemes.getViewById(screenName).refresh();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
+    return false;
+}
+
+NXThemesEditor.selectResourceBank = function(bankName, screenName) {
+    var url = nxthemesBasePath + "/nxthemes-editor/select_resource_bank";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             bank: bankName
+         },
+         onSuccess: function(r) {
+             NXThemes.getViewById(screenName).refresh();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
+};
+
 NXThemesEditor.editCss = function() {
     NXThemesEditor.setEditorPerspective('css editor');
 };
@@ -845,8 +881,12 @@ NXThemesEditor.switchToCanvas = function() {
     NXThemesEditor.setEditorPerspective('canvas editor');
 };
 
-NXThemesEditor.backToDashboard = function() {
+NXThemesEditor.openDashboard = function() {
     NXThemesEditor.setEditorPerspective('dashboard');
+}
+
+NXThemesEditor.openCanvas = function() {
+    NXThemesEditor.setEditorPerspective('canvas editor');
 }
 
 NXThemesEditor.setThemeOptions = function() {

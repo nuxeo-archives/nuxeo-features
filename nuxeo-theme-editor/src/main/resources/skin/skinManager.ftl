@@ -26,11 +26,15 @@
     <div style="clear: both"></div>
     </div>
   <#else>
-    <p>No skin available</p>
+    <p>No skins available</p>
   </#if>
 
 <#else>
   <p>No bank selected</p>
+  <p>
+    <a href="javascript:NXThemesEditor.manageThemeBanks()"
+       class="nxthemesActionButton">Connect to a bank</a>
+  </p>
 </#if>
 
 </div>

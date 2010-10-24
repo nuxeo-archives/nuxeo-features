@@ -14,15 +14,18 @@
 <div class="title">Theme options</div>
 <div class="body">
 
-<form class="nxthemesForm" style="padding: 10px"
+<form class="nxthemesForm"
       onsubmit="NXThemesThemeOptions.updatePresets(this); return false">
 
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
 
 <#assign categories = ["color", "background", "font", "image"] />
+<#assign hasField=false />
 <#list categories as category>
 <#assign presets = This.getCustomPresets(current_theme_name, category)>
 
+<#if presets>
+<#assign hasField=true />
 <#list presets as preset_info>
   <p>
     <label style="padding: 2px; text-align: right">${preset_info.label}&nbsp;</label>
@@ -38,14 +41,20 @@
     <span class="description">${preset_info.description}</span>
   </p>
 </#list>
-
+</#if>
 </#list>
 
+<#if hasField>
   <p>
     <button type="submit">Save</button>
   </p>
-
+</#if>
 </form>
+
+<#if !hasField>
+  <p>No theme options available</p>
+</#if>
+
 </div>
 </div>
 

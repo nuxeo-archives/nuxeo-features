@@ -1089,4 +1089,12 @@ public class Editor {
         return skinName;
     }
 
+    public static void useResourceBank(String themeSrc, String bankName)
+            throws ThemeException {
+        Manager.getThemeManager();
+        ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptor(themeSrc);
+        themeDescriptor.setResourceBankName(bankName);
+        saveTheme(themeDescriptor.getName());
+    }
+
 }

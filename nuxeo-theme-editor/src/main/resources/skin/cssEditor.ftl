@@ -54,12 +54,16 @@ ${theme_skin_css}
     </div>
   </form>
 </#if>
+<div style="clear: both; padding: 5px"></div>
 
 <#else>
   <p>No skin available.</p>
+  <p>
+    <a href="javascript:NXThemesEditor.manageThemeBanks()"
+       class="nxthemesActionButton">Connect to a bank</a>
+  </p>  
 </#if>
 
-<div style="clear: both; padding: 5px"></div>
 </div>
 </div>
 

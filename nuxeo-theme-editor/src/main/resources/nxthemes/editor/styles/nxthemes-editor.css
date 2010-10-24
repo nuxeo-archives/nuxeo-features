@@ -225,14 +225,14 @@ html, body {
 }
 
 #nxthemesStatusMessage {
-  font: 12px Arial;
+  font: bold 12px Arial;
   color: #000;
   background-color: #ffc;
   z-index: 10;
-  padding: 3px 16px;
+  padding:2px 17px;
   position: absolute;
-  top: 10px;
-  left: 12px;
+  top: 3px;
+  left: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -273,9 +273,11 @@ html, body {
 }
 
 #nxthemesMainButtons {
+  width: 375px;
   position: absolute;
-  right: 10px;
-  top: 9px
+  right: 5px;
+  top: 9px;
+  white-space: nowrap;
 }
 
 #nxthemesLocalButtons {
@@ -1837,7 +1839,7 @@ table.fragmentFactory td {
   -webkit-border-radius: 12px;
   border-radius: 12px;
   margin: 0;
-  padding: 30px;
+  padding: 40px;
 }
 
 .nxthemesThemeControlPads img {
@@ -1954,12 +1956,19 @@ a.nxthemesActionButton img {
   border: 1px solid #fff;
 }
 
-.nxthemesInfoMessage {
-  margin: 0 3px 10px 3px;
-  padding: 4px 8px;
+#nxthemesTopBanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  background-color: #ffc;
+}
+
+.nxthemesInfoMessage {  
+  text-align: left;
+  padding: 4px 35px;
   font-style: italic;
-  background-color: #eed;
-  border: 1px solid #ccb;
   color: #333;
   font-size: 13px;
 }

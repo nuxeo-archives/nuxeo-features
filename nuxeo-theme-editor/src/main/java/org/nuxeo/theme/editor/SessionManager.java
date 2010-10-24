@@ -57,6 +57,8 @@ public class SessionManager extends AbstractComponent {
 
     private static final String SELECTED_CSS_CATEGORIES = "org.nuxeo.theme.editor.css_categories";
 
+    private static final String SELECTED_RESOURCE_BANK = "org.nuxeo.theme.editor.resource_bank";
+
     private static final String WORKSPACE_THEMES = "org.nuxeo.theme.editor.workspace_themes";
 
     private static final String UNDO_BUFFER = "org.nuxeo.theme.editor.undo_buffer";
@@ -248,6 +250,14 @@ public class SessionManager extends AbstractComponent {
 
     public static String getThemeOptionsCategory() {
         return (String) getUserSession().get(SELECTED_THEME_OPTIONS_CATEGORY);
+    }
+
+    public static void setSelectedResourceBank(String bankName) {
+        getUserSession().put(SELECTED_RESOURCE_BANK, bankName);
+    }
+
+    public static String getSelectedResourceBank() {
+        return (String) getUserSession().get(SELECTED_RESOURCE_BANK);
     }
 
 }
