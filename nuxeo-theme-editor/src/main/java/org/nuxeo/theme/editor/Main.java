@@ -230,22 +230,6 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("fileActions")
-    public Object renderFileActions(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String currentThemeName = getCurrentThemeName(path, name);
-        String templateEngine = getTemplateEngine(path);
-        String currentPagePath = getCurrentPagePath(path, name);
-        String currentpageName = ThemeManager.getPageNameFromPagePath(currentPagePath);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
-                templateEngine, currentThemeName);
-        return getTemplate("fileActions.ftl").arg("theme", currentThemeDef).arg(
-                "current_page_path", currentPagePath).arg("current_page_name",
-                currentpageName);
-    }
-
-    @GET
     @Path("backToCanvas")
     public Object renderBackToCanvasButton(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -254,31 +238,11 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("mainActions")
-    public Object renderMainActions(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String currentThemeName = getCurrentThemeName(path, name);
-        String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
-                templateEngine, currentThemeName);
-        return getTemplate("mainActions.ftl").arg("theme", currentThemeDef);
-    }
-
-    @GET
     @Path("viewModes")
     public Object renderViewModes(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         return getTemplate("viewModes.ftl");
-    }
-
-    @GET
-    @Path("tools")
-    public Object renderTools(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("tools.ftl");
     }
 
     @GET

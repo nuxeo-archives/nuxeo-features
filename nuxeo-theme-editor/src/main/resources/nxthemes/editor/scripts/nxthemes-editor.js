@@ -1101,6 +1101,15 @@ NXThemesEditor.closeAreaStyleChooser = function() {
     NXThemes.getControllerById('area style perspectives').switchTo('default');
 };
 
+NXThemesEditor.managePresets = function() {
+    NXThemes.getControllerById("editor perspectives").switchTo('preset manager');
+    NXThemesPresetManager.setEditMode('theme presets', 'theme_presets');
+};
+
+NXThemesEditor.manageStyles = function() {
+    NXThemes.getControllerById("editor perspectives").switchTo('style manager');
+    NXThemesStyleManager.setEditMode('named styles', 'named_styles');
+};
 
 NXThemesEditor.backToCanvas = function() {
     NXThemesEditor.switchToCanvas();

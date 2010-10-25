@@ -1521,6 +1521,14 @@ table.fragmentFactory td {
   border-right: 1px solid #666;
 }
 
+#nxthemesThemeActions {
+  position: absolute;
+  width: 160px;
+  margin-top: 10px;
+  margin-left: 2px;
+  z-index: 1;
+}
+
 .nxthemesDropDownMenu {
   background-color: #fff;
   -moz-border-radius: 10px;
@@ -1589,8 +1597,8 @@ table.fragmentFactory td {
 .nxthemesUndoButtons {
   background-color: #ccc;
   position: absolute;
-  right: 200px;
-  top: 37px;
+  left: 490px;
+  top: 10px;
   padding: 2px 4px;
   font: bold 11px Arial;
   -moz-border-radius: 3px;
@@ -1950,20 +1958,28 @@ a.nxthemesActionButton img {
   border: 1px solid #fff;
 }
 
+
 #nxthemesTopBanner {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   margin: 0;
-  background-color: #ffc;
+  background-color: #eee;
+  border-bottom: 1px solid #ccc;
+  padding: 3px 0px;
 }
 
 .nxthemesInfoMessage {  
   text-align: left;
-  padding: 4px 35px;
-  font-style: italic;
+  padding: 0 10px;
+  font-style: normal;
   color: #333;
   font-size: 13px;
 }
+
+.nxthemesInfoMessage button {  
+  float: right;
+}
+
 

@@ -416,7 +416,13 @@ public class Editor {
 
     public static void moveElement(Element srcElement, Element destElement,
             int order) throws ThemeException, NodeException {
-        final String themeName = ThemeManager.getThemeOf(srcElement).getName();
+        ThemeElement srcTheme = ThemeManager.getThemeOf(srcElement);
+        if (srcTheme == null) {
+            throw new ThemeException(
+                    "Could not determing the theme of the element :"
+                            + srcElement.computeXPath());
+        }
+        final String themeName = srcTheme.getName();
         saveToUndoBuffer(themeName, "move element");
 
         srcElement.moveTo(destElement, order);
