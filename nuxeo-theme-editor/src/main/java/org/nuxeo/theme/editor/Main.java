@@ -149,6 +149,49 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("themeActions")
+    public Object renderThemeActions(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        String currentPagePath = getCurrentPagePath(path, name);
+        String currentpageName = ThemeManager.getPageNameFromPagePath(currentPagePath);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("themeActions.ftl").arg("theme", currentThemeDef).arg(
+                "current_page_path", currentPagePath).arg("current_page_name",
+                currentpageName);
+    }
+
+    @GET
+    @Path("presetManagerActions")
+    public Object renderPresetManagerActions(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("presetManagerActions.ftl").arg("theme",
+                currentThemeDef).arg("selected_preset_category",
+                getSelectedPresetCategory());
+    }
+
+    @GET
+    @Path("styleManagerActions")
+    public Object renderStyleManagerActions(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("styleManagerActions.ftl").arg("theme",
+                currentThemeDef);
+    }
+
+    @GET
     @Path("cssEditor")
     public Object renderCssEditor(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -200,6 +243,14 @@ public class Main extends ModuleRoot {
         return getTemplate("fileActions.ftl").arg("theme", currentThemeDef).arg(
                 "current_page_path", currentPagePath).arg("current_page_name",
                 currentpageName);
+    }
+
+    @GET
+    @Path("backToCanvas")
+    public Object renderBackToCanvasButton(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("backToCanvas.ftl");
     }
 
     @GET

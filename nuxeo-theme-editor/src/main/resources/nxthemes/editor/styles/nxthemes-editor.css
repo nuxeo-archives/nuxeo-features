@@ -273,11 +273,9 @@ html, body {
 }
 
 #nxthemesMainButtons {
-  width: 375px;
-  position: absolute;
-  right: 5px;
-  top: 9px;
-  white-space: nowrap;
+  position: absolute; 
+  right: 10px; 
+  top: 9px
 }
 
 #nxthemesLocalButtons {

@@ -153,6 +153,12 @@
       </path>
     </resource>
 
+    <resource name="style-manager-actions.json">
+      <path>
+        nxthemes/editor/controllers/style-manager-actions.json
+      </path>
+    </resource>
+    
     <resource name="fragment-preview.json">
       <path>
         nxthemes/editor/views/fragment-preview.json

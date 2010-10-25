@@ -1101,6 +1101,13 @@ NXThemesEditor.closeAreaStyleChooser = function() {
     NXThemes.getControllerById('area style perspectives').switchTo('default');
 };
 
+
+NXThemesEditor.backToCanvas = function() {
+    NXThemesEditor.switchToCanvas();
+    NXThemesEditor.refreshCanvas();
+    NXThemes.getControllerById('editor buttons').select();
+}
+
 NXThemesEditor.exit = function() {
   NXThemes.expireCookie("nxthemes.theme");
   NXThemes.expireCookie("nxthemes.engine");

@@ -16,7 +16,7 @@
 
   <f:view>
     <f:subview rendered="#{currentNuxeoPrincipal.administrator}">
-
+    
     <nxthemes:accesskeys />
 
     <div id="nxthemesHeader">
@@ -28,7 +28,7 @@
       <nxthemes:panel identifier="theme selector"
         url="%{contextPath}/site/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
-        visibleInPerspectives="canvas editor,padding editor" />
+        visibleInPerspectives="canvas editor,padding editor,style manager,preset manager" />
 
       <!--  perspective selector -->
       <nxthemes:panel identifier="perspective selector"
@@ -40,41 +40,48 @@
       <nxthemes:panel identifier="undo actions"
         url="%{contextPath}/site/nxthemes-editor/undoActions"
         controlledBy="editor perspectives"
-        visibleInPerspectives="canvas editor,preset manager,style manager,element editor,skin manager" />
+        visibleInPerspectives="canvas editor,preset manager,style manager,element editor" />
 
       <div id="nxthemesMainButtons">
 
-        <!-- file actions -->
-        <nxthemes:panel identifier="file actions"
-          url="%{contextPath}/site/nxthemes-editor/fileActions"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor" />
-
-        <!-- tools -->
-        <nxthemes:panel identifier="tools"
-          url="%{contextPath}/site/nxthemes-editor/tools"
-          controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor" />
-
-       <nxthemes:button identifier="open_dashboard"
-          link="javascript:NXThemesEditor.openDashboard()"
-          label="Dashboard" />      
-                
-        <nxthemes:button identifier="exit button"
-          link="javascript:NXThemesEditor.exit()"
+        <nxthemes:button identifier="quit"
           icon="%{contextPath}/site/skin/nxthemes-editor/img/quit-14.png"
-          label="Exit" />
+          link="javascript:NXThemesEditor.exit()"
+          label="Quit" />
 
       </div>
 
       <div id="nxthemesLocalButtons">
 
-        <!-- main actions -->
-        <nxthemes:panel identifier="main actions"
-          url="%{contextPath}/site/nxthemes-editor/mainActions"
+        <nxthemes:panel identifier="back to canvas"
+          url="%{contextPath}/site/nxthemes-editor/backToCanvas"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="preset library,preset manager,theme browser,style manager,element editor,fragment factory" />
+
+        <!-- theme actions -->
+        <nxthemes:panel identifier="theme actions"
+          url="%{contextPath}/site/nxthemes-editor/themeActions"
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
-          
+
+        <!-- theme browser actions -->
+        <nxthemes:panel identifier="theme browser actions"
+          url="%{contextPath}/site/nxthemes-editor/themeBrowserActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="theme browser" />
+
+        <!-- preset manager actions -->
+        <nxthemes:panel identifier="preset manager actions"
+          url="%{contextPath}/site/nxthemes-editor/presetManagerActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="preset manager" />
+
+        <!-- style manager actions -->
+        <nxthemes:panel identifier="style manager actions"
+          url="%{contextPath}/site/nxthemes-editor/styleManagerActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="style manager" />
+
         <!-- view modes -->
         <nxthemes:panel identifier="view modes"
           url="%{contextPath}/site/nxthemes-editor/viewModes"
@@ -124,7 +131,6 @@
     <nxthemes:controller resource="perspective-selector.json" />
     <nxthemes:controller resource="color-picker.json" />
     <nxthemes:controller resource="editor-perspectives.json" />
-
     <nxthemes:controller resource="editor-buttons.json" />
     <nxthemes:controller resource="theme-buttons.json" />
     <nxthemes:controller resource="canvas-mode-selector.json" />
@@ -138,54 +144,6 @@
     <nxthemes:controller resource="page-switcher.json" />
 
     <nxthemes:controller resource="link-disabler.json" />
-
-    <!-- dashboard -->
-    <nxthemes:panel identifier="dashboard"
-      url="%{contextPath}/site/nxthemes-editor/dashboard"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="dashboard" />
-
-    <!-- theme options -->
-    <nxthemes:panel identifier="theme options"
-      url="%{contextPath}/site/nxthemes-editor/themeOptions"
-      controlledBy="editor perspectives,color picker"
-      visibleInPerspectives="theme options" />
-      
-    <!-- preset manager -->
-    <nxthemes:panel identifier="preset manager"
-      url="%{contextPath}/site/nxthemes-editor/presetManager"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="preset manager" />
-
-    <!-- style manager -->
-    <nxthemes:panel identifier="style manager"
-      url="%{contextPath}/site/nxthemes-editor/styleManager"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="style manager" />
-
-    <!-- css editor -->
-    <nxthemes:panel identifier="css editor"
-      url="%{contextPath}/site/nxthemes-editor/cssEditor"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="css editor" />
-
-    <!-- skin manager -->
-    <nxthemes:panel identifier="skin manager"
-      url="%{contextPath}/site/nxthemes-editor/skinManager"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="skin manager" />
-
-    <!-- bank manager -->
-    <nxthemes:panel identifier="bank manager"
-      url="%{contextPath}/site/nxthemes-editor/bankManager"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="bank manager" />
-
-    <!-- image manager -->
-    <nxthemes:panel identifier="image manager"
-      url="%{contextPath}/site/nxthemes-editor/imageManager"
-      controlledBy="editor perspectives"
-      visibleInPerspectives="image manager" />
 
     <!-- theme chooser -->
     <nxthemes:panel identifier="theme browser"
@@ -212,20 +170,69 @@
       controlledBy="area style perspectives,toolbox mover"
       visibleInPerspectives="style chooser" />
 
+    <!-- theme optimizer -->
+    <nxthemes:panel identifier="theme optimizer"
+      url="%{contextPath}/site/nxthemes-editor/themeOptimizer"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="theme optimizer" />
+
+    <!-- preset manager -->
+    <nxthemes:panel identifier="preset manager"
+      url="%{contextPath}/site/nxthemes-editor/presetManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="preset manager" />
+
+    <!-- style manager -->
+    <nxthemes:controller resource="style-manager-actions.json" />
+    <nxthemes:panel identifier="style manager"
+      url="%{contextPath}/site/nxthemes-editor/styleManager"
+      controlledBy="editor perspectives,style manager actions"
+      visibleInPerspectives="style manager" />
+
     <!-- fragment factory -->
     <nxthemes:panel identifier="fragment factory"
       url="%{contextPath}/site/nxthemes-editor/fragmentFactory"
       controlledBy="editor perspectives"
       visibleInPerspectives="fragment factory" />
 
-  </f:subview>
+ 
+    <!-- dashboard -->
+    <nxthemes:panel identifier="dashboard"
+      url="%{contextPath}/site/nxthemes-editor/dashboard"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="dashboard" />
 
+    <!-- theme options -->
+    <nxthemes:panel identifier="theme options"
+      url="%{contextPath}/site/nxthemes-editor/themeOptions"
+      controlledBy="editor perspectives,color picker"
+      visibleInPerspectives="theme options" />
+      
+    <!-- skin manager -->
+    <nxthemes:panel identifier="skin manager"
+      url="%{contextPath}/site/nxthemes-editor/skinManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="skin manager" />
+
+    <!-- bank manager -->
+    <nxthemes:panel identifier="bank manager"
+      url="%{contextPath}/site/nxthemes-editor/bankManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="bank manager" />
+
+    <!-- image manager -->
+    <nxthemes:panel identifier="image manager"
+      url="%{contextPath}/site/nxthemes-editor/imageManager"
+      controlledBy="editor perspectives"
+      visibleInPerspectives="image manager" />  
+  </f:subview>
+  
   <f:subview rendered="#{!currentNuxeoPrincipal.administrator}">
     <script type="text/javascript"><!--
       NXThemesEditor.accessDenied();
     //--></script>
   </f:subview>
-
+    
 </f:view>
 
 </body>
