@@ -35,7 +35,7 @@
 
     <#if Root.isAdministrator()>
     <form style="display: none" id="uploadImageForm" action="${Root.path}/${bank}/manage/upload"
-          enctype="multipart/form-data" method="post">
+          enctype="multipart/form-data" method="post" onsubmit="top.navtree.location.reload()">
       <h2>Upload an image</h2>
       <p>
         <input type="file" name="file" size="30" />

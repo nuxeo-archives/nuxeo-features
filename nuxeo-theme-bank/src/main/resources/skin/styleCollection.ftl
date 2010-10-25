@@ -34,7 +34,7 @@
 
     <#if Root.isAdministrator()>
     <form style="display: none" id="styleCreateForm" action="${Root.path}/${bank}/manage/${collection}/createStyle"
-           method="post">
+           method="post" onsubmit="top.navtree.location.reload()">
       <h2>Create a new style</h2>
       <p>
         <label>Name</label>
