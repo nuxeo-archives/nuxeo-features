@@ -16,6 +16,13 @@
         return false;
       }
     </script>
+    
+    <#assign reload=Context.request.getParameter('reload') />
+    <#if reload>
+      <script type="text/javascript">
+          top.navtree.refresh('${bank}-${collection}-image');
+      </script>
+    </#if>
   </@block>
 
   <@block name="title">
@@ -23,7 +30,6 @@
   </@block>
 
   <@block name="content">
-
     <#assign redirect_url="${Root.getPath()}/${bank}/${collection}/image/view" />
 
     <h1>Image collection: ${collection}
@@ -35,12 +41,12 @@
 
     <#if Root.isAdministrator()>
     <form style="display: none" id="uploadImageForm" action="${Root.path}/${bank}/manage/upload"
-          enctype="multipart/form-data" method="post" onsubmit="top.navtree.location.reload()">
+          enctype="multipart/form-data" method="post">
       <h2>Upload an image</h2>
       <p>
         <input type="file" name="file" size="30" />
         <input type="hidden" name="collection" value="${collection}" />
-        <input type="hidden" name="redirect_url" value="${redirect_url?replace(' ', '%20')}" />
+        <input type="hidden" name="redirect_url" value="${redirect_url?replace(' ', '%20')}?reload=1" />
       </p>
       <p>
       <button>Upload</button>

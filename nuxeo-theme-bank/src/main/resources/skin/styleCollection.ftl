@@ -18,6 +18,13 @@
         return false;
       }
     </script>
+    
+    <#assign reload=Context.request.getParameter('reload') />
+    <#if reload>
+      <script type="text/javascript">
+          top.navtree.refresh('${bank}-${collection}-style');
+      </script>
+    </#if>
   </@block>
 
   <@block name="content">
@@ -34,7 +41,7 @@
 
     <#if Root.isAdministrator()>
     <form style="display: none" id="styleCreateForm" action="${Root.path}/${bank}/manage/${collection}/createStyle"
-           method="post" onsubmit="top.navtree.location.reload()">
+           method="post">
       <h2>Create a new style</h2>
       <p>
         <label>Name</label>
@@ -42,7 +49,7 @@
       </p>
       <div>
         <input type="hidden" name="collection" value="${collection}" />
-        <input type="hidden" name="redirect_url" value="${redirect_url?replace(' ', '%20')}" />
+        <input type="hidden" name="redirect_url" value="${redirect_url?replace(' ', '%20')}?reload=1" />
       </div>
       <p>
       <button>Create</button>

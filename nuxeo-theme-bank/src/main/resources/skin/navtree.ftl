@@ -95,10 +95,17 @@
       id = id.replace(/[\s\.]+/g, '-');
       $.tree.focused().select_branch('#' + id);
     }
+    
+    var refresh = function(id) {
+       $.tree.reference('navtree').refresh('#' + id);
+    }   
+       
     </script>
   </@block>
 
   <@block name="content">
+  
+   
      <div id="navtree"></div>
   </@block>
 
