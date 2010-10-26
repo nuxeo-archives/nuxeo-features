@@ -43,7 +43,7 @@
         visibleInPerspectives="canvas editor,preset manager,style manager,element editor" />
 
       <div id="nxthemesMainButtons">
-
+          
         <nxthemes:button identifier="quit"
           icon="%{contextPath}/site/skin/nxthemes-editor/img/quit-14.png"
           link="javascript:NXThemesEditor.exit()"
@@ -126,6 +126,12 @@
         controlledBy="editor perspectives,page switcher"
         visibleInPerspectives="canvas editor,padding editor" />
 
+      <!-- dashboard tab -->
+      <nxthemes:panel identifier="dashboard tab"
+        url="%{contextPath}/site/nxthemes-editor/dashboardTab"
+        controlledBy="editor perspectives"
+        visibleInPerspectives="canvas editor" />
+        
     </div>
 
     <nxthemes:controller resource="perspective-selector.json" />

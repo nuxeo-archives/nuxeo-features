@@ -957,7 +957,6 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
   font-family: Arial, sans-serif;
   z-index: 1;
 }
-
 .nxthemesPresets div.name {
   color: #333;
   font-size: 11px;
@@ -969,22 +968,15 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 }
 
 .nxthemesPresets div.preview {
-  width: 20px;
   color: #000;
   text-align: center;
+  border: 1px solid #ccc;
+  margin: 2px;
+  padding: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
   overflow: hidden;
-  padding: 0;
-  margin: 0;
-  border: 1px solid #000;
-  background-color: #fff;
-}
-
-.nxthemesPresets div.preview div {
-  height: 20px;
-  padding: 0;
 }
 
 .nxthemesPresets table {
@@ -1006,6 +998,14 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 
 .nxthemesPresets table td.presetTarget {
   height: 100px;
+}
+
+.nxthemesPresets div.preview div {
+  height: 65px;
+}
+
+.nxthemesPresets div.preview  {
+  width: 65px;
 }
 
 .nxthemesThemeControlPanel .window {
@@ -1597,9 +1597,9 @@ table.fragmentFactory td {
 .nxthemesUndoButtons {
   background-color: #ccc;
   position: absolute;
-  left: 490px;
-  top: 10px;
-  padding: 2px 4px;
+  right: 100px;
+  top: 9px;
+  padding: 2px 4px; 
   font: bold 11px Arial;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -1845,7 +1845,7 @@ table.fragmentFactory td {
   -webkit-border-radius: 12px;
   border-radius: 12px;
   margin: 0;
-  padding: 40px;
+  padding: 15px;
 }
 
 .nxthemesThemeControlPads img {
@@ -1958,28 +1958,36 @@ a.nxthemesActionButton img {
   border: 1px solid #fff;
 }
 
-
 #nxthemesTopBanner {
-  position: absolute;
+   position: relative;
   top: 0;
   left: 0;
   width: 100%;
   margin: 0;
-  background-color: #eee;
-  border-bottom: 1px solid #ccc;
-  padding: 3px 0px;
+  border-bottom: 1px solid #000;
+  padding: 4px 0px 4px 0px;
+  background: #fceca4 url(${basePath}/skin/nxthemes-editor/img/top-bg.png) repeat-x;
 }
 
 .nxthemesInfoMessage {  
   text-align: left;
-  padding: 0 10px;
   font-style: normal;
   color: #333;
   font-size: 13px;
+  padding: 0px 20px;
 }
 
 .nxthemesInfoMessage button {  
   float: right;
 }
 
+#dashboardTab {
+  position: fixed;
+  z-index: 10;
+  bottom: 25px;
+  left: 0;
+}
 
+#dashboardTab img {
+  border: none;
+}

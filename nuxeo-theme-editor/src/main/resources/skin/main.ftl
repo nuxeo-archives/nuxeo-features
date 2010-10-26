@@ -1,17 +1,20 @@
 
 <div class="nxthemesThemeControlPanelScreen">
 
-<div id="nxthemesPresetManager" class="nxthemesThemeControlPanel">
-
 <div id="nxthemesTopBanner">
 <@block name="top banner">
   <#if current_theme && !current_theme.saveable>
-    <div class="nxthemesInfoMessage">These are factory settings for the <strong>${current_theme.name}</strong> theme.
+    <div class="nxthemesInfoMessage">
     <button class="nxthemesActionButton"
-    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', '${screen}')">Customize the theme</button>.</div>
+    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', '${screen}')">Customize this theme</button>
+      <span>These are factory settings for the <strong>${current_theme.name}</strong> theme.</span>
+    </div>
+    <div style="clear: both"></div>
   </#if>
 </@block>
 </div>
+
+<div id="nxthemesPresetManager" class="nxthemesThemeControlPanel">
 
 <table style="width: 100%">
 <tr>

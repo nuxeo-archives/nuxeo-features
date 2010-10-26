@@ -10,6 +10,8 @@
 <div class="title">Manage banks</div>
 <div class="body">
 
+<#if banks>
+
 <table class="nxthemesManageScreen">
   <tr>
     <th style="width: 20%;">Theme banks</th>
@@ -28,6 +30,8 @@
 
 </td>
 <td>
+
+
 
 <#if selected_bank>
 
@@ -64,6 +68,10 @@
 
 </div>
 </div>
+
+<#else>
+<p>No banks have been registered</p>
+</#if>
 
 </@block>
 </@extends>

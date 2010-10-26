@@ -86,6 +86,14 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("dashboardTab")
+    public Object renderDashboardTabr(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("dashboardTab.ftl");
+    }
+
+    @GET
     @Path("canvasModeSelector")
     public Object renderCanvasModeSelector(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -165,6 +173,14 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("themeBrowserActions")
+    public Object renderThemeBrowserActions(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("themeBrowserActions.ftl");
+    }
+
+    @GET
     @Path("presetManagerActions")
     public Object renderPresetManagerActions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -214,13 +230,23 @@ public class Main extends ModuleRoot {
     public Object renderThemeBrowser(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
         List<ThemeDescriptor> availableThemes = new ArrayList<ThemeDescriptor>();
         List<ThemeInfo> workspaceThemes = getWorkspaceThemes(path, name);
+        String templateEngine = getTemplateEngine(path);
         List<String> workspaceThemeNames = new ArrayList<String>();
         for (ThemeInfo theme : workspaceThemes) {
             workspaceThemeNames.add(theme.getName());
         }
+        if (!workspaceThemeNames.contains(currentThemeName)) {
+            workspaceThemeNames.add(currentThemeName);
+        }
         for (ThemeDescriptor themeDef : ThemeManager.getThemeDescriptors()) {
+            List<String> templateEngines = themeDef.getTemplateEngines();
+            if (templateEngines != null
+                    && !templateEngines.contains(templateEngine)) {
+                continue;
+            }
             if (!workspaceThemeNames.contains(themeDef.getName())) {
                 availableThemes.add(themeDef);
             }
@@ -1520,13 +1546,12 @@ public class Main extends ModuleRoot {
     public void addThemeToWorkspace() {
         FormData form = ctx.getForm();
         String name = form.getString("name");
-        List<ThemeInfo> themes = SessionManager.getWorkspaceThemes();
+        List<String> themes = SessionManager.getWorkspaceThemes();
         if (themes == null) {
-            themes = new ArrayList<ThemeInfo>();
+            themes = new ArrayList<String>();
         }
         if (!themes.contains(name)) {
-            String path = String.format("%s/default", name);
-            themes.add(new ThemeInfo(name, path, false));
+            themes.add(name);
         }
         SessionManager.setWorkspaceThemes(themes);
     }
@@ -1536,9 +1561,9 @@ public class Main extends ModuleRoot {
     public void removeThemeFromWorkspace() {
         FormData form = ctx.getForm();
         String name = form.getString("name");
-        List<ThemeInfo> themes = SessionManager.getWorkspaceThemes();
+        List<String> themes = SessionManager.getWorkspaceThemes();
         if (themes == null) {
-            themes = new ArrayList<ThemeInfo>();
+            themes = new ArrayList<String>();
         }
         if (themes.contains(name)) {
             themes.remove(name);
@@ -2189,28 +2214,22 @@ public class Main extends ModuleRoot {
     }
 
     public static List<ThemeInfo> getWorkspaceThemes(String path, String name) {
-        List<ThemeInfo> themes = new ArrayList<ThemeInfo>();
         String currentThemeName = getCurrentThemeName(path, name);
-        String currentPagePath = getCurrentPagePath(path, currentThemeName);
         String templateEngine = getTemplateEngine(path);
-        List<ThemeInfo> workspaceThemes = SessionManager.getWorkspaceThemes();
+        List<String> workspaceThemeNames = SessionManager.getWorkspaceThemes();
+        List<ThemeInfo> workspaceThemes = new ArrayList<ThemeInfo>();
         Set<String> compatibleThemes = ThemeManager.getThemeNames(templateEngine);
-        if (workspaceThemes == null) {
-            workspaceThemes = new ArrayList<ThemeInfo>();
+        if (!workspaceThemeNames.contains(currentThemeName)) {
+            workspaceThemeNames.add(currentThemeName);
         }
-        if (!workspaceThemes.contains(currentThemeName)) {
-            workspaceThemes.add(new ThemeInfo(currentThemeName,
-                    currentPagePath, true));
-        }
-        for (ThemeInfo themeInfo : workspaceThemes) {
-            String themeName = themeInfo.name;
+        for (String themeName : workspaceThemeNames) {
             if (compatibleThemes.contains(themeName)) {
                 String pagePath = String.format("%s/default", themeName);
-                themes.add(new ThemeInfo(themeName, pagePath,
+                workspaceThemes.add(new ThemeInfo(themeName, pagePath,
                         themeName == currentThemeName));
             }
         }
-        return themes;
+        return workspaceThemes;
     }
 
     public static void createFragmentPreview(String currentThemeName) {

@@ -41,7 +41,7 @@
       
 
       <div id="nxthemesMainButtons">
-                                            
+                
         <@nxthemes_button identifier="quit"
           link="javascript:NXThemesEditor.exit()"
           icon="${basePath}/skin/nxthemes-editor/img/quit-14.png"
@@ -116,11 +116,17 @@
       <@nxthemes_controller resource="toggle-context-menu.json" />
       <@nxthemes_view resource="context-menu.json" />
       
-      <!--  page selector -->
+      <!-- page selector -->
       <@nxthemes_panel identifier="page selector"
         url="${basePath}/nxthemes-editor/pageSelector"
         controlledBy="editor perspectives,page switcher"
         visibleInPerspectives="canvas editor,padding editor" />
+
+      <!-- dashboard tab -->
+      <@nxthemes_panel identifier="dashboard tab"
+        url="${basePath}/nxthemes-editor/dashboardTab"
+        controlledBy="editor perspectives"
+        visibleInPerspectives="canvas editor" />
 
     </div>
 

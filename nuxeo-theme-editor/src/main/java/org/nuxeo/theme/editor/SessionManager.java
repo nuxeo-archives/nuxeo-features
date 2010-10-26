@@ -192,11 +192,16 @@ public class SessionManager extends AbstractComponent {
     }
 
     @SuppressWarnings("unchecked")
-    public static synchronized List<ThemeInfo> getWorkspaceThemes() {
-        return (List<ThemeInfo>) getUserSession().get(WORKSPACE_THEMES);
+    public static synchronized List<String> getWorkspaceThemes() {
+        List<String> themes = (List<String>) getUserSession().get(
+                WORKSPACE_THEMES);
+        if (themes == null) {
+            themes = new ArrayList<String>();
+        }
+        return themes;
     }
 
-    public static synchronized void setWorkspaceThemes(List<ThemeInfo> themes) {
+    public static synchronized void setWorkspaceThemes(List<String> themes) {
         getUserSession().put(WORKSPACE_THEMES, themes);
     }
 

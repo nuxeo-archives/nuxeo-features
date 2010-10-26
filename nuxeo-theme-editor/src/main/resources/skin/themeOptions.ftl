@@ -28,7 +28,7 @@
 <#assign hasField=true />
 <#list presets as preset_info>
   <p>
-    <label style="padding: 2px; text-align: right">${preset_info.label}&nbsp;</label>
+    <label style="padding: 2px; text-align: right">${preset_info.name} <#if preset_info.label>(${preset_info.label})</#if>&nbsp;</label>
     <input type="text"
         <#if category = 'color'>class="color" style="border-color: #333"</#if>
         id="nxthemes_preset_${preset_info.name}"

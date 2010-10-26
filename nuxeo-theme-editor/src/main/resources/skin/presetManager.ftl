@@ -142,45 +142,7 @@ ${preset_info.preview?replace(r'${basePath}', '${basePath}')}
 </table>
 
 
-<#assign preset_names=This.getUnidentifiedPresetNames(current_theme_name)>
-
-<#if preset_names>
-<h3 class="nxthemesEditorFocus">These presets need to be defined:</h3>
-<table class="nxthemesManageScreen">
-<#assign count = 0 />
-<#assign row = 1 /> 
-
-<#list preset_names as name>
-<#assign row = (count % 10) +1 /> 
-
-  <#if row == 0>
-    <tr>
-  </#if>
-
-<td class="preset">
-  <div class="preview"><div onclick="NXThemesPresetManager.addMissingPreset('${current_theme_name?js_string}', '${name?js_string}')">&nbsp;</div></div>
-  <div class="name">${name}</div>
-</td>
-
-  <#if row == 10>
-    </tr>
-  </#if>
-  
-  <#assign count = count + 1/>
-  </#list>
-
-<#if row < 10>
-  <#list row..9 as i>
-       <td></td>
-  </#list>
-  </tr>
 </#if>
-
-</table>
-
-</#if>
-</#if>
-
 
 
 <#if preset_manager_mode = 'unregistered presets'>
@@ -221,9 +183,47 @@ ${preset_info.preview?replace(r'${basePath}', '${basePath}')}
 </#if>
         
 </table>
-
 </#if>
 
+
+
+<#assign preset_names=This.getUnidentifiedPresetNames(current_theme_name)>
+
+<#if preset_names>
+<h3 class="nxthemesEditorFocus">These presets need to be defined:</h3>
+<table class="nxthemesManageScreen">
+<#assign count = 0 />
+<#assign row = 1 /> 
+
+<#list preset_names as name>
+<#assign row = (count % 10) +1 /> 
+
+  <#if row == 0>
+    <tr>
+  </#if>
+
+<td class="preset">
+  <div class="preview"><div onclick="NXThemesPresetManager.addMissingPreset('${current_theme_name?js_string}', '${name?js_string}')">&nbsp;</div></div>
+  <div class="name">${name}</div>
+</td>
+
+  <#if row == 10>
+    </tr>
+  </#if>
+  
+  <#assign count = count + 1/>
+  </#list>
+
+<#if row < 10>
+  <#list row..9 as i>
+       <td></td>
+  </#list>
+  </tr>
+</#if>
+
+</table>
+
+</#if>
 
 
 <#assign images=This.getHardcodedImages(current_theme_name)>
