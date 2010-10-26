@@ -113,6 +113,14 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("backToCanvasTab")
+    public Object renderBackToCanvasTab(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("backToCanvasTab.ftl");
+    }
+
+    @GET
     @Path("presetManager")
     public Object renderPresetManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,

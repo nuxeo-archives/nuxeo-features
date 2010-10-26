@@ -28,7 +28,7 @@
       <nxthemes:panel identifier="theme selector"
         url="%{contextPath}/site/nxthemes-editor/themeSelector"
         controlledBy="editor perspectives,theme switcher"
-        visibleInPerspectives="canvas editor,padding editor,style manager,preset manager,dashboard,skin manager,theme options,css editor,image manager,bank manager" />
+        visibleInPerspectives="canvas editor,element editor,padding editor,style manager,preset manager,dashboard,skin manager,theme options,css editor,image manager,bank manager" />
   
       <!--  perspective selector -->
       <nxthemes:panel identifier="perspective selector"
@@ -57,7 +57,7 @@
         <nxthemes:panel identifier="theme actions"
           url="%{contextPath}/site/nxthemes-editor/themeActions"
           controlledBy="editor perspectives"
-          visibleInPerspectives="canvas editor,preset manager,style manager" />
+          visibleInPerspectives="canvas editor" />
 
         <!-- view modes -->
         <nxthemes:panel identifier="view modes"
@@ -103,12 +103,18 @@
         controlledBy="editor perspectives,page switcher"
         visibleInPerspectives="canvas editor,padding editor" />
 
-      <!-- dashboard tab -->
+      <!-- to dashboard tab -->
       <nxthemes:panel identifier="dashboard tab"
         url="%{contextPath}/site/nxthemes-editor/dashboardTab"
         controlledBy="editor perspectives"
         visibleInPerspectives="canvas editor" />
         
+      <!-- back to canvas tab -->
+      <nxthemes:panel identifier="back to canvas tab"
+        url="%{contextPath}/site/nxthemes-editor/backToCanvasTab"
+        controlledBy="editor perspectives"
+        visibleInPerspectives="dashboard,fragment factory,element editor" />
+     
     </div>
 
     <nxthemes:controller resource="perspective-selector.json" />

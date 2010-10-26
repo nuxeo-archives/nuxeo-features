@@ -1,14 +1,12 @@
 <!-- style menu -->
 <@nxthemes_view resource="style-menu.json" />   
 
-
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 <#if selected_named_style>
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
-<div class="nxthemesThemeControlPanel">
 
 <div class="window">
 <div class="title">Style manager</div>

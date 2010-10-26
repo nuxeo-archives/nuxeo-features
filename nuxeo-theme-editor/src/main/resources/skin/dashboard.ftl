@@ -2,12 +2,6 @@
 
 <@nxthemes_controller resource="dashboard-perspectives.json" />
     
-<div id="canvasEditorTab">
-  <a href="javascript:NXThemesEditor.backToCanvas()">
-    <img src="${basePath}/skin/nxthemes-editor/img/canvas-editor-tab.png" />
-  </a>
-</div>
-
 <div class="nxthemesThemeControlPanelScreen">
 
 <#if current_theme && !current_theme.saveable>
@@ -34,11 +28,11 @@
 <div class="title">Basic configuration</div>
 <div class="body">
 
-<@nxthemes_tabs identifier="dashboard basic configuration" styleClass="nxthemesDashboardMenu">
-  <tab switchTo="dashboard perspectives/control panel" label="Dashboard"  />
-  <tab switchTo="dashboard perspectives/skin manager" label="Skins"  />
-  <tab switchTo="dashboard perspectives/theme options" label="Theme options"  />
-</@nxthemes_tabs>
+  <ul class="nxthemesSelector">
+    <li><a href="javascript:NXThemesEditor.controlPanel()">Overview</a></li>
+    <li><a href="javascript:NXThemesEditor.manageSkins()">Skins</a></li>
+    <li><a href="javascript:NXThemesEditor.setThemeOptions()">Theme options</a></li>
+  </ul>
 
 </div>
 </div>
@@ -46,13 +40,11 @@
 <div class="window">
 <div class="title">Advanced configuration</div>
 <div class="body">
-
-<@nxthemes_tabs identifier="dashboard advanced configuration" styleClass="nxthemesDashboardMenu">
-  <tab switchTo="dashboard perspectives/css editor" label="CSS editor"  />
-  <tab switchTo="dashboard perspectives/image manager" label="Image library"  />
-  <tab switchTo="dashboard perspectives/bank manager" label="Theme banks"  />
-</@nxthemes_tabs>
-
+  <ul class="nxthemesSelector">
+    <li><a href="javascript:NXThemesEditor.editCss()">CSS editor</a></li>
+    <li><a href="javascript:NXThemesEditor.manageImages()">Image library</a></li>
+    <li><a href="javascript:NXThemesEditor.manageThemeBanks()">Theme banks</a></li>
+  </ul>
 </div>
 </div>
 
@@ -61,11 +53,11 @@
 <div class="title">Export mode</div>
 <div class="body">
 
-<@nxthemes_tabs identifier="dashboard expert mode" styleClass="nxthemesDashboardMenu">
-  <tab switchTo="dashboard perspectives/theme browser" label="Theme browser"  />  
-  <tab switchTo="dashboard perspectives/style manager" label="Style manager"  />
-  <tab switchTo="dashboard perspectives/preset manager" label="Preset manager"  />
-</@nxthemes_tabs>
+  <ul class="nxthemesSelector">
+    <li><a href="javascript:NXThemesEditor.manageThemes()">Theme browser</a></li>
+    <li><a href="javascript:NXThemesEditor.manageStyles()">Style manager</a></li>
+    <li><a href="javascript:NXThemesEditor.managePresets()">Preset manager</a></li>
+  </ul>
 
 </div>
 </div>

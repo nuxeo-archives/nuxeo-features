@@ -210,12 +210,20 @@ NXThemesEditor.manageSkins = function() {
     NXThemesEditor.setDashboardPerspective('skin manager');
 };
 
+NXThemesEditor.manageThemes = function() {
+    NXThemesEditor.setDashboardPerspective('theme browser');
+};
+
 NXThemesEditor.manageThemeBanks = function() {
     NXThemesEditor.setDashboardPerspective('bank manager');
 };
 
 NXThemesEditor.manageImages = function() {
     NXThemesEditor.setDashboardPerspective('image manager');
+};
+
+NXThemesEditor.controlPanel = function() {
+    NXThemesEditor.setDashboardPerspective('control panel');
 };
 
 NXThemesEditor.setEditorPerspective = function(perspective) {
@@ -742,8 +750,6 @@ NXThemesEditor.switchTheme = function(info) {
         NXThemesEditor.refreshPageSelector();
         NXThemes.getViewById("theme actions").refresh();
         NXThemesEditor.refreshCanvas();
-    } else {
-        NXThemesEditor.setEditorPerspective('theme browser');
     }
 };
 
