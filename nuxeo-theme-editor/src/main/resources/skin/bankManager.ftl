@@ -37,13 +37,13 @@
   </p>
   <p><label>Status</label>
     <#if current_bank && current_bank.name = selected_bank.name>
-      <strong style="color: #f60;">Connected</strong>&nbsp;
+      <strong style="color: #090;">Connected</strong>&nbsp;
      <a class="nxthemesActionButton" href="javascript:void(0)" 
         onclick="NXThemesEditor.useResourceBank('${current_theme.src}', '', 'bank manager')">
       Disconnect
       </a>      
     <#else>
-     <strong style="color: #c00">&lt;Not connected&gt;</strong>&nbsp;
+     <strong style="color: #c00">Not connected</strong>&nbsp;
      <a class="nxthemesActionButton" href="javascript:void(0)" 
         onclick="NXThemesEditor.useResourceBank('${current_theme.src}', '${selected_bank.name}', 'bank manager')">
       Connect

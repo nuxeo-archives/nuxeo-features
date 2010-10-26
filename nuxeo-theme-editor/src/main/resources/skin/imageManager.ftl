@@ -105,7 +105,7 @@
 <div class="body">
 <div>
 
-    <p>Images will be added to the Custom collection</p>
+    <p>Images will be added to the <em>custom</em> collection</p>
     <iframe id="upload_target" name="upload_target" src="" style="display: none"></iframe>
 
 
@@ -113,7 +113,6 @@
           enctype="multipart/form-data" method="post" target="upload_target">
       <p>
         <input type="file" name="file" size="30" />
-        <input type="hidden" name="bank" value="${current_bank.name}" />
         <input type="hidden" name="collection" value="custom" />
         <input type="hidden" name="redirect_url" value="${Root.getPath()}/imageUploaded" />
       </p>

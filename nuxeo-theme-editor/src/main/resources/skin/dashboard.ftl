@@ -54,7 +54,7 @@
 <div class="body">
 
   <ul class="nxthemesSelector">
-    <li><a href="javascript:NXThemesEditor.manageThemes()">Theme browser</a></li>
+    <li><a href="javascript:NXThemesEditor.manageThemes()">Theme manager</a></li>
     <li><a href="javascript:NXThemesEditor.manageStyles()">Style manager</a></li>
     <li><a href="javascript:NXThemesEditor.managePresets()">Preset manager</a></li>
   </ul>

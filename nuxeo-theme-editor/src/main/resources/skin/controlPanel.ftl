@@ -37,7 +37,8 @@
   </#if>
   <p class="nxthemesEditor">
     <button class="nxthemesActionButton"
-     onclick="NXThemesEditor.manageSkins()">Choose skin</button>
+     onclick="NXThemesEditor.manageSkins()">
+     <#if current_skin_name>Change skin<#else>Choose a skin</#if></button>
   </p>
 </div>
 </div>
