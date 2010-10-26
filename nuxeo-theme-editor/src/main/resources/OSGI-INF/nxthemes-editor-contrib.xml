@@ -68,6 +68,12 @@
         nxthemes/editor/controllers/editor-perspectives.json
       </path>
     </resource>
+    
+    <resource name="dashboard-perspectives.json">
+      <path>
+        nxthemes/editor/controllers/dashboard-perspectives.json
+      </path>
+    </resource>
 
     <resource name="editor-buttons.json">
       <path>

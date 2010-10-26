@@ -1,13 +1,6 @@
-<@extends src="main.ftl">
-
-<#assign screen="css-editor" />
 
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
-
-<@block name="title">Edit CSS</@block>
-
-<@block name="content">
 
 <div class="window">
 <div class="title">Edit CSS</div>
@@ -67,5 +60,3 @@ ${theme_skin_css}
 </div>
 </div>
 
-</@block>
-</@extends>

@@ -1,6 +1,12 @@
-<div id="nxthemesBrowser" class="nxthemesScreen">
 
-  <h1 class="nxthemesEditor">Manage themes</h1>
+<div class="window">
+<div class="title">Advanced configuration</div>
+<div class="body">
+
+<div style="float: right">
+  <a class="nxthemesActionButton" href="javascript:NXThemesEditor.addTheme('theme browser')">
+  <img src="${basePath}/skin/nxthemes-editor/img/add-14.png" /> Create new theme</a>
+</div>
 
   <table class="nxthemesManageScreen">
   <tr>
@@ -39,3 +45,5 @@
   </table>
 
 </div>
+</div>
+

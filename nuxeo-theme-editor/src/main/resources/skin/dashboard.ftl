@@ -1,100 +1,142 @@
 <#setting url_escaping_charset='UTF-8'>
 
-<@extends src="main.ftl">
+<@nxthemes_controller resource="dashboard-perspectives.json" />
+    
+<div id="canvasEditorTab">
+  <a href="javascript:NXThemesEditor.backToCanvas()">
+    <img src="${basePath}/skin/nxthemes-editor/img/canvas-editor-tab.png" />
+  </a>
+</div>
 
-<#assign screen="control-panel" />
+<div class="nxthemesThemeControlPanelScreen">
 
-<@block name="title">Dashboard</@block>
+<#if current_theme && !current_theme.saveable>
+  <div id="nxthemesTopBanner">
+    <div class="nxthemesInfoMessage">
+    <button class="nxthemesActionButton"
+    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', '${screen}')">Customize this theme</button>
+      <img src="${basePath}/skin/nxthemes-editor/img/error.png" width="16" height="16" style="vertical-align: bottom" />
+      <span>These are factory settings for the <strong>${current_theme.name}</strong> theme.</span>
+    </div>
+    <div style="clear: both"></div>
+  </div>   
+</#if>
 
-<@block name="content">
 
-<table style="width: 100%" cellspacing="0" cellpadding="0">
+<div class="nxthemesThemeControlPanel">
 
+
+<table style="width: 100%">
 <tr>
-<td style="width: 49%; vertical-align: top">
+<td style="width: 19%; vertical-align: top;">
 
 <div class="window">
-<div class="title">General</div>
+<div class="title">Basic configuration</div>
 <div class="body">
-<#if current_theme>
-  <p class="nxthemesEditor">Theme name: <strong>${current_theme.name}</strong></p>
-  <#if current_bank>
-    <p class="nxthemesEditor">Resource bank: <strong>${current_bank.name}</strong></p>
-  </#if>  
-  <p class="nxthemesEditor">Theme source: <strong>${current_theme.src}</strong></p>
-</#if>
+
+<@nxthemes_tabs identifier="dashboard basic configuration" styleClass="nxthemesDashboardMenu">
+  <tab switchTo="dashboard perspectives/control panel" label="Dashboard"  />
+  <tab switchTo="dashboard perspectives/skin manager" label="Skins"  />
+  <tab switchTo="dashboard perspectives/theme options" label="Theme options"  />
+</@nxthemes_tabs>
+
 </div>
 </div>
 
 <div class="window">
-<div class="title">Skin</div>
+<div class="title">Advanced configuration</div>
 <div class="body">
-  <#if current_skin_name>
-    <#assign current_skin=Root.getSkinInfo(current_skin_name) />
-    <#if current_skin>
-    <#assign bank=Root.getResourceBank(current_skin.bank) />
-    <p class="nxthemesEditor">Current skin: <strong>${current_skin.name}</strong>
-    <div style="margin: 10px;">
-      <img style="border: 1px solid #ccc;" src="${bank.connectionUrl}/${current_skin.collection}/style/${current_skin.resource}/preview"" />
-    <div>
-    </p>
-    </#if>
-  <#else>
-    <p class="nxthemesEditor">You have not selected a theme skin yet.</p>
-  </#if>
-  <p class="nxthemesEditor">
-    <button class="nxthemesActionButton"
-     onclick="NXThemesEditor.manageSkins()">Choose skin</button>
-  </p>
+
+<@nxthemes_tabs identifier="dashboard advanced configuration" styleClass="nxthemesDashboardMenu">
+  <tab switchTo="dashboard perspectives/css editor" label="CSS editor"  />
+  <tab switchTo="dashboard perspectives/image manager" label="Image library"  />
+  <tab switchTo="dashboard perspectives/bank manager" label="Theme banks"  />
+</@nxthemes_tabs>
+
 </div>
 </div>
+
+
+<div class="window">
+<div class="title">Export mode</div>
+<div class="body">
+
+<@nxthemes_tabs identifier="dashboard expert mode" styleClass="nxthemesDashboardMenu">
+  <tab switchTo="dashboard perspectives/theme browser" label="Theme browser"  />  
+  <tab switchTo="dashboard perspectives/style manager" label="Style manager"  />
+  <tab switchTo="dashboard perspectives/preset manager" label="Preset manager"  />
+</@nxthemes_tabs>
+
+</div>
+</div>
+
 
 </td>
 
-<td style="width: 2%">
+<td style="width: 1%">
 </td>
 
-<td style="width: 48%; vertical-align: top">
 
-<div class="window">
-<div class="title">Theme options</div>
-<div class="body">
-<#assign presets = This.getCustomPresets(current_theme_name, null)>
-<#list presets as preset_info>
-  <p class="nxthemesEditor">
-    <strong title="${preset_info.description}">${preset_info.label}</strong>:
-    ${preset_info.value}
-  </p>
-</#list>
-  <p class="nxthemesEditor">
-    <button class="nxthemesActionButton"
-     onclick="NXThemesEditor.setThemeOptions()">Set theme options</button>
-  </p>
-</div>
-</div>
+<td style="width: 80%; vertical-align: top">
 
-<div class="window">
-<div class="title">CSS</div>
-<div class="body">
+    <!-- control panel -->
+    <@nxthemes_panel identifier="control panel"
+      url="${basePath}/nxthemes-editor/controlPanel"
+      controlledBy="dashboard perspectives"
+      visibleInPerspectives="control panel" />
+      
+    <!-- theme options -->
+    <@nxthemes_panel identifier="theme options"
+      url="${basePath}/nxthemes-editor/themeOptions"
+      controlledBy="dashboard perspectives,color picker"
+      visibleInPerspectives="theme options" />
+      
+    <!-- css editor -->
+    <@nxthemes_panel identifier="css editor"
+      url="${basePath}/nxthemes-editor/cssEditor"
+      controlledBy="dashboard perspectives"
+      visibleInPerspectives="css editor" />
 
-<#assign theme_skin = Root.getThemeSkin(current_theme.name) />
-<#if theme_skin & theme_skin.customized>
- <p class="nxthemesEditor">You have customized the current skin</p>
-<#else>
- <p class="nxthemesEditor">No CSS customizations have been made</p>
-</#if>
+    <!-- skin manager -->
+    <@nxthemes_panel identifier="skin manager"
+      url="${basePath}/nxthemes-editor/skinManager"
+      controlledBy="dashboard perspectives"
+      visibleInPerspectives="skin manager" />
 
-  <p class="nxthemesEditor">
-    <button class="nxthemesActionButton"
-     onclick="NXThemesEditor.editCss()">Edit CSS</button>
-  </p>
+    <!-- bank manager -->
+    <@nxthemes_panel identifier="bank manager"
+      url="${basePath}/nxthemes-editor/bankManager"
+      controlledBy="dashboard perspectives"
+      visibleInPerspectives="bank manager" />
 
-</div>
-</div>
+    <!-- image manager -->
+    <@nxthemes_panel identifier="image manager"
+      url="${basePath}/nxthemes-editor/imageManager"
+      controlledBy="dashboard perspectives"
+      visibleInPerspectives="image manager" />
+      
+    <!-- preset manager -->
+    <@nxthemes_panel identifier="preset manager"
+      url="${basePath}/nxthemes-editor/presetManager"
+      controlledBy="dashboard perspectives"
+      visibleInPerspectives="preset manager" />
+      
+    <!-- style manager -->
+    <@nxthemes_controller resource="style-manager-actions.json" />
+    <@nxthemes_panel identifier="style manager"
+      url="${basePath}/nxthemes-editor/styleManager"
+      controlledBy="dashboard perspectives,style manager actions"
+      visibleInPerspectives="style manager" />
 
+    <!-- theme browser -->
+    <@nxthemes_panel identifier="theme browser"
+      url="${basePath}/nxthemes-editor/themeBrowser"
+      controlledBy="dashboard perspectives"
+      visibleInPerspectives="theme browser" />
+      
 </td>
 </tr>
 </table>
 
-</@block>
-</@extends>
+</div>
+</div>

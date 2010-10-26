@@ -1,10 +1,3 @@
-<@extends src="main.ftl">
-
-<#assign screen="image-manager" />
-
-<@block name="title">Image library</@block>
-
-<@block name="content">
 
 <style type="text/css">
 .album {
@@ -136,5 +129,4 @@
 
 </#if>
 
-</@block>
-</@extends>
+

@@ -1,10 +1,3 @@
-<@extends src="main.ftl">
-
-<#assign screen="skin-manager" />
-
-<@block name="title">Choose a skin</@block>
-
-<@block name="content">
 
 <div class="window">
 <div class="title">Choose a skin</div>
@@ -40,5 +33,3 @@
 </div>
 </div>
 
-</@block>
-</@extends>

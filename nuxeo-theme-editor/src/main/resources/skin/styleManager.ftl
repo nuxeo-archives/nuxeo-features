@@ -1,7 +1,6 @@
 <!-- style menu -->
 <@nxthemes_view resource="style-menu.json" />   
 
-<div id="nxthemesStyleManager" class="nxthemesScreen">
 
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
@@ -9,7 +8,11 @@
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
-<h1 class="nxthemesEditor">Manage styles</h1>
+<div class="nxthemesThemeControlPanel">
+
+<div class="window">
+<div class="title">Style manager</div>
+<div class="body">
 
 <#if style_manager_mode = 'named styles'>
 
@@ -17,8 +20,6 @@
   <a class="nxthemesActionButton" href="javascript:NXThemesStyleEditor.createNamedStyle(null, '${theme.name}', 'style manager')">
   <img src="${basePath}/skin/nxthemes-editor/img/add-14.png" /> Create new style</a>
 </div>
-
-  <p class="nxthemesExplanation">List styles by name.<p>
 
   <table class="nxthemesManageScreen">
   <tr>
@@ -65,8 +66,6 @@
 
 <#if style_manager_mode = 'clean up'>
 
-<p class="nxthemesExplanation">Clean up styles by removing those associated with unused widgets.<p>
-
 <#assign styles=themeManager.getStyles(current_theme_name)>
 <#list styles as style>
 
@@ -105,8 +104,6 @@
 
 
 <#if style_manager_mode = 'page styles'>
-
-  <p class="nxthemesExplanation">Page styles.<p>
 
   <form class="nxthemesForm" action="javascript:void(0)"
     onsubmit="NXThemesStyleManager.setPageStyles('${current_theme_name}', this); return false">
@@ -147,8 +144,6 @@
 
 <#if style_manager_mode = 'style dependencies'>
 
-  <p class="nxthemesExplanation">Style dependencies.<p>
-
   <#macro listTree (objects)>
   <#if (objects?size > 0)>
     <ul>
@@ -188,5 +183,5 @@
   
 </#if>
 
-
+</div>
 </div>

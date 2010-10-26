@@ -1,10 +1,3 @@
-<@extends src="main.ftl">
-
-<#assign screen="bank-manager" />
-
-<@block name="title">Manage theme banks</@block>
-
-<@block name="content">
 
 <div class="window">
 <div class="title">Manage banks</div>
@@ -73,5 +66,3 @@
 <p>No banks have been registered</p>
 </#if>
 
-</@block>
-</@extends>

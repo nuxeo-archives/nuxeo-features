@@ -1,13 +1,6 @@
-<@extends src="main.ftl">
-
-<#assign screen="theme-options" />
 
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
-
-<@block name="title">Set theme options</@block>
-
-<@block name="content">
 
 
 <div class="window">
@@ -58,7 +51,3 @@
 </div>
 </div>
 
-
-
-</@block>
-</@extends>

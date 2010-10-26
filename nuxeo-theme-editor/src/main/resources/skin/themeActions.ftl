@@ -2,21 +2,11 @@
 
 <#if theme>
 
-  
 <@nxthemes_button identifier="refresh button"
   link="javascript:NXThemesEditor.refreshTheme('${theme.name?js_string}')"
   icon="${basePath}/skin/nxthemes-editor/img/refresh-14.png"
   label="Refresh" />
-
       
-<@nxthemes_button identifier="manage_presets"
-  link="javascript:NXThemesEditor.managePresets()"
-  label="Manage presets" />
-  
-<@nxthemes_button identifier="manage_styles"
-  link="javascript:NXThemesEditor.manageStyles()"
-  label="Manage styles" />
-
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"
   menu="nxthemesThemeActions"

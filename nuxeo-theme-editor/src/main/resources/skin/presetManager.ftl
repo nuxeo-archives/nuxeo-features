@@ -2,12 +2,12 @@
 <!-- preset menu -->
 <@nxthemes_view resource="preset-menu.json" />   
 
-<div id="nxthemesPresetManager" class="nxthemesPresets nxthemesScreen">
-
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 
-<h1 class="nxthemesEditor">Manage presets</h1>
+<div class="window">
+<div class="title">Preset manager</div>
+<div class="body">
 
 <#if preset_manager_mode = 'theme presets'>
 
@@ -17,8 +17,6 @@
   <img src="${basePath}/skin/nxthemes-editor/img/add-14.png" /> Create new preset</a>
 </div>
 </#if>
-
-<p class="nxthemesExplanation">Theme presets</p>
 
 <table class="nxthemesManageScreen">
   <tr>
@@ -147,8 +145,6 @@ ${preset_info.preview?replace(r'${basePath}', '${basePath}')}
 
 <#if preset_manager_mode = 'unregistered presets'>
 
-<p class="nxthemesExplanation">Find unregistered presets (colors, images, ...)</p>
-
 <#assign colors=This.getHardcodedColors(current_theme_name)>
 
 <#if colors>
@@ -271,8 +267,6 @@ ${preset_info.preview?replace(r'${basePath}', '${basePath}')}
 
 <#if preset_manager_mode = 'application presets'>
 
-<p class="nxthemesExplanation">Application presets are categorized in palettes. They cannot be modified.</p>
-
 <table class="nxthemesManageScreen">
   <tr>
     <th style="width: 25%;">Palette</th>
@@ -353,3 +347,5 @@ ${preset_info.preview?replace(r'${basePath}', '${basePath}')}</div>
 
 </div>
 </div>
+
+

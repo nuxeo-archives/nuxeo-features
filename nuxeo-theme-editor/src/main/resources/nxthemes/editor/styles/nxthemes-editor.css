@@ -1845,7 +1845,7 @@ table.fragmentFactory td {
   -webkit-border-radius: 12px;
   border-radius: 12px;
   margin: 0;
-  padding: 15px 35px;
+  padding: 15px;
 }
 
 .nxthemesThemeControlPads img {
@@ -2002,3 +2002,8 @@ a.nxthemesActionButton img {
   border: none;
 }
   
+.nxthemesDashboardMenu  li {
+  display: block;
+  padding: 4px;
+  float: none;
+}

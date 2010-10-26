@@ -173,41 +173,6 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("themeBrowserActions")
-    public Object renderThemeBrowserActions(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("themeBrowserActions.ftl");
-    }
-
-    @GET
-    @Path("presetManagerActions")
-    public Object renderPresetManagerActions(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String currentThemeName = getCurrentThemeName(path, name);
-        String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
-                templateEngine, currentThemeName);
-        return getTemplate("presetManagerActions.ftl").arg("theme",
-                currentThemeDef).arg("selected_preset_category",
-                getSelectedPresetCategory());
-    }
-
-    @GET
-    @Path("styleManagerActions")
-    public Object renderStyleManagerActions(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        String currentThemeName = getCurrentThemeName(path, name);
-        String templateEngine = getTemplateEngine(path);
-        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
-                templateEngine, currentThemeName);
-        return getTemplate("styleManagerActions.ftl").arg("theme",
-                currentThemeDef);
-    }
-
-    @GET
     @Path("cssEditor")
     public Object renderCssEditor(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -253,14 +218,6 @@ public class Main extends ModuleRoot {
         }
         return getTemplate("themeBrowser.ftl").arg("available_themes",
                 availableThemes).arg("workspace_themes", workspaceThemes);
-    }
-
-    @GET
-    @Path("backToCanvas")
-    public Object renderBackToCanvasButton(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("backToCanvas.ftl");
     }
 
     @GET
@@ -435,10 +392,18 @@ public class Main extends ModuleRoot {
                 selectedViewName);
     }
 
-    // Control panel
+    // Dashboard
     @GET
     @Path("dashboard")
     public Object renderDashboard(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("dashboard.ftl");
+    }
+
+    @GET
+    @Path("controlPanel")
+    public Object renderControlPanel(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
@@ -449,7 +414,7 @@ public class Main extends ModuleRoot {
 
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
 
-        return getTemplate("dashboard.ftl").arg("current_theme",
+        return getTemplate("controlPanel.ftl").arg("current_theme",
                 currentThemeDescriptor).arg("current_skin_name",
                 currentSkinName).arg("current_bank", currentThemeBank);
     }

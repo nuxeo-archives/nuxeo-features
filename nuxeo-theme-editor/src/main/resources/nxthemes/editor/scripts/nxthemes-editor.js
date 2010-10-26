@@ -203,23 +203,27 @@ NXThemesEditor.selectResourceBank = function(bankName, screenName) {
 };
 
 NXThemesEditor.editCss = function() {
-    NXThemesEditor.setEditorPerspective('css editor');
+    NXThemesEditor.setDashboardPerspective('css editor');
 };
 
 NXThemesEditor.manageSkins = function() {
-    NXThemesEditor.setEditorPerspective('skin manager');
+    NXThemesEditor.setDashboardPerspective('skin manager');
 };
 
 NXThemesEditor.manageThemeBanks = function() {
-    NXThemesEditor.setEditorPerspective('bank manager');
+    NXThemesEditor.setDashboardPerspective('bank manager');
 };
 
 NXThemesEditor.manageImages = function() {
-    NXThemesEditor.setEditorPerspective('image manager');
+    NXThemesEditor.setDashboardPerspective('image manager');
 };
 
 NXThemesEditor.setEditorPerspective = function(perspective) {
     NXThemes.getControllerById('editor perspectives').switchTo(perspective);
+};
+
+NXThemesEditor.setDashboardPerspective = function(perspective) {
+    NXThemes.getControllerById('dashboard perspectives').switchTo(perspective);
 };
 
 /* Skin manager */
@@ -886,11 +890,11 @@ NXThemesEditor.openDashboard = function() {
 }
 
 NXThemesEditor.openCanvas = function() {
-    NXThemesEditor.setEditorPerspective('canvas editor');
+    NXThemesEditor.setDashboardPerspective('canvas editor');
 }
 
 NXThemesEditor.setThemeOptions = function() {
-    NXThemesEditor.setEditorPerspective('theme options');
+    NXThemesEditor.setDashboardPerspective('theme options');
 };
 
 NXThemesEditor.manageThemeLayout = function() {
@@ -1102,13 +1106,11 @@ NXThemesEditor.closeAreaStyleChooser = function() {
 };
 
 NXThemesEditor.managePresets = function() {
-    NXThemes.getControllerById("editor perspectives").switchTo('preset manager');
-    NXThemesPresetManager.setEditMode('theme presets', 'theme_presets');
+    NXThemes.getControllerById("dashboard perspectives").switchTo('preset manager');
 };
 
 NXThemesEditor.manageStyles = function() {
-    NXThemes.getControllerById("editor perspectives").switchTo('style manager');
-    NXThemesStyleManager.setEditMode('named styles', 'named_styles');
+    NXThemes.getControllerById("dashboard perspectives").switchTo('style manager');
 };
 
 NXThemesEditor.backToCanvas = function() {
