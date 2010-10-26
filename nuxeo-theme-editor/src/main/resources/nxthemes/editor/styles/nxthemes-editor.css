@@ -1845,7 +1845,7 @@ table.fragmentFactory td {
   -webkit-border-radius: 12px;
   border-radius: 12px;
   margin: 0;
-  padding: 15px;
+  padding: 15px 35px;
 }
 
 .nxthemesThemeControlPads img {
@@ -1959,7 +1959,6 @@ a.nxthemesActionButton img {
 }
 
 #nxthemesTopBanner {
-   position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -1983,7 +1982,7 @@ a.nxthemesActionButton img {
 
 #dashboardTab {
   position: fixed;
-  z-index: 10;
+  z-index: 3;
   bottom: 25px;
   left: 0;
 }
@@ -1991,3 +1990,15 @@ a.nxthemesActionButton img {
 #dashboardTab img {
   border: none;
 }
+
+#canvasEditorTab {
+  position: fixed;
+  z-index: 3;
+  bottom: 25px;
+  left: 0; 
+}
+  
+#canvasEditorTab img {
+  border: none;
+}
+  
