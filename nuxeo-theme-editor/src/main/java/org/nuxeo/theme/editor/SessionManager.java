@@ -65,7 +65,7 @@ public class SessionManager extends AbstractComponent {
 
     private static final String SELECTED_EDIT_FIELD = "org.nuxeo.theme.editor.edit_field";
 
-    private static final String SELECTED_THEME_OPTIONS_CATEGORY = "org.nuxeo.theme.editor.theme_options_category";
+    private static final String SELECTED_BANK_COLLECTION = "org.nuxeo.theme.editor.selected_bank_collection";
 
     private static UserSession getUserSession() {
         return WebEngine.getActiveContext().getUserSession();
@@ -249,12 +249,12 @@ public class SessionManager extends AbstractComponent {
         getUserSession().put(SELECTED_EDIT_FIELD, fieldName);
     }
 
-    public static void setThemeOptionsCategory(String category) {
-        getUserSession().put(SELECTED_THEME_OPTIONS_CATEGORY, category);
+    public static void setSelectedBankCollection(String collection) {
+        getUserSession().put(SELECTED_BANK_COLLECTION, collection);
     }
 
-    public static String getThemeOptionsCategory() {
-        return (String) getUserSession().get(SELECTED_THEME_OPTIONS_CATEGORY);
+    public static String getSelectedBankCollection() {
+        return (String) getUserSession().get(SELECTED_BANK_COLLECTION);
     }
 
     public static void setSelectedResourceBank(String bankName) {

@@ -107,9 +107,7 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         return getTemplate("themeOptions.ftl").arg("current_theme_name",
-                getCurrentThemeName(path, name)).arg(
-                "selected_theme_options_category",
-                getSelectedThemeOptionsCategory());
+                getCurrentThemeName(path, name));
     }
 
     @GET
@@ -543,6 +541,8 @@ public class Main extends ModuleRoot {
         String currentThemeName = getCurrentThemeName(path, name);
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
 
+        String selectedBankCollection = getSelectedBankCollection();
+
         List<String> collections = new ArrayList<String>();
         List<ImageInfo> images = new ArrayList<ImageInfo>();
         if (currentThemeBank != null) {
@@ -560,7 +560,8 @@ public class Main extends ModuleRoot {
                 currentSkinName).arg("current_theme", currentThemeDescriptor).arg(
                 "current_edit_field", getSelectedEditField()).arg(
                 "current_bank", currentThemeBank).arg("images", images).arg(
-                "collections", collections);
+                "collections", collections).arg("selected_bank_collection",
+                selectedBankCollection);
     }
 
     @GET
@@ -1233,11 +1234,11 @@ public class Main extends ModuleRoot {
     }
 
     @POST
-    @Path("select_theme_options_category")
-    public void selectThemeOptionsCategory() {
+    @Path("select_bank_collection")
+    public void selectBankCollection() {
         FormData form = ctx.getForm();
-        String category = form.getString("category");
-        SessionManager.setThemeOptionsCategory(category);
+        String collection = form.getString("collection");
+        SessionManager.setSelectedBankCollection(collection);
     }
 
     @POST
@@ -2073,8 +2074,8 @@ public class Main extends ModuleRoot {
         return SessionManager.getPresetCategory();
     }
 
-    public static String getSelectedThemeOptionsCategory() {
-        return SessionManager.getThemeOptionsCategory();
+    public static String getSelectedBankCollection() {
+        return SessionManager.getSelectedBankCollection();
     }
 
     public static String getSelectedStyleCategory() {

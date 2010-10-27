@@ -2562,15 +2562,15 @@ NXThemesThemeOptions.updatePresets = function(form) {
     });
 };
 
-NXThemesThemeOptions.selectCategory = function(category) {
-    var url = nxthemesBasePath + "/nxthemes-editor/select_theme_options_category";
+NXThemesEditor.selectBankCollection = function(collection, screen) {
+    var url = nxthemesBasePath + "/nxthemes-editor/select_bank_collection";
     new Ajax.Request(url, {
          method: 'post',
          parameters: {
-             category: category
+             collection: collection
          },
          onSuccess: function(r) {
-             NXThemesThemeOptions.refresh();
+               NXThemes.getViewById(screen).refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;

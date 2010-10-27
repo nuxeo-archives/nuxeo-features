@@ -1980,24 +1980,34 @@ a.nxthemesActionButton img {
   float: right;
 }
 
-#dashboardTab {
-  position: fixed;
-  z-index: 3;
-  bottom: 25px;
-  left: 0;
-}
 
-#dashboardTab img {
-  border: none;
-}
 
 #canvasEditorTab {
   position: fixed;
   z-index: 3;
-  bottom: 25px;
-  left: 0; 
+  bottom: 130px;
+  left: -5px;
+}
+
+#dashboardTab {
+  position: fixed;
+  z-index: 3;
+  bottom: 20px;
+  left: -5px;
+}
+
+#dashboardTab:hover {
+  left: 0;
+}
+
+#canvasEditorTab:hover {
+  left: 0;
 }
   
 #canvasEditorTab img {
+  border: none;
+}
+
+#dashboardTab img {
   border: none;
 }

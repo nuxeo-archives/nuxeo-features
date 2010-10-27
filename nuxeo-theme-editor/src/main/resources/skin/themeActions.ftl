@@ -5,8 +5,15 @@
 <@nxthemes_button identifier="refresh button"
   link="javascript:NXThemesEditor.refreshTheme('${theme.name?js_string}')"
   icon="${basePath}/skin/nxthemes-editor/img/refresh-14.png"
-  label="Refresh" />
-      
+  label="Refresh page" />
+  
+<#if theme.custom>  
+<@nxthemes_button identifier="reload button"
+  link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}')"
+  icon="${basePath}/skin/nxthemes-editor/img/refresh-14.png"
+  label="Reload theme" />  
+</#if>
+
 <@nxthemes_button identifier="theme_actions"
   classNames="dropList"
   menu="nxthemesThemeActions"

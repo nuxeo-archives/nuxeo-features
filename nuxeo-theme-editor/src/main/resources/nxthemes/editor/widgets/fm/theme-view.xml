@@ -102,7 +102,7 @@
       <@nxthemes_panel identifier="dashboard tab"
         url="${basePath}/nxthemes-editor/dashboardTab"
         controlledBy="editor perspectives"
-        visibleInPerspectives="canvas editor" />
+        visibleInPerspectives="canvas editor,fragment factory,element editor" />
         
       <!-- back to canvas tab -->
       <@nxthemes_panel identifier="back to canvas tab"

@@ -50,7 +50,7 @@
 
 
 <div class="window">
-<div class="title">Export mode</div>
+<div class="title">Expert mode</div>
 <div class="body">
 
   <ul class="nxthemesSelector">
