@@ -855,6 +855,25 @@ NXThemesEditor.customizeTheme = function(src, screen) {
     });
 };
 
+NXThemesEditor.uncustomizeTheme = function(src, screen) {
+    var url = nxthemesBasePath + "/nxthemes-editor/uncustomize_theme";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             src: src
+         },
+         onSuccess: function(r) {
+             var text = r.responseText;
+             NXThemes.getViewById(screen).refresh();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
+};
+
+
 NXThemesEditor.addPage = function(themeName) {
     var name = prompt("Please enter a page name:", "");
     if (name === "") {

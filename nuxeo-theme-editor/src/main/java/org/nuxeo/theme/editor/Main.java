@@ -404,7 +404,12 @@ public class Main extends ModuleRoot {
     public Object renderDashboard(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("dashboard.ftl");
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("dashboard.ftl").arg("current_theme",
+                currentThemeDef);
     }
 
     @GET
@@ -746,6 +751,17 @@ public class Main extends ModuleRoot {
         String src = ctx.getForm().getString("src");
         try {
             return Editor.customizeTheme(src);
+        } catch (Exception e) {
+            throw new ThemeEditorException(e.getMessage(), e);
+        }
+    }
+
+    @POST
+    @Path("uncustomize_theme")
+    public String uncustomizeTheme() {
+        String src = ctx.getForm().getString("src");
+        try {
+            return Editor.uncustomizeTheme(src);
         } catch (Exception e) {
             throw new ThemeEditorException(e.getMessage(), e);
         }

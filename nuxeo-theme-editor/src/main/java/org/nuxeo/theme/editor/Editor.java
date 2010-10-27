@@ -538,6 +538,16 @@ public class Editor {
         return String.format("%s/default", themeName);
     }
 
+    public static String uncustomizeTheme(String src) throws ThemeException {
+        ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptor(src);
+        if (themeDescriptor == null) {
+            throw new ThemeException("Theme not found: " + src);
+        }
+        ThemeDescriptor themeDef = ThemeManager.uncustomizeTheme(themeDescriptor);
+        String themeName = themeDef.getName();
+        return String.format("%s/default", themeName);
+    }
+
     public static void assignStyleProperty(Element element,
             String propertyName, String value) throws ThemeException {
 

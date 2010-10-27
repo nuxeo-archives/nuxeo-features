@@ -2,6 +2,8 @@
 <!-- preset menu -->
 <@nxthemes_view resource="preset-menu.json" />   
 
+<#assign preset_manager_mode='theme presets' />
+
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 

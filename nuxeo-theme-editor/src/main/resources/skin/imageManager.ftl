@@ -42,6 +42,10 @@
 
 </style>
 
+<#if !selected_bank_collection>
+  <#assign selected_bank_collection='custom' />
+</#if>
+
 <div class="window">
 <div class="title">Image library</div>
 <div class="body">
@@ -58,7 +62,7 @@
 
 <ul class="nxthemesSelector">
 <#list collections as collection>
-  <li><a href="javascript:NXThemesEditor.selectBankCollection('${collection}', 'image manager')">
+  <li <#if selected_bank_collection && selected_bank_collection=collection>class="selected"</#if>><a href="javascript:NXThemesEditor.selectBankCollection('${collection}', 'image manager')">
     ${collection}</a></li>
 </#list>
 </ul>
@@ -76,7 +80,7 @@
             <div class="image"><img src="${current_bank.connectionUrl}/${image.collection}/image/${image.resource}" /></div>
           </div>
         </a>
-        <#if>
+        </#if>
       </#list>
     </div>
 </div>

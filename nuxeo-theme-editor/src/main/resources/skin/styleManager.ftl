@@ -1,3 +1,4 @@
+
 <!-- style menu -->
 <@nxthemes_view resource="style-menu.json" />   
 
@@ -7,6 +8,7 @@
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
+<#assign style_manager_mode = 'named styles' />
 
 <div class="window">
 <div class="title">Style manager</div>
@@ -14,10 +16,6 @@
 
 <#if style_manager_mode = 'named styles'>
 
-<div style="float: right">
-  <a class="nxthemesActionButton" href="javascript:NXThemesStyleEditor.createNamedStyle(null, '${theme.name}', 'style manager')">
-  <img src="${basePath}/skin/nxthemes-editor/img/add-14.png" /> Create new style</a>
-</div>
 
   <table class="nxthemesManageScreen">
   <tr>
@@ -35,8 +33,15 @@
 </#list>
 </ul>
 
+
+<p class="nxthemesEditor">
+  <a class="nxthemesActionButton" href="javascript:NXThemesStyleEditor.createNamedStyle(null, '${theme.name}', 'style manager')">
+  Create new style</a>
+</p>
+
 </td>
 <td>
+
 
 <#if selected_named_style>
 <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
@@ -180,6 +185,7 @@
   </div>
   
 </#if>
+
 
 </div>
 </div>
