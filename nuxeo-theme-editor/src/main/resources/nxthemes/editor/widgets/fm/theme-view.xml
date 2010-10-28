@@ -62,6 +62,12 @@
           controlledBy="editor perspectives"
           visibleInPerspectives="canvas editor" />
 
+        <!-- dashboard actions -->
+        <@nxthemes_panel identifier="dashboard actions"
+          url="${basePath}/nxthemes-editor/dashboardActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="dashboard" />
+
       </div>
 
     </div>

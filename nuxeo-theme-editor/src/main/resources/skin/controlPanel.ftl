@@ -16,10 +16,10 @@
   </#if>  
   <p class="nxthemesEditor">Theme source: <strong>${current_theme.src}</strong></p>
   <#if current_theme.custom>
-    <p class="nxthemesEditor" style="color: #c00">
+    <p class="nxthemesEditor">
     The <strong>${current_theme.name}</strong> theme has been customized.
     <button class="nxthemesActionButton"
-    onclick="NXThemesEditor.uncustomizeTheme('${current_theme.src}', '${screen}')">Revert changes</button></p>
+    onclick="NXThemesEditor.uncustomizeTheme('${current_theme.src}', 'dashboard')">Restore settings</button></p>
   </#if>    
 </#if>
 </div>

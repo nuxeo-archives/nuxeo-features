@@ -179,6 +179,22 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("dashboardActions")
+    public Object renderDashboardActions(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        String currentPagePath = getCurrentPagePath(path, name);
+        String currentpageName = ThemeManager.getPageNameFromPagePath(currentPagePath);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("dashboardActions.ftl").arg("theme", currentThemeDef).arg(
+                "current_page_path", currentPagePath).arg("current_page_name",
+                currentpageName);
+    }
+
+    @GET
     @Path("cssEditor")
     public Object renderCssEditor(
             @QueryParam("org.nuxeo.theme.application.path") String path,

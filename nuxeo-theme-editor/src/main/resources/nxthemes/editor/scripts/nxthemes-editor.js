@@ -749,6 +749,7 @@ NXThemesEditor.switchTheme = function(info) {
         NXThemesEditor.refreshThemeSelector();
         NXThemesEditor.refreshPageSelector();
         NXThemes.getViewById("theme actions").refresh();
+        NXThemes.getViewById("dashboard").refresh();        
         NXThemesEditor.refreshCanvas();
     }
 };
@@ -828,6 +829,7 @@ NXThemesEditor.addTheme = function(viewid) {
              var text = r.responseText;
              NXThemesEditor.selectTheme(text);
              NXThemes.getViewById(viewid).refresh();
+             NXThemesEditor.refreshThemeSelector();             
              NXThemesEditor.refreshPageSelector();
          },
          onFailure: function(r) {
@@ -856,6 +858,10 @@ NXThemesEditor.customizeTheme = function(src, screen) {
 };
 
 NXThemesEditor.uncustomizeTheme = function(src, screen) {
+    var ok = confirm("All customizations will be lost, are you sure?");
+    if (!ok) {
+        return;
+    }
     var url = nxthemesBasePath + "/nxthemes-editor/uncustomize_theme";
     new Ajax.Request(url, {
          method: 'post',
@@ -893,6 +899,7 @@ NXThemesEditor.addPage = function(themeName) {
          onSuccess: function(r) {
              var text = r.responseText;
              NXThemesEditor.selectTheme(text);
+             NXThemes.getViewById("theme selector").refresh();             
              NXThemes.getViewById("page selector").refresh();
              NXThemes.getViewById("theme actions").refresh();
              NXThemesEditor.refreshCanvas();
@@ -2596,5 +2603,21 @@ NXThemesEditor.selectBankCollection = function(collection, screen) {
              window.alert(text);
          }
     });
+};
+
+NXThemesEditor.previewTheme = function(pagePath) {
+    var url = window.location.href;
+    var i = url.indexOf('?');
+    var query_params = $H({
+        'engine': 'default',
+        'theme': pagePath
+    });
+    if (i > 0) {
+      var query_string = url.substr(i+1);
+      query_params = query_params.update($H(query_string.toQueryParams()));
+      url = url.substr(0, i);
+    }
+    url = url + '?' + query_params.toQueryString();
+    window.open(url);
 };
 
