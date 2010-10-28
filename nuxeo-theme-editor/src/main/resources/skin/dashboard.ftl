@@ -1,5 +1,7 @@
 <#setting url_escaping_charset='UTF-8'>
 
+
+
 <@nxthemes_controller resource="dashboard-perspectives.json" />
     
 <div class="nxthemesThemeControlPanelScreen">
@@ -10,10 +12,10 @@
     <button class="nxthemesActionButton"
     onclick="NXThemesEditor.customizeTheme('${current_theme.src}', '${screen}')">Customize this theme</button>
       <img src="${basePath}/skin/nxthemes-editor/img/error.png" width="16" height="16" style="vertical-align: bottom" />
-      <span>These are the factory settings for the <strong>${current_theme.name}</strong> theme. Unless you customize the theme changes will be lost.</span>
+      <span>These are factory settings for the <strong>${current_theme.name}</strong> theme.</span>
     </div>
     <div style="clear: both"></div>
-  </div>
+  </div>   
 </#if>
 
 

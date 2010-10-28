@@ -8,14 +8,12 @@
   <#assign selected_named_style_name = selected_named_style.name>
 </#if>
 
-<#assign style_manager_mode = 'named styles' />
+
+<!-- Style manager -->
 
 <div class="window">
 <div class="title">Style manager</div>
 <div class="body">
-
-<#if style_manager_mode = 'named styles'>
-
 
   <table class="nxthemesManageScreen">
   <tr>
@@ -42,7 +40,6 @@
 </td>
 <td>
 
-
 <#if selected_named_style>
 <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
       onsubmit="NXThemesStyleManager.updateNamedStyleCSS(this); return false">
@@ -62,14 +59,19 @@
 </tr>
 </table>
 
-</#if>
+</div>
+</div>
 
 
-
-
-<#if style_manager_mode = 'clean up'>
+<!-- unused styles -->
 
 <#assign styles=themeManager.getStyles(current_theme_name)>
+<#if styles>
+
+<div class="window">
+<div class="title">Unused styles</div>
+<div class="body">
+
 <#list styles as style>
 
 <#assign views=themeManager.getUnusedStyleViews(style)>
@@ -102,11 +104,18 @@
 </#if>
 </#list>
 
+</div>
+</div>
+
 </#if>
 
 
 
-<#if style_manager_mode = 'page styles'>
+<!-- page styles -->
+
+<div class="window">
+<div class="title">Page styles</div>
+<div class="body">
 
   <form class="nxthemesForm" action="javascript:void(0)"
     onsubmit="NXThemesStyleManager.setPageStyles('${current_theme_name}', this); return false">
@@ -140,13 +149,18 @@
   
   </table>
   </form>
-  
-</#if>
+
+</div>
+</div>
 
 
+<!-- style dependencies -->
 
-<#if style_manager_mode = 'style dependencies'>
+<div class="window">
+<div class="title">Style dependencies</div>
+<div class="body">
 
+<div style="padding: 10px">
   <#macro listTree (objects)>
   <#if (objects?size > 0)>
     <ul>
@@ -183,9 +197,8 @@
   <div class="nxthemesStyleTree">
     <@listTree root_styles/>
   </div>
-  
-</#if>
 
+</div>
 
 </div>
 </div>

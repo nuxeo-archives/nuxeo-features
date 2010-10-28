@@ -15,17 +15,12 @@
     <p class="nxthemesEditor">Resource bank: <strong>${current_bank.name}</strong></p>
   </#if>  
   <p class="nxthemesEditor">Theme source: <strong>${current_theme.src}</strong></p>
-  <p class="nxthemesEditor">Status:
-    <#if current_theme.custom>
-      <strong style="color: #090">customized</strong>.
-      <button class="nxthemesActionButton"
-      onclick="NXThemesEditor.uncustomizeTheme('${current_theme.src}', '${screen}')">Revert to original</button></p>
-    </#if>
-    <#if !current_theme.saveable>
-      <strong style="color: #900">cannot be saved</strong>.
-      <button class="nxthemesActionButton"
-      onclick="NXThemesEditor.customizeTheme('${current_theme.src}', '${screen}')">Customize this theme</button></p>     
-    </#if>
+  <#if current_theme.custom>
+    <p class="nxthemesEditor" style="color: #c00">
+    The <strong>${current_theme.name}</strong> theme has been customized.
+    <button class="nxthemesActionButton"
+    onclick="NXThemesEditor.uncustomizeTheme('${current_theme.src}', '${screen}')">Revert changes</button></p>
+  </#if>    
 </#if>
 </div>
 </div>

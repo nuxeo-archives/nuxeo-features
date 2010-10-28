@@ -3,10 +3,7 @@
 <div class="title">Advanced configuration</div>
 <div class="body">
 
-<div style="float: right">
-  <a class="nxthemesActionButton" href="javascript:NXThemesEditor.addTheme('theme browser')">
-  <img src="${basePath}/skin/nxthemes-editor/img/add-14.png" /> Create new theme</a>
-</div>
+
 
   <table class="nxthemesManageScreen">
   <tr>
@@ -43,6 +40,11 @@
   </td>
   </tr>
   </table>
+
+<p>
+  <a class="nxthemesActionButton" href="javascript:NXThemesEditor.addTheme('theme browser')">
+   Create new theme</a>
+</p>
 
 </div>
 </div>
