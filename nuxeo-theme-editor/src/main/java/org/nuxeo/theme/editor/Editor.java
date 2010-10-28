@@ -1079,7 +1079,6 @@ public class Editor {
                 style = themeManager.createStyle();
                 ElementFormatter.setFormat(page, style);
             }
-            style.setRemote(true);
             try {
                 themeManager.makeElementUseNamedStyle(page, styleName,
                         themeName, preserveInheritance);

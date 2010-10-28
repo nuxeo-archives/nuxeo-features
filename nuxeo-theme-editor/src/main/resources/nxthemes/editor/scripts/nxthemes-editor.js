@@ -1,6 +1,8 @@
 
 // EDITOR
 
+var nxthemesPreviewWindow;
+
 if (typeof NXThemesEditor == "undefined") {
     NXThemesEditor = {
         writeMessage: function(msg) {
@@ -2618,6 +2620,10 @@ NXThemesEditor.previewTheme = function(pagePath) {
       url = url.substr(0, i);
     }
     url = url + '?' + query_params.toQueryString();
-    window.open(url);
+    nxthemesPreviewWindow = window.open(url, 'theme preview');
+    if (window.focus) {
+      nxthemesPreviewWindow.focus();
+    }
+    
 };
 

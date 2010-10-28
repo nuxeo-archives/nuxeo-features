@@ -1,6 +1,6 @@
 <div id="nxthemesThemeSelector">
   <form action="javascript:void(0)">
-  <label>Theme:</label>
+  <label style="color: #eee; font: bold 11px arial">Theme:</label>
   <select id="theme">
     <option disabled="disabled" value="">Select a theme</option>
     <#list themes as theme>
