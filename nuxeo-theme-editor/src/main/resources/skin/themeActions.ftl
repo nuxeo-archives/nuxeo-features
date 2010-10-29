@@ -1,6 +1,6 @@
 <#setting url_escaping_charset='UTF-8'>
 
-<span style="font: bold 11px arial; padding: 3px 4px 3px 7px; color: white; float: left">Theme actions: </span>
+<span style="font: bold 11px arial; padding: 3px 4px 3px 7px; color: white; float: left">Theme: </span>
 
 <#if theme>
 

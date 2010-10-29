@@ -14,13 +14,7 @@
   <#if current_bank>
     <p class="nxthemesEditor">Resource bank: <strong>${current_bank.name}</strong></p>
   </#if>  
-  <p class="nxthemesEditor">Theme source: <strong>${current_theme.src}</strong></p>
-  <#if current_theme.custom>
-    <p class="nxthemesEditor">
-    The <strong>${current_theme.name}</strong> theme has been customized.
-    <button class="nxthemesActionButton"
-    onclick="NXThemesEditor.uncustomizeTheme('${current_theme.src}', 'dashboard')">Restore settings</button></p>
-  </#if>    
+  <p class="nxthemesEditor">Theme source: <strong>${current_theme.src}</strong></p> 
 </#if>
 </div>
 </div>

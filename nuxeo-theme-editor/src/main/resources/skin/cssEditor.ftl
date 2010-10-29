@@ -6,6 +6,8 @@
 <div class="title">Edit CSS</div>
 <div class="body">
 
+<#if current_bank>
+
 <#if theme_skin>
 <#assign theme_skin_name = theme_skin.name>
 
@@ -50,13 +52,33 @@ ${theme_skin_css}
 <div style="clear: both; padding: 5px"></div>
 
 <#else>
-  <p>No skin available.</p>
+  <p>No skin selected.</p>
+  <p>
+    <a href="javascript:NXThemesEditor.manageSkins()"
+       class="nxthemesActionButton">Select a skin</a>
+  </p>  
+</#if>
+
+<#else>
+  <p>No bank selected</p>
   <p>
     <a href="javascript:NXThemesEditor.manageThemeBanks()"
        class="nxthemesActionButton">Connect to a bank</a>
-  </p>  
+  </p>
 </#if>
 
 </div>
 </div>
 
+
+<#if current_theme && !current_theme.saveable>
+  <div id="nxthemesTopBanner" style="position: absolute">
+    <div class="nxthemesInfoMessage">
+    <button class="nxthemesActionButton"
+    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', 'css editor')">Customize theme</button>
+      <img src="${basePath}/skin/nxthemes-editor/img/error.png" width="16" height="16" style="vertical-align: bottom" />
+      <span>Before you can edit the CSS file you need to customize the <strong>${current_theme.name}</strong> theme.</span>
+    </div>
+    <div style="clear: both"></div>
+  </div>   
+</#if>

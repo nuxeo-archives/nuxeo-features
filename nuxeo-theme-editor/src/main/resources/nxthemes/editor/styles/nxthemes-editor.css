@@ -1841,7 +1841,7 @@ table.fragmentFactory td {
 .nxthemesThemeControlPanel {
   background-color: #fff;
   margin: 0;
-  padding: 20px 25px;
+  padding: 33px 25px;
 }
 
 a.nxthemesActionButton {
@@ -1958,7 +1958,7 @@ a.nxthemesActionButton img {
 #canvasEditorTab {
   position: fixed;
   z-index: 3;
-  bottom: 130px;
+  top: 96px;
   left: -5px;
 }
 

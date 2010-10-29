@@ -4,17 +4,8 @@
     
 <div class="nxthemesThemeControlPanelScreen">
 
-<#if current_theme && !current_theme.saveable>
-  <div id="nxthemesTopBanner">
-    <div class="nxthemesInfoMessage">
-    <button class="nxthemesActionButton"
-    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', 'dashboard')">Customize this theme</button>
-      <img src="${basePath}/skin/nxthemes-editor/img/error.png" width="16" height="16" style="vertical-align: bottom" />
-      <span>These are factory settings for the <strong>${current_theme.name}</strong> theme.</span>
-    </div>
-    <div style="clear: both"></div>
-  </div>   
-</#if>
+
+
 
 <div class="nxthemesThemeControlPanel">
 

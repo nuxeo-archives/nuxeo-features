@@ -106,8 +106,12 @@ public class Main extends ModuleRoot {
     public Object renderThemeOptions(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("themeOptions.ftl").arg("current_theme_name",
-                getCurrentThemeName(path, name));
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("themeOptions.ftl").arg("current_theme",
+                currentThemeDef);
     }
 
     @GET
@@ -205,11 +209,14 @@ public class Main extends ModuleRoot {
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
+        ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
+
         return getTemplate("cssEditor.ftl").arg("theme", currentThemeDef).arg(
                 "named_styles", styles).arg("style_manager_mode",
                 getStyleManagerMode()).arg("theme_skin", themeSkin).arg(
                 "theme_skin_css", getRenderedPropertiesForNamedStyle(themeSkin)).arg(
-                "current_theme_name", currentThemeName);
+                "current_theme_name", currentThemeName).arg("current_bank",
+                currentThemeBank).arg("current_theme", currentThemeDef);
     }
 
     @GET

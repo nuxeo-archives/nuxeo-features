@@ -51,3 +51,16 @@
 </div>
 </div>
 
+
+<#if current_theme && !current_theme.saveable>
+  <div id="nxthemesTopBanner" style="position: absolute">
+    <div class="nxthemesInfoMessage">
+    <button class="nxthemesActionButton"
+    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', 'theme options')">Customize theme</button>
+      <img src="${basePath}/skin/nxthemes-editor/img/error.png" width="16" height="16" style="vertical-align: bottom" />
+      <span>Before you can modify theme options you need to customize the <strong>${current_theme.name}</strong> theme.</span>
+    </div>
+    <div style="clear: both"></div>
+  </div>   
+</#if>
+
