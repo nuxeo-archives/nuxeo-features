@@ -1354,8 +1354,27 @@ NXThemesEditor.cleanUpCanvas = function(html) {
     return html;
 };
 
+NXThemesEditor.activateDashboardPreview = function(html) {
+    var url = window.location.href;
+    var i = url.indexOf('?');
+    var query_params = $H({
+        'engine': 'default'
+    });
+    if (i > 0) {
+      var query_string = url.substr(i+1);
+      query_params = query_params.update($H(query_string.toQueryParams()));
+      url = url.substr(0, i);
+    }
+    url = url + '?' + query_params.toQueryString();
+
+    html = html.replace(/FRAME_SRC/g, url);
+    return html;
+};
+
+
 NXThemes.registerFilters({
-    'clean up canvas': NXThemesEditor.cleanUpCanvas
+    'clean up canvas': NXThemesEditor.cleanUpCanvas,
+    'activate dashboard preview': NXThemesEditor.activateDashboardPreview
 });
 
 //PRESET MANAGER
@@ -2607,23 +2626,4 @@ NXThemesEditor.selectBankCollection = function(collection, screen) {
     });
 };
 
-NXThemesEditor.previewTheme = function(pagePath) {
-    var url = window.location.href;
-    var i = url.indexOf('?');
-    var query_params = $H({
-        'engine': 'default',
-        'theme': pagePath
-    });
-    if (i > 0) {
-      var query_string = url.substr(i+1);
-      query_params = query_params.update($H(query_string.toQueryParams()));
-      url = url.substr(0, i);
-    }
-    url = url + '?' + query_params.toQueryString();
-    nxthemesPreviewWindow = window.open(url, 'theme preview');
-    if (window.focus) {
-      nxthemesPreviewWindow.focus();
-    }
-    
-};
 

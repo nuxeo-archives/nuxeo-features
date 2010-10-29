@@ -189,13 +189,9 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
-        String currentPagePath = getCurrentPagePath(path, name);
-        String currentpageName = ThemeManager.getPageNameFromPagePath(currentPagePath);
         ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
-        return getTemplate("dashboardActions.ftl").arg("theme", currentThemeDef).arg(
-                "current_page_path", currentPagePath).arg("current_page_name",
-                currentpageName);
+        return getTemplate("dashboardActions.ftl").arg("theme", currentThemeDef);
     }
 
     @GET
@@ -451,6 +447,22 @@ public class Main extends ModuleRoot {
         return getTemplate("controlPanel.ftl").arg("current_theme",
                 currentThemeDescriptor).arg("current_skin_name",
                 currentSkinName).arg("current_bank", currentThemeBank);
+    }
+
+    @GET
+    @Path("dashboardPreview")
+    public Object renderDashboardPreview(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
+        String templateEngine = getTemplateEngine(path);
+        String currentPagePath = getCurrentPagePath(path, name);
+        String currentpageName = ThemeManager.getPageNameFromPagePath(currentPagePath);
+        ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
+                templateEngine, currentThemeName);
+        return getTemplate("dashboardPreview.ftl").arg("theme", currentThemeDef).arg(
+                "current_page_path", currentPagePath).arg("current_page_name",
+                currentpageName);
     }
 
     @GET

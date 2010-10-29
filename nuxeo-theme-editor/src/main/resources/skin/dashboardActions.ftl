@@ -4,7 +4,7 @@
 
 <#if theme.saveable>
 <@nxthemes_button identifier="preview theme"
-  link="javascript:NXThemesEditor.previewTheme('${current_page_path?js_string}')"
+  link="javascript:NXThemesEditor.setDashboardPerspective('dashboard preview')"
   label="Preview theme" />
 </#if>
 

@@ -10,12 +10,12 @@
 <form class="nxthemesForm"
       onsubmit="NXThemesThemeOptions.updatePresets(this); return false">
 
-    <input type="hidden" name="theme_name" value="${current_theme_name}" />
+    <input type="hidden" name="theme_name" value="${current_theme.name}" />
 
 <#assign categories = ["color", "background", "font", "image"] />
 <#assign hasField=false />
 <#list categories as category>
-<#assign presets = This.getCustomPresets(current_theme_name, category)>
+<#assign presets = This.getCustomPresets(current_theme.name, category)>
 
 <#if presets>
 <#assign hasField=true />

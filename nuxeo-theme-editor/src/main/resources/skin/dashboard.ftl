@@ -115,7 +115,14 @@
       url="${basePath}/nxthemes-editor/themeBrowser"
       controlledBy="dashboard perspectives"
       visibleInPerspectives="theme browser" />
-      
+
+    <!-- dashboard preview -->
+    <@nxthemes_panel identifier="dashboard preview"
+      url="${basePath}/nxthemes-editor/dashboardPreview"
+      controlledBy="dashboard perspectives"
+      filter="activate dashboard preview"
+      visibleInPerspectives="dashboard preview" />      
+
 </td>
 </tr>
 </table>
