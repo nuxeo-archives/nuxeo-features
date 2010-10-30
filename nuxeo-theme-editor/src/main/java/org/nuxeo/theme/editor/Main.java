@@ -553,7 +553,8 @@ public class Main extends ModuleRoot {
         try {
             Editor.useResourceBank(themeSrc, bankName);
         } catch (Exception e) {
-            throw new ThemeEditorException("Could not use bank: " + bankName, e);
+            throw new ThemeEditorException("Cannot connect to bank: "
+                    + bankName, e);
         }
     }
 

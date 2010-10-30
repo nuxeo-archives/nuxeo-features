@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nuxeo.theme.Manager;
 import org.nuxeo.theme.elements.CellElement;
 import org.nuxeo.theme.elements.Element;
@@ -43,6 +45,7 @@ import org.nuxeo.theme.perspectives.PerspectiveManager;
 import org.nuxeo.theme.presets.PresetManager;
 import org.nuxeo.theme.presets.PresetType;
 import org.nuxeo.theme.properties.FieldIO;
+import org.nuxeo.theme.resources.ResourceBank;
 import org.nuxeo.theme.themes.ThemeDescriptor;
 import org.nuxeo.theme.themes.ThemeException;
 import org.nuxeo.theme.themes.ThemeIOException;
@@ -51,6 +54,8 @@ import org.nuxeo.theme.themes.ThemeSerializer;
 import org.nuxeo.theme.types.TypeFamily;
 
 public class Editor {
+
+    private static final Log log = LogFactory.getLog(Editor.class);
 
     public static void updateElementWidget(Element element, String viewName)
             throws ThemeException {
@@ -1052,7 +1057,7 @@ public class Editor {
             themeManager.fillScratchPage(themeName, fragment);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e, e);
         }
         // Clean cache
         themeManager.themeModified(currentThemeName);
@@ -1116,7 +1121,10 @@ public class Editor {
 
     public static void useResourceBank(String themeSrc, String bankName)
             throws ThemeException {
-        Manager.getThemeManager();
+        ResourceBank resourceBank = ThemeManager.getResourceBank(bankName);
+        if (!resourceBank.checkStatus()) {
+            throw new ThemeException("Could not connect to bank: " + bankName);
+        }
         ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptor(themeSrc);
         themeDescriptor.setResourceBankName(bankName);
         saveTheme(themeDescriptor.getName());
