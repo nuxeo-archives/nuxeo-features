@@ -39,8 +39,9 @@
   max-height: 70px;
   border: none;
 }
-
 </style>
+
+<#if current_bank>
 
 <#if !selected_bank_collection>
   <#assign selected_bank_collection='custom' />
@@ -49,8 +50,6 @@
 <div class="window">
 <div class="title">Image library</div>
 <div class="body">
-
-  <#if current_bank>
   
 <table class="nxthemesManageScreen">
   <tr>
@@ -92,19 +91,10 @@
 </table>
 
 
-  <#else>
-    <p>No bank selected</p>
-    <p>
-      <a href="javascript:NXThemesEditor.manageThemeBanks()"
-       class="nxthemesActionButton">Connect to a bank</a>
-    </p>
-  </#if>
   
 </div>
 </div>
 
-
-<#if current_bank>
   
 <div class="window">
 <div class="title">Upload images</div>
@@ -131,6 +121,21 @@
 
 </div>
 </div>
+
+  <#else>
+  
+<div class="window">
+<div class="title">Image library error</div>
+<div class="body">
+  
+    <p>No bank selected</p>
+    <p>
+      <a href="javascript:NXThemesEditor.manageThemeBanks()"
+       class="nxthemesActionButton">Connect to a bank</a>
+    </p>
+    
+</div>
+</div>    
 
 </#if>
 

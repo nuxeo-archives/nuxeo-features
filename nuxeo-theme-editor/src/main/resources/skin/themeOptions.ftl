@@ -2,6 +2,7 @@
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 
+<#assign saveable=current_theme && current_theme.saveable>
 
 <div class="window">
 <div class="title">Theme options</div>
@@ -39,7 +40,7 @@
 
 <#if hasField>
   <p>
-    <button type="submit">Save</button>
+    <button <#if !saveable>disabled="disabled"</#if> type="submit" >Save</button>
   </p>
 </#if>
 </form>
@@ -52,7 +53,7 @@
 </div>
 
 
-<#if current_theme && !current_theme.saveable>
+<#if !saveable>
   <div id="nxthemesTopBanner" style="position: absolute">
     <div class="nxthemesInfoMessage">
     <button class="nxthemesActionButton"

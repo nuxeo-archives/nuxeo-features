@@ -551,7 +551,11 @@ public class Main extends ModuleRoot {
         String themeSrc = form.getString("theme_src");
         String bankName = form.getString("bank");
         try {
-            Editor.useResourceBank(themeSrc, bankName);
+            if ("".equals(bankName)) {
+                Editor.useNoResourceBank(themeSrc);
+            } else {
+                Editor.useResourceBank(themeSrc, bankName);
+            }
         } catch (Exception e) {
             throw new ThemeEditorException("Cannot connect to bank: "
                     + bankName, e);

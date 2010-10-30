@@ -118,7 +118,7 @@
 
     <!-- dashboard preview -->
     <@nxthemes_panel identifier="dashboard preview"
-      url="${basePath}/nxthemes-editor/dashboardPreview"
+      url="${basePath}/nxthemes-editor/dashboardPreview" 
       controlledBy="dashboard perspectives"
       filter="activate dashboard preview"
       visibleInPerspectives="dashboard preview" />      

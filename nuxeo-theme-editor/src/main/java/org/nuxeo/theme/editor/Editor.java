@@ -1130,4 +1130,10 @@ public class Editor {
         saveTheme(themeDescriptor.getName());
     }
 
+    public static void useNoResourceBank(String themeSrc) throws ThemeException {
+        ThemeDescriptor themeDescriptor = ThemeManager.getThemeDescriptor(themeSrc);
+        themeDescriptor.setResourceBankName(null);
+        saveTheme(themeDescriptor.getName());
+    }
+
 }

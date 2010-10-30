@@ -2,6 +2,8 @@
 <#assign themeManager=This.getThemeManager()>
 <#assign themes=themeManager.getThemeDescriptors()>
 
+<#assign saveable=current_theme && current_theme.saveable>
+
 <div class="window">
 <div class="title">Edit CSS</div>
 <div class="body">
@@ -16,7 +18,7 @@
     <input type="hidden" name="style_uid" value="#{theme_skin.uid}" />
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
 
-<#if theme_skin.customized>
+<#if theme_skin.customized && saveable>
   <div>
     <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
    style="margin-bottom: 10px; border: none; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">${theme_skin_css}</textarea>
@@ -32,14 +34,16 @@
 ${theme_skin_css}
 </textarea>
 
+  <#if saveable>
   <div style="float: left">
     <button type="submit">Customize CSS</button>
   </div>
+  </#if>
 
 </#if>
 </form>
 
-<#if theme_skin.remote & theme_skin.customized>
+<#if theme_skin.remote && theme_skin.customized && saveable>
   <form class="nxthemesForm" style="padding: 0; float: right"
       onsubmit="NXThemesCssEditor.restoreNamedStyle(this); return false">
     <input type="hidden" name="style_uid" value="#{theme_skin.uid}" />
@@ -71,7 +75,7 @@ ${theme_skin_css}
 </div>
 
 
-<#if current_theme && !current_theme.saveable>
+<#if !saveable>
   <div id="nxthemesTopBanner" style="position: absolute">
     <div class="nxthemesInfoMessage">
     <button class="nxthemesActionButton"

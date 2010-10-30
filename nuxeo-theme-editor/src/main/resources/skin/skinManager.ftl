@@ -1,4 +1,7 @@
 
+<#assign saveable=current_theme && current_theme.saveable>
+
+
 <div class="window">
 <div class="title">Choose a skin</div>
 <div class="body">
@@ -10,7 +13,7 @@
     <div style="padding: 10px 5px">
     <#list skins as skin>
       <div class="nxthemesImageSingle nxthemesImageSingle<#if current_skin_name=skin.name>Selected</#if>">
-        <a href="javascript:NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')">
+        <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')<#else>void(0)</#if>">
           <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
           <div>${skin.name}</div>
         </a>
@@ -34,7 +37,7 @@
 </div>
 
 
-<#if current_theme && !current_theme.saveable>
+<#if !saveable>
   <div id="nxthemesTopBanner" style="position: absolute">
     <div class="nxthemesInfoMessage">
     <button class="nxthemesActionButton"

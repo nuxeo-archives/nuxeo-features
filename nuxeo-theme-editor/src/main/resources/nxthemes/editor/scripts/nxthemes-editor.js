@@ -254,7 +254,7 @@ NXThemesSkinManager.activateSkin = function(theme, bank, collection, resource) {
              resource: resource
          },
          onSuccess: function(r) {
-             NXThemesEditor.manageSkins();
+             NXThemesEditor.showThemePreview();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -2368,7 +2368,7 @@ NXThemesCssEditor.updateNamedStyleCSS = function(form) {
              'theme_name': theme_name
          },
          onSuccess: function(r) {
-             NXThemes.getViewById("css editor").refresh();
+             NXThemesEditor.showThemePreview();
              NXThemesEditor.refreshUndoActions();
          },
          onFailure: function(r) {
@@ -2600,7 +2600,7 @@ NXThemesThemeOptions.updatePresets = function(form) {
              theme_name: themeName
          },
          onSuccess: function(r) {
-             NXThemesThemeOptions.refresh();
+             NXThemesEditor.showThemePreview();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -2626,4 +2626,8 @@ NXThemesEditor.selectBankCollection = function(collection, screen) {
     });
 };
 
+
+NXThemesEditor.showThemePreview = function() {
+  NXThemesEditor.setDashboardPerspective('dashboard preview');
+};
 
