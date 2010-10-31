@@ -22,13 +22,12 @@
 <div class="window">
 <div class="title">Skin</div>
 <div class="body">
-  <#if current_skin_name>
-    <#assign current_skin=Root.getSkinInfo(current_skin_name) />
+  <#if current_bank && current_skin_name>
+    <#assign current_skin=Root.getSkinInfo(current_bank.name, current_skin_name) />
     <#if current_skin>
-    <#assign bank=Root.getResourceBank(current_skin.bank) />
     <p class="nxthemesEditor">Current skin: <strong>${current_skin.name}</strong>
     <div style="margin: 10px;">
-      <img style="border: 1px solid #ccc;" src="${bank.connectionUrl}/${current_skin.collection}/style/${current_skin.resource}/preview"" />
+      <img style="border: 1px solid #ccc;" src="${current_bank.connectionUrl}/${current_skin.collection}/style/${current_skin.resource}/preview"" />
     <div>
     </p>
     </#if>

@@ -21,6 +21,8 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.webengine.WebEngine;
 import org.nuxeo.ecm.webengine.forms.FormData;
 import org.nuxeo.ecm.webengine.model.Access;
@@ -40,9 +42,12 @@ import org.nuxeo.theme.fragments.Fragment;
 import org.nuxeo.theme.fragments.FragmentType;
 import org.nuxeo.theme.perspectives.PerspectiveManager;
 import org.nuxeo.theme.perspectives.PerspectiveType;
+import org.nuxeo.theme.presets.PresetInfo;
 import org.nuxeo.theme.presets.PresetManager;
 import org.nuxeo.theme.presets.PresetType;
+import org.nuxeo.theme.resources.ImageInfo;
 import org.nuxeo.theme.resources.ResourceBank;
+import org.nuxeo.theme.resources.SkinInfo;
 import org.nuxeo.theme.themes.ThemeDescriptor;
 import org.nuxeo.theme.themes.ThemeException;
 import org.nuxeo.theme.themes.ThemeIOException;
@@ -56,6 +61,8 @@ import org.nuxeo.theme.views.ViewType;
 @WebObject(type = "nxthemes-editor", administrator = Access.GRANT)
 @Produces(MediaType.TEXT_HTML)
 public class Main extends ModuleRoot {
+
+    private static final Log log = LogFactory.getLog(Main.class);
 
     @GET
     @Path("perspectiveSelector")
@@ -480,16 +487,23 @@ public class Main extends ModuleRoot {
                 templateEngine, currentThemeName);
 
         List<SkinInfo> skins = new ArrayList<SkinInfo>();
+        List<SkinInfo> baseSkins = new ArrayList<SkinInfo>();
         List<String> collections = new ArrayList<String>();
         if (currentThemeBank != null) {
             String bankName = currentThemeBank.getName();
-            skins = getBankSkins(currentThemeBank.getName());
+            for (SkinInfo skin : getBankSkins(currentThemeBank.getName())) {
+                if (skin.isBase()) {
+                    baseSkins.add(skin);
+                } else {
+                    skins.add(skin);
+                }
+            }
             collections = getBankCollections(bankName);
         }
         return getTemplate("skinManager.ftl").arg("current_skin_name",
                 currentSkinName).arg("current_theme", currentThemeDescriptor).arg(
                 "current_bank", currentThemeBank).arg("skins", skins).arg(
-                "collections", collections);
+                "base_skins", baseSkins).arg("collections", collections);
     }
 
     @GET
@@ -570,9 +584,10 @@ public class Main extends ModuleRoot {
         String bankName = form.getString("bank");
         String collectionName = form.getString("collection");
         String resourceName = form.getString("resource");
+        boolean baseSkin = Boolean.valueOf(form.getString("base"));
         try {
             Editor.activateSkin(themeName, bankName, collectionName,
-                    resourceName);
+                    resourceName, baseSkin);
         } catch (Exception e) {
             throw new ThemeEditorException("Could not activate skin", e);
         }
@@ -623,16 +638,27 @@ public class Main extends ModuleRoot {
             ResourceBank resourceBank;
             try {
                 resourceBank = ThemeManager.getResourceBank(bankName);
-                for (Map<String, String> skin : resourceBank.getSkins()) {
-                    info.add(new SkinInfo(skin.get("name"), skin.get("bank"),
-                            skin.get("collection"), skin.get("resource"),
-                            skin.get("preview")));
-                }
+                info = resourceBank.getSkins();
             } catch (ThemeException e) {
                 e.printStackTrace();
             }
         }
         return info;
+    }
+
+    public static SkinInfo getSkinInfo(String bankName, String skinName) {
+        ResourceBank resourceBank;
+        try {
+            resourceBank = ThemeManager.getResourceBank(bankName);
+        } catch (ThemeException e) {
+            return null;
+        }
+        for (SkinInfo skin : resourceBank.getSkins()) {
+            if (skinName.equals(skin.getName())) {
+                return skin;
+            }
+        }
+        return null;
     }
 
     public static List<String> getBankCollections(String bankName) {
@@ -672,19 +698,6 @@ public class Main extends ModuleRoot {
             }
         }
         return images;
-    }
-
-    public static SkinInfo getSkinInfo(String skinName) {
-        for (ResourceBank bank : ThemeManager.getResourceBanks()) {
-            for (Map<String, String> skin : bank.getSkins()) {
-                if (skinName.equals(skin.get("name"))) {
-                    return new SkinInfo(skin.get("name"), skin.get("bank"),
-                            skin.get("collection"), skin.get("resource"),
-                            skin.get("preview"));
-                }
-            }
-        }
-        return null;
     }
 
     public ResourceBank getResourceBank(String bankName) throws ThemeException {

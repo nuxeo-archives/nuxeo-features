@@ -1,19 +1,59 @@
 
 <#assign saveable=current_theme && current_theme.saveable>
 
+<#if current_bank>
+
+
+
+<div class="window">
+<div class="title">Select a base layer</div>
+<div class="body">
+
+  <#if base_skins>
+    <div style="padding: 10px 5px">
+    <#list base_skins as skin>
+      <div class="nxthemesImageSingle nxthemesImageSingle<#if current_skin_name=skin.name>Selected</#if>">
+        <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}', false)<#else>void(0)</#if>">
+          <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
+          <div>${skin.name}</div>
+        </a>
+      </div>
+    </#list>
+    <div style="clear: both"></div>
+    </div>
+  <#else>
+    <p>No base layers available</p>
+  </#if>
+
+</div>
+</div>
+
+
+<#else>
 
 <div class="window">
 <div class="title">Choose a skin</div>
 <div class="body">
 
-<#if current_bank>
+  <p>No bank selected</p>
+  <p>
+    <a href="javascript:NXThemesEditor.manageThemeBanks()"
+       class="nxthemesActionButton">Connect to a bank</a>
+  </p>
+  
+</div>
+</div>
+</#if>
 
-  <#assign skins=Root.getBankSkins(current_bank.name) />
+<div class="window">
+<div class="title">Choose a skin</div>
+<div class="body">
+
   <#if skins>
     <div style="padding: 10px 5px">
     <#list skins as skin>
       <div class="nxthemesImageSingle nxthemesImageSingle<#if current_skin_name=skin.name>Selected</#if>">
-        <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}')<#else>void(0)</#if>">
+        <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}', false)<#else>void(0)</#if>">
           <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
           <div>${skin.name}</div>
         </a>
@@ -25,16 +65,9 @@
     <p>No skins available</p>
   </#if>
 
-<#else>
-  <p>No bank selected</p>
-  <p>
-    <a href="javascript:NXThemesEditor.manageThemeBanks()"
-       class="nxthemesActionButton">Connect to a bank</a>
-  </p>
-</#if>
+</div>
+</div>
 
-</div>
-</div>
 
 
 <#if !saveable>

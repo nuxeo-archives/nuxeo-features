@@ -1067,7 +1067,8 @@ public class Editor {
      * Skin management
      */
     public static void activateSkin(String themeName, String bankName,
-            String collectionName, String resourceName) throws ThemeException {
+            String collectionName, String resourceName, boolean baseSkin)
+            throws ThemeException {
 
         ThemeManager themeManager = Manager.getThemeManager();
         String styleName = String.format("%s (%s)", resourceName,
@@ -1076,14 +1077,12 @@ public class Editor {
         final FormatType styleType = (FormatType) Manager.getTypeRegistry().lookup(
                 TypeFamily.FORMAT, "style");
 
-        final boolean preserveInheritance = true;
+        // preserve style inheritance only if the skin is not a base skin
+        boolean preserveInheritance = !baseSkin;
+
         for (PageElement page : themeManager.getPagesOf(themeName)) {
-            Style style = (Style) ElementFormatter.getFormatByType(page,
-                    styleType);
-            if (style == null) {
-                style = themeManager.createStyle();
-                ElementFormatter.setFormat(page, style);
-            }
+            Style style = themeManager.createStyle();
+            ElementFormatter.setFormat(page, style);
             try {
                 themeManager.makeElementUseNamedStyle(page, styleName,
                         themeName, preserveInheritance);
@@ -1091,6 +1090,7 @@ public class Editor {
                 throw new ThemeException(e.getMessage(), e);
             }
         }
+
         saveTheme(themeName);
     }
 
