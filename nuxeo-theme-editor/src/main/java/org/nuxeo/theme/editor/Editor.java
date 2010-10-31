@@ -1067,7 +1067,7 @@ public class Editor {
      * Skin management
      */
     public static void activateSkin(String themeName, String bankName,
-            String collectionName, String resourceName, boolean baseSkin)
+            String collectionName, String resourceName, boolean isBaseSkin)
             throws ThemeException {
 
         ThemeManager themeManager = Manager.getThemeManager();
@@ -1077,18 +1077,36 @@ public class Editor {
         final FormatType styleType = (FormatType) Manager.getTypeRegistry().lookup(
                 TypeFamily.FORMAT, "style");
 
-        // preserve style inheritance only if the skin is not a base skin
-        boolean preserveInheritance = !baseSkin;
-
         for (PageElement page : themeManager.getPagesOf(themeName)) {
-            Style style = themeManager.createStyle();
-            ElementFormatter.setFormat(page, style);
-            try {
-                themeManager.makeElementUseNamedStyle(page, styleName,
-                        themeName, preserveInheritance);
-            } catch (ThemeException e) {
-                throw new ThemeException(e.getMessage(), e);
+
+            Style newStyle = themeManager.createStyle();
+
+            log.error(page.getName());
+            if (!isBaseSkin) {
+                Style currentStyle = (Style) ElementFormatter.getFormatByType(
+                        page, styleType);
+
+                log.error(currentStyle);
+                if (currentStyle != null) {
+                    Style currentSkin = (Style) ThemeManager.getAncestorFormatOf(currentStyle);
+                    // there is already a base skin
+                    if (currentSkin != null && currentSkin.isNamed()) {
+                        log.error(currentSkin.getName());
+                        ThemeManager.removeInheritanceTowards(currentSkin);
+                        themeManager.makeFormatInherit(newStyle, currentSkin);
+                        log.error(newStyle);
+                    }
+                }
             }
+
+            ElementFormatter.setFormat(page, newStyle);
+
+            // preserve style inheritance only if the skin is not a base skin
+            boolean preserveInheritance = !isBaseSkin;
+
+            themeManager.makeElementUseNamedStyle(page, styleName, themeName,
+                    preserveInheritance);
+
         }
 
         saveTheme(themeName);

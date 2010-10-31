@@ -948,15 +948,16 @@ div.nxthemesFragment b, div.nxthemesFragmentHidden b {
 
 .nxthemesScreen {
   position: absolute;
-  top: 65px;
-  left: 10px;
-  right: 10px;
+  top: 75px;
+  left: 25px;
+  right: 25px;
   background-color: #fff;
   padding: 10px;
   padding-bottom: 25px;
   font-family: Arial, sans-serif;
   z-index: 1;
 }
+
 .nxthemesPresets div.name {
   color: #333;
   font-size: 11px;

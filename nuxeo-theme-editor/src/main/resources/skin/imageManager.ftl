@@ -101,7 +101,7 @@
 <div class="body">
 <div>
 
-    <p>Images will be added to the <em>custom</em> collection</p>
+    <p>Uploaded images will be added to the <strong>custom</strong> collection</p>
     <iframe id="upload_target" name="upload_target" src="" style="display: none"></iframe>
 
 

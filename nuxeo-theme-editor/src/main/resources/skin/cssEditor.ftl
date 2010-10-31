@@ -13,38 +13,8 @@
 <#if theme_skin>
 <#assign theme_skin_name = theme_skin.name>
 
-  <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
-      onsubmit="NXThemesCssEditor.updateNamedStyleCSS(this); return false">
-    <input type="hidden" name="style_uid" value="#{theme_skin.uid}" />
-    <input type="hidden" name="theme_name" value="${current_theme_name}" />
-
-<#if theme_skin.customized && saveable>
-  <div>
-    <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
-   style="margin-bottom: 10px; border: none; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">${theme_skin_css}</textarea>
-  </div>
-  <div style="float: left">
-    <button type="submit">Save changes</button>
-  </div>
-
-<#else>
-
-   <textarea disabled="disabled" id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
-   style="margin-bottom: 10px; cursor: default; border: none; color: #999; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">
-${theme_skin_css}
-</textarea>
-
-  <#if saveable>
-  <div style="float: left">
-    <button type="submit">Customize CSS</button>
-  </div>
-  </#if>
-
-</#if>
-</form>
-
 <#if theme_skin.remote && theme_skin.customized && saveable>
-  <form class="nxthemesForm" style="padding: 0; float: right"
+  <form class="nxthemesForm" style="padding: 4px 0; float: right"
       onsubmit="NXThemesCssEditor.restoreNamedStyle(this); return false">
     <input type="hidden" name="style_uid" value="#{theme_skin.uid}" />
     <input type="hidden" name="theme_name" value="${current_theme_name}" />
@@ -53,6 +23,39 @@ ${theme_skin_css}
     </div>
   </form>
 </#if>
+
+  <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
+      onsubmit="NXThemesCssEditor.updateNamedStyleCSS(this); return false">
+    <input type="hidden" name="style_uid" value="#{theme_skin.uid}" />
+    <input type="hidden" name="theme_name" value="${current_theme_name}" />
+
+<#if theme_skin.customized && saveable>
+
+  <div>
+    <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
+   style="margin-bottom: 10px; border: 1px solid #ccc; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">${theme_skin_css}</textarea>
+  </div>
+  <div style="float: left">
+    <button type="submit">Save</button>
+     <a href="javascript:NXThemesEditor.showThemePreview()"
+    class="nxthemesActionButton">Preview theme</a>    
+  </div>
+    
+<#else>
+  <#if saveable>
+  <div style="padding: 4px 0; float: right">
+    <button type="submit">Customize CSS</button>
+  </div>
+  </#if>
+   <textarea disabled="disabled" id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
+   style="margin-bottom: 10px; cursor: default; border: 1px solid #ccc; color: #999; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">
+${theme_skin_css}
+</textarea>
+
+
+</#if>
+</form>
+
 <div style="clear: both; padding: 5px"></div>
 
 <#else>

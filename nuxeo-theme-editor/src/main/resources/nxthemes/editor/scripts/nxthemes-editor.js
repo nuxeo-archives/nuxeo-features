@@ -2370,7 +2370,7 @@ NXThemesCssEditor.updateNamedStyleCSS = function(form) {
              'theme_name': theme_name
          },
          onSuccess: function(r) {
-             NXThemesEditor.showThemePreview();
+             NXThemes.getViewById('css editor').refresh();
              NXThemesEditor.refreshUndoActions();
          },
          onFailure: function(r) {
@@ -2602,7 +2602,7 @@ NXThemesThemeOptions.updatePresets = function(form) {
              theme_name: themeName
          },
          onSuccess: function(r) {
-             NXThemesEditor.showThemePreview();
+             NXThemesThemeOptions.refresh();
          },
          onFailure: function(r) {
              var text = r.responseText;

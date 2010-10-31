@@ -39,9 +39,11 @@
 </#list>
 
 <#if hasField>
-  <p>
+  <div>
     <button <#if !saveable>disabled="disabled"</#if> type="submit" >Save</button>
-  </p>
+    <a href="javascript:NXThemesEditor.showThemePreview()"
+       class="nxthemesActionButton">Preview theme</a>
+  </div>
 </#if>
 </form>
 
