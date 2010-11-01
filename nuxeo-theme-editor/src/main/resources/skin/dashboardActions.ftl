@@ -4,7 +4,7 @@
 
 <#if theme>
 
-<#if theme.customized>
+<#if theme.custom>
     <@nxthemes_button identifier="dashboard remove customizations"
   link="javascript:NXThemesEditor.uncustomizeTheme('${theme.src}', 'dashboard actions')"
   label="Remove customizations" />

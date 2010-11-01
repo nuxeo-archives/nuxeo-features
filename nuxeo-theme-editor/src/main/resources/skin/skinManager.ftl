@@ -3,17 +3,49 @@
 
 <#if current_bank>
 
+<div class="window">
+<div class="title">Top layer</div>
+<div class="body">
+  <#if current_skin_name && current_skin_name != current_base_skin_name>
+  <div style="padding: 4px 0; float: right">
+    <a href="javascript:NXThemesEditor.showThemePreview()"
+       class="nxthemesActionButton">Preview skin</a>
+  </div>
+  </#if>
+  <#if skins>
+    <div style="padding: 10px 5px">
+    <div>Add a top layer skin to the <strong>${current_theme.name}</strong> theme:</div>
+    <#list skins as skin>
+      <div class="nxthemesImageSingle nxthemesImageSingle<#if current_skin_name=skin.name>Selected</#if>">
+        <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}', false)<#else>void(0)</#if>">
+          <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
+          <div>${skin.name}</div>
+        </a>
+      </div>
+    </#list>
+    <div style="clear: both"></div>
+    </div>
+  <#else>
+    <p>No skins available</p>
+  </#if>
+</div>
+</div>
 
 <div class="window">
-<div class="title">Base layer</div>
+<div class="title">Base skin</div>
 <div class="body">
-
+  <#if current_base_skin_name && current_base_skin_name == current_skin_name>
+  <div style="padding: 4px 0; float: right">
+    <a href="javascript:NXThemesEditor.showThemePreview()"
+       class="nxthemesActionButton">Preview skin</a>
+  </div>
+  </#if>
   <#if base_skins>
     <div style="padding: 10px 5px">
-    <div>Select a skin for the <strong>${current_theme.name}</strong> theme:</div>
+    <div>Select a base skin for the <strong>${current_theme.name}</strong> theme:</div>
     <#list base_skins as skin>
       <div class="nxthemesImageSingle nxthemesImageSingle<#if current_base_skin_name=skin.name>Selected</#if>">
-        <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}', false)<#else>void(0)</#if>">
+        <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}', true)<#else>void(0)</#if>">
           <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
           <div>${skin.name}</div>
         </a>
@@ -24,7 +56,6 @@
   <#else>
     <p>No base layers available</p>
   </#if>
-
 </div>
 </div>
 
@@ -45,29 +76,7 @@
 </div>
 </#if>
 
-<div class="window">
-<div class="title">Top layer</div>
-<div class="body">
 
-  <#if skins>
-    <div style="padding: 10px 5px">
-    <div>Add a top layer skin to the <strong>${current_theme.name}</strong> theme:</div>
-    <#list skins as skin>
-      <div class="nxthemesImageSingle nxthemesImageSingle<#if current_skin_name=skin.name>Selected</#if>">
-        <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}', false)<#else>void(0)</#if>">
-          <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
-          <div>${skin.name}</div>
-        </a>
-      </div>
-    </#list>
-    <div style="clear: both"></div>
-    </div>
-  <#else>
-    <p>No skins available</p>
-  </#if>
-
-</div>
-</div>
 
 
 <#if !saveable>

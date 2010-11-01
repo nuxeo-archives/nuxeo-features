@@ -480,21 +480,10 @@ public class Editor {
     }
 
     public static void setStyleInheritance(String styleName,
-            String ancestorName, String themeName) throws ThemeException {
+            String ancestorStyleName, String themeName) throws ThemeException {
         saveToUndoBuffer(themeName, "set style inheritance");
-        ThemeManager themeManager = Manager.getThemeManager();
-        Style style = (Style) themeManager.getNamedObject(themeName, "style",
-                styleName);
-        if (style == null) {
-            throw new ThemeException("Could not find named style: " + styleName);
-        }
-        Style ancestor = (Style) themeManager.getNamedObject(themeName,
-                "style", ancestorName);
-        if (ancestor == null) {
-            throw new ThemeException("Could not find named style: "
-                    + ancestorName);
-        }
-        themeManager.makeFormatInherit(style, ancestor);
+        ThemeManager.setStyleInheritance(styleName, ancestorStyleName,
+                themeName);
         saveTheme(themeName);
     }
 
@@ -1076,48 +1065,44 @@ public class Editor {
     public static void activateSkin(String themeName, String bankName,
             String collectionName, String resourceName, boolean isBaseSkin)
             throws ThemeException {
-
-        ThemeManager themeManager = Manager.getThemeManager();
-        String styleName = String.format("%s (%s)", resourceName,
-                collectionName);
-
-        final FormatType styleType = (FormatType) Manager.getTypeRegistry().lookup(
-                TypeFamily.FORMAT, "style");
-
-        for (PageElement page : themeManager.getPagesOf(themeName)) {
-
-            Style newStyle = themeManager.createStyle();
-
-            log.error(page.getName());
-            if (!isBaseSkin) {
-                Style currentStyle = (Style) ElementFormatter.getFormatByType(
-                        page, styleType);
-
-                log.error(currentStyle);
-                if (currentStyle != null) {
-                    Style currentSkin = (Style) ThemeManager.getAncestorFormatOf(currentStyle);
-                    // there is already a base skin
-                    if (currentSkin != null && currentSkin.isNamed()) {
-                        ThemeManager.removeInheritanceTowards(currentSkin);
-                        themeManager.makeFormatInherit(newStyle, currentSkin);
-                        log.error(newStyle);
-                    }
+        String currentTopSkinName = getCurrentTopSkinName(themeName);
+        String currentBaseSkinName = getCurrentBaseSkinName(themeName);
+        for (SkinInfo skin : getBankSkins(bankName)) {
+            if (skin.getName().equals(currentTopSkinName)) {
+                if (skin.isBase()) {
+                    currentTopSkinName = null;
                 }
             }
+        }
 
+        ThemeManager themeManager = Manager.getThemeManager();
+        String skinName = String.format("%s (%s)", resourceName, collectionName);
+
+        if (!isBaseSkin && currentBaseSkinName == null) {
+            throw new ThemeException("Cannot set skin: " + skinName
+                    + " (base skin is missing)");
+        }
+
+        if (!isBaseSkin && !skinName.equals(currentBaseSkinName)) {
+            log.error("Setting skin: " + skinName + " above: "
+                    + currentBaseSkinName);
+            setStyleInheritance(skinName, currentBaseSkinName, themeName);
+        }
+
+        boolean preserveInheritance = !isBaseSkin;
+        for (PageElement page : themeManager.getPagesOf(themeName)) {
+            Style newStyle = themeManager.createStyle();
             ElementFormatter.setFormat(page, newStyle);
-
-            // preserve style inheritance only if the skin is not a base skin
-            boolean preserveInheritance = !isBaseSkin;
-
-            themeManager.makeElementUseNamedStyle(page, styleName, themeName,
+            themeManager.makeElementUseNamedStyle(page, skinName, themeName,
                     preserveInheritance);
         }
+
+        themeManager.removeOrphanedFormats();
         saveTheme(themeName);
     }
 
-    public static String getCurrentSkinName(final String themeName) {
-        Style skinStyle = getCurrentSkin(themeName);
+    public static String getCurrentTopSkinName(final String themeName) {
+        Style skinStyle = getCurrentPageSkin(themeName);
         if (skinStyle == null) {
             return null;
         }
@@ -1125,7 +1110,7 @@ public class Editor {
     }
 
     public static String getCurrentBaseSkinName(final String themeName) {
-        Style skinStyle = getCurrentSkin(themeName);
+        Style skinStyle = getCurrentPageSkin(themeName);
         if (skinStyle == null) {
             return null;
         }
@@ -1136,7 +1121,7 @@ public class Editor {
         return skinStyle.getName();
     }
 
-    public static Style getCurrentSkin(final String themeName) {
+    public static Style getCurrentPageSkin(final String themeName) {
         if (themeName == null) {
             return null;
         }

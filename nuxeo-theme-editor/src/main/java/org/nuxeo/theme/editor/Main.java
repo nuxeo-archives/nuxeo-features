@@ -448,7 +448,7 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
-        String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
+        String currentSkinName = Editor.getCurrentTopSkinName(currentThemeName);
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
@@ -483,7 +483,7 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.name") String name) {
 
         String currentThemeName = getCurrentThemeName(path, name);
-        String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
+        String currentSkinName = Editor.getCurrentTopSkinName(currentThemeName);
         String currentBaseSkinName = Editor.getCurrentBaseSkinName(currentThemeName);
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
 
@@ -592,7 +592,8 @@ public class Main extends ModuleRoot {
             Editor.activateSkin(themeName, bankName, collectionName,
                     resourceName, baseSkin);
         } catch (Exception e) {
-            throw new ThemeEditorException("Could not activate skin", e);
+            throw new ThemeEditorException("Could not activate skin: "
+                    + e.getMessage(), e);
         }
     }
 
@@ -2006,6 +2007,10 @@ public class Main extends ModuleRoot {
 
     public static String getSelectedEditField() {
         return SessionManager.getSelectedEditField();
+    }
+
+    public static List<Style> listNamedStylesDirectlyInheritingFrom(Style style) {
+        return Editor.listNamedStylesDirectlyInheritingFrom(style);
     }
 
 }

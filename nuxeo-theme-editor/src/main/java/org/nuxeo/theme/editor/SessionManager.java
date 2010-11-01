@@ -17,11 +17,15 @@ package org.nuxeo.theme.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.webengine.WebEngine;
 import org.nuxeo.ecm.webengine.session.AbstractComponent;
 import org.nuxeo.ecm.webengine.session.UserSession;
 
 public class SessionManager extends AbstractComponent {
+
+    private static final Log log = LogFactory.getLog(SessionManager.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -193,6 +197,7 @@ public class SessionManager extends AbstractComponent {
 
     @SuppressWarnings("unchecked")
     public static synchronized List<String> getWorkspaceThemeNames() {
+        log.error(getUserSession());
         List<String> themes = (List<String>) getUserSession().get(
                 WORKSPACE_THEME_NAMES);
         if (themes == null) {
