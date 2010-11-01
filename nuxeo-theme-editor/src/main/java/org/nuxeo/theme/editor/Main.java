@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -24,7 +25,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.webengine.WebEngine;
-import org.nuxeo.ecm.webengine.forms.FormData;
 import org.nuxeo.ecm.webengine.model.Access;
 import org.nuxeo.ecm.webengine.model.WebObject;
 import org.nuxeo.ecm.webengine.model.impl.ModuleRoot;
@@ -567,10 +567,8 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("use_resource_bank")
-    public void useResourceBank() {
-        FormData form = ctx.getForm();
-        String themeSrc = form.getString("theme_src");
-        String bankName = form.getString("bank");
+    public void useResourceBank(@FormParam("theme_src") String themeSrc,
+            @FormParam("bank") String bankName) {
         try {
             if ("".equals(bankName)) {
                 Editor.useNoResourceBank(themeSrc);
@@ -585,13 +583,11 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("activate_skin")
-    public void activateSkin() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme");
-        String bankName = form.getString("bank");
-        String collectionName = form.getString("collection");
-        String resourceName = form.getString("resource");
-        boolean baseSkin = Boolean.valueOf(form.getString("base"));
+    public void activateSkin(@FormParam("theme") String themeName,
+            @FormParam("bank") String bankName,
+            @FormParam("collection") String collectionName,
+            @FormParam("resource") String resourceName,
+            @FormParam("base") boolean baseSkin) {
         try {
             Editor.activateSkin(themeName, bankName, collectionName,
                     resourceName, baseSkin);
@@ -697,8 +693,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("select_element")
-    public void selectElement() {
-        String id = ctx.getForm().getString("id");
+    public void selectElement(@FormParam("id") String id) {
         SessionManager.setElementId(id);
         // clean up
         SessionManager.setStyleEditMode(null);
@@ -715,8 +710,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("add_page")
-    public String addPage() {
-        String pagePath = ctx.getForm().getString("path");
+    public String addPage(@FormParam("path") String pagePath) {
         try {
             return Editor.addPage(pagePath);
         } catch (Exception e) {
@@ -726,8 +720,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("add_theme")
-    public String addTheme() {
-        String name = ctx.getForm().getString("name");
+    public String addTheme(@FormParam("name") String name) {
         try {
             return Editor.addTheme(name);
         } catch (Exception e) {
@@ -737,8 +730,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("customize_theme")
-    public String customizeTheme() {
-        String src = ctx.getForm().getString("src");
+    public String customizeTheme(@FormParam("src") String src) {
         try {
             return Editor.customizeTheme(src);
         } catch (Exception e) {
@@ -748,8 +740,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("uncustomize_theme")
-    public String uncustomizeTheme() {
-        String src = ctx.getForm().getString("src");
+    public String uncustomizeTheme(@FormParam("src") String src) {
         try {
             return Editor.uncustomizeTheme(src);
         } catch (Exception e) {
@@ -759,10 +750,8 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("align_element")
-    public void alignElement() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String position = form.getString("position");
+    public void alignElement(@FormParam("id") String id,
+            @FormParam("position") String position) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.alignElement(element, position);
@@ -774,11 +763,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("assign_style_property")
-    public void assignStyleProperty() {
-        FormData form = ctx.getForm();
-        String id = form.getString("element_id");
-        String propertyName = form.getString("property");
-        String value = form.getString("value");
+    public void assignStyleProperty(@FormParam("element_id") String id,
+            @FormParam("property") String propertyName,
+            @FormParam("value") String value) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.assignStyleProperty(element, propertyName, value);
@@ -789,17 +776,15 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("copy_element")
-    public void copyElement() {
-        String id = ctx.getForm().getString("id");
+    public void copyElement(@FormParam("id") String id) {
         SessionManager.setClipboardElementId(id);
     }
 
     @POST
     @Path("set_preset_category")
-    public void setPresetCategory() {
-        String themeName = ctx.getForm().getString("theme_name");
-        String presetName = ctx.getForm().getString("preset_name");
-        String category = ctx.getForm().getString("category");
+    public void setPresetCategory(@FormParam("theme_name") String themeName,
+            @FormParam("preset_name") String presetName,
+            @FormParam("category") String category) {
         try {
             Editor.setPresetCategory(themeName, presetName, category);
         } catch (Exception e) {
@@ -809,17 +794,14 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("copy_preset")
-    public void copyPreset() {
-        String id = ctx.getForm().getString("id");
+    public void copyPreset(@FormParam("id") String id) {
         SessionManager.setClipboardPresetId(id);
     }
 
     @POST
     @Path("paste_preset")
-    public void pastePreset() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
-        String newPresetName = form.getString("preset_name");
+    public void pastePreset(@FormParam("theme_name") String themeName,
+            @FormParam("preset_name") String newPresetName) {
         String presetName = getClipboardPreset();
         if (presetName == null) {
             throw new ThemeEditorException("Nothing to paste");
@@ -838,11 +820,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("create_named_style")
-    public void createNamedStyle() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String themeName = form.getString("theme_name");
-        String styleName = form.getString("style_name");
+    public void createNamedStyle(@FormParam("id") String id,
+            @FormParam("theme_name") String themeName,
+            @FormParam("style_name") String styleName) {
         Element element = null;
         if (id == null) {
             element = ThemeManager.getElementById(id);
@@ -867,9 +847,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("delete_element")
-    public void deleteElement() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
+    public void deleteElement(@FormParam("id") String id) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.deleteElement(element);
@@ -880,11 +858,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("delete_named_style")
-    public void deleteNamedStyle() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String themeName = form.getString("theme_name");
-        String styleName = form.getString("style_name");
+    public void deleteNamedStyle(@FormParam("id") String id,
+            @FormParam("theme_name") String themeName,
+            @FormParam("style_name") String styleName) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.deleteNamedStyle(element, styleName, themeName);
@@ -895,9 +871,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("duplicate_element")
-    public String duplicateElement() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
+    public String duplicateElement(@FormParam("id") String id) {
         Element element = ThemeManager.getElementById(id);
         try {
             Integer res = Editor.duplicateElement(element);
@@ -909,11 +883,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("insert_fragment")
-    public void insertFragment() {
-        FormData form = ctx.getForm();
-        String destId = form.getString("dest_id");
-        String typeName = form.getString("type_name");
-        String styleName = form.getString("style_name");
+    public void insertFragment(@FormParam("dest_id") String destId,
+            @FormParam("type_name") String typeName,
+            @FormParam("style_name") String styleName) {
         Element destElement = ThemeManager.getElementById(destId);
         try {
             Editor.insertFragment(destElement, typeName, styleName);
@@ -924,9 +896,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("insert_section_after")
-    public void insertSectionAfter() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
+    public void insertSectionAfter(@FormParam("id") String id) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.insertSectionAfter(element);
@@ -937,17 +907,13 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("select_preset_manager_mode")
-    public void selectPresetManagerMode() {
-        FormData form = ctx.getForm();
-        String mode = form.getString("mode");
+    public void selectPresetManagerMode(@FormParam("mode") String mode) {
         SessionManager.setPresetManagerMode(mode);
     }
 
     @POST
     @Path("select_fragment_type")
-    public void selectFragmentType() {
-        FormData form = ctx.getForm();
-        String type = form.getString("type");
+    public void selectFragmentType(@FormParam("type") String type) {
         SessionManager.setFragmentType(type);
         SessionManager.setFragmentView(null);
         SessionManager.setFragmentStyle(null);
@@ -955,26 +921,20 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("select_fragment_view")
-    public void selectFragmentView() {
-        FormData form = ctx.getForm();
-        String view = form.getString("view");
+    public void selectFragmentView(@FormParam("view") String view) {
         SessionManager.setFragmentView(view);
         SessionManager.setFragmentStyle(null);
     }
 
     @POST
     @Path("select_fragment_style")
-    public void selectFragmentStyle() {
-        FormData form = ctx.getForm();
-        String style = form.getString("style");
+    public void selectFragmentStyle(@FormParam("style") String style) {
         SessionManager.setFragmentStyle(style);
     }
 
     @POST
     @Path("select_resource_bank")
-    public void selectResourceBank() {
-        FormData form = ctx.getForm();
-        String bankName = form.getString("bank");
+    public void selectResourceBank(@FormParam("bank") String bankName) {
         SessionManager.setSelectedResourceBank(bankName);
     }
 
@@ -984,12 +944,10 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("add_preset")
-    public String addPreset() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
-        String presetName = form.getString("preset_name");
-        String category = form.getString("category");
-        String value = form.getString("value");
+    public String addPreset(@FormParam("theme_name") String themeName,
+            @FormParam("preset_name") String presetName,
+            @FormParam("category") String category,
+            @FormParam("value") String value) {
         if (value == null) {
             value = "";
         }
@@ -1002,12 +960,10 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("convert_to_preset")
-    public void convertValueToPreset() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
-        String presetName = form.getString("preset_name");
-        String category = form.getString("category");
-        String value = form.getString("value");
+    public void convertValueToPreset(@FormParam("theme_name") String themeName,
+            @FormParam("preset_name") String presetName,
+            @FormParam("category") String category,
+            @FormParam("value") String value) {
         if (value == null) {
             throw new ThemeEditorException("Preset value cannot be null");
         }
@@ -1021,11 +977,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("edit_preset")
-    public void editPreset() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
-        String presetName = form.getString("preset_name");
-        String value = form.getString("value");
+    public void editPreset(@FormParam("theme_name") String themeName,
+            @FormParam("preset_name") String presetName,
+            @FormParam("value") String value) {
         try {
             Editor.editPreset(themeName, presetName, value);
         } catch (Exception e) {
@@ -1035,10 +989,8 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_presets")
-    public void updatePresets() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
-        String property_map = form.getString("property_map");
+    public void updatePresets(@FormParam("theme_name") String themeName,
+            @FormParam("property_map") String property_map) {
         Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         try {
             for (Map.Entry<String, String> preset : propertyMap.entrySet()) {
@@ -1051,11 +1003,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("rename_preset")
-    public void renamePreset() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
-        String oldName = form.getString("old_name");
-        String newName = form.getString("new_name");
+    public void renamePreset(@FormParam("theme_name") String themeName,
+            @FormParam("old_name") String oldName,
+            @FormParam("new_name") String newName) {
         try {
             Editor.renamePreset(themeName, oldName, newName);
         } catch (Exception e) {
@@ -1065,10 +1015,8 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("delete_preset")
-    public void deletePreset() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
-        String presetName = form.getString("preset_name");
+    public void deletePreset(@FormParam("theme_name") String themeName,
+            @FormParam("preset_name") String presetName) {
         try {
             Editor.deletePreset(themeName, presetName);
         } catch (Exception e) {
@@ -1078,11 +1026,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("make_element_use_named_style")
-    public void makeElementUseNamedStyle() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String styleName = form.getString("style_name");
-        String themeName = form.getString("theme_name");
+    public void makeElementUseNamedStyle(@FormParam("id") String id,
+            @FormParam("style_name") String styleName,
+            @FormParam("theme_name") String themeName) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.makeElementUseNamedStyle(element, styleName, themeName);
@@ -1093,11 +1039,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("set_style_inheritance")
-    public void makeStyleInherit() {
-        FormData form = ctx.getForm();
-        String styleName = form.getString("style_name");
-        String ancestorName = form.getString("ancestor_name");
-        String themeName = form.getString("theme_name");
+    public void makeStyleInherit(@FormParam("style_name") String styleName,
+            @FormParam("ancestor_name") String ancestorName,
+            @FormParam("theme_name") String themeName) {
         try {
             Editor.setStyleInheritance(styleName, ancestorName, themeName);
         } catch (Exception e) {
@@ -1107,10 +1051,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("remove_style_inheritance")
-    public void removeStyleInheritance() {
-        FormData form = ctx.getForm();
-        String styleName = form.getString("style_name");
-        String themeName = form.getString("theme_name");
+    public void removeStyleInheritance(
+            @FormParam("style_name") String styleName,
+            @FormParam("theme_name") String themeName) {
         try {
             Editor.removeStyleInheritance(styleName, themeName);
         } catch (Exception e) {
@@ -1120,11 +1063,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("move_element")
-    public void moveElement() {
-        FormData form = ctx.getForm();
-        String srcId = form.getString("src_id");
-        String destId = form.getString("dest_id");
-        Integer order = Integer.getInteger(form.getString("order"));
+    public void moveElement(@FormParam("src_id") String srcId,
+            @FormParam("dest_id") String destId,
+            @FormParam("order") Integer order) {
         Element srcElement = ThemeManager.getElementById(srcId);
         Element destElement = ThemeManager.getElementById(destId);
         try {
@@ -1136,9 +1077,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("paste_element")
-    public void pasteElement() {
-        FormData form = ctx.getForm();
-        String destId = form.getString("dest_id");
+    public void pasteElement(@FormParam("dest_id") String destId) {
         String id = getClipboardElement();
         if (id == null) {
             throw new ThemeEditorException("Nothing to paste");
@@ -1153,9 +1092,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("repair_theme")
-    public void repairTheme() {
-        FormData form = ctx.getForm();
-        String src = form.getString("src");
+    public void repairTheme(@FormParam("src") String src) {
         try {
             Editor.repairTheme(src);
         } catch (Exception e) {
@@ -1165,9 +1102,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("refresh_theme")
-    public void refreshTheme() {
-        FormData form = ctx.getForm();
-        String src = form.getString("src");
+    public void refreshTheme(@FormParam("src") String src) {
         try {
             Editor.refreshTheme(src);
         } catch (Exception e) {
@@ -1177,9 +1112,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("save_theme")
-    public void saveTheme() {
-        FormData form = ctx.getForm();
-        String src = form.getString("src");
+    public void saveTheme(@FormParam("src") String src) {
         try {
             Editor.saveTheme(src);
         } catch (Exception e) {
@@ -1189,9 +1122,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("load_theme")
-    public void loadTheme() {
-        FormData form = ctx.getForm();
-        String src = form.getString("src");
+    public void loadTheme(@FormParam("src") String src) {
         try {
             Editor.loadTheme(src);
         } catch (Exception e) {
@@ -1201,9 +1132,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("delete_theme")
-    public void deleteTheme() {
-        FormData form = ctx.getForm();
-        String src = form.getString("src");
+    public void deleteTheme(@FormParam("src") String src) {
         try {
             Editor.deleteTheme(src);
         } catch (Exception e) {
@@ -1213,9 +1142,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("delete_page")
-    public void deletePage() {
-        FormData form = ctx.getForm();
-        String pagePath = form.getString("page_path");
+    public void deletePage(@FormParam("page_path") String pagePath) {
         try {
             Editor.deletePage(pagePath);
         } catch (Exception e) {
@@ -1225,35 +1152,27 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("select_preset_group")
-    public void selectPresetGroup() {
-        FormData form = ctx.getForm();
-        String group = form.getString("group");
+    public void selectPresetGroup(@FormParam("group") String group) {
         SessionManager.setPresetGroup(group);
     }
 
     @POST
     @Path("select_preset_category")
-    public void selectPresetCategory() {
-        FormData form = ctx.getForm();
-        String category = form.getString("category");
+    public void selectPresetCategory(@FormParam("category") String category) {
         SessionManager.setPresetCategory(category);
     }
 
     @POST
     @Path("select_bank_collection")
-    public void selectBankCollection() {
-        FormData form = ctx.getForm();
-        String collection = form.getString("collection");
+    public void selectBankCollection(@FormParam("collection") String collection) {
         SessionManager.setSelectedBankCollection(collection);
     }
 
     @POST
     @Path("set_page_styles")
     @SuppressWarnings("unchecked")
-    public void setPageStyles() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
-        String property_map = form.getString("property_map");
+    public void setPageStyles(@FormParam("theme_name") String themeName,
+            @FormParam("property_map") String property_map) {
         Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         try {
             Editor.setPageStyles(themeName, propertyMap);
@@ -1264,25 +1183,19 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("select_style_category")
-    public void selectStyleCategory() {
-        FormData form = ctx.getForm();
-        String category = form.getString("category");
+    public void selectStyleCategory(@FormParam("category") String category) {
         SessionManager.setStyleCategory(category);
     }
 
     @POST
     @Path("select_style_edit_mode")
-    public void selectStyleEditMode() {
-        FormData form = ctx.getForm();
-        String mode = form.getString("mode");
+    public void selectStyleEditMode(@FormParam("mode") String mode) {
         SessionManager.setStyleEditMode(mode);
     }
 
     @POST
     @Path("toggle_css_category")
-    public void toggleCssCategory() {
-        FormData form = ctx.getForm();
-        String name = form.getString("name");
+    public void toggleCssCategory(@FormParam("name") String name) {
         SessionManager.toggleCssCategory(name);
     }
 
@@ -1303,9 +1216,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("select_style_layer")
-    public void selectStyleLayer() {
-        FormData form = ctx.getForm();
-        String uid = form.getString("uid");
+    public void selectStyleLayer(@FormParam("uid") String uid) {
         Style layer = (Style) ThemeManager.getFormatById(uid);
         if (layer != null) {
             SessionManager.setStyleLayerId(uid);
@@ -1314,9 +1225,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("select_named_style")
-    public void selectNamedStyle() {
-        FormData form = ctx.getForm();
-        String uid = form.getString("uid");
+    public void selectNamedStyle(@FormParam("uid") String uid) {
         Style style = (Style) ThemeManager.getFormatById(uid);
         if (style != null) {
             SessionManager.setNamedStyleId(uid);
@@ -1325,26 +1234,20 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("select_style_selector")
-    public void selectStyleSelector() {
-        FormData form = ctx.getForm();
-        String selector = form.getString("selector");
+    public void selectStyleSelector(@FormParam("selector") String selector) {
         SessionManager.setStyleSelector(selector);
     }
 
     @POST
     @Path("select_style_manager_mode")
-    public void selectStyleManagerMode() {
-        FormData form = ctx.getForm();
-        String mode = form.getString("mode");
+    public void selectStyleManagerMode(@FormParam("mode") String mode) {
         SessionManager.setStyleManagerMode(mode);
     }
 
     @POST
     @Path("update_element_description")
-    public void updateElementDescription() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String description = form.getString("description");
+    public void updateElementDescription(@FormParam("id") String id,
+            @FormParam("description") String description) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.updateElementDescription(element, description);
@@ -1356,11 +1259,9 @@ public class Main extends ModuleRoot {
     @POST
     @Path("update_element_properties")
     @SuppressWarnings("unchecked")
-    public void updateElementProperties() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String property_map = form.getString("property_map");
-        Map<String, String> propertyMap = JSONObject.fromObject(property_map);
+    public void updateElementProperties(@FormParam("id") String id,
+            @FormParam("property_map") String properties) {
+        Map<String, String> propertyMap = JSONObject.fromObject(properties);
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.updateElementProperties(element, propertyMap);
@@ -1371,10 +1272,8 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_element_width")
-    public void updateElementWidth() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String width = form.getString("width");
+    public void updateElementWidth(@FormParam("id") String id,
+            @FormParam("width") String width) {
         Format layout = ThemeManager.getFormatById(id);
         try {
             Editor.updateElementWidth(layout, width);
@@ -1385,11 +1284,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_element_style_css")
-    public void updateElementStyleCss() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String viewName = form.getString("view_name");
-        String cssSource = form.getString("css_source");
+    public void updateElementStyleCss(@FormParam("id") String id,
+            @FormParam("view_name") String viewName,
+            @FormParam("css_source") String cssSource) {
         Element element = ThemeManager.getElementById(id);
         Style selectedStyleLayer = getSelectedStyleLayer();
         try {
@@ -1402,11 +1299,9 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_named_style_css")
-    public void updateNamedStyleCss() {
-        FormData form = ctx.getForm();
-        String style_uid = form.getString("style_uid");
-        String cssSource = form.getString("css_source");
-        String themeName = form.getString("theme_name");
+    public void updateNamedStyleCss(@FormParam("style_uid") String style_uid,
+            @FormParam("css_source") String cssSource,
+            @FormParam("theme_name") String themeName) {
         Style style = (Style) ThemeManager.getFormatById(style_uid);
         try {
             Editor.updateNamedStyleCss(style, cssSource, themeName);
@@ -1417,10 +1312,8 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("restore_named_style")
-    public void restoreNamedStyle() {
-        FormData form = ctx.getForm();
-        String style_uid = form.getString("style_uid");
-        String themeName = form.getString("theme_name");
+    public void restoreNamedStyle(@FormParam("style_uid") String style_uid,
+            @FormParam("theme_name") String themeName) {
         Style style = (Style) ThemeManager.getFormatById(style_uid);
         try {
             Editor.restoreNamedStyle(style, themeName);
@@ -1431,9 +1324,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("split_element")
-    public void splitElement() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
+    public void splitElement(@FormParam("id") String id) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.splitElement(element);
@@ -1445,12 +1336,10 @@ public class Main extends ModuleRoot {
     @POST
     @Path("update_element_style")
     @SuppressWarnings("unchecked")
-    public void updateElementStyle() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String path = form.getString("path");
-        String viewName = form.getString("view_name");
-        String property_map = form.getString("property_map");
+    public void updateElementStyle(@FormParam("id") String id,
+            @FormParam("path") String path,
+            @FormParam("view_name") String viewName,
+            @FormParam("property_map") String property_map) {
         Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         Element element = ThemeManager.getElementById(id);
         Style currentStyleLayer = getSelectedStyleLayer();
@@ -1465,11 +1354,10 @@ public class Main extends ModuleRoot {
     @POST
     @Path("update_element_visibility")
     @SuppressWarnings("unchecked")
-    public void updateElementVisibility() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        List<String> perspectives = Arrays.asList(form.getList("perspectives"));
-        boolean alwaysVisible = Boolean.valueOf(form.getString("always_visible"));
+    public void updateElementVisibility(@FormParam("id") String id,
+            @FormParam("perspectives") String perspectiveList,
+            @FormParam("always_visible") Boolean alwaysVisible) {
+        List<String> perspectives = Arrays.asList(perspectiveList);
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.updateElementVisibility(element, perspectives, alwaysVisible);
@@ -1481,9 +1369,8 @@ public class Main extends ModuleRoot {
     @POST
     @Path("update_element_layout")
     @SuppressWarnings("unchecked")
-    public void updateElementPadding() {
-        FormData form = ctx.getForm();
-        String property_map = form.getString("property_map");
+    public void updateElementPadding(
+            @FormParam("property_map") String property_map) {
         Map<String, String> propertyMap = JSONObject.fromObject(property_map);
         Element element = getSelectedElement();
         try {
@@ -1495,10 +1382,8 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("update_element_widget")
-    public void updateElementWidget() {
-        FormData form = ctx.getForm();
-        String id = form.getString("id");
-        String viewName = form.getString("view_name");
+    public void updateElementWidget(@FormParam("id") String id,
+            @FormParam("view_name") String viewName) {
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.updateElementWidget(element, viewName);
@@ -1509,10 +1394,8 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("delete_style_view")
-    public void deleteStyleView() {
-        FormData form = ctx.getForm();
-        String styleUid = form.getString("style_uid");
-        String viewName = form.getString("view_name");
+    public void deleteStyleView(@FormParam("style_uid") String styleUid,
+            @FormParam("view_name") String viewName) {
         Style style = (Style) ThemeManager.getFormatById(styleUid);
         try {
             Editor.deleteStyleView(style, viewName);
@@ -1523,9 +1406,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("add_theme_to_workspace")
-    public void addThemeToWorkspace() {
-        FormData form = ctx.getForm();
-        String name = form.getString("name");
+    public void addThemeToWorkspace(@FormParam("name") String name) {
         List<String> themes = SessionManager.getWorkspaceThemeNames();
         if (!themes.contains(name)) {
             themes.add(name);
@@ -1538,9 +1419,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("remove_theme_from_workspace")
-    public void removeThemeFromWorkspace() {
-        FormData form = ctx.getForm();
-        String name = form.getString("name");
+    public void removeThemeFromWorkspace(@FormParam("name") String name) {
         List<String> themes = SessionManager.getWorkspaceThemeNames();
         if (themes == null) {
             themes = new ArrayList<String>();
@@ -1553,9 +1432,7 @@ public class Main extends ModuleRoot {
 
     @POST
     @Path("undo")
-    public String undo() {
-        FormData form = ctx.getForm();
-        String themeName = form.getString("theme_name");
+    public String undo(@FormParam("theme_name") String themeName) {
         try {
             return Editor.undo(themeName);
         } catch (Exception e) {
@@ -2123,9 +2000,7 @@ public class Main extends ModuleRoot {
      */
     @POST
     @Path("select_edit_field")
-    public void selectEditField() {
-        FormData form = ctx.getForm();
-        String fieldName = form.getString("field_name");
+    public void selectEditField(@FormParam("field_name") String fieldName) {
         SessionManager.setSelectedEditField(fieldName);
     }
 
