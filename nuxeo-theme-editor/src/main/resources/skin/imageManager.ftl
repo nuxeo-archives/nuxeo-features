@@ -128,7 +128,7 @@
 <div class="title">Image library error</div>
 <div class="body">
   
-    <p>No bank selected</p>
+    <p>The <strong>${current_theme.name}</strong> theme is not connected to a bank.</p>
     <p>
       <a href="javascript:NXThemesEditor.manageThemeBanks()"
        class="nxthemesActionButton">Connect to a bank</a>

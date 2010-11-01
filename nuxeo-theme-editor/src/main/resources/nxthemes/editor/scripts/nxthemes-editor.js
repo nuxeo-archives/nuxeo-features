@@ -2361,6 +2361,12 @@ NXThemesCssEditor.updateNamedStyleCSS = function(form) {
           theme_name = value;
         }
     });
+    if (!css_source) {
+        var ok = confirm("CSS changes will be lost, are you sure?");
+        if (!ok) {
+           return;
+       }
+    }
     var url = nxthemesBasePath + "/nxthemes-editor/update_named_style_css";
     new Ajax.Request(url, {
          method: 'post',

@@ -59,7 +59,7 @@ public class SessionManager extends AbstractComponent {
 
     private static final String SELECTED_RESOURCE_BANK = "org.nuxeo.theme.editor.resource_bank";
 
-    private static final String WORKSPACE_THEMES = "org.nuxeo.theme.editor.workspace_themes";
+    private static final String WORKSPACE_THEME_NAMES = "org.nuxeo.theme.editor.workspace_theme_names";
 
     private static final String UNDO_BUFFER = "org.nuxeo.theme.editor.undo_buffer";
 
@@ -192,17 +192,17 @@ public class SessionManager extends AbstractComponent {
     }
 
     @SuppressWarnings("unchecked")
-    public static synchronized List<String> getWorkspaceThemes() {
+    public static synchronized List<String> getWorkspaceThemeNames() {
         List<String> themes = (List<String>) getUserSession().get(
-                WORKSPACE_THEMES);
+                WORKSPACE_THEME_NAMES);
         if (themes == null) {
             themes = new ArrayList<String>();
         }
         return themes;
     }
 
-    public static synchronized void setWorkspaceThemes(List<String> themes) {
-        getUserSession().put(WORKSPACE_THEMES, themes);
+    public static synchronized void setWorkspaceThemeNames(List<String> themes) {
+        getUserSession().put(WORKSPACE_THEME_NAMES, themes);
     }
 
     public static synchronized UndoBuffer getUndoBuffer(final String themeName) {

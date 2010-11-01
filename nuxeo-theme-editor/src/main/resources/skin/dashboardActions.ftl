@@ -2,7 +2,9 @@
 
 <span style="font: bold 11px arial; padding: 3px 4px 3px 7px; color: #ccc; float: left">Dashboard actions: </span>
 
-<#if theme.custom>
+<#if theme>
+
+<#if theme.customized>
     <@nxthemes_button identifier="dashboard remove customizations"
   link="javascript:NXThemesEditor.uncustomizeTheme('${theme.src}', 'dashboard actions')"
   label="Remove customizations" />
@@ -12,4 +14,12 @@
   <@nxthemes_button identifier="dashboard customize theme"
   link="javascript:NXThemesEditor.customizeTheme('${theme.src}', 'dashboard actions')"
   label="Customize ${theme.name} theme" />
+</#if>
+
+<#if theme.custom>
+    <@nxthemes_button identifier="dashboard delete theme"
+  link="javascript:NXThemesEditor.deleteTheme('${theme.src}', 'dashboard actions')"
+  label="Delete theme" />
+</#if>
+
 </#if>

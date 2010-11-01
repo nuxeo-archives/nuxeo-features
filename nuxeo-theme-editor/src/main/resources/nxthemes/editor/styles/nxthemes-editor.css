@@ -1954,19 +1954,17 @@ a.nxthemesActionButton img {
   float: right;
 }
 
-
+#dashboardTab {
+  position: fixed;
+  z-index: 3;
+  top: 200px;
+  left: -5px;
+}
 
 #canvasEditorTab {
   position: fixed;
   z-index: 3;
-  top: 96px;
-  left: -5px;
-}
-
-#dashboardTab {
-  position: fixed;
-  z-index: 3;
-  bottom: 20px;
+  top: 80px;
   left: -5px;
 }
 

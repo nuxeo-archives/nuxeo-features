@@ -2,7 +2,7 @@
 <#assign saveable=current_theme && current_theme.saveable>
 
 <div class="window">
-<div class="title">Manage banks</div>
+<div class="title">Manage bank connections</div>
 <div class="body">
 
 <#if banks>

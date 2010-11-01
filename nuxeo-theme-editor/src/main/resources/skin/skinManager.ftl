@@ -12,7 +12,7 @@
     <div style="padding: 10px 5px">
     <div>Select a skin for the <strong>${current_theme.name}</strong> theme:</div>
     <#list base_skins as skin>
-      <div class="nxthemesImageSingle nxthemesImageSingle<#if current_skin_name=skin.name>Selected</#if>">
+      <div class="nxthemesImageSingle nxthemesImageSingle<#if current_base_skin_name=skin.name>Selected</#if>">
         <a href="javascript:<#if saveable>NXThemesSkinManager.activateSkin('${current_theme.name}', '${skin.bank}', '${skin.collection}', '${skin.resource?replace('.css', '')}', false)<#else>void(0)</#if>">
           <img src="${current_bank.connectionUrl}/${skin.collection}/style/${skin.resource}/preview" />
           <div>${skin.name}</div>
@@ -35,7 +35,7 @@
 <div class="title">Skins</div>
 <div class="body">
 
-  <p>No bank selected</p>
+    <p>The <strong>${current_theme.name}</strong> theme is not connected to a bank.</p>
   <p>
     <a href="javascript:NXThemesEditor.manageThemeBanks()"
        class="nxthemesActionButton">Connect to a bank</a>
@@ -68,7 +68,6 @@
 
 </div>
 </div>
-
 
 
 <#if !saveable>

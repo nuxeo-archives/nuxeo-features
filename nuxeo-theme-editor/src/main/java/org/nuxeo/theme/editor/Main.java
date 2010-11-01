@@ -53,9 +53,7 @@ import org.nuxeo.theme.themes.ThemeException;
 import org.nuxeo.theme.themes.ThemeIOException;
 import org.nuxeo.theme.themes.ThemeManager;
 import org.nuxeo.theme.themes.ThemeSerializer;
-import org.nuxeo.theme.types.Type;
 import org.nuxeo.theme.types.TypeFamily;
-import org.nuxeo.theme.uids.Identifiable;
 import org.nuxeo.theme.views.ViewType;
 
 @WebObject(type = "nxthemes-editor", administrator = Access.GRANT)
@@ -147,7 +145,9 @@ public class Main extends ModuleRoot {
     public Object renderStyleManager(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        List<Style> styles = getNamedStyles(path, name);
+
+        String currentThemeName = getCurrentThemeName(path, name);
+        List<Style> styles = Editor.getNamedStyles(currentThemeName);
 
         Style selectedStyle = getSelectedNamedStyle();
         if (!styles.contains(selectedStyle) && !styles.isEmpty()) {
@@ -160,7 +160,6 @@ public class Main extends ModuleRoot {
             }
         }
 
-        String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
@@ -170,7 +169,8 @@ public class Main extends ModuleRoot {
                 selectedStyle).arg("selected_named_style_css",
                 getRenderedPropertiesForNamedStyle(selectedStyle)).arg(
                 "current_theme_name", currentThemeName).arg("page_styles",
-                getPageStyles(currentThemeName)).arg("root_styles", rootStyles);
+                Editor.getPageStyles(currentThemeName)).arg("root_styles",
+                rootStyles);
     }
 
     @GET
@@ -206,9 +206,9 @@ public class Main extends ModuleRoot {
     public Object renderCssEditor(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        List<Style> styles = getNamedStyles(path, name);
         String currentThemeName = getCurrentThemeName(path, name);
-        Style themeSkin = getThemeSkin(currentThemeName);
+        List<Style> styles = Editor.getNamedStyles(currentThemeName);
+        Style themeSkin = Editor.getThemeSkin(currentThemeName);
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDef = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
@@ -276,15 +276,18 @@ public class Main extends ModuleRoot {
     public Object renderFragmentFactory(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
         String fragmentType = getSelectedFragmentType();
         String fragmentView = getSelectedFragmentView();
         String fragmentStyle = getSelectedFragmentStyle();
+        String templateEngine = getTemplateEngine(path);
         return getTemplate("fragmentFactory.ftl").arg("current_theme_name",
                 getCurrentThemeName(path, name)).arg("selected_fragment_type",
                 fragmentType).arg("selected_fragment_view", fragmentView).arg(
                 "selected_fragment_style", fragmentStyle).arg("fragments",
-                getFragments(path)).arg("styles", getNamedStyles(path, name)).arg(
-                "views", getViews(fragmentType, path)).arg(
+                Editor.getFragments(templateEngine)).arg("styles",
+                Editor.getNamedStyles(currentThemeName)).arg("views",
+                Editor.getViews(fragmentType, templateEngine)).arg(
                 "selected_element_id", getSelectedElementId());
     }
 
@@ -331,6 +334,7 @@ public class Main extends ModuleRoot {
     public Object renderElementStyle(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
+        String currentThemeName = getCurrentThemeName(path, name);
         return getTemplate("elementStyle.ftl").arg("selected_element",
                 getSelectedElement()).arg("style_of_selected_element",
                 getStyleOfSelectedElement()).arg("current_theme_name",
@@ -339,7 +343,7 @@ public class Main extends ModuleRoot {
                 getStyleLayersOfSelectedElement()).arg(
                 "inherited_style_name_of_selected_element",
                 getInheritedStyleNameOfSelectedElement()).arg("named_styles",
-                getNamedStyles(path, name));
+                Editor.getNamedStyles(currentThemeName));
     }
 
     @GET
@@ -480,6 +484,7 @@ public class Main extends ModuleRoot {
 
         String currentThemeName = getCurrentThemeName(path, name);
         String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
+        String currentBaseSkinName = Editor.getCurrentBaseSkinName(currentThemeName);
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
 
         String templateEngine = getTemplateEngine(path);
@@ -491,19 +496,21 @@ public class Main extends ModuleRoot {
         List<String> collections = new ArrayList<String>();
         if (currentThemeBank != null) {
             String bankName = currentThemeBank.getName();
-            for (SkinInfo skin : getBankSkins(currentThemeBank.getName())) {
+            for (SkinInfo skin : Editor.getBankSkins(bankName)) {
                 if (skin.isBase()) {
                     baseSkins.add(skin);
                 } else {
                     skins.add(skin);
                 }
             }
-            collections = getBankCollections(bankName);
+            collections = Editor.getBankCollections(bankName);
         }
         return getTemplate("skinManager.ftl").arg("current_skin_name",
-                currentSkinName).arg("current_theme", currentThemeDescriptor).arg(
-                "current_bank", currentThemeBank).arg("skins", skins).arg(
-                "base_skins", baseSkins).arg("collections", collections);
+                currentSkinName).arg("current_base_skin_name",
+                currentBaseSkinName).arg("current_theme",
+                currentThemeDescriptor).arg("current_bank", currentThemeBank).arg(
+                "skins", skins).arg("base_skins", baseSkins).arg("collections",
+                collections);
     }
 
     @GET
@@ -607,21 +614,19 @@ public class Main extends ModuleRoot {
         List<ImageInfo> images = new ArrayList<ImageInfo>();
         if (currentThemeBank != null) {
             String bankName = currentThemeBank.getName();
-            collections = getBankCollections(bankName);
-            images = getBankImages(bankName);
+            collections = Editor.getBankCollections(bankName);
+            images = Editor.getBankImages(bankName);
         }
 
         String templateEngine = getTemplateEngine(path);
         ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
 
-        String currentSkinName = Editor.getCurrentSkinName(currentThemeName);
-        return getTemplate("imageManager.ftl").arg("current_skin_name",
-                currentSkinName).arg("current_theme", currentThemeDescriptor).arg(
-                "current_edit_field", getSelectedEditField()).arg(
-                "current_bank", currentThemeBank).arg("images", images).arg(
-                "collections", collections).arg("selected_bank_collection",
-                selectedBankCollection);
+        return getTemplate("imageManager.ftl").arg("current_theme",
+                currentThemeDescriptor).arg("current_edit_field",
+                getSelectedEditField()).arg("current_bank", currentThemeBank).arg(
+                "images", images).arg("collections", collections).arg(
+                "selected_bank_collection", selectedBankCollection);
     }
 
     @GET
@@ -630,74 +635,6 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         return getTemplate("imageUploaded.ftl");
-    }
-
-    public static List<SkinInfo> getBankSkins(String bankName) {
-        List<SkinInfo> info = new ArrayList<SkinInfo>();
-        if (bankName != null) {
-            ResourceBank resourceBank;
-            try {
-                resourceBank = ThemeManager.getResourceBank(bankName);
-                info = resourceBank.getSkins();
-            } catch (ThemeException e) {
-                e.printStackTrace();
-            }
-        }
-        return info;
-    }
-
-    public static SkinInfo getSkinInfo(String bankName, String skinName) {
-        ResourceBank resourceBank;
-        try {
-            resourceBank = ThemeManager.getResourceBank(bankName);
-        } catch (ThemeException e) {
-            return null;
-        }
-        for (SkinInfo skin : resourceBank.getSkins()) {
-            if (skinName.equals(skin.getName())) {
-                return skin;
-            }
-        }
-        return null;
-    }
-
-    public static List<String> getBankCollections(String bankName) {
-        List<String> collections = new ArrayList<String>();
-        if (bankName != null) {
-            ResourceBank resourceBank;
-            try {
-                resourceBank = ThemeManager.getResourceBank(bankName);
-                collections.addAll(resourceBank.getCollections());
-            } catch (ThemeException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        return collections;
-    }
-
-    public static List<ImageInfo> getBankImages(String bankName) {
-        List<ImageInfo> images = new ArrayList<ImageInfo>();
-        if (bankName != null) {
-            ResourceBank resourceBank;
-            try {
-                resourceBank = ThemeManager.getResourceBank(bankName);
-                for (String name : resourceBank.getImages()) {
-                    String[] parts = name.split("/");
-                    if (parts.length != 2) {
-                        continue;
-                    }
-                    String collection = parts[0];
-                    String resource = parts[1];
-                    images.add(new ImageInfo(name, collection, resource));
-                }
-
-            } catch (ThemeException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        return images;
     }
 
     public ResourceBank getResourceBank(String bankName) throws ThemeException {
@@ -1589,14 +1526,14 @@ public class Main extends ModuleRoot {
     public void addThemeToWorkspace() {
         FormData form = ctx.getForm();
         String name = form.getString("name");
-        List<String> themes = SessionManager.getWorkspaceThemes();
-        if (themes == null) {
-            themes = new ArrayList<String>();
-        }
+        List<String> themes = SessionManager.getWorkspaceThemeNames();
         if (!themes.contains(name)) {
             themes.add(name);
         }
-        SessionManager.setWorkspaceThemes(themes);
+        for (String s : themes) {
+            log.error(s);
+        }
+        SessionManager.setWorkspaceThemeNames(themes);
     }
 
     @POST
@@ -1604,14 +1541,14 @@ public class Main extends ModuleRoot {
     public void removeThemeFromWorkspace() {
         FormData form = ctx.getForm();
         String name = form.getString("name");
-        List<String> themes = SessionManager.getWorkspaceThemes();
+        List<String> themes = SessionManager.getWorkspaceThemeNames();
         if (themes == null) {
             themes = new ArrayList<String>();
         }
         if (themes.contains(name)) {
             themes.remove(name);
         }
-        SessionManager.setWorkspaceThemes(themes);
+        SessionManager.setWorkspaceThemeNames(themes);
     }
 
     @POST
@@ -1634,108 +1571,6 @@ public class Main extends ModuleRoot {
         } catch (ThemeException e) {
             throw new ThemeEditorException(e.getMessage(), e);
         }
-    }
-
-    public static List<Style> getNamedStyles(String applicationPath, String name) {
-        String currentThemeName = getCurrentThemeName(applicationPath, name);
-        List<Style> styles = new ArrayList<Style>();
-        for (Identifiable s : Manager.getThemeManager().getNamedObjects(
-                currentThemeName, "style")) {
-            styles.add((Style) s);
-        }
-        return styles;
-    }
-
-    public static List<Style> listNamedStylesDirectlyInheritingFrom(Style style) {
-        List<Style> styles = new ArrayList<Style>();
-        for (Format format : ThemeManager.listFormatsDirectlyInheritingFrom(style)) {
-            if (format.isNamed()) {
-                styles.add((Style) format);
-            }
-        }
-        return styles;
-    }
-
-    public static Map<String, String> getPageStyles(String themeName) {
-        Map<String, String> pageStyles = new LinkedHashMap<String, String>();
-        List<PageElement> pages = Manager.getThemeManager().getPagesOf(
-                themeName);
-        if (!pages.isEmpty()) {
-            for (PageElement page : pages) {
-                Style namedStyle = null;
-                try {
-                    namedStyle = Editor.getNamedStyleOf(page);
-                } catch (ThemeException e) {
-                    e.printStackTrace();
-                }
-                String styleName = namedStyle == null ? ""
-                        : namedStyle.getName();
-                pageStyles.put(page.getName(), styleName);
-            }
-        }
-        return pageStyles;
-    }
-
-    public static Style getThemeSkin(String themeName) {
-        List<PageElement> pages = Manager.getThemeManager().getPagesOf(
-                themeName);
-        if (pages == null || pages.isEmpty()) {
-            return null;
-        }
-        for (PageElement page : pages) {
-            Style namedStyle = null;
-            try {
-                namedStyle = Editor.getNamedStyleOf(page);
-            } catch (ThemeException e) {
-                e.printStackTrace();
-            }
-            if (namedStyle != null) {
-                return namedStyle;
-            }
-        }
-        return null;
-    }
-
-    public static List<FragmentType> getFragments(String applicationPath) {
-        List<FragmentType> fragments = new ArrayList<FragmentType>();
-        String templateEngine = getTemplateEngine(applicationPath);
-        for (Type f : Manager.getTypeRegistry().getTypes(TypeFamily.FRAGMENT)) {
-            FragmentType fragmentType = (FragmentType) f;
-            if (fragments.contains(fragmentType)) {
-                continue;
-            }
-            List<ViewType> views = new ArrayList<ViewType>();
-            for (ViewType viewType : ThemeManager.getViewTypesForFragmentType(fragmentType)) {
-                if (templateEngine.equals(viewType.getTemplateEngine())) {
-                    views.add(viewType);
-                }
-            }
-            if (views.isEmpty()) {
-                continue;
-            }
-            fragments.add(fragmentType);
-        }
-        return fragments;
-    }
-
-    public static List<ViewType> getViews(String fragmentTypeName,
-            String applicationPath) {
-        String templateEngine = getTemplateEngine(applicationPath);
-        List<ViewType> views = new ArrayList<ViewType>();
-        if (fragmentTypeName == null) {
-            return views;
-        }
-        FragmentType fragmentType = (FragmentType) Manager.getTypeRegistry().lookup(
-                TypeFamily.FRAGMENT, fragmentTypeName);
-        if (fragmentType == null) {
-            return views;
-        }
-        for (ViewType viewType : ThemeManager.getViewTypesForFragmentType(fragmentType)) {
-            if (templateEngine.equals(viewType.getTemplateEngine())) {
-                views.add(viewType);
-            }
-        }
-        return views;
     }
 
     public static String getSelectedElementId() {
@@ -2256,10 +2091,14 @@ public class Main extends ModuleRoot {
         return Manager.getThemeManager();
     }
 
+    public static Style getThemeSkin(String themeName) {
+        return Editor.getThemeSkin(themeName);
+    }
+
     public static List<ThemeInfo> getWorkspaceThemes(String path, String name) {
         String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
-        List<String> workspaceThemeNames = SessionManager.getWorkspaceThemes();
+        List<String> workspaceThemeNames = SessionManager.getWorkspaceThemeNames();
         List<ThemeInfo> workspaceThemes = new ArrayList<ThemeInfo>();
         Set<String> compatibleThemes = ThemeManager.getThemeNames(templateEngine);
         if (!workspaceThemeNames.contains(currentThemeName)) {
@@ -2280,7 +2119,7 @@ public class Main extends ModuleRoot {
     }
 
     /*
-     * Images
+     * Forms
      */
     @POST
     @Path("select_edit_field")
