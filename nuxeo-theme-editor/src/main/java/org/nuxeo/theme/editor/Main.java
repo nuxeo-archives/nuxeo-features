@@ -1,7 +1,6 @@
 package org.nuxeo.theme.editor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
@@ -1356,9 +1355,11 @@ public class Main extends ModuleRoot {
     @Path("update_element_visibility")
     @SuppressWarnings("unchecked")
     public void updateElementVisibility(@FormParam("id") String id,
-            @FormParam("perspectives") String perspectiveList,
+            @FormParam("perspectives") List<String> perspectives,
             @FormParam("always_visible") Boolean alwaysVisible) {
-        List<String> perspectives = Arrays.asList(perspectiveList);
+        for (String s : perspectives) {
+            log.error(s);
+        }
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.updateElementVisibility(element, perspectives, alwaysVisible);
@@ -1994,6 +1995,10 @@ public class Main extends ModuleRoot {
 
     public static void createFragmentPreview(String currentThemeName) {
         Editor.createFragmentPreview(currentThemeName);
+    }
+
+    public static SkinInfo getSkinInfo(String bankName, String skinName) {
+        return Editor.getSkinInfo(bankName, skinName);
     }
 
     /*

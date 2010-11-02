@@ -852,6 +852,7 @@ NXThemesEditor.customizeTheme = function(src, screen) {
          onSuccess: function(r) {
              var text = r.responseText;
              NXThemes.getViewById(screen).refresh();
+             NXThemesEditor.refreshDashboard();
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -874,6 +875,7 @@ NXThemesEditor.uncustomizeTheme = function(src, screen) {
          onSuccess: function(r) {
              var text = r.responseText;
              NXThemes.getViewById(screen).refresh();
+             NXThemesEditor.refreshDashboard();             
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -1237,6 +1239,7 @@ NXThemesEditor.deleteTheme = function(src) {
            NXThemesEditor.refreshUndoActions();
            NXThemesEditor.refreshThemeSelector();
            NXThemesEditor.writeMessage("Theme deleted.");
+           NXThemesEditor.refreshDashboard();           
          },
          onFailure: function(r) {
            var text = r.responseText;
@@ -2642,3 +2645,7 @@ NXThemesEditor.showThemePreview = function() {
   NXThemesEditor.setDashboardPerspective('dashboard preview');
 };
 
+
+NXThemesEditor.refreshDashboard = function() {
+  NXThemes.getViewById('dashboard').refresh();
+};

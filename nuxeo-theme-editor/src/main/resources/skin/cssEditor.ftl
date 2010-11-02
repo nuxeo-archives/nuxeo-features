@@ -81,11 +81,10 @@ ${theme_skin_css}
 <#if !saveable>
   <div id="nxthemesTopBanner" style="position: absolute">
     <div class="nxthemesInfoMessage">
-    <button class="nxthemesActionButton"
-    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', 'css editor')">Customize theme</button>
       <img src="${basePath}/skin/nxthemes-editor/img/error.png" width="16" height="16" style="vertical-align: bottom" />
       <span>Before you can edit the CSS file you need to customize the <strong>${current_theme.name}</strong> theme.</span>
+      <button class="nxthemesActionButton"
+       onclick="NXThemesEditor.customizeTheme('${current_theme.src}', 'css editor')">Customize theme</button>
     </div>
-    <div style="clear: both"></div>
   </div>   
 </#if>

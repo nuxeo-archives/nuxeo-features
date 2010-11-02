@@ -1,15 +1,13 @@
   
+<div style="position: absolute; top: 20px; left: 25px; right: 25px; bottom: 20px;">
+
 <div class="window">
 <div class="title">Theme preview</div>
 <div class="body">
 
-<div style="padding: 4px 0; float: right">
- <a href="javascript:NXThemesEditor.manageSkins()"
-    class="nxthemesActionButton">Change skin</a>
- <a href="javascript:NXThemesEditor.editCss()"
-    class="nxthemesActionButton">Edit CSS</a>    
- <a href="javascript:NXThemesEditor.setThemeOptions()"
-    class="nxthemesActionButton">Set theme options</a>
+<div style="padding: 4px 0; float: right">   
+ <a href="javascript:NXThemesEditor.controlPanel()"
+    class="nxthemesActionButton">Close</a>
 </div>
 
 <div id="nxthemesPreviewFrame" style="background: #fff url(${basePath}/skin/nxthemes-editor/img/progressbar.gif) no-repeat center center">
@@ -18,7 +16,8 @@
  </iframe>
 </div>
 
-
 </div>
+</div>
+
 </div>
       

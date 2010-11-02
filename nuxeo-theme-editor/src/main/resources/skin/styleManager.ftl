@@ -42,7 +42,7 @@
 
 <#if selected_named_style>
 <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
-      onsubmit="NXThemesStyleManager.updateNamedStyleCSS(this); return false">
+      onsubmit="NXThemesCssEditor.updateNamedStyleCSS(this); return false">
 <div>
   <textarea id="namedStyleCssEditor" name="css_source" rows="15" cols="72"
  style="border: 1px solid #999; width: 100%; height: 250px; font-size: 11px;">${selected_named_style_css}</textarea>

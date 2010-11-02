@@ -39,11 +39,11 @@
 </#list>
 
 <#if hasField>
-  <div>
+  <p>
     <button <#if !saveable>disabled="disabled"</#if> type="submit" >Save</button>
     <a href="javascript:NXThemesEditor.showThemePreview()"
        class="nxthemesActionButton">Preview theme</a>
-  </div>
+  </p>
 </#if>
 </form>
 
@@ -58,12 +58,11 @@
 <#if !saveable>
   <div id="nxthemesTopBanner" style="position: absolute">
     <div class="nxthemesInfoMessage">
-    <button class="nxthemesActionButton"
-    onclick="NXThemesEditor.customizeTheme('${current_theme.src}', 'theme options')">Customize theme</button>
       <img src="${basePath}/skin/nxthemes-editor/img/error.png" width="16" height="16" style="vertical-align: bottom" />
       <span>Before you can modify theme options you need to customize the <strong>${current_theme.name}</strong> theme.</span>
+      <button class="nxthemesActionButton"
+       onclick="NXThemesEditor.customizeTheme('${current_theme.src}', 'theme options')">Customize theme</button>
     </div>
-    <div style="clear: both"></div>
-  </div>   
+  </div>       
 </#if>
 
