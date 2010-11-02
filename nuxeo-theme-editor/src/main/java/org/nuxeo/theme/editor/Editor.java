@@ -482,8 +482,9 @@ public class Editor {
     public static void setStyleInheritance(String styleName,
             String ancestorStyleName, String themeName) throws ThemeException {
         saveToUndoBuffer(themeName, "set style inheritance");
+        final boolean allowMany = true;
         ThemeManager.setStyleInheritance(styleName, ancestorStyleName,
-                themeName);
+                themeName, allowMany);
         saveTheme(themeName);
     }
 
@@ -706,8 +707,7 @@ public class Editor {
         themeManager.setNamedObject(themeName, "style", style);
 
         if (element != null) {
-            themeManager.makeElementUseNamedStyle(element, styleName,
-                    themeName, false);
+            themeManager.makeElementUseNamedStyle(element, styleName, themeName);
         }
 
         saveTheme(themeName);
@@ -733,7 +733,7 @@ public class Editor {
         Style inheritedStyle = (Style) themeManager.getNamedObject(themeName,
                 "style", styleName);
         themeManager.deleteFormat(inheritedStyle);
-        themeManager.makeElementUseNamedStyle(element, null, themeName, false);
+        themeManager.makeElementUseNamedStyle(element, null, themeName);
         themeManager.removeNamedObject(themeName, "style", styleName);
         saveTheme(themeName);
     }
@@ -1048,7 +1048,7 @@ public class Editor {
 
             String themeName = currentThemeName.split("/")[0];
             themeManager.makeElementUseNamedStyle(fragment, styleName,
-                    themeName, false);
+                    themeName);
 
             themeManager.fillScratchPage(themeName, fragment);
 
@@ -1073,6 +1073,11 @@ public class Editor {
                     currentTopSkinName = null;
                 }
             }
+            if (skin.getName().equals(currentBaseSkinName)) {
+                if (!skin.isBase()) {
+                    currentBaseSkinName = null;
+                }
+            }
         }
 
         ThemeManager themeManager = Manager.getThemeManager();
@@ -1083,18 +1088,22 @@ public class Editor {
                     + " (base skin is missing)");
         }
 
-        if (!isBaseSkin && !skinName.equals(currentBaseSkinName)) {
-            log.error("Setting skin: " + skinName + " above: "
-                    + currentBaseSkinName);
-            setStyleInheritance(skinName, currentBaseSkinName, themeName);
+        if (isBaseSkin && (skinName.equals(currentBaseSkinName))) {
+            return;
+        }
+        if (!isBaseSkin && currentBaseSkinName != null) {
+            if (skinName.equals(currentTopSkinName)) {
+                return;
+            }
+            final boolean allowMany = false;
+            ThemeManager.setStyleInheritance(skinName, currentBaseSkinName,
+                    themeName, allowMany);
         }
 
-        boolean preserveInheritance = !isBaseSkin;
         for (PageElement page : themeManager.getPagesOf(themeName)) {
             Style newStyle = themeManager.createStyle();
             ElementFormatter.setFormat(page, newStyle);
-            themeManager.makeElementUseNamedStyle(page, skinName, themeName,
-                    preserveInheritance);
+            themeManager.makeElementUseNamedStyle(page, skinName, themeName);
         }
 
         themeManager.removeOrphanedFormats();
