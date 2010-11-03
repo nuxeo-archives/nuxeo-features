@@ -15,7 +15,9 @@
 package org.nuxeo.theme.editor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.nuxeo.ecm.webengine.WebEngine;
 import org.nuxeo.ecm.webengine.session.AbstractComponent;
@@ -192,16 +194,16 @@ public class SessionManager extends AbstractComponent {
     }
 
     @SuppressWarnings("unchecked")
-    public static synchronized List<String> getWorkspaceThemeNames() {
-        List<String> themes = (List<String>) getUserSession().get(
+    public static synchronized Set<String> getWorkspaceThemeNames() {
+        Set<String> themes = (Set<String>) getUserSession().get(
                 WORKSPACE_THEME_NAMES);
         if (themes == null) {
-            themes = new ArrayList<String>();
+            themes = new HashSet<String>();
         }
         return themes;
     }
 
-    public static synchronized void setWorkspaceThemeNames(List<String> themes) {
+    public static synchronized void setWorkspaceThemeNames(Set<String> themes) {
         getUserSession().put(WORKSPACE_THEME_NAMES, themes);
     }
 

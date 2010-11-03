@@ -3,6 +3,7 @@ package org.nuxeo.theme.editor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -228,10 +229,10 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
-        List<ThemeDescriptor> availableThemes = new ArrayList<ThemeDescriptor>();
-        List<ThemeInfo> workspaceThemes = getWorkspaceThemes(path, name);
+        Set<ThemeDescriptor> availableThemes = new HashSet<ThemeDescriptor>();
+        Set<ThemeInfo> workspaceThemes = getWorkspaceThemes(path, name);
         String templateEngine = getTemplateEngine(path);
-        List<String> workspaceThemeNames = new ArrayList<String>();
+        Set<String> workspaceThemeNames = new HashSet<String>();
         for (ThemeInfo theme : workspaceThemes) {
             workspaceThemeNames.add(theme.getName());
         }
@@ -524,16 +525,19 @@ public class Main extends ModuleRoot {
         ResourceBank currentThemeBank = getCurrentThemeBank(currentThemeName);
 
         List<ResourceBank> banks = ThemeManager.getResourceBanks();
+        List<String> collections = new ArrayList<String>();
 
         ResourceBank selectedResourceBank = null;
         if (currentThemeBank != null) {
             selectedResourceBank = currentThemeBank;
+            collections = Editor.getBankCollections(currentThemeBank.getName());
         } else {
             String selectedResourceBankName = getSelectedResourceBank();
             if (selectedResourceBankName == null) {
                 if (!banks.isEmpty()) {
                     selectedResourceBank = banks.get(0);
                 }
+                collections = Editor.getBankCollections(selectedResourceBankName);
             } else {
                 try {
                     selectedResourceBank = ThemeManager.getResourceBank(selectedResourceBankName);
@@ -548,7 +552,8 @@ public class Main extends ModuleRoot {
 
         return getTemplate("bankManager.ftl").arg("current_theme",
                 currentThemeDescriptor).arg("current_bank", currentThemeBank).arg(
-                "banks", banks).arg("selected_bank", selectedResourceBank);
+                "banks", banks).arg("selected_bank", selectedResourceBank).arg(
+                "collections", collections);
     }
 
     private ResourceBank getCurrentThemeBank(String themeName) {
@@ -1411,12 +1416,9 @@ public class Main extends ModuleRoot {
     @POST
     @Path("add_theme_to_workspace")
     public void addThemeToWorkspace(@FormParam("name") String name) {
-        List<String> themes = SessionManager.getWorkspaceThemeNames();
+        Set<String> themes = SessionManager.getWorkspaceThemeNames();
         if (!themes.contains(name)) {
             themes.add(name);
-        }
-        for (String s : themes) {
-            log.error(s);
         }
         SessionManager.setWorkspaceThemeNames(themes);
     }
@@ -1424,9 +1426,9 @@ public class Main extends ModuleRoot {
     @POST
     @Path("remove_theme_from_workspace")
     public void removeThemeFromWorkspace(@FormParam("name") String name) {
-        List<String> themes = SessionManager.getWorkspaceThemeNames();
+        Set<String> themes = SessionManager.getWorkspaceThemeNames();
         if (themes == null) {
-            themes = new ArrayList<String>();
+            themes = new HashSet<String>();
         }
         if (themes.contains(name)) {
             themes.remove(name);
@@ -1976,11 +1978,11 @@ public class Main extends ModuleRoot {
         return Editor.getThemeSkin(themeName);
     }
 
-    public static List<ThemeInfo> getWorkspaceThemes(String path, String name) {
+    public static Set<ThemeInfo> getWorkspaceThemes(String path, String name) {
         String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
-        List<String> workspaceThemeNames = SessionManager.getWorkspaceThemeNames();
-        List<ThemeInfo> workspaceThemes = new ArrayList<ThemeInfo>();
+        Set<String> workspaceThemeNames = SessionManager.getWorkspaceThemeNames();
+        Set<ThemeInfo> workspaceThemes = new HashSet<ThemeInfo>();
         Set<String> compatibleThemes = ThemeManager.getThemeNames(templateEngine);
         if (!workspaceThemeNames.contains(currentThemeName)) {
             workspaceThemeNames.add(currentThemeName);

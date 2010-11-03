@@ -16,10 +16,4 @@
   label="Customize ${theme.name} theme" />
 </#if>
 
-<#if theme.custom>
-    <@nxthemes_button identifier="dashboard delete theme"
-  link="javascript:NXThemesEditor.deleteTheme('${theme.src}', 'dashboard actions')"
-  label="Delete theme" />
-</#if>
-
 </#if>

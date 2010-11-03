@@ -65,6 +65,23 @@
 </div>
 </div>
 
+<#if current_bank>
+
+<div class="window">
+<div class="title">Bank collections</div>
+<div class="body">
+
+<ul class="nxthemesSelector">
+<#list collections as collection>
+  <li>${collection}</li>
+</#list>
+</ul>
+
+</div>
+</div>
+
+</#if>
+
 <#else>
 <p>No banks have been registered</p>
 </#if>

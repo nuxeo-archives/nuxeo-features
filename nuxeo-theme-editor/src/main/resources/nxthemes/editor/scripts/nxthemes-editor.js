@@ -853,6 +853,7 @@ NXThemesEditor.customizeTheme = function(src, screen) {
              var text = r.responseText;
              NXThemes.getViewById(screen).refresh();
              NXThemesEditor.refreshDashboard();
+             NXThemesEditor.refreshThemeActions();             
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -875,7 +876,8 @@ NXThemesEditor.uncustomizeTheme = function(src, screen) {
          onSuccess: function(r) {
              var text = r.responseText;
              NXThemes.getViewById(screen).refresh();
-             NXThemesEditor.refreshDashboard();             
+             NXThemesEditor.refreshDashboard();
+             NXThemesEditor.refreshThemeActions();                       
          },
          onFailure: function(r) {
              var text = r.responseText;
@@ -2648,4 +2650,8 @@ NXThemesEditor.showThemePreview = function() {
 
 NXThemesEditor.refreshDashboard = function() {
   NXThemes.getViewById('dashboard').refresh();
+};
+
+NXThemesEditor.refreshThemeActions = function() {
+  NXThemes.getViewById("theme actions").refresh();
 };
