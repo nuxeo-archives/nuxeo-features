@@ -15,7 +15,7 @@
 package org.nuxeo.theme.editor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -198,7 +198,7 @@ public class SessionManager extends AbstractComponent {
         Set<String> themes = (Set<String>) getUserSession().get(
                 WORKSPACE_THEME_NAMES);
         if (themes == null) {
-            themes = new HashSet<String>();
+            themes = new LinkedHashSet<String>();
         }
         return themes;
     }

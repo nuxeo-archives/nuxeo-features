@@ -26,8 +26,6 @@
 </td>
 <td>
 
-
-
 <#if selected_bank>
 
   <form class="nxthemesForm">
@@ -71,11 +69,37 @@
 <div class="title">Bank collections</div>
 <div class="body">
 
+
+<table class="nxthemesManageScreen">
+<tr>
+<td style="width: 25%">
+
+<form class="nxthemesForm">
 <ul class="nxthemesSelector">
 <#list collections as collection>
-  <li>${collection}</li>
+  <li <#if selected_bank_collection && selected_bank_collection=collection>class="selected"</#if>><a href="javascript:NXThemesEditor.selectBankCollection('${collection}', 'bank manager')">
+    ${collection}</a></li>
 </#list>
 </ul>
+</form>
+
+</td>
+<td style="width: 75%">
+
+<#if selected_bank_collection>
+  <form action="${current_bank.connectionUrl}/manage/${selected_bank_collection}/download" method="post">
+  <p>
+    Archive file: <strong>${selected_bank_collection?replace(' ', '-')}.zip</strong>  
+  </p>
+  <p>
+    <button class="nxthemesActionButton">Download</button>
+  </p>
+  </form>
+</#if>
+
+</td>
+</tr>
+</table>
 
 </div>
 </div>

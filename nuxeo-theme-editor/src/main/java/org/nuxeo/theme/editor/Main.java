@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -229,17 +230,15 @@ public class Main extends ModuleRoot {
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
         String currentThemeName = getCurrentThemeName(path, name);
-        Set<ThemeDescriptor> availableThemes = new HashSet<ThemeDescriptor>();
+        Set<ThemeDescriptor> availableThemes = new LinkedHashSet<ThemeDescriptor>();
         Set<ThemeInfo> workspaceThemes = getWorkspaceThemes(path, name);
+        Set<String> workspaceThemeNames = SessionManager.getWorkspaceThemeNames();
         String templateEngine = getTemplateEngine(path);
-        Set<String> workspaceThemeNames = new HashSet<String>();
-        for (ThemeInfo theme : workspaceThemes) {
-            workspaceThemeNames.add(theme.getName());
-        }
-        if (!workspaceThemeNames.contains(currentThemeName)) {
-            workspaceThemeNames.add(currentThemeName);
-        }
+
         for (ThemeDescriptor themeDef : ThemeManager.getThemeDescriptors()) {
+            if (themeDef.isCustomized()) {
+                continue;
+            }
             List<String> templateEngines = themeDef.getTemplateEngines();
             if (templateEngines != null
                     && !templateEngines.contains(templateEngine)) {
@@ -550,10 +549,13 @@ public class Main extends ModuleRoot {
         ThemeDescriptor currentThemeDescriptor = ThemeManager.getThemeDescriptorByThemeName(
                 templateEngine, currentThemeName);
 
+        String selectedBankCollection = getSelectedBankCollection();
+
         return getTemplate("bankManager.ftl").arg("current_theme",
                 currentThemeDescriptor).arg("current_bank", currentThemeBank).arg(
                 "banks", banks).arg("selected_bank", selectedResourceBank).arg(
-                "collections", collections);
+                "collections", collections).arg("selected_bank_collection",
+                selectedBankCollection);
     }
 
     private ResourceBank getCurrentThemeBank(String themeName) {
@@ -1982,7 +1984,7 @@ public class Main extends ModuleRoot {
         String currentThemeName = getCurrentThemeName(path, name);
         String templateEngine = getTemplateEngine(path);
         Set<String> workspaceThemeNames = SessionManager.getWorkspaceThemeNames();
-        Set<ThemeInfo> workspaceThemes = new HashSet<ThemeInfo>();
+        Set<ThemeInfo> workspaceThemes = new LinkedHashSet<ThemeInfo>();
         Set<String> compatibleThemes = ThemeManager.getThemeNames(templateEngine);
         if (!workspaceThemeNames.contains(currentThemeName)) {
             workspaceThemeNames.add(currentThemeName);

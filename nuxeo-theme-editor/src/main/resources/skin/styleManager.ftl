@@ -64,7 +64,7 @@
 
 
 <!-- unused styles -->
-
+<!--
 <#assign styles=themeManager.getStyles(current_theme_name)>
 <#if styles>
 
@@ -108,6 +108,7 @@
 </div>
 
 </#if>
+-->
 
 
 
