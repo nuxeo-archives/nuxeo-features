@@ -1,6 +1,6 @@
 
 <div class="window">
-<div class="title">Advanced configuration</div>
+<div class="title">Theme manager</div>
 <div class="body">
 
 
@@ -19,7 +19,7 @@
           <a <#if !theme.selected>onclick="NXThemesEditor.removeThemeFromWorkspace('${theme.name?js_string}', 'theme browser')"</#if>
              href="javascript:void(0)">
             <img src="${basePath}/skin/nxthemes-editor/img/theme-16.png" width="16" height="16" />
-            <span <#if theme.selected>style="font-weight: bold"</#if>>${theme.name}</span>
+            <span <#if current_theme_name = theme.name>style="font-weight: bold"</#if>>${theme.name}</span>
             <#if !theme.selected><span class="info"><img src="${basePath}/skin/nxthemes-editor/img/remove-theme-from-list-16.png" width="16" height="16" /> remove from list</span></#if></a></li>
       </#list>
     </ul>

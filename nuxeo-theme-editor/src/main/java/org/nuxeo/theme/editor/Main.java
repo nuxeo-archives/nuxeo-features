@@ -75,7 +75,8 @@ public class Main extends ModuleRoot {
     public Object renderThemeSelector(
             @QueryParam("org.nuxeo.theme.application.path") String path,
             @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("themeSelector.ftl").arg("themes",
+        return getTemplate("themeSelector.ftl").arg("current_theme_name",
+                getCurrentThemeName(path, name)).arg("themes",
                 getWorkspaceThemes(path, name));
     }
 
@@ -247,8 +248,9 @@ public class Main extends ModuleRoot {
                 availableThemes.add(themeDef);
             }
         }
-        return getTemplate("themeBrowser.ftl").arg("available_themes",
-                availableThemes).arg("workspace_themes", workspaceThemes);
+        return getTemplate("themeBrowser.ftl").arg("current_theme_name",
+                currentThemeName).arg("available_themes", availableThemes).arg(
+                "workspace_themes", workspaceThemes);
     }
 
     @GET

@@ -1950,10 +1950,6 @@ a.nxthemesActionButton img {
   padding: 0px 20px;
 }
 
-.nxthemesInfoMessage button {  
-  float: right;
-}
-
 #dashboardTab {
   position: fixed;
   z-index: 3;
