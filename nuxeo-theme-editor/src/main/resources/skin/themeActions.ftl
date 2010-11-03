@@ -40,7 +40,7 @@
     <!-- <#if theme.repairable><li><a href="javascript:NXThemesEditor.repairTheme('${theme.src?js_string}')">Repair theme</a></li></#if> -->
     <li><a href="javascript:NXThemesEditor.deletePage('${current_page_path?js_string}')">Delete current page (${current_page_name})</a></li> 
     <#if !theme.saveable>
-      <li><a href="javascript:NXThemesEditor.loadTheme('${theme.src?js_string})">Restore ${theme.name} theme</a></li> 
+      <li><a href="javascript:NXThemesEditor.loadTheme('${theme.src?js_string})">Restore original ${theme.name} theme</a></li> 
     </#if>
   </ul>
 </div>

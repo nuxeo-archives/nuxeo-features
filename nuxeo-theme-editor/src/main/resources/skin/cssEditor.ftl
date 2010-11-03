@@ -5,7 +5,7 @@
 <#assign saveable=current_theme && current_theme.saveable>
 
 <div class="window">
-<div class="title">Edit CSS</div>
+<div class="title">Edit CSS - ${theme_skin.name}</div>
 <div class="body">
 
 <#if current_bank>
@@ -23,6 +23,8 @@
     </div>
   </form>
 </#if>
+
+
 
   <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
       onsubmit="NXThemesCssEditor.updateNamedStyleCSS(this); return false">

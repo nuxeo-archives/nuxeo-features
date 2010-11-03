@@ -77,8 +77,10 @@
 <form class="nxthemesForm">
 <ul class="nxthemesSelector">
 <#list collections as collection>
-  <li <#if selected_bank_collection && selected_bank_collection=collection>class="selected"</#if>><a href="javascript:NXThemesEditor.selectBankCollection('${collection}', 'bank manager')">
-    ${collection}</a></li>
+  <#if collection != 'custom'>
+    <li <#if selected_bank_collection && selected_bank_collection=collection>class="selected"</#if>><a href="javascript:NXThemesEditor.selectBankCollection('${collection}', 'bank manager')">
+      ${collection}</a></li>
+  </#if>
 </#list>
 </ul>
 </form>

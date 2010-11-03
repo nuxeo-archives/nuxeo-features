@@ -3,8 +3,6 @@
 <div class="title">Theme manager</div>
 <div class="body">
 
-
-
   <table class="nxthemesManageScreen">
   <tr>
     <th style="width: 50%;">Working list</th>

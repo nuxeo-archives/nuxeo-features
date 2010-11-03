@@ -1945,9 +1945,20 @@ a.nxthemesActionButton img {
 .nxthemesInfoMessage {  
   text-align: left;
   font-style: normal;
-  color: #333;
+  color: #900;
   font-size: 13px;
-  padding: 0px 20px;
+  padding: 0px 30px;
+}
+
+.nxthemesInfoMessage img {  
+  padding-right: 3px;
+  vertical-align:top;
+}
+
+.nxthemesInfoMessage button {
+  float: right;
+  margin: 0;
+  padding: 1px 4px;
 }
 
 #dashboardTab {
@@ -1960,7 +1971,7 @@ a.nxthemesActionButton img {
 #canvasEditorTab {
   position: fixed;
   z-index: 3;
-  top: 80px;
+  top: 200px;
   left: -5px;
 }
 

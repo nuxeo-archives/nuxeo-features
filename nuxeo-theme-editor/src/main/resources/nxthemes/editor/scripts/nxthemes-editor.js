@@ -1887,7 +1887,6 @@ NXThemesStyleEditor.setCurrentStyleLayer = function(uid) {
              uid: uid
          },
          onSuccess: function(r) {
-             NXThemesEditor.setEditorPerspective('default');
              NXThemesEditor.refreshUndoActions();
              NXThemes.getViewById("element style").refresh();
          },
