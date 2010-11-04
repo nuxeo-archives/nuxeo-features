@@ -4,6 +4,7 @@
 
 <@nxthemes_button identifier="canvas open dashboard"
   link="javascript:NXThemesEditor.openDashboard()"
+  icon="${basePath}/skin/nxthemes-editor/img/dashboard-14.png"     
   label="Dashboard" />
 
 <@nxthemes_button identifier="canvas refresh button"
@@ -14,16 +15,18 @@
 <#if !theme.saveable>
   <@nxthemes_button identifier="canvas customize theme"
   link="javascript:NXThemesEditor.customizeTheme('${theme.src}', 'canvas editor')"
+  icon="${basePath}/skin/nxthemes-editor/img/edit-14.png"    
   label="Customize theme" />
 </#if>   
 
 <#if theme.custom>
     <@nxthemes_button identifier="canvas remove customizations"
   link="javascript:NXThemesEditor.uncustomizeTheme('${theme.src}', 'canvas editor')"
+  icon="${basePath}/skin/nxthemes-editor/img/remove-14.png"  
   label="Remove customizations" />
 </#if>
 
-<@nxthemes_button identifier="canvas themeactions"
+<@nxthemes_button identifier="canvas theme actions"
   classNames="dropList"
   menu="nxthemesThemeActions"
   label="More actions" />

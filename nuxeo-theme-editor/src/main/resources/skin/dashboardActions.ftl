@@ -10,6 +10,7 @@
 <#if theme.custom>
     <@nxthemes_button identifier="dashboard remove customizations"
   link="javascript:NXThemesEditor.uncustomizeTheme('${theme.src}', 'dashboard actions')"
+  icon="${basePath}/skin/nxthemes-editor/img/remove-14.png"  
   label="Remove customizations" />
 </#if>
 
