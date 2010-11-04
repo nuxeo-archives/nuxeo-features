@@ -104,18 +104,6 @@
         controlledBy="editor perspectives,page switcher"
         visibleInPerspectives="canvas editor,padding editor" />
 
-      <!-- dashboard tab -->
-      <@nxthemes_panel identifier="dashboard tab"
-        url="${basePath}/nxthemes-editor/dashboardTab"
-        controlledBy="editor perspectives"
-        visibleInPerspectives="canvas editor,fragment factory,element editor" />
-        
-      <!-- back to canvas tab -->
-      <@nxthemes_panel identifier="back to canvas tab"
-        url="%{basePath}/nxthemes-editor/backToCanvasTab"
-        controlledBy="editor perspectives"
-        visibleInPerspectives="dashboard,fragment factory,element editor" />
-
     </div>
 
     <@nxthemes_controller resource="perspective-selector.json" />

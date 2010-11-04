@@ -93,14 +93,6 @@ public class Main extends ModuleRoot {
     }
 
     @GET
-    @Path("dashboardTab")
-    public Object renderDashboardTabr(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("dashboardTab.ftl");
-    }
-
-    @GET
     @Path("canvasModeSelector")
     public Object renderCanvasModeSelector(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -119,14 +111,6 @@ public class Main extends ModuleRoot {
                 templateEngine, currentThemeName);
         return getTemplate("themeOptions.ftl").arg("current_theme",
                 currentThemeDef);
-    }
-
-    @GET
-    @Path("backToCanvasTab")
-    public Object renderBackToCanvasTab(
-            @QueryParam("org.nuxeo.theme.application.path") String path,
-            @QueryParam("org.nuxeo.theme.application.name") String name) {
-        return getTemplate("backToCanvasTab.ftl");
     }
 
     @GET
@@ -870,7 +854,7 @@ public class Main extends ModuleRoot {
     public void deleteNamedStyle(@FormParam("id") String id,
             @FormParam("theme_name") String themeName,
             @FormParam("style_name") String styleName) {
-        Element element = ThemeManager.getElementById(id);
+        Element element = id == null ? null : ThemeManager.getElementById(id);
         try {
             Editor.deleteNamedStyle(element, styleName, themeName);
         } catch (Exception e) {

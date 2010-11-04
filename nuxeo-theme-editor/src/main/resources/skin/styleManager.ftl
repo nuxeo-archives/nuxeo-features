@@ -34,7 +34,7 @@
 
 <p class="nxthemesEditor">
   <a class="nxthemesActionButton" href="javascript:NXThemesStyleEditor.createNamedStyle(null, '${theme.name}', 'style manager')">
-  Create new style</a>
+  Create style</a>
 </p>
 
 </td>
@@ -49,12 +49,18 @@
   <input type="hidden" name="style_uid" value="#{selected_named_style.uid}" />
   <input type="hidden" name="theme_name" value="${current_theme_name}" />
 </div>
-<div>
+<div style="margin-top: 5px">
   <button type="submit">Save</button>
 </div>
 </form>
-</#if>
 
+<p class="nxthemesEditor" style="float: right; margin-top: -20px">
+   <button class="nxthemesActionButton"
+    onclick="NXThemesStyleManager.deleteNamedStyle('${current_theme_name}', '${selected_named_style.name}')">Delete style</button>  
+</p>
+
+</#if>
+ 
 </td>
 </tr>
 </table>

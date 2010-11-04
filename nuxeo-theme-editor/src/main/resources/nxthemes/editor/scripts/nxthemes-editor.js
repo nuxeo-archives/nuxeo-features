@@ -2224,6 +2224,29 @@ NXThemesStyleManager.deleteUnusedStyleView = function(info) {
     });
 };
 
+NXThemesStyleManager.deleteNamedStyle = function(currentThemeName, styleName) {
+    var ok = confirm("Deleting style, are you sure?");
+    if (!ok) {
+        return;
+    }
+    var url = nxthemesBasePath + "/nxthemes-editor/delete_named_style";
+    new Ajax.Request(url, {
+         method: 'post',
+         parameters: {
+             style_name: styleName,
+             theme_name: currentThemeName
+         },
+         onSuccess: function(r) {
+             NXThemes.getViewById("style manager").refresh();
+             NXThemesEditor.refreshUndoActions();
+         },
+         onFailure: function(r) {
+             var text = r.responseText;
+             window.alert(text);
+         }
+    });
+};
+
 NXThemesStyleManager.setEditMode = function(mode, button) {
     var url = nxthemesBasePath + "/nxthemes-editor/select_style_manager_mode";
     new Ajax.Request(url, {
@@ -2422,8 +2445,6 @@ NXThemesCssEditor.restoreNamedStyle = function(form) {
          }
     });
 }
-
-
 
 // Fragment factory
 if (typeof NXThemesFragmentFactory == "undefined") {

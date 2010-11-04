@@ -1,21 +1,20 @@
 <#setting url_escaping_charset='UTF-8'>
 
-<span style="font: bold 11px arial; padding: 3px 4px 3px 7px; color: white; float: left">Theme: </span>
-
 <#if theme>
 
-<#if theme.saveable>
-  <@nxthemes_button identifier="canvas refresh button"
-    link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}')"
-    icon="${basePath}/skin/nxthemes-editor/img/refresh-14.png"
-    label="Refresh page" />
-</#if>
-  
- 
+<@nxthemes_button identifier="canvas open dashboard"
+  link="javascript:NXThemesEditor.openDashboard()"
+  label="Dashboard" />
+
+<@nxthemes_button identifier="canvas refresh button"
+  link="javascript:NXThemesEditor.loadTheme('${theme.src?js_string}')"
+  icon="${basePath}/skin/nxthemes-editor/img/refresh-14.png"
+  label="Refresh page" />
+   
 <#if !theme.saveable>
   <@nxthemes_button identifier="canvas customize theme"
   link="javascript:NXThemesEditor.customizeTheme('${theme.src}', 'canvas editor')"
-  label="Customize ${theme.name} theme" />
+  label="Customize theme" />
 </#if>   
 
 <#if theme.custom>

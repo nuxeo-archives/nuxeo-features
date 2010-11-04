@@ -8,12 +8,6 @@
 <div class="window">
 <div class="title">Top layer</div>
 <div class="body">
-  <#if current_skin_name && current_skin_name != current_base_skin_name>
-  <div style="padding: 4px 0; float: right">
-    <a href="javascript:NXThemesEditor.showThemePreview()"
-       class="nxthemesActionButton">Preview skin</a>
-  </div>
-  </#if>
   <#if skins>
     <div style="padding: 10px 5px">
     <div>Add a top layer skin to the <strong>${current_theme.name}</strong> theme:</div>
@@ -38,12 +32,6 @@
 <div class="window">
 <div class="title">Base skin</div>
 <div class="body">
-  <#if current_base_skin_name && current_base_skin_name == current_skin_name>
-  <div style="padding: 4px 0; float: right">
-    <a href="javascript:NXThemesEditor.showThemePreview()"
-       class="nxthemesActionButton">Preview skin</a>
-  </div>
-  </#if>
   <#if base_skins>
     <div style="padding: 10px 5px">
     <div>Select a base skin for the <strong>${current_theme.name}</strong> theme:</div>

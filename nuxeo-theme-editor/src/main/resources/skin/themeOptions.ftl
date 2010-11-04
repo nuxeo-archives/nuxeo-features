@@ -41,8 +41,6 @@
 <#if hasField>
   <p>
     <button <#if !saveable>disabled="disabled"</#if> type="submit" >Save</button>
-    <a href="javascript:NXThemesEditor.showThemePreview()"
-       class="nxthemesActionButton">Preview theme</a>
   </p>
 </#if>
 </form>

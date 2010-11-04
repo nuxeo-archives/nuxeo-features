@@ -3,23 +3,29 @@
 <@nxthemes_controller resource="dashboard-perspectives.json" />
     
 <div class="nxthemesThemeControlPanelScreen">
-
-
-
-
 <div class="nxthemesThemeControlPanel">
 
+<h1 class="nxthemesEditor">Dashboard</h1>
 
 <table style="width: 100%">
 <tr>
 <td style="width: 19%; vertical-align: top;">
 
 <div class="window">
+<div class="title">Theme</div>
+<div class="body">
+  <ul class="nxthemesSelector">
+    <li><a href="javascript:NXThemesEditor.showThemePreview()">Preview theme</a></li>
+    <li><a href="javascript:NXThemesEditor.controlPanel()">Overview</a></li>
+  </ul>
+</div>
+</div>
+
+<div class="window">
 <div class="title">Basic configuration</div>
 <div class="body">
 
   <ul class="nxthemesSelector">
-    <li><a href="javascript:NXThemesEditor.controlPanel()">Overview</a></li>
     <li><a href="javascript:NXThemesEditor.manageSkins()">Skins</a></li>
     <li><a href="javascript:NXThemesEditor.setThemeOptions()">Theme options</a></li>
   </ul>
@@ -51,6 +57,7 @@
 
 </div>
 </div>
+
 
 
 </td>

@@ -5,7 +5,7 @@
 <#assign saveable=current_theme && current_theme.saveable>
 
 <div class="window">
-<div class="title">Edit CSS - ${theme_skin.name}</div>
+<div class="title">Edit CSS <#if theme_skin>(${theme_skin.name})</#if></div>
 <div class="body">
 
 <#if current_bank>
@@ -24,8 +24,6 @@
   </form>
 </#if>
 
-
-
   <form id="nxthemesNamedStyleCSSEditor" class="nxthemesForm" style="padding: 0"
       onsubmit="NXThemesCssEditor.updateNamedStyleCSS(this); return false">
     <input type="hidden" name="style_uid" value="#{theme_skin.uid}" />
@@ -39,8 +37,6 @@
   </div>
   <div style="float: left">
     <button type="submit">Save</button>
-     <a href="javascript:NXThemesEditor.showThemePreview()"
-    class="nxthemesActionButton">Preview theme</a>    
   </div>
     
 <#else>
@@ -53,7 +49,6 @@
    style="margin-bottom: 10px; cursor: default; border: 1px solid #ccc; color: #999; font-family: monospace; width: 100%; height: 250px; font-size: 11px;">
 ${theme_skin_css}
 </textarea>
-
 
 </#if>
 </form>

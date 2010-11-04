@@ -1960,33 +1960,3 @@ a.nxthemesActionButton img {
   margin: 0;
   padding: 1px 4px;
 }
-
-#dashboardTab {
-  position: fixed;
-  z-index: 3;
-  top: 200px;
-  left: -5px;
-}
-
-#canvasEditorTab {
-  position: fixed;
-  z-index: 3;
-  top: 200px;
-  left: -5px;
-}
-
-#dashboardTab:hover {
-  left: 0;
-}
-
-#canvasEditorTab:hover {
-  left: 0;
-}
-  
-#canvasEditorTab img {
-  border: none;
-}
-
-#dashboardTab img {
-  border: none;
-}

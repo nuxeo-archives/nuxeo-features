@@ -733,7 +733,9 @@ public class Editor {
         Style inheritedStyle = (Style) themeManager.getNamedObject(themeName,
                 "style", styleName);
         themeManager.deleteFormat(inheritedStyle);
-        themeManager.makeElementUseNamedStyle(element, null, themeName);
+        if (element != null) {
+            themeManager.makeElementUseNamedStyle(element, null, themeName);
+        }
         themeManager.removeNamedObject(themeName, "style", styleName);
         saveTheme(themeName);
     }
