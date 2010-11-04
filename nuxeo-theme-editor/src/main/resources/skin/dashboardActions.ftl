@@ -17,6 +17,7 @@
 <#if !theme.saveable>
   <@nxthemes_button identifier="dashboard customize theme"
   link="javascript:NXThemesEditor.customizeTheme('${theme.src}', 'dashboard actions')"
+  icon="${basePath}/skin/nxthemes-editor/img/edit-14.png"  
   label="Customize theme" />
 </#if>
 

@@ -125,7 +125,7 @@
   <#else>
   
 <div class="window">
-<div class="title">Image library error</div>
+<div class="title">Image library</div>
 <div class="body">
   
     <p>The <strong>${current_theme.name}</strong> theme is not connected to a bank.</p>

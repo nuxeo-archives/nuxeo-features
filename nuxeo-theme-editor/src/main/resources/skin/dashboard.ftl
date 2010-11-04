@@ -5,8 +5,6 @@
 <div class="nxthemesThemeControlPanelScreen">
 <div class="nxthemesThemeControlPanel">
 
-<h1 class="nxthemesEditor">Dashboard</h1>
-
 <table style="width: 100%">
 <tr>
 <td style="width: 19%; vertical-align: top;">

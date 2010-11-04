@@ -71,6 +71,13 @@
           controlledBy="editor perspectives"
           visibleInPerspectives="dashboard" />
 
+        <!-- editor actions -->
+        <nxthemes:panel identifier="editor actions"
+          url="%{contextPath}/site/nxthemes-editor/editorActions"
+          controlledBy="editor perspectives"
+          visibleInPerspectives="element editor,fragment factory,padding editor" />
+
+
       </div>
 
     </div>

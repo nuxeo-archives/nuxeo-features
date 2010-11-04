@@ -188,6 +188,14 @@ public class Main extends ModuleRoot {
     }
 
     @GET
+    @Path("editorActions")
+    public Object renderEditorActions(
+            @QueryParam("org.nuxeo.theme.application.path") String path,
+            @QueryParam("org.nuxeo.theme.application.name") String name) {
+        return getTemplate("editorActions.ftl");
+    }
+
+    @GET
     @Path("cssEditor")
     public Object renderCssEditor(
             @QueryParam("org.nuxeo.theme.application.path") String path,
@@ -1350,9 +1358,6 @@ public class Main extends ModuleRoot {
     public void updateElementVisibility(@FormParam("id") String id,
             @FormParam("perspectives") List<String> perspectives,
             @FormParam("always_visible") Boolean alwaysVisible) {
-        for (String s : perspectives) {
-            log.error(s);
-        }
         Element element = ThemeManager.getElementById(id);
         try {
             Editor.updateElementVisibility(element, perspectives, alwaysVisible);
@@ -1801,9 +1806,9 @@ public class Main extends ModuleRoot {
         String group = getSelectedPresetGroup();
         String themeName = getCurrentThemeName(applicationPath, name);
         List<PresetInfo> presets = new ArrayList<PresetInfo>();
-        List<PresetType> presetTypes = group == null ? PresetManager.getGlobalPresets(
-                group, category)
-                : PresetManager.getCustomPresets(themeName, category);
+        List<PresetType> presetTypes = group == null ? PresetManager.getCustomPresets(
+                themeName, category)
+                : PresetManager.getGlobalPresets(group, category);
         for (PresetType preset : presetTypes) {
             presets.add(new PresetInfo(preset));
         }
