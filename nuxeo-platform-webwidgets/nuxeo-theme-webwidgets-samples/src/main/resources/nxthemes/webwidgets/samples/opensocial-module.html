@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:widget="http://www.netvibes.com/ns/">
+<head>
+
+<title>Opensocial Module</title>
+
+<meta name="author" content="Author name" />
+<meta name="version" content="0.0.1" />
+
+<widget:preferences>
+  <preference name="url" type="text" label="Gadget URL" defaultValue="" />
+</widget:preferences>
+
+<script type="text/javascript">
+var OSModule = {
+  serverBase_: '/nuxeo/opensocial/gadgets/',
+  CONTAINER: 'default',
+  parentUrl_: 'http://localhost:8080/nuxeo/',
+  country_: 'ALL',
+  language_: 'ALL',
+  view_: 'default',
+  nocache_: 1
+}
+
+OSModule.setup = function(url) {
+  OSModule.display(url);
+}
+
+OSModule.display = function(url) {
+  widget.log('OSModule.display');
+  var iframe = widget.createElement('iframe');
+  var id = widget.id;
+  var src = OSModule.serverBase_ + 'ifr?' +
+        'container=' + OSModule.CONTAINER +
+        '&url=' + encodeURIComponent(url) +
+        
+     //  '#rpctoken=' + OSModule.rpcToken +
+        
+        '&mid=' + id +
+        '&nocache=' + OSModule.nocache_ +
+        '&country=' + OSModule.country_ +
+        '&lang=' + OSModule.language_ +
+        '&view=' + OSModule.view_ +
+        (OSModule.specVersion ? '&v=' + OSModule.specVersion : '') +
+        (OSModule.parentUrl_ ? '&parent=' + encodeURIComponent(OSModule.parentUrl_) : '') +
+        (OSModule.debug ? '&debug=1' : '') +
+        (OSModule.secureToken ? '&st=' + OSModule.secureToken : '') +
+
+
+    //   OSModule.getUserPrefsParams() +
+    //  (OSModule.viewParams ?
+    //        '&view-params=' + encodeURIComponent(gadgets.json.stringify(OSModule.viewParams)) : '') +
+        (OSModule.hashData ? '&' + OSModule.hashData : '');
+          
+  iframe.src = src;
+  iframe.scrolling = 'no';
+  iframe.frameborder = '0';
+  iframe.height = '200px';
+  iframe.width = '100%';
+  iframe.style.border = 'none';
+  widget.setBody(iframe);
+}
+
+widget.onLoad = function() {
+  widget.log('OSModule.onLoad');
+  var url = widget.getValue('url');
+  if (url) {
+    OSModule.setup(url);
+  } else {
+    widget.setBody("<p>Please set the widget URL ...</p>");
+  }
+
+}
+
+widget.onRefresh = widget.onLoad;
+</script>
+
+</head>
+<body>
+  <p>Loading ...</p>
+</body>
+</html>

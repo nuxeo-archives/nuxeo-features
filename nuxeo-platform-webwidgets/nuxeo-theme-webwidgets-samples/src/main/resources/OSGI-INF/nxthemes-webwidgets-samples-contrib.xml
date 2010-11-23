@@ -17,6 +17,12 @@
       <icon>nxthemes/webwidgets/samples/uwa-module.png</icon>
     </widget>
 
+    <widget name="opensocial module">
+      <category>modules</category>
+      <path>nxthemes/webwidgets/samples/opensocial-module.html</path>
+      <icon>nxthemes/webwidgets/samples/opensocial-module.png</icon>
+    </widget>
+
     <widget name="image box">
       <category>content</category>
       <path>nxthemes/webwidgets/samples/imagebox.html</path>
