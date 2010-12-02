@@ -13,6 +13,7 @@
   <artifactId>nuxeo-opensocial-parent</artifactId>
   <name>Nuxeo OpenSocial - Parent</name>
   <description>Nuxeo OpenSocial is the integration of the Shindig (OpenSocial) into Nuxeo</description>
+  <version>5.3.2-CP05</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -137,7 +138,7 @@
       <dependency>
         <groupId>org.nuxeo.ecm.opensocial</groupId>
         <artifactId>nuxeo-opensocial-container</artifactId>
-        <version>${nuxeo.features.version}</version>
+        <version>${nuxeo.features.version}-CP05</version>
       </dependency>
       <dependency>
         <groupId>org.nuxeo.ecm.opensocial</groupId>
