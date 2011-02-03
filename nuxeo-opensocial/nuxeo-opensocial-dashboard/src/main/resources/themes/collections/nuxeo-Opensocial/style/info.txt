@@ -1,0 +1,5 @@
+
+nuxeo-opensocial.css:
+     description: Basic skin for nuxeo Opensocial
+     skin: true
+     base: true
