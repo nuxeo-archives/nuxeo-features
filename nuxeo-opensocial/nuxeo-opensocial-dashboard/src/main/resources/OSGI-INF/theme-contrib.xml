@@ -7,9 +7,76 @@
   <require>org.nuxeo.theme.html</require>
   <require>org.nuxeo.theme.jsf</require>
 
+   <!--  new theme -->
+  <extension target="org.nuxeo.theme.services.ThemeService" point="themes">
+
+    <theme>
+      <src>themes/theme-nuxeo-opensocial.xml</src>
+    </theme>
+
+  </extension>
+
+  <extension target="org.nuxeo.theme.services.ThemeService" point="banks">
+    <bank name="nuxeo" url="http://localhost:8080/nuxeo/site/theme-banks/nuxeo" />
+  </extension>
+
+  <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
+    <import src="themes/collections/nuxeo-Opensocial.zip" bank="nuxeo" collection="nuxeo Opensocial" />
+    <import src="themes/collections/Galaxy.zip" bank="nuxeo" collection="Galaxy" />
+    <import src="themes/collections/Grey.zip" bank="nuxeo" collection="Grey" />
+  </extension>
+
+  <!-- application settings...slight mod from original -->
+  <extension target="org.nuxeo.theme.services.ThemeService"
+    point="applications">
+
+    <application root="${org.nuxeo.ecm.contextPath}"
+      template-engine="jsf-facelets">
+
+      <negotiation>
+        <strategy>nuxeo5</strategy>
+        <default-engine>default</default-engine>
+        <default-theme>nuxeo-opensocial/default</default-theme>
+        <default-perspective>default</default-perspective>
+      </negotiation>
+
+      <!-- Cache control for theme resources (/nxthemes-lib/) -->
+      <resource-caching>
+        <lifetime>36000</lifetime>
+      </resource-caching>
+
+      <!-- Cache control for theme styles (/nxthemes-css/) -->
+      <style-caching>
+        <lifetime>900</lifetime>
+      </style-caching>
+
+      <view id="/create_relation_search_document_popup.xhtml">
+        <theme>nuxeo-opensocial/popup</theme>
+      </view>
+      <!-- bind open social dashboard to correct theme and page -->
+      <view id="/opensocial-dashboard.xhtml">
+        <theme>nuxeo-opensocial/opensocial_dashboard</theme>
+      </view>
+      <view id="/view_calendar.xhtml">
+        <perspective>view_calendar</perspective>
+      </view>
+      <view id="/print.xhtml">
+        <perspective>print</perspective>
+      </view>
+      <view id="/editor_link_search_document.xhtml">
+        <theme>nuxeo-opensocial/popup</theme>
+      </view>
+      <view id="/editor_image_upload.xhtml">
+        <theme>nuxeo-opensocial/popup</theme>
+      </view>
+      <view id="/search/choose_searchscope_popup.xhtml">
+        <theme>nuxeo-opensocial/popup</theme>
+      </view>
+    </application>
+  </extension>
+
   <!-- new page in xhtml -->
   <extension target="org.nuxeo.theme.services.ThemeService" point="views">
-
     <!-- was fragments -->
     <view name="nuxeo5 opensocial_dashboard" template-engine="jsf-facelets">
       <format-type>widget</format-type>
@@ -93,26 +160,6 @@
     </view>
   </extension>
 
-  <extension target="org.nuxeo.theme.services.ThemeService" point="views">
-    <view name="opensocial includes" template-engine="jsf-facelets">
-      <format-type>widget</format-type>
-      <template>incl/opensocial-includes.xhtml</template>
-      <!-- what are these for?? -->
-      <resource>jquery-1.3.2.min.js</resource>
-      <resource>jquery.cookie.js</resource>
-      <resource>jquery.menu.js</resource>
-      <resource>thickbox.js</resource>
-      <resource>initmenu.js</resource>
-      <resource>container.css</resource>
-      <resource>gadgetManager.js</resource>
-      <resource>layoutManager.js</resource>
-    </view>
-    <view name="opensocialDashBoardNav" template-engine="jsf-facelets">
-      <format-type>widget</format-type>
-      <template>incl/opensocial-dashboard-nav.xhtml</template>
-    </view>
-  </extension>
-
   <!-- new resources -->
   <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
     <resource name="jquery-1.3.2.min.js">
@@ -141,63 +188,24 @@
     </resource>
   </extension>
 
-  <!-- application settings...slight mod from original -->
-  <extension target="org.nuxeo.theme.services.ThemeService"
-    point="applications">
-
-    <application root="${org.nuxeo.ecm.contextPath}"
-      template-engine="jsf-facelets">
-
-      <negotiation>
-        <strategy>nuxeo5</strategy>
-        <default-engine>default</default-engine>
-        <default-theme>galaxy/default</default-theme>
-        <default-perspective>default</default-perspective>
-      </negotiation>
-
-      <!-- Cache control for theme resources (/nxthemes-lib/) -->
-      <resource-caching>
-        <lifetime>36000</lifetime>
-      </resource-caching>
-
-      <!-- Cache control for theme styles (/nxthemes-css/) -->
-      <style-caching>
-        <lifetime>900</lifetime>
-      </style-caching>
-
-      <view id="/create_relation_search_document_popup.xhtml">
-        <theme>galaxy/popup</theme>
-      </view>
-      <!-- bind open social dashboard to correct theme and page -->
-      <view id="/opensocial-dashboard.xhtml">
-        <theme>galaxy-opensocial/opensocial_dashboard</theme>
-      </view>
-      <view id="/view_calendar.xhtml">
-        <perspective>view_calendar</perspective>
-      </view>
-      <view id="/print.xhtml">
-        <perspective>print</perspective>
-      </view>
-      <view id="/editor_link_search_document.xhtml">
-        <theme>galaxy/popup</theme>
-      </view>
-      <view id="/editor_image_upload.xhtml">
-        <theme>galaxy/popup</theme>
-      </view>
-      <view id="/search/choose_searchscope_popup.xhtml">
-        <theme>galaxy/popup</theme>
-      </view>
-    </application>
-  </extension>
-
-
-  <!--  new theme -->
-  <extension target="org.nuxeo.theme.services.ThemeService" point="themes">
-
-    <theme>
-      <src>themes/theme-galaxy-opensocial.xml</src>
-    </theme>
-
+  <extension target="org.nuxeo.theme.services.ThemeService" point="views">
+    <view name="opensocial includes" template-engine="jsf-facelets">
+      <format-type>widget</format-type>
+      <template>incl/opensocial-includes.xhtml</template>
+      <!-- what are these for?? -->
+      <resource>jquery-1.3.2.min.js</resource>
+      <resource>jquery.cookie.js</resource>
+      <resource>jquery.menu.js</resource>
+      <resource>thickbox.js</resource>
+      <resource>initmenu.js</resource>
+      <resource>container.css</resource>
+      <resource>gadgetManager.js</resource>
+      <resource>layoutManager.js</resource>
+    </view>
+    <view name="opensocialDashBoardNav" template-engine="jsf-facelets">
+      <format-type>widget</format-type>
+      <template>incl/opensocial-dashboard-nav.xhtml</template>
+    </view>
   </extension>
 
 </component>
