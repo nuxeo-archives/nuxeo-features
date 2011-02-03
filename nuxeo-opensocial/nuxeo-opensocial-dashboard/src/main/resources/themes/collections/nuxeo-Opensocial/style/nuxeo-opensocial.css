@@ -89,7 +89,7 @@ div.nameGadget{text-align:center}
 
 
 /* Messages */
-.error{ color:"red (Galaxy color)"; font:"big.default (nuxeo Opensocial font)"}
+.error{ color:"red (nuxeo Opensocial color)"; font:"big.default (nuxeo Opensocial font)"}
 .infoMessage{ background:"info (nuxeo Opensocial background)";  border:"info.message (nuxeo Opensocial border)";  color:"message (nuxeo Opensocial color)"; display:block;  margin-bottom:5px;  padding:5px 5px 5px 23px }
 .infoFeedback{ background:"info (nuxeo Opensocial background)";  border:"info.message (nuxeo Opensocial border)";  color:"message (nuxeo Opensocial color)"; padding:7px 7px 7px 24px }
 .warningMessage{ background:"warning (nuxeo Opensocial background)";  border:"warning.message (nuxeo Opensocial border)";  color:"warning (nuxeo Opensocial color)"; display:block;  margin:2px 0 12px 0;  padding:5px 5px 5px 23px;  width:500px }
