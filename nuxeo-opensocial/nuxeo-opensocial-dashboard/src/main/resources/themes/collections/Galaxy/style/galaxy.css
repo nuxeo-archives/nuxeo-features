@@ -47,8 +47,10 @@ div.button-container .nv-layout, .nv-category {color:"text (Galaxy color)";borde
 #listCategories div.selected{background-color:"list.columns (Galaxy background)"}
 
 #tabGadgets li a.selected{border:"type.gadget.link (Galaxy border)"}
-.directAdd a{background:"buttons (Galaxy border)";border:"button (Galaxy border)";color:"text (Galaxy color)"}
+.directAdd a{background:"buttons (Galaxy background)";border:"button (Galaxy border)";color:"text (Galaxy color)"}
 
+/* Main */
+.mainSection {background:"mainRegion (Galaxy background)"}
 
 /* Messages */
 .error{ color:"red (Galaxy color)"; font:"big.default (Galaxy font)"}

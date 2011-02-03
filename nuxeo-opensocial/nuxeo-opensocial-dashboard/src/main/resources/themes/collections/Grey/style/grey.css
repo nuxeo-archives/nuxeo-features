@@ -47,8 +47,10 @@ div.button-container .nv-layout, .nv-category {color:"text (Grey color)";border:
 #listCategories div.selected{background-color:"list.columns (Grey background)"}
 
 #tabGadgets li a.selected{border:"type.gadget.link (Grey border)"}
-.directAdd a{background:"buttons (Grey border)";border:"button (Grey border)";color:"text (Grey color)"}
+.directAdd a{background:"buttons (Grey background)";border:"button (Grey border)";color:"text (Grey color)"}
 
+/* Main */
+.mainSection {background:"mainRegion (Grey background)"}
 
 /* Messages */
 .error{ color:"red (Grey color)"; font:"big.default (Grey font)"}
