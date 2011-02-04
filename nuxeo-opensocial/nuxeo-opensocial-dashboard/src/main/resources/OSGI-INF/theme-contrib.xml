@@ -33,45 +33,11 @@
     <application root="${org.nuxeo.ecm.contextPath}"
       template-engine="jsf-facelets">
 
-      <negotiation>
-        <strategy>nuxeo5</strategy>
-        <default-engine>default</default-engine>
-        <default-theme>nuxeo-opensocial/default</default-theme>
-        <default-perspective>default</default-perspective>
-      </negotiation>
-
-      <!-- Cache control for theme resources (/nxthemes-lib/) -->
-      <resource-caching>
-        <lifetime>36000</lifetime>
-      </resource-caching>
-
-      <!-- Cache control for theme styles (/nxthemes-css/) -->
-      <style-caching>
-        <lifetime>900</lifetime>
-      </style-caching>
-
-      <view id="/create_relation_search_document_popup.xhtml">
-        <theme>nuxeo-opensocial/popup</theme>
-      </view>
       <!-- bind open social dashboard to correct theme and page -->
       <view id="/opensocial-dashboard.xhtml">
         <theme>nuxeo-opensocial/opensocial_dashboard</theme>
       </view>
-      <view id="/view_calendar.xhtml">
-        <perspective>view_calendar</perspective>
-      </view>
-      <view id="/print.xhtml">
-        <perspective>print</perspective>
-      </view>
-      <view id="/editor_link_search_document.xhtml">
-        <theme>nuxeo-opensocial/popup</theme>
-      </view>
-      <view id="/editor_image_upload.xhtml">
-        <theme>nuxeo-opensocial/popup</theme>
-      </view>
-      <view id="/search/choose_searchscope_popup.xhtml">
-        <theme>nuxeo-opensocial/popup</theme>
-      </view>
+
     </application>
   </extension>
 
