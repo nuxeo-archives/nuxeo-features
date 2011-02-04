@@ -1,0 +1,65 @@
+/*-- global styles for Wireframe --*/
+.siteLogo{ }
+.siteLogo a{ background:"site.logo" center center no-repeat;  top:0;  left:0;  position:absolute;  height:38px;  width:120px }
+.siteLogo img{ position:absolute;  z-index:-1 }
+
+html, body, h1, h2, h3, h4, h5, h6, form, p, li, div, dd, dt, dl, img, hr, fieldset { font:"default (Galaxy font)"; color:"text (Galaxy color)"; margin:0;  padding:0 }
+ 
+a{ color:"link (Galaxy color)" }
+a:hover{ text-decoration:underline }
+a:visited{ color:"link.visited (Galaxy color)" }
+ 
+
+/* STRUCTURING BORDERS*/
+.headerSection { border-bottom:"header (Galaxy border)" }
+.footerSection { border-top:"footer (Galaxy border)"}
+
+/*-- GENERAL ELEMENTS --*/ 
+/*-- Buttons --*/
+input.button{ border:"buttons (Galaxy border)";  background-color:"buttons (Galaxy background)"; }
+input.button:hover{ border:"button.hover (Galaxy border)" }
+input.button[disabled=disabled], input.button[disabled=disabled]:hover{ cursor:default }
+
+/* Header style */
+.headerSection{ background-color:"header (Galaxy background)"}
+.userActions, .searchService{ color:"header (Galaxy color)";  font:"default (Galaxy font)"; }
+.userActions a, .userActions a:hover, .userActions a:visited { color:"header.link (Galaxy color)" }
+.searchService a, .searchService a:hover, .searchService a:visited { color:"header.link (Galaxy color)" }
+
+/* Dashboard Layout Manager Styles*/
+#getLayoutManager, #getGadgetManager, #closeLayoutManager, #closeGadgetManager  { background-color: "managers (Galaxy background)"; border-bottom: "managers (Galaxy border)"}
+#getLayoutManager a, #getGadgetManager a{background:"folded (Galaxy background)"}
+#closeLayoutManager a, #closeGadgetManager a{background:"unfolded (Galaxy background)"}
+
+#layoutManagerContainer, #gadgetManagerContainer {background-color:"managers.container (Galaxy background)";border-bottom:"managers (Galaxy border)"}
+div.button-container .nv-layout, .nv-category {color:"text (Galaxy color)";border: "button (Galaxy border)"}
+#listColumns div button.selected{border:"button.hover (Galaxy border)"}
+.listBoxes div.selected,#listColumns div.selected{background-color:"list.columns (Galaxy background)"}
+
+#listLayouts{background-color:"list.columns (Galaxy background)"}
+#tabLayout li a.selected{border:"type.gadget.link (Galaxy border)"}
+
+.typeLayout, .typeGadget {background-color:"type.gadget (Galaxy background)";border:"type.gadget (Galaxy border)"}
+#generalOptions{background-color:"list.columns (Galaxy background)"}
+
+#listGadgets{background-color:"list.columns (Galaxy background)"}
+#listCategories div button.selected{border:"button.hover (Galaxy border)"}
+#listCategories div.selected{background-color:"list.columns (Galaxy background)"}
+
+#tabGadgets li a.selected{border:"type.gadget.link (Galaxy border)"}
+.directAdd a{background:"buttons (Galaxy background)";border:"button (Galaxy border)";color:"text (Galaxy color)"}
+
+/* Main */
+.mainSection {background:"mainRegion (Galaxy background)"}
+
+/* Messages */
+.error{ color:"red (Galaxy color)"; font:"big.default (Galaxy font)"}
+.infoMessage{ background:"info (Galaxy background)";  border:"info.message (Galaxy border)";  color:"message (Galaxy color)" }
+.infoFeedback{ background:"info (Galaxy background)";  border:"info.message (Galaxy border)";  color:"message (Galaxy color)" }
+.warningMessage{ background:"warning (Galaxy background)";  border:"warning.message (Galaxy border)";  color:"warning (Galaxy color)" }
+.warningFeedback{ background:"warning (Galaxy background)";  border:"warning.message (Galaxy border)";  color:"warning (Galaxy color)" }
+.errorMessage{ background:"warning (Galaxy background)";  border:"error.message (Galaxy border)";  color:"error (Galaxy color)" }
+.errorFeedback{ background:"warning (Galaxy background)";  border:"error.message (Galaxy border)";  color:"error (Galaxy color)" }
+
+/* Footer style */
+.footerArea{ text-align:right;  color:"footer (Galaxy color)";  padding:5px 15px 5px 5px;  font:"small (Galaxy font)" }

@@ -1,0 +1,104 @@
+/*-- global styles for Wireframe --*/
+.siteLogo{ }
+.siteLogo a{ background:"site.logo" center center no-repeat;  top:0;  left:0;  position:absolute;  height:38px;  width:120px }
+.siteLogo img{ position:absolute;  z-index:-1 }
+
+html, body, h1, h2, h3, h4, h5, h6, form, p, li, div, dd, dt, dl, img, hr, fieldset { font:"default (nuxeo Opensocial font)"; color:"text (nuxeo Opensocial color)"; margin:0;  padding:0 }
+ 
+a{ text-decoration:none; outline:none; color:"link (nuxeo Opensocial color)" }
+a:hover{ text-decoration:underline }
+a:visited{ color:"link.visited (nuxeo Opensocial color)" }
+ 
+ul{ list-style:none; margin:0 }
+
+input, table{ margin:0 }
+
+img{ border:0 none; outline:none }
+
+/* STRUCTURING BORDERS*/
+.headerSection { border-bottom:"header (nuxeo Opensocial border)" }
+.footerSection { border-top:"footer (nuxeo Opensocial border)"}
+
+/*-- GENERAL ELEMENTS --*/ 
+/*-- Buttons --*/
+input.button{ margin:5px 10px 10px 0px;  padding:2px 5px 2px 5px;  border:"buttons (nuxeo Opensocial border)";  background-color:"buttons (nuxeo Opensocial background)";  cursor:pointer }
+input.button:hover{ border:"button.hover (nuxeo Opensocial border)" }
+input.button[disabled=disabled], input.button[disabled=disabled]:hover{ cursor:default }
+
+/* Header style */
+.headerSection{ background-color:"header (nuxeo Opensocial background)" }
+.userActions, .searchService{ color:"header (nuxeo Opensocial color)";  font:"default (nuxeo Opensocial font)";  line-height:185% }
+.userActions{ padding-top:11px }
+.userActions a, .userActions a:hover, .userActions a:visited { color:"header.link (nuxeo Opensocial color)" }
+.searchService{ float:right;  vertical-align:middle;  padding:2px 2px 0 0 }
+.searchService a, .searchService a:hover, .searchService a:visited { color:"header.link (nuxeo Opensocial color)" }
+.advancedSearchLink{ line-height:1%;  margin:0 2px 0 0;  padding:0 }
+
+/* Domain Navigation */
+.domainNavigationSection form { text-align: center }
+
+/* Dashboard Layout Manager Styles*/
+.gadgetManagersSection { padding: 5px 30px; width: 100% }
+#getLayoutManager, #getGadgetManager, #closeLayoutManager, #closeGadgetManager  { background-color: "managers (nuxeo Opensocial background)"; border-bottom: "managers (nuxeo Opensocial border)"; padding: 7px 12px 7px 0 }
+#getLayoutManager a, #getGadgetManager a{background:"folded (nuxeo Opensocial background)";display:block;padding-left:18px}
+#closeLayoutManager a, #closeGadgetManager a{background:"unfolded (nuxeo Opensocial background)";display:block;padding-left:18px}
+
+#openLayoutManager, #openGadgetManager{padding-left:5px}
+
+#layoutManagerContainer, #gadgetManagerContainer {background-color:"managers.container (nuxeo Opensocial background)";border-bottom:"managers (nuxeo Opensocial border)";height:130px;padding:10px}
+#listColumns{float:left;padding-left:5px;width:5%}
+div.button-container{padding:5px}
+div.button-container .nv-layout, .nv-category {color:"text (nuxeo Opensocial color)";cursor:pointer;border: "button (nuxeo Opensocial border)"; margin:auto}
+#listColumns div button.selected{border:"button.hover (nuxeo Opensocial border)"}
+.listBoxes div.selected,#listColumns div.selected{background-color:"list.columns (nuxeo Opensocial background)"}
+
+#listLayouts{background-color:"list.columns (nuxeo Opensocial background)";float:left;height:131px;width:92%}
+#tabLayout li a.selected{border:"type.gadget.link (nuxeo Opensocial border)"}
+
+#x-1-default{background-image:url(/nuxeo/opensocial/images/x-1-default.png)}
+#x-2-default{background-image:url(/nuxeo/opensocial/images/x-2-default.png)}
+#x-3-default{background-image:url(/nuxeo/opensocial/images/x-3-default.png)}
+#x-3-header2cols{background-image:url(/nuxeo/opensocial/images/x-3-header2cols.png)}
+#x-4-footer3cols{background-image:url(/nuxeo/opensocial/images/x-4-footer3cols.png)}
+
+.invisible{display:none}
+.typeLayout, .typeGadget {background-color:"type.gadget (nuxeo Opensocial background)";border:"type.gadget (nuxeo Opensocial border)";display:block}
+
+.gadgetManagersSection ul.option li{float:left;list-style-type:none;margin:0 7px 7px 0;padding:2px 0}
+.gadgetManagersSection ul.option{height:120px;margin-top:5px;margin-left:7px;overflow:auto;padding:0}
+
+#generalOptions{background-color:"list.columns (nuxeo Opensocial background)";float:left;width:22%;margin:5px}
+#tabDescription{height:35px;margin-bottom:5px;margin-left:30px;width:175px}
+#modifyOptions{display:block;float:right;margin-bottom:5px;margin-right:5px}
+#tabTitle{margin-top:5px;margin-bottom:5px;width:175px}
+span{margin-left:2px}
+
+#theme-list { margin-left: 30px }
+#theme-list li { float: left; width: 50px }
+
+#listCategories{float:left;padding-left:5px;width:10%}
+#listGadgets{background-color:"list.columns (nuxeo Opensocial background)";float:left;height:auto;width:89%}
+#listCategories div button.selected{border:"button.hover (nuxeo Opensocial border)"}
+#listCategories div.selected{background-color:"list.columns (nuxeo Opensocial background)"}
+
+#tabGadgets li a.selected{border:"type.gadget.link (nuxeo Opensocial border)"}
+
+.directAdd{margin-top:10px;text-align:center}
+.directAdd a{background:"buttons (nuxeo Opensocial border)";border:"button (nuxeo Opensocial border)";color:"text (nuxeo Opensocial color)";display:block;text-decoration:none;text-transform:capitalize;padding:4px 8px 4px 7px}
+div.nameGadget{text-align:center}
+
+
+/* Messages */
+.error{ color:"red (nuxeo Opensocial color)"; font:"big.default (nuxeo Opensocial font)"}
+.infoMessage{ background:"info (nuxeo Opensocial background)";  border:"info.message (nuxeo Opensocial border)";  color:"message (nuxeo Opensocial color)"; display:block;  margin-bottom:5px;  padding:5px 5px 5px 23px }
+.infoFeedback{ background:"info (nuxeo Opensocial background)";  border:"info.message (nuxeo Opensocial border)";  color:"message (nuxeo Opensocial color)"; padding:7px 7px 7px 24px }
+.warningMessage{ background:"warning (nuxeo Opensocial background)";  border:"warning.message (nuxeo Opensocial border)";  color:"warning (nuxeo Opensocial color)"; display:block;  margin:2px 0 12px 0;  padding:5px 5px 5px 23px;  width:500px }
+.warningFeedback{ background:"warning (nuxeo Opensocial background)";  border:"warning.message (nuxeo Opensocial border)";  color:"warning (nuxeo Opensocial color)"; padding:7px 7px 7px 24px }
+.errorMessage{ background:"warning (nuxeo Opensocial background)";  border:"error.message (nuxeo Opensocial border)";  color:"error (nuxeo Opensocial color)"; display:block;  margin:2px 0 2px 0;  padding:3px 3px 3px 23px;  width:480px }
+.errorFeedback{ background:"warning (nuxeo Opensocial background)";  border:"error.message (nuxeo Opensocial border)";  color:"error (nuxeo Opensocial color)"; padding:7px 7px 7px 24px }
+.facesStatusMessage{ left:48%;  position:absolute;  top:40% }
+.facesStatusMessage ul, .infoFeedback ul, .warningFeedback ul, .errorFeedback ul{ padding:10px;  width:200px }
+
+/* Footer style */
+.footerArea{ text-align:right;  color:"footer (nuxeo Opensocial color)";  padding:5px 15px 5px 5px;  font:"small (nuxeo Opensocial font)" }
+.footerArea form, .footerArea p{ margin:5px 0 0;  padding:0 }

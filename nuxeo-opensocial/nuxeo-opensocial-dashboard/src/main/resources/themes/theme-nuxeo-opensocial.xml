@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme name="nuxeo-opensocial" resource-bank="nuxeo" template-engines="jsf-facelets">
+  <layout>
+    <page name="opensocial_dashboard">
+      <!-- Top bar -->
+      <section name="header">
+        <cell>
+          <!-- logo -->
+          <fragment type="generic fragment" />
+        </cell>
+        <cell>
+          <!-- user services -->
+          <fragment type="generic fragment" />
+        </cell>
+        <cell>
+          <!-- Include -->
+          <fragment type="generic fragment" />
+        </cell>
+      </section>
+      <section name="domainNavigation">
+        <cell>
+          <fragment type="generic fragment" />
+        </cell>
+      </section>
+      <section name="gadgetManagers">
+        <cell>
+          <fragment type="dashboardLayoutManager" />
+          <fragment type="dashboardGadgetManager" />
+        </cell>
+      </section>
+      <section name="main">
+        <cell>
+          <fragment type="dashboardMainContent" />
+        </cell>
+      </section>
+      <section name="footer">
+        <cell>
+          <fragment type="generic fragment"/>
+        </cell>
+      </section>
+    </page>
+  </layout>
+  <presets>
+   	<preset category="image"
+      description="Site logo image (max: 120x40 pixels)"
+      label="Site logo" name="site.logo">url(nuxeo DM/nuxeo_5.2_logo.png)</preset>
+  </presets>
+  <formats>
+    <style name="nuxeo-opensocial (nuxeo Opensocial)" remote="true"/>
+    <style inherit="nuxeo-opensocial (nuxeo Opensocial)" name="galaxy (Galaxy)" remote="true"/>
+    <style element="page[1]" inherit="galaxy (Galaxy)"/>
+    <layout element="page[1]">
+      <margin>0</margin>
+      <padding>0</padding>
+    </layout>
+    <layout element="page[1]/section[1]">
+      <height>36px</height>
+      <width>100%</width>
+    </layout>
+    <layout element="page[1]/section[1]/cell[1]">
+      <width>18%</width>
+      <text-align>center</text-align>
+    </layout>
+    <layout element="page[1]/section[1]/cell[2]">
+      <width>82%</width>
+      <padding>0px 10px 0px 0px</padding>
+    </layout>
+    <layout element="page[1]/section[1]/cell[3]">
+      <width>0%</width>
+    </layout>
+    <layout element="page[1]/section[2]">
+      <width>100%</width>
+    </layout>
+    <layout element="page[1]/section[2]/cell[1]" />
+    <layout element="page[1]/section[3]">
+      <margin-left>auto</margin-left>
+      <margin-right>auto</margin-right>
+      <width>100%</width>
+      <padding>5px 30px 5px 30px</padding>
+    </layout>
+    <layout element="page[1]/section[3]/cell[1]">
+      <width>100%</width>
+    </layout>
+    <layout element="page[1]/section[4]">
+      <margin-left>auto</margin-left>
+      <margin-right>auto</margin-right>
+      <width>100%</width>
+    </layout>
+    <layout element="page[1]/section[4]/cell[1]">
+      <width>100%</width>
+    </layout>
+    <layout element="page[1]/section[5]">
+      <margin-left>auto</margin-left>
+      <margin-right>auto</margin-right>
+      <width>100%</width>
+    </layout>
+    <layout element="page[1]/section[5]/cell[1]">
+      <width>100%</width>
+      <text-align>right</text-align>
+    </layout>
+    <widget element="page[1]">
+      <view>page frame</view>
+    </widget>
+    <widget element="page[1]/section[1]">
+      <view>section frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[1]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[2]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[3]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[1]/fragment[1]">
+      <view>Nuxeo DM logo (Galaxy Theme)</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[2]/fragment[1]">
+      <view>User services (Galaxy theme)</view>
+    </widget>
+    <widget element="page[1]/section[1]/cell[3]/fragment[1]">
+      <view>opensocial includes</view>
+    </widget>
+    <widget element="page[1]/section[2]">
+      <view>section frame</view>
+    </widget>
+    <widget element="page[1]/section[2]/cell[1]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[2]/cell[1]/fragment[1]">
+      <view>opensocialDashBoardNav</view>
+    </widget>
+    <widget element="page[1]/section[3]">
+      <view>section frame</view>
+    </widget>
+    <widget element="page[1]/section[3]/cell[1]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[3]/cell[1]/fragment[1]">
+      <view>module layout manager</view>
+    </widget>
+    <widget element="page[1]/section[3]/cell[1]/fragment[2]">
+      <view>module gadget manager</view>
+    </widget>
+    <widget element="page[1]/section[4]">
+      <view>section frame</view>
+    </widget>
+    <widget element="page[1]/section[4]/cell[1]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[4]/cell[1]/fragment[1]">
+      <view>contenu principal</view>
+    </widget>
+    <widget element="page[1]/section[5]">
+      <view>section frame</view>
+    </widget>
+    <widget element="page[1]/section[5]/cell[1]">
+      <view>cell frame</view>
+    </widget>
+    <widget element="page[1]/section[5]/cell[1]/fragment[1]">
+      <view>Nuxeo DM footer (Galaxy Theme)</view>
+    </widget>
+    <widget element="">
+      <view>theme view</view>
+      <icon>${org.nuxeo.ecm.contextPath}/icons/favicon.png</icon>
+      <charset>utf-8</charset>
+    </widget>
+  </formats>
+</theme>
