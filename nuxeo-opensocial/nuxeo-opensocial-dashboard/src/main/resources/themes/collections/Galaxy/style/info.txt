@@ -1,4 +1,0 @@
-
-galaxy.css:
-     description: Galaxy skin
-     skin: true
