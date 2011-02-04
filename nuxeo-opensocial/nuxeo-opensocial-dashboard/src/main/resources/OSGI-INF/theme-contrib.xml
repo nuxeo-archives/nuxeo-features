@@ -22,8 +22,6 @@
 
   <extension target="org.nuxeo.theme.services.ThemeService" point="resources">
     <import src="themes/collections/nuxeo-Opensocial.zip" bank="nuxeo" collection="nuxeo Opensocial" />
-    <import src="themes/collections/Galaxy.zip" bank="nuxeo" collection="Galaxy" />
-    <import src="themes/collections/Grey.zip" bank="nuxeo" collection="Grey" />
   </extension>
 
   <!-- application settings...slight mod from original -->
@@ -35,7 +33,7 @@
 
       <!-- bind open social dashboard to correct theme and page -->
       <view id="/opensocial-dashboard.xhtml">
-        <theme>nuxeo-opensocial/opensocial_dashboard</theme>
+        <theme>nuxeo-opensocial/opensocial dashboard</theme>
       </view>
 
     </application>

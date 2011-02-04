@@ -13,14 +13,6 @@
     <antcall target="build-theme-collection">
       <param name="collection" value="nuxeo-Opensocial" />
     </antcall>
-    <!-- Galaxy -->
-    <antcall target="build-theme-collection">
-      <param name="collection" value="Galaxy" />
-    </antcall>
-    <!-- Grey -->
-		<antcall target="build-theme-collection">
-			<param name="collection" value="Grey" />
-		</antcall>
 
     <copy todir="${outdir}/classes/" overwrite="true">
       <fileset dir="src/main/resources">
