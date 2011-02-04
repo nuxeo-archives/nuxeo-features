@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <theme name="nuxeo-opensocial" resource-bank="nuxeo" template-engines="jsf-facelets">
   <layout>
-    <page name="opensocial_dashboard">
+    <page name="opensocial dashboard">
       <!-- Top bar -->
       <section name="header">
         <cell>
@@ -17,12 +17,12 @@
           <fragment type="generic fragment" />
         </cell>
       </section>
-      <section name="domainNavigation">
+      <section name="domain navigation">
         <cell>
           <fragment type="generic fragment" />
         </cell>
       </section>
-      <section name="gadgetManagers">
+      <section name="gadget managers">
         <cell>
           <fragment type="dashboardLayoutManager" />
           <fragment type="dashboardGadgetManager" />
