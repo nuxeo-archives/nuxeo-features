@@ -1,1 +1,22 @@
-java class content
+package org.bonitasoft.connectors.nuxeo;
+import java.util.List;
+import org.nuxeo.ecm.automation.client.jaxrs.Session;
+import org.nuxeo.ecm.automation.client.jaxrs.model.DocRef;
+import org.ow2.bonita.connector.core.ConnectorError;
+public class NuxeoDocument.CreateConnector extends AbstractNuxeoProcessConnector {
+  private string  type;
+private string  name;
+private properties  properties;
+public void setType(string type) {
+ this.type = type;
+}
+public void setName(string name) {
+ this.name = name;
+}
+public void setProperties(properties properties) {
+ this.properties = properties;
+}
+public void processSession(Session session) throws Exception {
+session.newRequest("Document.Create") .set("type",type).set("name",name).set("properties",properties).execute();
+ 
+}

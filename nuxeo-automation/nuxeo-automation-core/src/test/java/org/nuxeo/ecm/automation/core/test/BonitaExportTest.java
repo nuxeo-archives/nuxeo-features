@@ -22,7 +22,6 @@ import java.net.URL;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.common.utils.FileUtils;
@@ -72,7 +71,6 @@ public class BonitaExportTest {
         return service.getOperation(operationId).getDocumentation();
     }
 
-    @Ignore
     @Test
     public void generateXMLCode() throws Exception {
         String operationId = "Document.Create";
@@ -80,7 +78,6 @@ public class BonitaExportTest {
                 BonitaExporter.getXMLDescription(getOperationDoc(operationId)));
     }
 
-    @Ignore
     @Test
     public void generateJavaCode() throws Exception {
         String operationId = "Document.Create";
