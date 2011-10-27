@@ -1,2 +1,0 @@
-@foreach{doc : This}@{doc.title}
-@end{}
