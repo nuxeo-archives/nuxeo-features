@@ -85,12 +85,12 @@ public class Delete extends AbstractCommand {
             URLClassLoader resourcesClassLoader = Framework.getResourceLoader();
             JarFileCloser resourcesCL = new JarFileCloser(
                     (URLClassLoader) resourcesClassLoader);
-            if (!resourcesCL.closeJar(file.toURI().toURL())) {
+            if (!resourcesCL.closeLoader(file.toURI().toURL())) {
                 ClassLoader webappClassLoader = getClass().getClassLoader();
                 if (webappClassLoader instanceof URLClassLoader) {
                     JarFileCloser webAppCL = new JarFileCloser(
                             (URLClassLoader) webappClassLoader);
-                    webAppCL.closeJar(file.toURI().toURL());
+                    webAppCL.closeLoader(file.toURI().toURL());
                 }
             }
             if (file.isFile()) {
