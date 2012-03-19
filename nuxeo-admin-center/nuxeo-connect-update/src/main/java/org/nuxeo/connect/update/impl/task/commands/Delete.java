@@ -17,7 +17,6 @@
 package org.nuxeo.connect.update.impl.task.commands;
 
 import java.io.File;
-import java.net.URLClassLoader;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -28,11 +27,7 @@ import org.nuxeo.connect.update.impl.xml.XmlWriter;
 import org.nuxeo.connect.update.task.Task;
 import org.nuxeo.connect.update.util.FileRef;
 import org.nuxeo.connect.update.util.IOUtils;
-import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.tomcat.JarFileCloser;
 import org.w3c.dom.Element;
-
-import sun.net.www.protocol.jar.JarURLConnection;
 
 /**
  * The delete command. This command takes 2 arguments: the file path to delete
@@ -44,7 +39,7 @@ import sun.net.www.protocol.jar.JarURLConnection;
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
 public class Delete extends AbstractCommand {
-    
+
     protected static final Log log = LogFactory.getLog(Delete.class);
 
     public static final String ID = "delete";
@@ -79,20 +74,10 @@ public class Delete extends AbstractCommand {
         }
     }
 
+
     protected Command doRun(Task task, Map<String, String> prefs)
             throws PackageException {
         try {
-            URLClassLoader resourcesClassLoader = Framework.getResourceLoader();
-            JarFileCloser resourcesCL = new JarFileCloser(
-                    (URLClassLoader) resourcesClassLoader);
-            if (!resourcesCL.closeLoader(file.toURI().toURL())) {
-                ClassLoader webappClassLoader = getClass().getClassLoader();
-                if (webappClassLoader instanceof URLClassLoader) {
-                    JarFileCloser webAppCL = new JarFileCloser(
-                            (URLClassLoader) webappClassLoader);
-                    webAppCL.closeLoader(file.toURI().toURL());
-                }
-            }
             if (file.isFile()) {
                 if (md5 != null && !md5.equals(IOUtils.createMd5(file))) {
                     // ignore the command since the md5 doesn't match
