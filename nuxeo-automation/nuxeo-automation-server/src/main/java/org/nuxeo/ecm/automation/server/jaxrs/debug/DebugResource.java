@@ -27,6 +27,8 @@ import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationChain;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.core.OperationChainContribution;
+import org.nuxeo.ecm.automation.core.trace.Tracer;
+import org.nuxeo.ecm.automation.core.trace.TracerFactory;
 import org.nuxeo.ecm.automation.server.jaxrs.io.JsonWriter;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentRef;
@@ -77,7 +79,8 @@ public class DebugResource {
     }
 
     @POST
-    public Response doPost(@FormParam("input") String input,
+    @Produces("text/html")
+    public Object doPost(@FormParam("input") String input,
             @FormParam("chain") String chainXml) {
         CoreSession session = SessionFactory.getSession();
         if (!((NuxeoPrincipal) session.getPrincipal()).isAdministrator()) {
@@ -89,9 +92,14 @@ public class DebugResource {
             OperationChainContribution contrib = (OperationChainContribution) xmap.load(in);
             OperationChain chain = contrib.toOperationChain(Framework.getRuntime().getContext().getBundle());
             OperationContext ctx = new OperationContext(session);
+            Tracer tracer = Framework.getLocalService(TracerFactory.class).newTracer();
+            ctx.setCallback(tracer);
             ctx.setInput(getDocumentRef(input));
             getOperationService().run(ctx, chain);
-            return Response.ok("Operation Done.").build();
+            return new TemplateView(this, "index.ftl.html")
+            .arg("input", input)
+            .arg("chain", chain)
+            .arg("trace", tracer.getTrace());
         } catch (Exception e) {
             log.error(e, e);
             return Response.status(500).build();
@@ -100,14 +108,19 @@ public class DebugResource {
 
     @POST
     @Path("{chainId}")
-    public Response doChainIdPost(@FormParam("input") String input,
+    @Produces("text/html")
+    public Object doChainIdPost(@FormParam("input") String input,
             @FormParam("chainId") String chainId) {
         try {
             OperationContext ctx = new OperationContext(
                     SessionFactory.getSession());
+            Tracer tracer = Framework.getLocalService(TracerFactory.class).newTracer();
+            ctx.setCallback(tracer);
             ctx.setInput(getDocumentRef(input));
             getOperationService().run(ctx, chainId);
-            return Response.ok("Operation Done.").build();
+            return new TemplateView(this, "index.ftl.html")
+                    .arg("input", input)
+                    .arg("trace", tracer.getTrace());
         } catch (Exception e) {
             log.error(e, e);
             return Response.status(500).build();

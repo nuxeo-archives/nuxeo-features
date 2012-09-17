@@ -17,9 +17,6 @@
  */
 package org.nuxeo.ecm.automation.seam.operations;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationChain;
 import org.nuxeo.ecm.automation.OperationContext;
@@ -59,18 +56,14 @@ public class RunOperationInSeam {
 
     @OperationMethod
     public Object run() throws Exception {
-
-        Map<String, Object> vars = isolate ? new HashMap<String, Object>(ctx.getVars()) : ctx.getVars();
-
-        OperationContext subctx = new OperationContext(ctx.getCoreSession(), vars);
-        subctx.setInput(ctx.getInput());
+        OperationContext subctx = ctx.newSubcontext(isolate);
         SeamOperationFilter.handleBeforeRun(ctx, conversationId);
         try {
             if (chainId.startsWith("Chain.")) {
                 return service.run(subctx, chainId.substring(6));
             } else {
                 OperationChain chain = new OperationChain("operation");
-                OperationParameters oparams = new OperationParameters(chainId,vars);
+                OperationParameters oparams = new OperationParameters(chainId,ctx);
                 chain.add(oparams);
                 return service.run(subctx, chain);
             }

@@ -22,6 +22,8 @@ package org.nuxeo.ecm.automation;
  */
 public interface CompiledChain {
 
+    OperationChain getSource();
+    
     Object invoke(OperationContext ctx) throws OperationException;
 
 }

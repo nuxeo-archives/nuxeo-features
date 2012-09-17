@@ -86,26 +86,33 @@ public class OperationContext implements Map<String, Object> {
     protected Object input;
 
     /**
-     * A list of trace messages useful to use in exception details.
+     * Collect operation invokes.
      */
-    protected List<String> trace;
+    protected OperationCallback callback;
 
     public OperationContext() {
-        this(null, null);
+        this(null);
     }
 
     public OperationContext(CoreSession session) {
-        this (session, null);
+        this (session, new HashMap<String,Object>());
     }
 
-    public OperationContext(CoreSession session, Map<String, Object> vars) {
+    protected OperationContext(CoreSession session, Map<String, Object> vars) {
         stacks = new HashMap<String, List<Object>>();
         cleanupHandlers = new ArrayList<CleanupHandler>();
         loginStack = new LoginStack(session);
-        trace = new ArrayList<String>();
-        this.vars = vars != null ? vars : new HashMap<String, Object>();
+        callback = OperationCallback.NULL_CALLBACK;
+        this.vars = vars == null ? new HashMap<String,Object>() : vars;
     }
 
+    public OperationContext newSubcontext(boolean isolated) {
+        OperationContext newContext = new OperationContext(getCoreSession(), vars);
+        newContext.vars = isolated ? new HashMap<String,Object>(vars) : vars;
+        newContext.callback = callback;;
+        newContext.input = input;
+        return newContext;
+    }
 
     public void setCoreSession(CoreSession session) {
         this.loginStack.setSession(session);
@@ -190,22 +197,6 @@ public class OperationContext implements Map<String, Object> {
         }
     }
 
-    public void addTrace(String trace) {
-        this.trace.add(trace);
-    }
-
-    public List<String> getTrace() {
-        return trace;
-    }
-    public String getFormattedTrace() {
-        String crlf = System.getProperty("line.separator");
-        StringBuilder buf =new StringBuilder();
-        for (String t: trace) {
-            buf.append("> ").append(t).append(crlf);
-        }
-        return buf.toString();
-    }
-
     public void addCleanupHandler(CleanupHandler handler) {
         cleanupHandlers.add(handler);
     }
@@ -215,7 +206,6 @@ public class OperationContext implements Map<String, Object> {
     }
 
     public void dispose() throws OperationException {
-        trace.clear();
         loginStack.clear();
         for (CleanupHandler handler : cleanupHandlers) {
             try {
@@ -301,4 +291,15 @@ public class OperationContext implements Map<String, Object> {
         return vars.entrySet();
     }
 
+    public OperationCallback getCallback() {
+        return callback;
+    }
+
+    public void setCallback(OperationCallback callback)  {
+        this.callback = callback;
+    }
+    
+    public void setNullCallback() {
+        this.callback = OperationCallback.NULL_CALLBACK;
+    }
 }

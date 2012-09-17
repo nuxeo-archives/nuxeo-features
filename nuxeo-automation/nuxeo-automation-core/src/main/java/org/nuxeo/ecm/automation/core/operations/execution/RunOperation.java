@@ -11,9 +11,6 @@
  */
 package org.nuxeo.ecm.automation.core.operations.execution;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.core.Constants;
@@ -47,11 +44,7 @@ public class RunOperation {
 
     @OperationMethod
     public void run() throws Exception {
-        Map<String, Object> vars = isolate ? new HashMap<String, Object>(
-                ctx.getVars()) : ctx.getVars();
-        OperationContext subctx = new OperationContext(ctx.getCoreSession(),
-                vars);
-        subctx.setInput(ctx.getInput());
+        OperationContext subctx =  ctx.newSubcontext(isolate);
         service.run(subctx, chainId);
     }
 

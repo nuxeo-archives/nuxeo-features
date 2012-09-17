@@ -12,6 +12,7 @@
 package org.nuxeo.ecm.automation.core.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.nuxeo.ecm.automation.AdapterNotFoundException;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.CompiledChain;
 import org.nuxeo.ecm.automation.InvalidChainException;
+import org.nuxeo.ecm.automation.OperationCallback;
 import org.nuxeo.ecm.automation.OperationChain;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationDocumentation;
@@ -29,6 +31,7 @@ import org.nuxeo.ecm.automation.OperationNotFoundException;
 import org.nuxeo.ecm.automation.OperationParameters;
 import org.nuxeo.ecm.automation.OperationType;
 import org.nuxeo.ecm.automation.TypeAdapter;
+import org.nuxeo.ecm.core.api.ClientException;
 
 /**
  * The operation registry is thread safe and optimized for modifications at
@@ -55,38 +58,20 @@ public class OperationServiceImpl implements AutomationService {
 
     public Object run(OperationContext ctx, String chainId)
             throws OperationException, InvalidChainException, Exception {
-        try {
-            Object input = ctx.getInput();
-            Class<?> inputType = input == null ? Void.TYPE : input.getClass();
-            ChainEntry chain = getChainEntry(chainId);
-            if (chain.cchain == null) {
-                chain.cchain = compileChain(inputType, chain.chain);
-            }
-            Object ret = chain.cchain.invoke(ctx);
-            if (ctx.getCoreSession() != null && ctx.isCommit()) {
-                // auto save session if any
-                ctx.getCoreSession().save();
-            }
-            return ret;
-        } finally {
-            ctx.dispose();
+        Object input = ctx.getInput();
+        Class<?> inputType = input == null ? Void.TYPE : input.getClass();
+        ChainEntry chain = getChainEntry(chainId);
+        if (chain.cchain == null) {
+            chain.cchain = compileChain(inputType, chain.chain);
         }
+        return doRunCompiledChain(ctx, chain.cchain);
     }
 
     public Object run(OperationContext ctx, OperationChain chain)
             throws OperationException, InvalidChainException, Exception {
-        try {
-            Object input = ctx.getInput();
-            Class<?> inputType = input == null ? Void.TYPE : input.getClass();
-            Object ret = compileChain(inputType, chain).invoke(ctx);
-            if (ctx.getCoreSession() != null && ctx.isCommit()) {
-                // auto save session if any
-                ctx.getCoreSession().save();
-            }
-            return ret;
-        } finally {
-            ctx.dispose();
-        }
+        Object input = ctx.getInput();
+        Class<?> inputType = input == null ? Void.TYPE : input.getClass();
+        return doRunCompiledChain(ctx, compileChain(inputType, chain));
     }
 
     /**
@@ -102,6 +87,28 @@ public class OperationServiceImpl implements AutomationService {
         OperationParameters oparams = new OperationParameters(id, params);
         chain.add(oparams);
         return run(ctx, chain);
+    }
+    
+    protected Object doRunCompiledChain(OperationContext ctx, CompiledChain cchain) throws OperationException, ClientException {
+        try {
+            final OperationCallback tracer = ctx.getCallback();
+            try {
+                tracer.onChain(ctx, cchain.getSource());
+                Object ret = cchain.invoke(ctx);
+                tracer.onOutput(ret);
+                return ret;
+            } catch (OperationException oe) {
+                tracer.onError(oe);
+                throw oe;
+            } finally {
+                if (ctx.getCoreSession() != null && ctx.isCommit()) {
+                    // auto save session if any
+                    ctx.getCoreSession().save();
+                }                
+            }
+        } finally {
+            ctx.dispose();
+        }
     }
 
     public synchronized void putOperationChain(OperationChain chain)
@@ -196,16 +203,15 @@ public class OperationServiceImpl implements AutomationService {
 
     public CompiledChain compileChain(Class<?> inputType, OperationChain chain)
             throws Exception, InvalidChainException {
-        List<OperationParameters> ops = chain.getOperations();
-        return compileChain(inputType,
-                ops.toArray(new OperationParameters[ops.size()]));
+        return CompiledChainImpl.buildChain(this, chain, inputType == null ? Void.TYPE
+                : inputType);
     }
 
     public CompiledChain compileChain(Class<?> inputType,
-            OperationParameters... chain) throws Exception,
+            OperationParameters... params) throws Exception,
             InvalidChainException {
-        return CompiledChainImpl.buildChain(this, inputType == null ? Void.TYPE
-                : inputType, chain);
+        OperationChain chain = new OperationChain("dynamic", Arrays.asList(params));
+        return compileChain(inputType, chain);
     }
 
     public void putTypeAdapter(Class<?> accept, Class<?> produce,
@@ -243,7 +249,7 @@ public class OperationServiceImpl implements AutomationService {
         if (adapter == null) {
             throw new AdapterNotFoundException(
                     "No type adapter found for input: " + toAdapt.getClass()
-                            + " and output " + targetType, ctx);
+                            + " and output " + targetType);
         }
         return (T) adapter.getAdaptedValue(ctx, toAdapt);
     }

@@ -18,7 +18,6 @@ package org.nuxeo.ecm.automation.test;
 
 import org.nuxeo.ecm.automation.client.Session;
 import org.nuxeo.ecm.automation.client.jaxrs.impl.HttpAutomationClient;
-import org.nuxeo.ecm.core.test.TransactionalFeature;
 import org.nuxeo.ecm.webengine.test.WebEngineFeature;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
@@ -34,10 +33,9 @@ import com.google.inject.Scopes;
  *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
-@Deploy({ "org.nuxeo.ecm.automation.core",
-        "org.nuxeo.ecm.automation.server", "org.nuxeo.ecm.automation.features",
-        "org.nuxeo.ecm.platform.query.api" })
-@Features({WebEngineFeature.class})
+@Deploy({ "org.nuxeo.ecm.automation.server",
+          "org.nuxeo.ecm.platform.query.api" })
+@Features({AutomationFeature.class, WebEngineFeature.class})
 public class RestFeature extends SimpleFeature  {
 
     protected HttpAutomationClient client ;

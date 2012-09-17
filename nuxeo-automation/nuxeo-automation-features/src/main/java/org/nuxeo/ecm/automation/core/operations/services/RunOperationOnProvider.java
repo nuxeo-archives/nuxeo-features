@@ -11,9 +11,6 @@
  */
 package org.nuxeo.ecm.automation.core.operations.services;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.InvalidChainException;
 import org.nuxeo.ecm.automation.OperationContext;
@@ -53,10 +50,7 @@ public class RunOperationOnProvider {
 
     throws InvalidChainException, OperationException, Exception {
         PageProvider<DocumentModel> pageProvider = paginableList.getProvider();
-        Map<String, Object> vars = isolate ? new HashMap<String, Object>(
-                ctx.getVars()) : ctx.getVars();
-        OperationContext subctx = new OperationContext(ctx.getCoreSession(),
-                vars);
+        OperationContext subctx = ctx.newSubcontext(isolate);
         final long initialRC = pageProvider.getResultsCount();
         final long initialNoPages = pageProvider.getNumberOfPages();
 

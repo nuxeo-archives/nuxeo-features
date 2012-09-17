@@ -11,6 +11,9 @@
  */
 package org.nuxeo.ecm.automation;
 
+
+
+
 /**
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
@@ -18,8 +21,7 @@ public class AdapterNotFoundException extends OperationException {
 
     private static final long serialVersionUID = 1L;
 
-    public AdapterNotFoundException(String message, OperationContext ctx) {
-        super(message+System.getProperty("line.separator")+ctx.getFormattedTrace());
+    public AdapterNotFoundException(String message) {
+        super(message);
     }
-
 }

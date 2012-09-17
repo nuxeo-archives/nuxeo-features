@@ -11,9 +11,6 @@
  */
 package org.nuxeo.ecm.automation.core.operations.execution;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.transaction.SystemException;
 import javax.transaction.Transaction;
 import javax.transaction.TransactionManager;
@@ -68,11 +65,8 @@ public class RunInNewTransaction {
             return;
         }
 
-        Map<String, Object> vars = isolate ? new HashMap<String, Object>(
-                ctx.getVars()) : ctx.getVars();
-        OperationContext subctx = new OperationContext(ctx.getCoreSession(),
-                vars);
-        subctx.setInput(ctx.getInput());
+
+        OperationContext subctx = ctx.newSubcontext(isolate);
         final TransactionManager transactionManager = TransactionHelper.lookupTransactionManager();
         final Transaction globalTx = transactionManager.suspend();
         try {

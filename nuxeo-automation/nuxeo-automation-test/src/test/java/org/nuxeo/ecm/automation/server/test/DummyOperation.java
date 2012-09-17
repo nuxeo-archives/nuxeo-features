@@ -1,5 +1,5 @@
 /*******************************************************************************
- * (C) Copyright 2012 Nuxeo SA (http://nuxeo.com/) and contributors.
+ * (C) Copyright ${creation_year} Nuxeo SA (http://nuxeo.com/) and contributors.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Lesser General Public License
@@ -13,31 +13,29 @@
  *******************************************************************************/
 package org.nuxeo.ecm.automation.server.test;
 
-import java.io.IOException;
-import java.io.StringWriter;
+import java.util.List;
 
-import org.codehaus.jackson.JsonGenerator;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
-import org.nuxeo.ecm.automation.server.jaxrs.io.JsonWriter;
-import org.nuxeo.ecm.core.api.Blob;
-import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
+import org.nuxeo.ecm.core.api.DocumentModel;
 
-@Operation(id=TestDataCapsule.ID, category="Test")
-public class TestDataCapsule {
-
-    public static final String ID = "TestDataCapsule";
+@Operation(id = DummyOperation.ID)
+public class DummyOperation {
     
+    public static final String ID = "Dummy";
+    
+    @OperationMethod
+    public DocumentModel run(DocumentModel doc) {
+        return doc;
+    }
 
     @OperationMethod
-    public Blob getDataCapsule() throws IOException {
-        StringWriter writer = new StringWriter();
-        JsonGenerator generator = JsonWriter.getFactory().createJsonGenerator(writer);
-        generator.writeObject(new MyObject());
-        writer.close();
-        String json = writer.toString();
-        Blob blob = new StringBlob(json, "application/json");
-        blob.setFilename(ID);
-        return blob;
+    public String runWithString(String data) {
+        return data;
+    }
+    
+    @OperationMethod
+    public List<String> runWithList(List<String> data) {
+        return data;
     }
 }

@@ -18,10 +18,11 @@ import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.CompiledChain;
 import org.nuxeo.ecm.automation.ExitException;
 import org.nuxeo.ecm.automation.InvalidChainException;
+import org.nuxeo.ecm.automation.OperationChain;
 import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.OperationException;
 import org.nuxeo.ecm.automation.OperationParameters;
-import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.ecm.automation.OperationCallback;
 
 /**
  * An operation invocation chain. The chain is immutable (cannot be modified
@@ -36,6 +37,8 @@ class CompiledChainImpl implements CompiledChain {
 
     protected AutomationService service;
 
+    protected final OperationChain source;
+    
     protected final OperationTypeImpl op;
 
     protected final Map<String, Object> args; // argument references
@@ -44,19 +47,24 @@ class CompiledChainImpl implements CompiledChain {
 
     protected CompiledChainImpl next;
 
-    CompiledChainImpl(OperationTypeImpl op, Map<String, Object> args) {
-        this(null, op, args);
+    CompiledChainImpl(OperationChain source, OperationTypeImpl op, Map<String, Object> args) {
+        this(source, null, op, args);
     }
 
-    CompiledChainImpl(CompiledChainImpl parent, OperationTypeImpl op,
+    CompiledChainImpl(OperationChain source, CompiledChainImpl parent, OperationTypeImpl op,
             Map<String, Object> args) {
         if (parent != null) {
             parent.next = this;
         }
+        this.source = source;
         this.op = op;
         this.args = args;
     }
 
+    public final OperationChain getSource() {
+        return source;
+    }
+    
     public final InvokableMethod method() {
         return method;
     }
@@ -109,45 +117,44 @@ class CompiledChainImpl implements CompiledChain {
 
     protected Object doInvoke(OperationContext ctx) throws OperationException {
         // add debug info
-        ctx.addTrace(method.op.getId() + ":" + method.method.getName());
+        final OperationCallback tracer = ctx.getCallback();
+        Object out = null;
+        tracer.onOperation(ctx, this.op, this.method, this.args);
         // invoke method
-        Object out = method.invoke(ctx, args);
-        ctx.setInput(out);
-        if (next != null) {
-            return next.invoke(ctx);
-        } else {
-            return out;
+        try {
+            out = method.invoke(ctx, args);
+            ctx.setInput(out);
+        } catch (OperationException error) {
+            throw error;
         }
-    }
-
-    public static CompiledChainImpl buildChain(Class<?> in,
-            OperationParameters[] params) throws Exception {
-        return buildChain(Framework.getLocalService(AutomationService.class),
-                in, params);
+        // recurse on chain
+        if (next != null) {
+            out = next.invoke(ctx);
+        }
+        return out;
     }
 
     public static CompiledChainImpl buildChain(AutomationService service,
-            Class<?> in, OperationParameters[] chainParams) throws Exception {
-        if (chainParams.length == 0) {
+            OperationChain source, Class<?> in) throws Exception {
+        if (source.getOperations().size() == 0) {
             throw new InvalidChainException("Null operation chain.");
         }
-        OperationParameters params = chainParams[0];
-        CompiledChainImpl invocation = new CompiledChainImpl(
-                (OperationTypeImpl) service.getOperation(params.id()),
-                params.map());
-        CompiledChainImpl last = invocation;
-        for (int i = 1; i < chainParams.length; i++) {
-            params = chainParams[i];
-            last = new CompiledChainImpl(last,
-                    (OperationTypeImpl) service.getOperation(params.id()),
-                    params.map());
+        List<OperationParameters> operations = source.getOperations();
+        CompiledChainImpl last = null;
+        CompiledChainImpl first = null;
+        for (OperationParameters op:operations) {
+            last = new CompiledChainImpl(source, last, 
+                    (OperationTypeImpl) service.getOperation(op.id()), op.map());
+            if (first == null) {
+                first = last;
+            }
         }
         // find the best matching path in the chain
-        if (!invocation.initializePath(in)) {
+        if (!first.initializePath(in)) {
             throw new InvalidChainException(
                     "Cannot find any valid path in operation chain");
         }
-        return invocation;
+        return first;
     }
 
 }

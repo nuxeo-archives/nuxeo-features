@@ -311,6 +311,11 @@ public class OperationTypeImpl implements OperationType {
 
     public String getContributingComponent() {
         return contributingComponent;
-    }    
+    }   
+    
+    @Override
+    public String toString() {
+        return getId();
+    }
     
 }

@@ -12,8 +12,6 @@
 package org.nuxeo.ecm.automation.core.operations.execution;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationContext;
@@ -55,11 +53,7 @@ public class RunOperationOnList {
 
     @OperationMethod
     public void run() throws Exception {
-        Map<String, Object> vars = isolate ? new HashMap<String, Object>(
-                ctx.getVars()) : ctx.getVars();
-        OperationContext subctx = new OperationContext(ctx.getCoreSession(),
-                vars);
-        subctx.setInput(ctx.getInput());
+        OperationContext subctx = ctx.newSubcontext(isolate);
         for (Object value : (Collection<?>) ctx.get(listName)) {
             subctx.put(itemName, value);
             service.run(subctx, chainId);

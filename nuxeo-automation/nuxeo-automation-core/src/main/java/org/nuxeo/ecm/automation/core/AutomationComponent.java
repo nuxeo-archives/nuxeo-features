@@ -91,6 +91,7 @@ import org.nuxeo.ecm.automation.core.operations.stack.PushDocument;
 import org.nuxeo.ecm.automation.core.operations.stack.PushDocumentList;
 import org.nuxeo.ecm.automation.core.rendering.operations.RenderDocument;
 import org.nuxeo.ecm.automation.core.rendering.operations.RenderDocumentFeed;
+import org.nuxeo.ecm.automation.core.trace.TracerFactory;
 import org.nuxeo.runtime.model.ComponentContext;
 import org.nuxeo.runtime.model.ComponentInstance;
 import org.nuxeo.runtime.model.DefaultComponent;
@@ -112,12 +113,15 @@ public class AutomationComponent extends DefaultComponent {
     public static final String XP_EVENT_HANDLERS = "event-handlers";
 
     protected AutomationService service;
+    
+    protected TracerFactory tracerFactory;
 
     protected EventHandlerRegistry handlers;
 
     @Override
     public void activate(ComponentContext context) throws Exception {
         service = new OperationServiceImpl();
+        tracerFactory = new TracerFactory();
         // register built-in operations
         service.putOperation(FetchContextDocument.class);
         service.putOperation(FetchContextBlob.class);
@@ -210,6 +214,7 @@ public class AutomationComponent extends DefaultComponent {
     @Override
     public void deactivate(ComponentContext context) throws Exception {
         service = null;
+        tracerFactory = null;
         handlers = null;
     }
 
@@ -265,9 +270,12 @@ public class AutomationComponent extends DefaultComponent {
     public <T> T getAdapter(Class<T> adapter) {
         if (adapter == AutomationService.class) {
             return adapter.cast(service);
-        }
+        } 
         if (adapter == EventHandlerRegistry.class) {
             return adapter.cast(handlers);
+        } 
+        if (adapter == TracerFactory.class){
+            return adapter.cast(tracerFactory);
         }
         return null;
     }
