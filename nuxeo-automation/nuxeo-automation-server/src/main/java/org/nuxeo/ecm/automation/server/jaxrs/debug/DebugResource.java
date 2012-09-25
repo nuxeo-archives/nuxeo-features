@@ -93,7 +93,7 @@ public class DebugResource {
             OperationChain chain = contrib.toOperationChain(Framework.getRuntime().getContext().getBundle());
             OperationContext ctx = new OperationContext(session);
             Tracer tracer = Framework.getLocalService(TracerFactory.class).newTracer();
-            ctx.setCallback(tracer);
+            ctx.addCallback(tracer);
             ctx.setInput(getDocumentRef(input));
             getOperationService().run(ctx, chain);
             return new TemplateView(this, "index.ftl.html")
@@ -115,7 +115,7 @@ public class DebugResource {
             OperationContext ctx = new OperationContext(
                     SessionFactory.getSession());
             Tracer tracer = Framework.getLocalService(TracerFactory.class).newTracer();
-            ctx.setCallback(tracer);
+            ctx.addCallback(tracer);
             ctx.setInput(getDocumentRef(input));
             getOperationService().run(ctx, chainId);
             return new TemplateView(this, "index.ftl.html")

@@ -18,6 +18,7 @@
 package org.nuxeo.ecm.automation.test;
 
 import org.nuxeo.ecm.automation.OperationContext;
+import org.nuxeo.ecm.automation.core.management.Monitor;
 import org.nuxeo.ecm.automation.core.trace.Tracer;
 import org.nuxeo.ecm.automation.core.trace.TracerFactory;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -41,21 +42,20 @@ import com.google.inject.Provider;
  * @since 5.6-HF02
  *
  */
-@Deploy({"org.nuxeo.ecm.automation.core", 
-        "org.nuxeo.ecm.automation.features",
-        "org.nuxeo.ecm.platform.query.api" })
+@Deploy({ "org.nuxeo.ecm.automation.core", "org.nuxeo.ecm.automation.features",
+        "org.nuxeo.ecm.platform.query.api", "org.nuxeo.runtime.management" })
 @Features(PlatformFeature.class)
 public class AutomationFeature extends SimpleFeature {
 
-    public class OperationContextProvider implements Provider<OperationContext>  {
-        
+    public class OperationContextProvider implements Provider<OperationContext> {
+
         @Override
         public OperationContext get() {
             return AutomationFeature.this.getContext();
         }
 
     }
-    
+
     class TracerProvider implements Provider<Tracer> {
 
         @Override
@@ -64,55 +64,56 @@ public class AutomationFeature extends SimpleFeature {
         }
 
     }
-    
-    protected final OperationContextProvider contextProvider = 
-            new OperationContextProvider();
-    
-    protected final TracerProvider tracerProvider =
-            new TracerProvider();
-   
-    protected TracerFactory tracerFactory;
+
+    protected final OperationContextProvider contextProvider = new OperationContextProvider();
+
+    protected final TracerProvider tracerProvider = new TracerProvider();
 
     protected OperationContext context;
-    
+
+    protected TracerFactory tracerFactory;
+
     protected Tracer tracer;
-    
+
     protected RepositorySettings repository;
-        
+
     protected OperationContext getContext() {
         if (context == null) {
             CoreSession session = repository.getSession();
             context = new OperationContext(session);
+            final Monitor monitor = new Monitor();
             if (tracer != null) {
-                context.setCallback(tracer);
+                context.addCallback(tracer);
             }
         }
         return context;
     }
-    
+
     protected Tracer getTracer() {
         if (tracer == null) {
             tracer = tracerFactory.newTracer();
             if (context != null) {
-                context.setCallback(tracer);
+                context.addCallback(tracer);
             }
         }
         return tracer;
     }
-    
+
     @Override
     public void configure(FeaturesRunner runner, Binder binder) {
-        binder.bind(OperationContext.class).toProvider(contextProvider).in(AutomationScope.INSTANCE);
-        binder.bind(Tracer.class).toProvider(tracerProvider).in(AutomationScope.INSTANCE);
+        binder.bind(OperationContext.class).toProvider(contextProvider).in(
+                AutomationScope.INSTANCE);
+        binder.bind(Tracer.class).toProvider(tracerProvider).in(
+                AutomationScope.INSTANCE);
         repository = runner.getFeature(CoreFeature.class).getRepository();
         tracerFactory = Framework.getLocalService(TracerFactory.class);
     }
-    
+
     @Override
     public void beforeSetup(FeaturesRunner runner) throws Exception {
         AutomationScope.INSTANCE.enter();
     }
-    
+
     @Override
     public void afterTeardown(FeaturesRunner runner) throws Exception {
         AutomationScope.INSTANCE.exit();
@@ -120,5 +121,5 @@ public class AutomationFeature extends SimpleFeature {
         tracer = null;
         tracerFactory.clearTraces();
     }
-    
+
 }

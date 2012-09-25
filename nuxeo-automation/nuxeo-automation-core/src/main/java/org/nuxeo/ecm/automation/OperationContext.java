@@ -13,14 +13,18 @@ package org.nuxeo.ecm.automation;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.nuxeo.ecm.automation.core.impl.InvokableMethod;
+import org.nuxeo.ecm.automation.core.management.Monitor;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.transaction.TransactionHelper;
@@ -85,10 +89,53 @@ public class OperationContext implements Map<String, Object> {
      */
     protected Object input;
 
+    protected static class CallbackChain implements OperationCallback {
+
+            protected final Set<OperationCallback> callbacks
+                = new HashSet<OperationCallback>();
+
+            protected CallbackChain(OperationCallback... callbacks) {
+                this.callbacks.addAll(Arrays.asList(callbacks));
+            }
+
+            protected void add(OperationCallback callback) {
+                callbacks.add(callback);
+            }
+
+            @Override
+            public void onChain(OperationContext context, OperationChain chain) {
+                for (OperationCallback cb:callbacks) {
+                    cb.onChain(context, chain);
+                }
+            }
+
+            @Override
+            public void onOperation(OperationContext context, OperationType type,
+                    InvokableMethod method, Map<String, Object> parms) {
+                for (OperationCallback cb:callbacks) {
+                    cb.onOperation(context, type, method, parms);
+                }
+            }
+
+            @Override
+            public void onError(OperationException error) {
+                for (OperationCallback cb:callbacks) {
+                    cb.onError(error);
+                }
+            }
+
+            @Override
+            public void onOutput(Object output) {
+                for (OperationCallback cb:callbacks) {
+                    cb.onOutput(output);
+                }
+            }
+
+    }
     /**
      * Collect operation invokes.
      */
-    protected OperationCallback callback;
+    protected CallbackChain callbackChain;
 
     public OperationContext() {
         this(null);
@@ -102,14 +149,14 @@ public class OperationContext implements Map<String, Object> {
         stacks = new HashMap<String, List<Object>>();
         cleanupHandlers = new ArrayList<CleanupHandler>();
         loginStack = new LoginStack(session);
-        callback = OperationCallback.NULL_CALLBACK;
+        callbackChain = new CallbackChain(new Monitor());
         this.vars = vars == null ? new HashMap<String,Object>() : vars;
     }
 
     public OperationContext newSubcontext(boolean isolated) {
         OperationContext newContext = new OperationContext(getCoreSession(), vars);
         newContext.vars = isolated ? new HashMap<String,Object>(vars) : vars;
-        newContext.callback = callback;;
+        newContext.callbackChain = callbackChain;;
         newContext.input = input;
         return newContext;
     }
@@ -292,14 +339,10 @@ public class OperationContext implements Map<String, Object> {
     }
 
     public OperationCallback getCallback() {
-        return callback;
+        return callbackChain;
     }
 
-    public void setCallback(OperationCallback callback)  {
-        this.callback = callback;
-    }
-    
-    public void setNullCallback() {
-        this.callback = OperationCallback.NULL_CALLBACK;
+    public void addCallback(OperationCallback callback)  {
+        this.callbackChain.add(callback);
     }
 }

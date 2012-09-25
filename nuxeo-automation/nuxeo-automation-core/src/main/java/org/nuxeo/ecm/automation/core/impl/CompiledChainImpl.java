@@ -38,7 +38,7 @@ class CompiledChainImpl implements CompiledChain {
     protected AutomationService service;
 
     protected final OperationChain source;
-    
+
     protected final OperationTypeImpl op;
 
     protected final Map<String, Object> args; // argument references
@@ -64,7 +64,7 @@ class CompiledChainImpl implements CompiledChain {
     public final OperationChain getSource() {
         return source;
     }
-    
+
     public final InvokableMethod method() {
         return method;
     }
@@ -117,9 +117,9 @@ class CompiledChainImpl implements CompiledChain {
 
     protected Object doInvoke(OperationContext ctx) throws OperationException {
         // add debug info
-        final OperationCallback tracer = ctx.getCallback();
+        final OperationCallback callback = ctx.getCallback();
         Object out = null;
-        tracer.onOperation(ctx, this.op, this.method, this.args);
+        callback.onOperation(ctx, this.op, this.method, this.args);
         // invoke method
         try {
             out = method.invoke(ctx, args);
@@ -143,7 +143,7 @@ class CompiledChainImpl implements CompiledChain {
         CompiledChainImpl last = null;
         CompiledChainImpl first = null;
         for (OperationParameters op:operations) {
-            last = new CompiledChainImpl(source, last, 
+            last = new CompiledChainImpl(source, last,
                     (OperationTypeImpl) service.getOperation(op.id()), op.map());
             if (first == null) {
                 first = last;

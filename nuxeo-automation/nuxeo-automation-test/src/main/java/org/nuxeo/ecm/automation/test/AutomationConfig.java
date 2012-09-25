@@ -11,24 +11,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
  *
+ * Contributors:
+ *     matic
  */
-package org.nuxeo.ecm.automation;
+package org.nuxeo.ecm.automation.test;
 
-import java.util.Map;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.nuxeo.ecm.automation.core.impl.InvokableMethod;
-import org.nuxeo.ecm.automation.core.management.Monitor;
+import org.nuxeo.ecm.automation.OperationCallback;
 
-public interface OperationCallback {
-        
-    void onChain(OperationContext context, OperationChain chain);
+/**
+ * @author matic
+ *
+ */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AutomationConfig {
+
+    Class<? extends OperationCallback> callbackType();
     
-    void onOperation(OperationContext context, OperationType type, InvokableMethod method, Map<String, Object> parms);
-    
-    void onError(OperationException error);
-
-    void onOutput(Object output);
-                
-    public final OperationCallback MONITOR_CALLBACK = new Monitor();
- 
 }

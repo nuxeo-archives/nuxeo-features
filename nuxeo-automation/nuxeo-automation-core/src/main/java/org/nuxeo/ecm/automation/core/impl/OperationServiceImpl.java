@@ -91,14 +91,14 @@ public class OperationServiceImpl implements AutomationService {
     
     protected Object doRunCompiledChain(OperationContext ctx, CompiledChain cchain) throws OperationException, ClientException {
         try {
-            final OperationCallback tracer = ctx.getCallback();
+            final OperationCallback callback = ctx.getCallback();
             try {
-                tracer.onChain(ctx, cchain.getSource());
+                callback.onChain(ctx, cchain.getSource());
                 Object ret = cchain.invoke(ctx);
-                tracer.onOutput(ret);
+                callback.onOutput(ret);
                 return ret;
             } catch (OperationException oe) {
-                tracer.onError(oe);
+                callback.onError(oe);
                 throw oe;
             } finally {
                 if (ctx.getCoreSession() != null && ctx.isCommit()) {

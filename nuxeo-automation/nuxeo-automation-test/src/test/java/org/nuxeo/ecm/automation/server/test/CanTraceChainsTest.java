@@ -46,30 +46,35 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(AutomationFeature.class)
 public class CanTraceChainsTest {
-    
-    @Inject AutomationService service;
-    
-    @Inject OperationContext context;
-    
-    @Inject CoreSession session;
-    
-    @Inject Tracer tracer;
-    
-    @Inject TracerFactory factory;
-    
+
+    @Inject
+    AutomationService service;
+
+    @Inject
+    OperationContext context;
+
+    @Inject
+    CoreSession session;
+
+    @Inject
+    Tracer tracer;
+
+    @Inject
+    TracerFactory factory;
+
     @Before
     public void setup() throws OperationException {
         service.putOperation(DummyOperation.class);
     }
-    
+
     @After
     public void teardown() {
         service.removeOperation(DummyOperation.class);
     }
-    
+
     @Test
-    public void testSimpleChainTrace() throws InvalidChainException, OperationException,
-            Exception {        
+    public void testSimpleChainTrace() throws InvalidChainException,
+            OperationException, Exception {
         OperationChain chain = new OperationChain("testChain");
         chain.add(DummyOperation.ID).set(DummyOperation.ID, DummyOperation.ID);
         chain.add(DummyOperation.ID);
@@ -77,7 +82,7 @@ public class CanTraceChainsTest {
 
         context.setInput(DummyOperation.ID);
         context.put(DummyOperation.ID, DummyOperation.ID);
-        
+
         service.run(context, chain);
 
         Trace trace = tracer.getTrace();
@@ -87,8 +92,10 @@ public class CanTraceChainsTest {
         assertEquals(3, calls.size());
         Call firstCall = calls.get(0);
         assertEquals(DummyOperation.ID, firstCall.getType().getId());
-        assertEquals(DummyOperation.ID, firstCall.getVariables().get(DummyOperation.ID));
-        assertEquals(DummyOperation.ID, firstCall.getParmeters().get(DummyOperation.ID));
+        assertEquals(DummyOperation.ID,
+                firstCall.getVariables().get(DummyOperation.ID));
+        assertEquals(DummyOperation.ID,
+                firstCall.getParmeters().get(DummyOperation.ID));
     }
 
     @Test
@@ -98,43 +105,42 @@ public class CanTraceChainsTest {
         dummyChain.add(DummyOperation.ID);
         service.putOperationChain(dummyChain);
         OperationChain chain = new OperationChain(chainid);
-        OperationParameters runOnListParams = new OperationParameters(RunOperationOnList.ID);
+        OperationParameters runOnListParams = new OperationParameters(
+                RunOperationOnList.ID);
         runOnListParams.set("list", "list");
         runOnListParams.set("id", DummyOperation.ID);
         chain.add(runOnListParams);
-        try {
-            context.setInput("pfff");
-            context.put("list", Arrays.asList(new String[] { "one", "two" }));
-            Map<String,Object> params = new HashMap<String,Object>();
-            params.put("list", "list");
-            params.put("id", DummyOperation.ID);
-            service.run(context, chain);
-            Trace trace =  tracer.getTrace();
-            List<Call> calls = trace.getCalls();
-            assertEquals(1, calls.size());
-            List<Trace> nested = calls.get(0).getNested();
-            assertEquals(2, nested.size());
-            assertEquals(nested.get(0).getCalls().get(0).getVariables().get("item"), "one");
-            assertEquals(nested.get(1).getCalls().get(0).getVariables().get("item"), "two");
-        } finally {
-            service.removeOperation(DummyOperation.class);
-        }
-        
+
+        context.setInput("pfff");
+        context.put("list", Arrays.asList(new String[] { "one", "two" }));
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("list", "list");
+        params.put("id", DummyOperation.ID);
+        service.run(context, chain);
+        Trace trace = tracer.getTrace();
+        List<Call> calls = trace.getCalls();
+        assertEquals(1, calls.size());
+        List<Trace> nested = calls.get(0).getNested();
+        assertEquals(2, nested.size());
+        assertEquals(
+                nested.get(0).getCalls().get(0).getVariables().get("item"),
+                "one");
+        assertEquals(
+                nested.get(1).getCalls().get(0).getVariables().get("item"),
+                "two");
+
     }
 
     @Test
-   public void testChainInvokeWithDistinctInput()
-           throws InvalidChainException, OperationException, Exception {
-       OperationChain chain = new OperationChain(DummyOperation.ID);
-       chain.add(DummyOperation.ID);
-       try {
-           context.setInput("dummy");
-           service.run(context, DummyOperation.ID);
-           context.setInput(Arrays.asList(new String[] { "dummy" }));
-           service.run(context, DummyOperation.ID);
-       } finally {
-           service.removeOperationChain(DummyOperation.ID);
-       }
-   }
+    public void testChainInvokeWithDistinctInput()
+            throws InvalidChainException, OperationException, Exception {
+        OperationChain chain = new OperationChain(DummyOperation.ID);
+        chain.add(DummyOperation.ID);
+        context.setInput("dummy");
+        service.run(context, DummyOperation.ID);
+        context.setInput(Arrays.asList(new String[] { "dummy" }));
+        service.run(context, DummyOperation.ID);
+
+    }
 
 }
