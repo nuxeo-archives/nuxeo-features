@@ -37,10 +37,6 @@
       <classifier>jdk15</classifier>
     </dependency>
 
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>jsr311-api</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
