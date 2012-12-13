@@ -16,9 +16,6 @@
  */
 package org.nuxeo.ecm.webengine.management.statuses;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -45,7 +42,7 @@ import org.nuxeo.runtime.api.Framework;
 public class ProbesObject extends ManagementObject {
 
     protected ProbeManager probeMgr;
-    protected Collection<ProbeInfo> infos;
+    protected ProbeInfo[] infos;
 
     public static ProbesObject newProbes(DefaultObject parent) {
         return (ProbesObject)parent.newObject("Probes");
@@ -63,7 +60,7 @@ public class ProbesObject extends ManagementObject {
         return getView("index");
     }
 
-    public Collection<ProbeInfo> getInfos() {
+    public ProbeInfo[] getInfos() {
         return infos;
     }
 
@@ -77,9 +74,7 @@ public class ProbesObject extends ManagementObject {
 
     @Path("{probe}")
     public ProbeObject doGetProbe(@PathParam("probe") String name) {
-        Iterator<ProbeInfo> it = infos.iterator();
-        while (it.hasNext()) {
-            ProbeInfo info = it.next();
+        for (ProbeInfo info:infos) {
             if (info.getShortcutName().equals(name)) {
                 return ProbeObject.newProbe(this, info);
             }

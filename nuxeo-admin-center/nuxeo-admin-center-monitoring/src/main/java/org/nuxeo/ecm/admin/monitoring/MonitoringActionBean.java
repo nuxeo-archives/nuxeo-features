@@ -20,6 +20,7 @@ package org.nuxeo.ecm.admin.monitoring;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -133,7 +134,7 @@ public class MonitoringActionBean implements Serializable {
     public List<ProbeInfo> getProbeInfos() {
         List<ProbeInfo> infos = new ArrayList<ProbeInfo>();
         ProbeManager pm = Framework.getLocalService(ProbeManager.class);
-        infos.addAll(pm.getAllProbeInfos());
+        infos.addAll(Arrays.asList(pm.getAllProbeInfos()));
         return infos;
     }
 

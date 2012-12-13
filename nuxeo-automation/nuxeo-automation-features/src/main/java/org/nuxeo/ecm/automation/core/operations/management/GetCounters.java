@@ -36,8 +36,8 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.core.api.impl.blob.ByteArrayBlob;
 import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.management.counters.CounterHistoryStack;
 import org.nuxeo.runtime.management.counters.CounterManager;
+import org.nuxeo.runtime.management.metrics.MetricHistoryStack;
 
 /**
 * Return the data collected by one or more Counters
@@ -71,7 +71,7 @@ public class GetCounters {
             // Only Administrators can access the counters
             if (nuxeoUser.isAdministrator()) {
                 for (String counterName : counterNames) {
-                    CounterHistoryStack stack = cm.getCounterHistory(counterName);
+                    MetricHistoryStack stack = cm.getCounterHistory(counterName);
 
                     // copy and reverse the list
                     List<long[]> valueList = new ArrayList<long[]>(stack.getAsList());

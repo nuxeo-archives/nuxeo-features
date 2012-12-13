@@ -47,16 +47,12 @@ public class AuditEventMetricFactory implements ResourceFactory {
                 NXAuditEventsService.NAME, name);
     }
 
-    public static String formatShortcutName(String name) {
-        return ObjectNameFactory.formatMetricShortName("event-" + name);
-    }
-
     public static ObjectName getObjectName(String name) {
         return ObjectNameFactory.getObjectName(formatQualifiedName(name));
     }
 
     protected void doRegisterResource(String name) {
-        publisherService.registerResource(formatShortcutName(name),
+        publisherService.registerResource(
                 formatQualifiedName(name), AuditEventMetricMBean.class,
                 new AuditEventMetricMBeanAdapter(auditService, name));
     }
