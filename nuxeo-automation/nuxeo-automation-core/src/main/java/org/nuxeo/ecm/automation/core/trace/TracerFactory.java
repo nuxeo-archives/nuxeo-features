@@ -69,7 +69,7 @@ public class TracerFactory {
     }
 
     public Trace getTrace(OperationChain chain, int index) {
-        return traces.get(chain).getTrace(index);
+        return traces.get(chain.getId()).getTrace(index);
     }
 
     public Trace getTrace(String key) {

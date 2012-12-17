@@ -18,12 +18,12 @@
 package org.nuxeo.ecm.automation.test;
 
 import org.nuxeo.ecm.automation.OperationContext;
-import org.nuxeo.ecm.automation.core.management.Monitor;
 import org.nuxeo.ecm.automation.core.trace.Tracer;
 import org.nuxeo.ecm.automation.core.trace.TracerFactory;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.core.test.RepositorySettings;
+import org.nuxeo.ecm.platform.test.PlatformFeature;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
@@ -81,7 +81,6 @@ public class AutomationFeature extends SimpleFeature {
         if (context == null) {
             CoreSession session = repository.getSession();
             context = new OperationContext(session);
-            final Monitor monitor = new Monitor();
             if (tracer != null) {
                 context.addCallback(tracer);
             }
