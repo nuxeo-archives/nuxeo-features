@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <component name="org.nuxeo.ecm.platform.picture.service.thumbnailfactory">
 
-  <extension target="org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailService"
+  <extension target="org.nuxeo.ecm.platform.picture.thumbnail.ThumbnailService"
     point="thumbnailFactory">
     <thumbnailFactory name="thumbnailPictureFactory"
-      facet="Picture"
+      docType="Picture"
       factoryClass="org.nuxeo.ecm.platform.picture.thumbnail.ThumbnailPictureFactory" />
   </extension>
 

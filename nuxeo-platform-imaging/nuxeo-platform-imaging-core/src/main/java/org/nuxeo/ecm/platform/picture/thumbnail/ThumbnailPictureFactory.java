@@ -36,7 +36,7 @@ public class ThumbnailPictureFactory implements ThumbnailFactory {
         MultiviewPicture mViewPicture = doc.getAdapter(MultiviewPicture.class);
         PictureView thumbnailView = mViewPicture.getView("Thumbnail");
         if (thumbnailView != null) {
-            thumbnailView.getBlob();
+            return thumbnailView.getBlob();
         }
         // TODO: thumbnail converter in case there is no nuxeo picture default
         // thumbnail
