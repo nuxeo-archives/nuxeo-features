@@ -14,10 +14,11 @@ package org.nuxeo.ecm.platform.picture.thumbnail;
 
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
+import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.thumbnail.ThumbnailFactory;
 import org.nuxeo.ecm.platform.picture.api.PictureView;
 import org.nuxeo.ecm.platform.picture.api.adapters.MultiviewPicture;
+import org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailFactory;
 
 /**
  * Picture thumbnail factory
@@ -27,7 +28,8 @@ import org.nuxeo.ecm.platform.picture.api.adapters.MultiviewPicture;
 public class ThumbnailPictureFactory implements ThumbnailFactory {
 
     @Override
-    public Blob getThumbnail(DocumentModel doc) throws ClientException {
+    public Blob getThumbnail(DocumentModel doc, CoreSession session)
+            throws ClientException {
         if (!doc.hasFacet("Picture")) {
             throw new ClientException("Document is not a picture");
         }

@@ -40,6 +40,7 @@ import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
 import org.nuxeo.ecm.platform.picture.api.PictureView;
 import org.nuxeo.ecm.platform.picture.api.adapters.MultiviewPicture;
+import org.nuxeo.ecm.platform.picture.api.thumbnail.adapters.ThumbnailAdapter;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -52,7 +53,7 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(CoreFeature.class)
 @RepositoryConfig(cleanup = Granularity.METHOD)
-@Deploy({ "org.nuxeo.ecm.core.convert", "org.nuxeo.ecm.core.convert.api",
+@Deploy({ "org.nuxeo.ecm.core.convert.api",
         "org.nuxeo.ecm.platform.commandline.executor",
         "org.nuxeo.ecm.platform.picture.api",
         "org.nuxeo.ecm.platform.picture.core",
@@ -96,9 +97,10 @@ public class TestPictureThumbnail {
         // Get picture thumbnail view
         MultiviewPicture mViewPicture = picture.getAdapter(MultiviewPicture.class);
         PictureView thumbnailView = mViewPicture.getView("Thumbnail");
-        Blob pictureThumbnail = thumbnailView.getBlob();
+        Blob pictureUsualThumbnail = thumbnailView.getBlob();
         // Thumbnail service should return the default picture thumbnail
-        Assert.assertEquals(pictureThumbnail.getDigest(),
-                bh.getThumbnail().getDigest());
+        ThumbnailAdapter pictureThumbnail = picture.getAdapter(ThumbnailAdapter.class);
+        Assert.assertEquals(pictureUsualThumbnail.getDigest(),
+                pictureThumbnail.getThumbnail(session).getDigest());
     }
 }
