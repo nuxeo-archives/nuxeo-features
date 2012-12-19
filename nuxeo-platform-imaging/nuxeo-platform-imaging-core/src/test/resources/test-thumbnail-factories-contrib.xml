@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.core.api.thumbnail.test">
+
+  <require>org.nuxeo.ecm.platform.picture.thumbnail.service.thumbnailfactory
+  </require>
+
+  <extension target="org.nuxeo.ecm.core.schema.TypeService"
+    point="doctype">
+    <facet name="Folderish" />
+  </extension>
+
+  <extension
+    target="org.nuxeo.ecm.platform.picture.thumbnail.ThumbnailService"
+    point="thumbnailFactory">
+    <thumbnailFactory name="thumbnailFolderishFactory"
+      facet="Folderish"
+      factoryClass="org.nuxeo.ecm.platform.picture.core.test.TestThumbnailFactories$DocumentTypeThumbnailFolderishFactory" />
+    <thumbnailFactory name="thumbnailDocumentFactory"
+      factoryClass="org.nuxeo.ecm.platform.picture.core.test.TestThumbnailFactories$DocumentTypeThumbnailDocumentFactory" />
+  </extension>
+
+</component>
