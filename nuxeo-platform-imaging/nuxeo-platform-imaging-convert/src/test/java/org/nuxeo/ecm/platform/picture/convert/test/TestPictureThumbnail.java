@@ -15,7 +15,7 @@
  *     Vladimir Pasquier <vpasquier@nuxeo.com>
  */
 
-package org.nuxeo.ecm.platform.picture.core.test;
+package org.nuxeo.ecm.platform.picture.convert.test;
 
 import java.io.File;
 import java.io.Serializable;
@@ -44,6 +44,7 @@ import org.nuxeo.ecm.platform.picture.api.thumbnail.adapters.ThumbnailAdapter;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LocalDeploy;
 
 import com.google.inject.Inject;
 
@@ -71,9 +72,10 @@ public class TestPictureThumbnail {
         List<Map<String, Serializable>> views = new ArrayList<Map<String, Serializable>>();
         Map<String, Serializable> map = new HashMap<String, Serializable>();
         map.put("title", "Original");
-        map.put("content", new FileBlob(getFileFromPath("images/statue.jpg"),
-                "image/jpeg", null, "statue.jpg", null));
-        map.put("filename", "statue.jpg");
+        map.put("content", new FileBlob(
+                getFileFromPath("test-data/big_nuxeo_logo.gif"), "image/gif",
+                null, "big_nuxeo_logo.gif", null));
+        map.put("filename", "big_nuxeo_logo.gif");
         views.add(map);
         return views;
     }
@@ -89,8 +91,9 @@ public class TestPictureThumbnail {
         session.save();
         // Create 4 views
         BlobHolder bh = picture.getAdapter(BlobHolder.class);
-        Blob blob = new FileBlob(getFileFromPath("images/statue.jpg"),
-                "image/jpeg", null, "statue.jpg", null);
+        Blob blob = new FileBlob(
+                getFileFromPath("test-data/big_nuxeo_logo.gif"), "image/gif",
+                null, "big_nuxeo_logo.gif", null);
         bh.setBlob(blob);
         session.saveDocument(picture);
         session.save();
@@ -100,7 +103,7 @@ public class TestPictureThumbnail {
         Blob pictureUsualThumbnail = thumbnailView.getBlob();
         // Thumbnail service should return the default picture thumbnail
         ThumbnailAdapter pictureThumbnail = picture.getAdapter(ThumbnailAdapter.class);
-        Assert.assertEquals(pictureUsualThumbnail.getDigest(),
-                pictureThumbnail.getThumbnail(session).getDigest());
+        Assert.assertEquals(pictureUsualThumbnail.getFilename(),
+                pictureThumbnail.getThumbnail(session).getFilename());
     }
 }
