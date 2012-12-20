@@ -13,13 +13,17 @@
  */
 package org.nuxeo.ecm.platform.picture.api.thumbnail.factories;
 
+import java.io.File;
+
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
+import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.nuxeo.ecm.core.convert.api.ConversionService;
 import org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailFactory;
+import org.nuxeo.ecm.platform.types.adapter.TypeInfoAdapter;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -37,7 +41,8 @@ public class ThumbnailDocumentFactory implements ThumbnailFactory {
                 "thumbnailDocumentConverter",
                 (BlobHolder) doc.getAdapter(BlobHolder.class), null);
         if (thumbnailBlob == null) {
-            // TODO: get document bigIcon or default thumbnail has to be defined
+            TypeInfoAdapter docType = doc.getAdapter(TypeInfoAdapter.class);
+            return new FileBlob(new File(docType.getBigIcon()));
         }
         return thumbnailBlob.getBlob();
     }
