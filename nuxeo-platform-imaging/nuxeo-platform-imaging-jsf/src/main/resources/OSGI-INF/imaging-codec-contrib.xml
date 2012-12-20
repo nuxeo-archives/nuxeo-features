@@ -9,6 +9,9 @@
     <documentViewCodec name="downloadPicture" enabled="true"
                        prefix="nxpicsfile"
                        class="org.nuxeo.ecm.platform.url.codec.DocumentFileCodec"/>
+    <documentViewCodec name="downloadThumbnail" enabled="true"
+                       prefix="nxthumb"
+                       class="org.nuxeo.ecm.platform.url.codec.DocumentFileCodec"/>
   </extension>
 
 </component>
