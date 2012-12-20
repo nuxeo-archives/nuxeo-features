@@ -27,7 +27,8 @@ import org.nuxeo.ecm.platform.types.adapter.TypeInfoAdapter;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * Default thumbnail factory for all non folderish documents
+ * Default thumbnail factory for all non folderish documents Return the main
+ * blob converted in thumbnail or get the document big icon as a thumbnail
  * 
  * @since 5.7
  */
