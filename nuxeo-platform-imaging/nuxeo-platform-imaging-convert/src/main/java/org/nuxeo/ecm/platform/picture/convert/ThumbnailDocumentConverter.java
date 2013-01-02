@@ -36,6 +36,7 @@ import org.nuxeo.runtime.services.streaming.StreamSource;
 
 /**
  * Converter bean managing the thumbnail conversion for picture documents
+ * 
  * @since 5.7
  */
 public class ThumbnailDocumentConverter implements Converter {
