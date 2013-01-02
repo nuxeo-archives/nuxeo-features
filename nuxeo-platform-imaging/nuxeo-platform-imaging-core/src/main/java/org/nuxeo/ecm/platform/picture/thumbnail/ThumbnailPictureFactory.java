@@ -16,9 +16,12 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
+import org.nuxeo.ecm.core.convert.api.ConversionService;
 import org.nuxeo.ecm.platform.picture.api.PictureView;
 import org.nuxeo.ecm.platform.picture.api.adapters.MultiviewPicture;
 import org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailFactory;
+import org.nuxeo.runtime.api.Framework;
 
 /**
  * Picture thumbnail factory
@@ -33,13 +36,17 @@ public class ThumbnailPictureFactory implements ThumbnailFactory {
         if (!doc.hasFacet("Picture")) {
             throw new ClientException("Document is not a picture");
         }
-        MultiviewPicture mViewPicture = doc.getAdapter(MultiviewPicture.class);
-        PictureView thumbnailView = mViewPicture.getView("Thumbnail");
-        if (thumbnailView != null) {
+        // Check if thumbnail picture converter exists
+        ConversionService conversionService = Framework.getLocalService(ConversionService.class);
+        BlobHolder thumbnailBlob = conversionService.convert(
+                "thumbnailDocumentConverter",
+                (BlobHolder) doc.getAdapter(BlobHolder.class), null);
+        if (thumbnailBlob == null) {
+            // Choose the nuxeo default thumbnail of the picture views
+            MultiviewPicture mViewPicture = doc.getAdapter(MultiviewPicture.class);
+            PictureView thumbnailView = mViewPicture.getView("Thumbnail");
             return thumbnailView.getBlob();
         }
-        // TODO: thumbnail converter in case there is no nuxeo picture default
-        // thumbnail
-        return null;
+        return thumbnailBlob.getBlob();
     }
 }
