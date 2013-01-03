@@ -43,8 +43,11 @@ public class ThumbnailFolderishFactory implements ThumbnailFactory {
         // TODO: Choose which rules apply for both cases (use pageprovider for
         // getting real "first child")
         if (session.hasChildren(docRef)) {
-            return session.getChildren(docRef).get(0).getAdapter(
-                    ThumbnailAdapter.class).getThumbnail(session);
+            DocumentModel child = session.getChildren(docRef).get(0);
+            if (!child.isFolder()) {
+                return session.getChildren(docRef).get(0).getAdapter(
+                        ThumbnailAdapter.class).getThumbnail(session);
+            }
         }
         TypeInfo docType = doc.getAdapter(TypeInfo.class);
         return new FileBlob(FileUtils.getResourceFileFromContext("nuxeo.war"
