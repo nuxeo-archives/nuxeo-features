@@ -39,15 +39,15 @@ public class ThumbnailDocumentFactory implements ThumbnailFactory {
     public Blob getThumbnail(DocumentModel doc, CoreSession session)
             throws ClientException {
         ConversionService conversionService = Framework.getLocalService(ConversionService.class);
-        BlobHolder thumbnailBlob = conversionService.convert(
-                "thumbnailDocumentConverter",
-                (BlobHolder) doc.getAdapter(BlobHolder.class), null);
-        if (thumbnailBlob == null) {
-            TypeInfo docType = doc.getAdapter(TypeInfo.class);
-            return new FileBlob(
-                    FileUtils.getResourceFileFromContext("nuxeo.war"
-                            + File.separator + docType.getBigIcon()));
+        BlobHolder thumbnailBlob = (BlobHolder) doc.getAdapter(BlobHolder.class);
+        if (thumbnailBlob != null && thumbnailBlob.getBlob() != null) {
+            thumbnailBlob = conversionService.convert(
+                    "thumbnailDocumentConverter",
+                    (BlobHolder) doc.getAdapter(BlobHolder.class), null);
+            return thumbnailBlob.getBlob();
         }
-        return thumbnailBlob.getBlob();
+        TypeInfo docType = doc.getAdapter(TypeInfo.class);
+        return new FileBlob(FileUtils.getResourceFileFromContext("nuxeo.war"
+                + File.separator + docType.getBigIcon()));
     }
 }
