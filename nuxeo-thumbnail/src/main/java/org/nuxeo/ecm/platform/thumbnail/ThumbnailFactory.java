@@ -11,7 +11,7 @@
  *     Antoine Taillefer <ataillefer@nuxeo.com>
  *
  */
-package org.nuxeo.ecm.platform.picture.api.thumbnail;
+package org.nuxeo.ecm.platform.thumbnail;
 
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;

@@ -11,7 +11,7 @@
  *     Antoine Taillefer <ataillefer@nuxeo.com>
  *
  */
-package org.nuxeo.ecm.platform.picture.api.thumbnail;
+package org.nuxeo.ecm.platform.thumbnail;
 
 import java.util.HashMap;
 import java.util.Map;

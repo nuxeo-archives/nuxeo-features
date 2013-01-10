@@ -16,7 +16,7 @@
  *
  */
 
-package org.nuxeo.ecm.platform.picture.api.thumbnail.adapters;
+package org.nuxeo.ecm.platform.thumbnail.adapters;
 
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;

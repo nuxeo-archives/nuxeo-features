@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
-<component name="org.nuxeo.ecm.platform.picture.thumbnail.ThumbnailService">
+<component name="org.nuxeo.ecm.platform.thumbnail.ThumbnailService">
 
   <implementation
-    class="org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailServiceImpl" />
+    class="org.nuxeo.ecm.platform.thumbnail.ThumbnailServiceImpl" />
   <documentation>
   </documentation>
 
   <service>
     <provide
-      interface="org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailService" />
+      interface="org.nuxeo.ecm.platform.thumbnail.ThumbnailService" />
   </service>
 
   <extension-point name="thumbnailFactory">
@@ -20,15 +20,15 @@
       <code>
         <thumbnailFactory name="thumbnailFolderishFactory"
           facet="Folderish"
-          factoryClass="org.nuxeo.ecm.platform.picture.api.thumbnail.factories.ThumbnailFolderishFactory" />
+          factoryClass="org.nuxeo.ecm.platform.thumbnail.factories.ThumbnailFolderishFactory" />
         <thumbnailFactory name="thumbnailDocumentFactory"
-          factoryClass="org.nuxeo.ecm.platform.picture.api.thumbnail.factories.ThumbnailDocumentFactory" />
+          factoryClass="org.nuxeo.ecm.platform.thumbnail.factories.ThumbnailDocumentFactory" />
       </code>
 
     </documentation>
 
     <object
-      class="org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailFactoryDescriptor" />
+      class="org.nuxeo.ecm.platform.thumbnail.ThumbnailFactoryDescriptor" />
 
   </extension-point>
 

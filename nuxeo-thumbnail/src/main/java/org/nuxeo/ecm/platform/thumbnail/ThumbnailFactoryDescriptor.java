@@ -12,7 +12,7 @@
  *
  */
 
-package org.nuxeo.ecm.platform.picture.api.thumbnail;
+package org.nuxeo.ecm.platform.thumbnail;
 
 import java.io.Serializable;
 

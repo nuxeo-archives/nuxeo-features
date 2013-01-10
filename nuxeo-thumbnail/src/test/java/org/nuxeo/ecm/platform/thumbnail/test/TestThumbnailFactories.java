@@ -14,7 +14,7 @@
  * Contributors:
  *     Vladimir Pasquier <vpasquier@nuxeo.com>
  */
-package org.nuxeo.ecm.platform.picture.core.test;
+package org.nuxeo.ecm.platform.thumbnail.test;
 
 import java.io.IOException;
 
@@ -31,8 +31,8 @@ import org.nuxeo.ecm.core.schema.FacetNames;
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.core.test.annotations.Granularity;
 import org.nuxeo.ecm.core.test.annotations.RepositoryConfig;
-import org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailFactory;
-import org.nuxeo.ecm.platform.picture.api.thumbnail.adapters.ThumbnailAdapter;
+import org.nuxeo.ecm.platform.thumbnail.ThumbnailFactory;
+import org.nuxeo.ecm.platform.thumbnail.adapters.ThumbnailAdapter;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -46,10 +46,9 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features(CoreFeature.class)
 @RepositoryConfig(cleanup = Granularity.METHOD)
-@Deploy({ "org.nuxeo.ecm.platform.picture.api",
-        "org.nuxeo.ecm.platform.picture.core",
+@Deploy({ "org.nuxeo.ecm.platform.thumbnail",
         "org.nuxeo.ecm.platform.commandline.executor" })
-@LocalDeploy({ "org.nuxeo.ecm.platform.picture.core:test-thumbnail-factories-contrib.xml" })
+@LocalDeploy({ "org.nuxeo.ecm.platform.thumbnail:test-thumbnail-factories-contrib.xml" })
 public class TestThumbnailFactories {
 
     protected static Blob folderishThumbnail = new StringBlob("folderish");

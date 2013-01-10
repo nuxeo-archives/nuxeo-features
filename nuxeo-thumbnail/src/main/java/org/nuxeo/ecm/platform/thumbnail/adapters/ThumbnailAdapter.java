@@ -16,13 +16,13 @@
  *
  */
 
-package org.nuxeo.ecm.platform.picture.api.thumbnail.adapters;
+package org.nuxeo.ecm.platform.thumbnail.adapters;
 
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.platform.picture.api.thumbnail.ThumbnailService;
+import org.nuxeo.ecm.platform.thumbnail.ThumbnailService;
 import org.nuxeo.runtime.api.Framework;
 
 /**
