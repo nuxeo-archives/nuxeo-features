@@ -12,15 +12,18 @@
  */
 package org.nuxeo.ecm.platform.picture.thumbnail;
 
+import java.io.File;
+
+import org.nuxeo.common.utils.FileUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
-import org.nuxeo.ecm.core.convert.api.ConversionService;
+import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
+import org.nuxeo.ecm.core.api.thumbnail.ThumbnailFactory;
 import org.nuxeo.ecm.platform.picture.api.PictureView;
 import org.nuxeo.ecm.platform.picture.api.adapters.MultiviewPicture;
-import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.ecm.platform.types.adapter.TypeInfo;
 
 /**
  * Picture thumbnail factory
@@ -35,17 +38,15 @@ public class ThumbnailPictureFactory implements ThumbnailFactory {
         if (!doc.hasFacet("Picture")) {
             throw new ClientException("Document is not a picture");
         }
-        // Check if thumbnail picture converter exists
-        ConversionService conversionService = Framework.getLocalService(ConversionService.class);
-        BlobHolder thumbnailBlob = conversionService.convert(
-                "thumbnailDocumentConverter",
-                (BlobHolder) doc.getAdapter(BlobHolder.class), null);
-        if (thumbnailBlob == null) {
-            // Choose the nuxeo default thumbnail of the picture views
-            MultiviewPicture mViewPicture = doc.getAdapter(MultiviewPicture.class);
-            PictureView thumbnailView = mViewPicture.getView("Thumbnail");
-            return thumbnailView.getBlob();
+        // Choose the nuxeo default thumbnail of the picture views if exists
+        MultiviewPicture mViewPicture = doc.getAdapter(MultiviewPicture.class);
+        PictureView thumbnailView = mViewPicture.getView("Thumbnail");
+        if (thumbnailView.getBlob() == null) {
+            TypeInfo docType = doc.getAdapter(TypeInfo.class);
+            return new FileBlob(
+                    FileUtils.getResourceFileFromContext("nuxeo.war"
+                            + File.separator + docType.getBigIcon()));
         }
-        return thumbnailBlob.getBlob();
+        return thumbnailView.getBlob();
     }
 }
