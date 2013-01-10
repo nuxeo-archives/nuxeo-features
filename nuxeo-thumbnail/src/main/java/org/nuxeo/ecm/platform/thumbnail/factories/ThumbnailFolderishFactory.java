@@ -22,8 +22,8 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
-import org.nuxeo.ecm.platform.thumbnail.ThumbnailFactory;
-import org.nuxeo.ecm.platform.thumbnail.adapters.ThumbnailAdapter;
+import org.nuxeo.ecm.core.api.thumbnail.ThumbnailAdapter;
+import org.nuxeo.ecm.core.api.thumbnail.ThumbnailFactory;
 import org.nuxeo.ecm.platform.types.adapter.TypeInfo;
 
 /**
