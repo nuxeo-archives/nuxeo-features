@@ -19,10 +19,6 @@
       <destinationMimeType>image/jpeg</destinationMimeType>
     </converter>
 
-    <converter name="thumbnailDocumentConverter"
-      class="org.nuxeo.ecm.platform.picture.convert.ThumbnailDocumentConverter">
-    </converter>
-
   </extension>
 
 </component>

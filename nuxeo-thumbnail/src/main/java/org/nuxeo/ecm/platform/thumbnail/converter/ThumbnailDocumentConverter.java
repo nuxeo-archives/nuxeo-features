@@ -11,7 +11,7 @@
  * Vladimir Pasquier <vpasquier@nuxeo.com>
  * 
  */
-package org.nuxeo.ecm.platform.picture.convert;
+package org.nuxeo.ecm.platform.thumbnail.converter;
 
 import java.io.File;
 import java.io.Serializable;
