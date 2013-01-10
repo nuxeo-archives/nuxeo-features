@@ -57,11 +57,6 @@ public interface PictureManager {
     void download(DocumentView docView) throws ClientException;
 
     /**
-     * @since 5.7
-     */
-    void downloadThumbnail(DocumentView docView) throws ClientException;
-
-    /**
      * Gets the content of the Picture. It's the uploaded file.
      *
      * @return a Blob holding the uploaded file

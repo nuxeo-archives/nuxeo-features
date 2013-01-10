@@ -53,7 +53,6 @@ import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.model.Property;
 import org.nuxeo.ecm.core.api.pathsegment.PathSegmentService;
-import org.nuxeo.ecm.core.api.thumbnail.ThumbnailAdapter;
 import org.nuxeo.ecm.platform.commandline.executor.api.CommandAvailability;
 import org.nuxeo.ecm.platform.commandline.executor.api.CommandLineExecutorService;
 import org.nuxeo.ecm.platform.picture.api.adapters.PictureResourceAdapter;
@@ -338,33 +337,6 @@ public class PictureManagerBean implements PictureManager, Serializable {
                 FacesContext context = FacesContext.getCurrentInstance();
 
                 ComponentUtils.download(context, blob, filename);
-            }
-        }
-    }
-
-    /**
-     * @since 5.7
-     */
-    @Override
-    public void downloadThumbnail(DocumentView docView) throws ClientException {
-        if (docView != null) {
-            DocumentLocation docLoc = docView.getDocumentLocation();
-            if (documentManager == null) {
-                RepositoryLocation loc = new RepositoryLocation(
-                        docLoc.getServerName());
-                navigationContext.setCurrentServerLocation(loc);
-                documentManager = navigationContext.getOrCreateDocumentManager();
-            }
-            DocumentModel doc = documentManager.getDocument(docLoc.getDocRef());
-            if (doc != null) {
-                ThumbnailAdapter thumbnailDoc = doc.getAdapter(ThumbnailAdapter.class);
-                Blob thumbnail = thumbnailDoc.getThumbnail(documentManager);
-                if (thumbnail == null) {
-                    return;
-                }
-                String filename = (String) thumbnail.getFilename();
-                FacesContext context = FacesContext.getCurrentInstance();
-                ComponentUtils.download(context, thumbnail, filename);
             }
         }
     }
