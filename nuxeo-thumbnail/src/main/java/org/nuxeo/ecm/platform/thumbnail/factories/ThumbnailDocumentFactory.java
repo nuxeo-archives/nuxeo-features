@@ -15,6 +15,8 @@ package org.nuxeo.ecm.platform.thumbnail.factories;
 
 import java.io.File;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nuxeo.common.utils.FileUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -35,19 +37,31 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class ThumbnailDocumentFactory implements ThumbnailFactory {
 
+    private static final Log log = LogFactory.getLog(ThumbnailDocumentFactory.class);
+
     @Override
     public Blob getThumbnail(DocumentModel doc, CoreSession session)
             throws ClientException {
         ConversionService conversionService = Framework.getLocalService(ConversionService.class);
-        BlobHolder thumbnailBlob = (BlobHolder) doc.getAdapter(BlobHolder.class);
-        if (thumbnailBlob != null && thumbnailBlob.getBlob() != null) {
-            thumbnailBlob = conversionService.convert(
+        Blob thumbnailBlob = null;
+        BlobHolder thumbnailBh = doc.getAdapter(BlobHolder.class);
+        try {
+            thumbnailBh = conversionService.convert(
                     "thumbnailDocumentConverter",
                     (BlobHolder) doc.getAdapter(BlobHolder.class), null);
-            return thumbnailBlob.getBlob();
+            if (thumbnailBh != null) {
+                thumbnailBlob = thumbnailBh.getBlob();
+            }
+        } catch (ClientException e) {
+            log.debug("Unable to convert document blob in thumbnail", e);
+        } finally {
+            if (thumbnailBlob == null) {
+                TypeInfo docType = doc.getAdapter(TypeInfo.class);
+                thumbnailBlob = new FileBlob(
+                        FileUtils.getResourceFileFromContext("nuxeo.war"
+                                + File.separator + docType.getBigIcon()));
+            }
         }
-        TypeInfo docType = doc.getAdapter(TypeInfo.class);
-        return new FileBlob(FileUtils.getResourceFileFromContext("nuxeo.war"
-                + File.separator + docType.getBigIcon()));
+        return thumbnailBlob;
     }
 }
