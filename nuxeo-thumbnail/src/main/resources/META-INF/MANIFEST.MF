@@ -6,9 +6,10 @@ Created-By: 1.6.0_20 (Sun Microsystems Inc.)
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Version: 0.0.0.SNAPSHOT
 Bundle-ManifestVersion: 2
-Nuxeo-Component: OSGI-INF/commandline-imagemagick-contrib.xml,
+Nuxeo-Component: OSGI-INF/thumbnail-commandline-imagemagick-contrib.xml,
  OSGI-INF/thumbnail-default-factories-contrib.xml,
- OSGI-INF/convert-service-contrib.xml,
+ OSGI-INF/thumbnail-convert-service-contrib.xml,
  OSGI-INF/thumbnail-codec-contrib.xml,
- OSGI-INF/thumbnail-urlservice-contrib.xml
+ OSGI-INF/thumbnail-urlservice-contrib.xml,
+ OSGI-INF/thumbnail-core-types-contrib.xml
 Bundle-SymbolicName: org.nuxeo.ecm.platform.thumbnail;singleton:=true
