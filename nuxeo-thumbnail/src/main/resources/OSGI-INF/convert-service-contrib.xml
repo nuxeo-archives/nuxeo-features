@@ -5,7 +5,7 @@
     point="converter">
 
     <converter name="thumbnailDocumentConverter"
-      class="org.nuxeo.ecm.platform.thumbnail.convert.ThumbnailDocumentConverter">
+      class="org.nuxeo.ecm.platform.thumbnail.converter.ThumbnailDocumentConverter">
     </converter>
 
   </extension>
