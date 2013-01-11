@@ -40,6 +40,7 @@ import org.nuxeo.ecm.platform.util.RepositoryLocation;
 
 /**
  * Thumbnail Manager seam bean
+ * @since 5.7
  */
 @Name("thumbnailManager")
 @Scope(ScopeType.CONVERSATION)
