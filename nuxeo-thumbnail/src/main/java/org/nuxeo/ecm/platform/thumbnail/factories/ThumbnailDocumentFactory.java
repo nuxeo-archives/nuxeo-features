@@ -15,19 +15,15 @@ package org.nuxeo.ecm.platform.thumbnail.factories;
 
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.nuxeo.common.utils.FileUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.nuxeo.ecm.core.api.thumbnail.ThumbnailFactory;
-import org.nuxeo.ecm.core.convert.api.ConversionService;
+import org.nuxeo.ecm.platform.thumbnail.ThumbnailConstants;
 import org.nuxeo.ecm.platform.types.adapter.TypeInfo;
-import org.nuxeo.runtime.api.Framework;
 
 /**
  * Default thumbnail factory for all non folderish documents Return the main
@@ -37,30 +33,15 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class ThumbnailDocumentFactory implements ThumbnailFactory {
 
-    private static final Log log = LogFactory.getLog(ThumbnailDocumentFactory.class);
-
     @Override
     public Blob getThumbnail(DocumentModel doc, CoreSession session)
             throws ClientException {
-        ConversionService conversionService = Framework.getLocalService(ConversionService.class);
-        Blob thumbnailBlob = null;
-        BlobHolder thumbnailBh = doc.getAdapter(BlobHolder.class);
-        try {
-            thumbnailBh = conversionService.convert(
-                    "thumbnailDocumentConverter",
-                    (BlobHolder) doc.getAdapter(BlobHolder.class), null);
-            if (thumbnailBh != null) {
-                thumbnailBlob = thumbnailBh.getBlob();
-            }
-        } catch (ClientException e) {
-            log.debug("Unable to convert document blob in thumbnail", e);
-        } finally {
-            if (thumbnailBlob == null) {
-                TypeInfo docType = doc.getAdapter(TypeInfo.class);
-                thumbnailBlob = new FileBlob(
-                        FileUtils.getResourceFileFromContext("nuxeo.war"
-                                + File.separator + docType.getBigIcon()));
-            }
+        Blob thumbnailBlob = (Blob) doc.getProperty(ThumbnailConstants.THUMBNAIL_PROPERTY_NAME);
+        if (thumbnailBlob == null) {
+            TypeInfo docType = doc.getAdapter(TypeInfo.class);
+            thumbnailBlob = new FileBlob(
+                    FileUtils.getResourceFileFromContext("nuxeo.war"
+                            + File.separator + docType.getBigIcon()));
         }
         return thumbnailBlob;
     }
