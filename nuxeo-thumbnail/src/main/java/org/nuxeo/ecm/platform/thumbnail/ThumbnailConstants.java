@@ -22,11 +22,9 @@ public class ThumbnailConstants {
 
     public static final String THUMBNAIL_MIME_TYPE = "image/jpeg";
 
-    public static final String THUMBNAIL_PROPERTY_NAME = "thumb:content";
+    public static final String THUMBNAIL_PROPERTY_NAME = "thumb:thumbnail";
 
     public static final String THUMBNAIL_CONVERTER_NAME = "thumbnailDocumentConverter";
-
-    public static final String THUMBNAIL_DIGEST_PROPERTY_NAME = "thumbnail:digest";
 
     public static final String THUMBNAIL_SIZE_PARAMETER_NAME = "size";
 
