@@ -41,6 +41,8 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
 import com.google.inject.Inject;
 
 /**
+ * Test thumbnail factories contributions
+ * 
  * @since 5.7
  */
 @RunWith(FeaturesRunner.class)
