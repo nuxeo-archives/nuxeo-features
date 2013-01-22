@@ -14,25 +14,21 @@ package org.nuxeo.ecm.platform.thumbnail.listener;
 
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
-import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
-import org.nuxeo.ecm.core.api.event.DocumentEventTypes;
 import org.nuxeo.ecm.core.event.Event;
-import org.nuxeo.ecm.core.event.EventBundle;
 import org.nuxeo.ecm.core.event.EventContext;
-import org.nuxeo.ecm.core.event.PostCommitEventListener;
+import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.ecm.platform.thumbnail.AddThumbnailUnrestricted;
-import org.nuxeo.ecm.platform.thumbnail.ThumbnailConstants;
 
 /**
  * Thumbnail listener handling creation and update document event to store doc
- * thumbnail
+ * thumbnail preview (only for DocType File)
  * 
  * @since 5.7
  */
-public class UpdateThumbnailListener implements PostCommitEventListener {
+public class UpdateThumbnailListener implements EventListener {
 
     public void handleEvent(Event event) throws ClientException {
         EventContext ec = event.getContext();
@@ -56,29 +52,7 @@ public class UpdateThumbnailListener implements PostCommitEventListener {
                     }
                 }
             }
-            // No Blob anymore, remove the facet
-            if (doc.hasFacet(ThumbnailConstants.THUMBNAIL_FACET)) {
-                doc.removeFacet(ThumbnailConstants.THUMBNAIL_FACET);
-                CoreSession coreSession = context.getCoreSession();
-                coreSession.saveDocument(doc);
-                coreSession.save();
-            }
         }
-    }
-
-    @Override
-    public void handleEvent(EventBundle events) throws ClientException {
-        if (!events.containsEventName(DocumentEventTypes.DOCUMENT_CREATED)
-                && !events.containsEventName(DocumentEventTypes.DOCUMENT_UPDATED)) {
-            return;
-        }
-        for (Event event : events) {
-            if (DocumentEventTypes.DOCUMENT_CREATED.equals(event.getName())
-                    || DocumentEventTypes.DOCUMENT_UPDATED.equals(event.getName())) {
-                handleEvent(event);
-            }
-        }
-
     }
 
 }
