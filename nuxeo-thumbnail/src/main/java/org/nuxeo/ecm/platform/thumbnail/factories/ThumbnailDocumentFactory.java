@@ -15,6 +15,8 @@ package org.nuxeo.ecm.platform.thumbnail.factories;
 
 import java.io.File;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.nuxeo.common.utils.FileUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -33,15 +35,24 @@ import org.nuxeo.ecm.platform.types.adapter.TypeInfo;
  */
 public class ThumbnailDocumentFactory implements ThumbnailFactory {
 
+    private static final Log log = LogFactory.getLog(ThumbnailDocumentFactory.class);
+
     @Override
     public Blob getThumbnail(DocumentModel doc, CoreSession session)
             throws ClientException {
-        Blob thumbnailBlob = (Blob) doc.getProperty(ThumbnailConstants.THUMBNAIL_PROPERTY_NAME);
-        if (thumbnailBlob == null) {
-            TypeInfo docType = doc.getAdapter(TypeInfo.class);
-            thumbnailBlob = new FileBlob(
-                    FileUtils.getResourceFileFromContext("nuxeo.war"
-                            + File.separator + docType.getBigIcon()));
+        Blob thumbnailBlob = null;
+        try {
+            thumbnailBlob = (Blob) doc.getPropertyValue(ThumbnailConstants.THUMBNAIL_PROPERTY_NAME);
+        } catch (ClientException e) {
+            log.debug("Could not fetch the thumbnail blob: "
+                    + e.getCause().getMessage());
+        } finally {
+            if (thumbnailBlob == null) {
+                TypeInfo docType = doc.getAdapter(TypeInfo.class);
+                thumbnailBlob = new FileBlob(
+                        FileUtils.getResourceFileFromContext("nuxeo.war"
+                                + File.separator + docType.getBigIcon()));
+            }
         }
         return thumbnailBlob;
     }
