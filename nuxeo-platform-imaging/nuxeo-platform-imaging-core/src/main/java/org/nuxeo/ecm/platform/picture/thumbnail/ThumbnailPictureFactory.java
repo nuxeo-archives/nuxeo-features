@@ -49,4 +49,9 @@ public class ThumbnailPictureFactory implements ThumbnailFactory {
         }
         return thumbnailView.getBlob();
     }
+
+    @Override
+    public Blob computeThumbnail(DocumentModel doc, CoreSession session) {
+        return null;
+    }
 }

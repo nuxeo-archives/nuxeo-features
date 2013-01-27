@@ -75,7 +75,7 @@ public class TestThumbnailStorage {
         Assert.assertTrue(file.hasFacet(ThumbnailConstants.THUMBNAIL_FACET));
 
         eventService.waitForAsyncCompletion();
-
+        session.save();
         // Check if thumbnail has been created and stored
         DocumentModel sameFile = session.getDocument(file.getRef());
         Assert.assertNotNull((Blob) sameFile.getPropertyValue(ThumbnailConstants.THUMBNAIL_PROPERTY_NAME));

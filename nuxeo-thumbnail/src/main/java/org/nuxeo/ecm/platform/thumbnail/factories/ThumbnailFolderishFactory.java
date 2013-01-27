@@ -40,8 +40,6 @@ public class ThumbnailFolderishFactory implements ThumbnailFactory {
             throw new ClientException("Document is not folderish");
         }
         DocumentRef docRef = doc.getRef();
-        // TODO: Choose which rules apply for both cases (use pageprovider for
-        // getting real "first child")
         if (session.hasChildren(docRef)) {
             DocumentModel child = session.getChildren(docRef).get(0);
             if (!child.isFolder()) {
@@ -52,5 +50,10 @@ public class ThumbnailFolderishFactory implements ThumbnailFactory {
         TypeInfo docType = doc.getAdapter(TypeInfo.class);
         return new FileBlob(FileUtils.getResourceFileFromContext("nuxeo.war"
                 + File.separator + docType.getBigIcon()));
+    }
+
+    @Override
+    public Blob computeThumbnail(DocumentModel doc, CoreSession session) {
+        return null;
     }
 }

@@ -95,6 +95,11 @@ public class TestThumbnailFactories {
             return folderishThumbnail;
         }
 
+        @Override
+        public Blob computeThumbnail(DocumentModel doc, CoreSession session) {
+            return null;
+        }
+
     }
 
     public static class DocumentTypeThumbnailDocumentFactory implements
@@ -102,6 +107,11 @@ public class TestThumbnailFactories {
         public Blob getThumbnail(DocumentModel doc, CoreSession session)
                 throws ClientException {
             return defaultThumbnail;
+        }
+
+        @Override
+        public Blob computeThumbnail(DocumentModel doc, CoreSession session) {
+            return null;
         }
     }
 
