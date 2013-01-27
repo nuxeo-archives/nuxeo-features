@@ -14,8 +14,6 @@
 package org.nuxeo.ecm.platform.thumbnail;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,9 +23,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
-import org.nuxeo.ecm.core.api.thumbnail.Thumbnail;
-import org.nuxeo.ecm.core.convert.api.ConversionService;
-import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.ecm.core.api.thumbnail.ThumbnailAdapter;
 
 /**
  * Thumbnail bean in session unrestricted to add/update thumbnail facet to a
@@ -39,51 +35,28 @@ public class AddThumbnailUnrestricted extends UnrestrictedSessionRunner {
 
     private static final Log log = LogFactory.getLog(AddThumbnailUnrestricted.class);
 
-    protected ConversionService conversionService;
-
     protected DocumentModel doc;
-
-    protected BlobHolder blobHolder;
-
-    protected Thumbnail thumbnail = null;
 
     public AddThumbnailUnrestricted(CoreSession coreSession, DocumentModel doc,
             BlobHolder blobHolder) {
         super(coreSession);
         this.doc = doc;
-        this.blobHolder = blobHolder;
     }
 
     @Override
     public void run() throws ClientException {
         try {
-            Blob thumbnailBlob = null;
-            try {
-                conversionService = Framework.getService(ConversionService.class);
-                Map<String, Serializable> params = new HashMap<String, Serializable>();
-                // TODO: convert non pix attachment
-                // Image converter before thumbnail converter
-                // params.put("targetFilePath", "readyToThumbnail.png");
-                // BlobHolder bh = conversionService.convertToMimeType(
-                // ThumbnailConstants.THUMBNAIL_MIME_TYPE, blobHolder,
-                // params);
-                // params.clear();
-                // Thumbnail converter
-                params.put(ThumbnailConstants.THUMBNAIL_SIZE_PARAMETER_NAME,
-                        ThumbnailConstants.THUMBNAIL_DEFAULT_SIZE);
-                BlobHolder bh = conversionService.convert(
-                        ThumbnailConstants.THUMBNAIL_CONVERTER_NAME,
-                        blobHolder, params);
-                if (bh != null) {
-                    thumbnailBlob = bh.getBlob();
-                }
-            } catch (ClientException e) {
-                log.debug("Unable to convert document blob in thumbnail", e);
-            } finally {
+            ThumbnailAdapter thumbnailAdapter = doc.getAdapter(ThumbnailAdapter.class);
+            if (thumbnailAdapter != null) {
+                Blob thumbnailBlob = thumbnailAdapter.computeThumbnail(session);
                 if (thumbnailBlob != null) {
+                    if (!doc.hasFacet(ThumbnailConstants.THUMBNAIL_FACET)) {
+                        doc.addFacet(ThumbnailConstants.THUMBNAIL_FACET);
+                    }
                     doc.setPropertyValue(
                             ThumbnailConstants.THUMBNAIL_PROPERTY_NAME,
                             (Serializable) thumbnailBlob);
+                    session.saveDocument(doc);
                     session.save();
                 }
             }

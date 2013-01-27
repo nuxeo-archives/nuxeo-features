@@ -16,11 +16,14 @@ import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
+import org.nuxeo.ecm.core.api.event.DocumentEventTypes;
 import org.nuxeo.ecm.core.event.Event;
+import org.nuxeo.ecm.core.event.EventBundle;
 import org.nuxeo.ecm.core.event.EventContext;
-import org.nuxeo.ecm.core.event.EventListener;
+import org.nuxeo.ecm.core.event.PostCommitEventListener;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.ecm.platform.thumbnail.AddThumbnailUnrestricted;
+import org.nuxeo.ecm.platform.thumbnail.ThumbnailConstants;
 
 /**
  * Thumbnail listener handling creation and update document event to store doc
@@ -28,31 +31,45 @@ import org.nuxeo.ecm.platform.thumbnail.AddThumbnailUnrestricted;
  * 
  * @since 5.7
  */
-public class UpdateThumbnailListener implements EventListener {
+public class UpdateThumbnailListener implements PostCommitEventListener {
 
     public void handleEvent(Event event) throws ClientException {
         EventContext ec = event.getContext();
         if (ec instanceof DocumentEventContext) {
-            DocumentEventContext context = (DocumentEventContext) ec;
-            DocumentModel doc = context.getSourceDocument();
-            if (!doc.getType().equals("File"))
-                return;
-            BlobHolder blobHolder = doc.getAdapter(BlobHolder.class);
-            if (blobHolder != null) {
-                Blob blob = blobHolder.getBlob();
-                if (blob != null) {
-                    try {
-                        AddThumbnailUnrestricted runner = new AddThumbnailUnrestricted(
-                                context.getCoreSession(), doc, blobHolder);
-                        runner.run();
-                        context.getCoreSession().save();
-                        return;
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+            if (event.getName().equals(DocumentEventTypes.DOCUMENT_CREATED)
+                    || event.getName().equals(
+                            ThumbnailConstants.EventNames.afterBlobUpdateCheck.name())) {
+                DocumentEventContext context = (DocumentEventContext) ec;
+                DocumentModel doc = context.getSourceDocument();
+                BlobHolder blobHolder = doc.getAdapter(BlobHolder.class);
+                if (blobHolder != null) {
+                    Blob blob = blobHolder.getBlob();
+                    if (blob != null) {
+                        try {
+                            AddThumbnailUnrestricted runner = new AddThumbnailUnrestricted(
+                                    context.getCoreSession(), doc, blobHolder);
+                            runner.run();
+                            return;
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
         }
     }
 
+    @Override
+    public void handleEvent(EventBundle events) throws ClientException {
+        if (!events.containsEventName(DocumentEventTypes.DOCUMENT_CREATED)
+                && !events.containsEventName(DocumentEventTypes.DOCUMENT_UPDATED)) {
+            return;
+        }
+        for (Event event : events) {
+            if (DocumentEventTypes.DOCUMENT_CREATED.equals(event.getName())
+                    || DocumentEventTypes.DOCUMENT_UPDATED.equals(event.getName())) {
+                handleEvent(event);
+            }
+        }
+    }
 }
