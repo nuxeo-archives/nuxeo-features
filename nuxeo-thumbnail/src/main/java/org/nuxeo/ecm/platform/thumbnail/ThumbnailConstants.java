@@ -30,4 +30,12 @@ public class ThumbnailConstants {
 
     public static final String THUMBNAIL_DEFAULT_SIZE = "100";
 
+    public enum EventNames {
+        /**
+         * Event sent after checking before updating document if the main blob
+         * has been updated
+         */
+        afterBlobUpdateCheck,
+    }
+
 }
