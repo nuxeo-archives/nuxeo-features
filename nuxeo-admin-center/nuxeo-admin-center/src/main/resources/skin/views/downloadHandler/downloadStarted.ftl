@@ -40,7 +40,7 @@ function install() {
 
     <#if (over || pkg.completed)>
       <div class="successfulDownloadBox">
-        <p>Download for package ${pkg.id} complete </p>
+        <p>${Context.getMessage('label.downloadStarted.title.start')} ${pkg.id} ${Context.getMessage('label.downloadStarted.title.end')}</p>
         <#if !install>
 	        <script>
 	         window.setTimeout(back,1000);
@@ -55,17 +55,17 @@ function install() {
     </#if>
     <#if (!over && !pkg.completed)>
       <div class="inProgressDownloadBox">
-        <p>Download for package ${pkg.id} is in progress : ${pkg.getDownloadProgress()} % </p>
+        <p>${Context.getMessage('label.downloadStarted.progress.mess1')} ${pkg.id} ${Context.getMessage('label.downloadStarted.progress.mess2')} : ${pkg.getDownloadProgress()} % </p>
         <div class="downloadProgressContainer alignCenter">
           <div class="downloadProgressBar alignCenter" style="width:${pkg.getDownloadProgress()}px;">&nbsp;</div>
         </div>
         <div class="downloadSize">
-        Total package size : ${pkg.getSourceSize()} bytes
+        ${Context.getMessage('label.downloadStarted.size.label')} ${pkg.getSourceSize()} ${Context.getMessage('label.downloadStarted.size.label')}
         </div>
         <script>
          window.setTimeout(refresh,1500);
         </script>
-        <p><a href="javascript:back()"> Let download continue in background </a></p>
+        <p><a href="javascript:back()">${Context.getMessage('label.downloadStarted.progress.background')}</a></p>
       </div>
     </#if>
 
