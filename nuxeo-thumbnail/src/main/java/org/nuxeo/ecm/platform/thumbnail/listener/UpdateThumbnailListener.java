@@ -43,16 +43,13 @@ public class UpdateThumbnailListener implements PostCommitEventListener {
                 DocumentModel doc = context.getSourceDocument();
                 BlobHolder blobHolder = doc.getAdapter(BlobHolder.class);
                 if (blobHolder != null) {
-                    Blob blob = blobHolder.getBlob();
-                    if (blob != null) {
-                        try {
-                            AddThumbnailUnrestricted runner = new AddThumbnailUnrestricted(
-                                    context.getCoreSession(), doc, blobHolder);
-                            runner.run();
-                            return;
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        AddThumbnailUnrestricted runner = new AddThumbnailUnrestricted(
+                                context.getCoreSession(), doc, blobHolder);
+                        runner.run();
+                        return;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -62,12 +59,13 @@ public class UpdateThumbnailListener implements PostCommitEventListener {
     @Override
     public void handleEvent(EventBundle events) throws ClientException {
         if (!events.containsEventName(DocumentEventTypes.DOCUMENT_CREATED)
-                && !events.containsEventName(DocumentEventTypes.DOCUMENT_UPDATED)) {
+                && !events.containsEventName(ThumbnailConstants.EventNames.afterBlobUpdateCheck.name())) {
             return;
         }
         for (Event event : events) {
             if (DocumentEventTypes.DOCUMENT_CREATED.equals(event.getName())
-                    || DocumentEventTypes.DOCUMENT_UPDATED.equals(event.getName())) {
+                    || ThumbnailConstants.EventNames.afterBlobUpdateCheck.name().equals(
+                            event.getName())) {
                 handleEvent(event);
             }
         }

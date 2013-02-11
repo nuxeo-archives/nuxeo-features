@@ -12,13 +12,11 @@
  */
 package org.nuxeo.ecm.platform.thumbnail.listener;
 
-import java.util.EventListener;
-
-import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.event.Event;
 import org.nuxeo.ecm.core.event.EventContext;
+import org.nuxeo.ecm.core.event.EventListener;
 import org.nuxeo.ecm.core.event.EventService;
 import org.nuxeo.ecm.core.event.impl.DocumentEventContext;
 import org.nuxeo.ecm.platform.thumbnail.ThumbnailConstants;
@@ -37,14 +35,11 @@ public class CheckBlobUpdateListener implements EventListener {
         if (ec instanceof DocumentEventContext) {
             DocumentEventContext context = (DocumentEventContext) ec;
             DocumentModel doc = context.getSourceDocument();
-            Blob content = (Blob) doc.getPropertyValue("file:content");
-            if (content != null) {
-                if (doc.getProperty("file:content").isDirty()) {
-                    EventService eventService = Framework.getLocalService(EventService.class);
-                    eventService.fireEvent(
-                            ThumbnailConstants.EventNames.afterBlobUpdateCheck.name(),
-                            context);
-                }
+            if (doc.getProperty("file:content").isDirty()) {
+                EventService eventService = Framework.getLocalService(EventService.class);
+                eventService.fireEvent(
+                        ThumbnailConstants.EventNames.afterBlobUpdateCheck.name(),
+                        context);
             }
         }
     }

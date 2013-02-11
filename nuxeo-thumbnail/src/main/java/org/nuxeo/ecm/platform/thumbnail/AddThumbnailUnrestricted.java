@@ -58,6 +58,14 @@ public class AddThumbnailUnrestricted extends UnrestrictedSessionRunner {
                             (Serializable) thumbnailBlob);
                     session.saveDocument(doc);
                     session.save();
+                } else {
+                    if (doc.hasFacet(ThumbnailConstants.THUMBNAIL_FACET)) {
+                        doc.removeFacet(ThumbnailConstants.THUMBNAIL_FACET);
+                    }
+                    doc.setPropertyValue(
+                            ThumbnailConstants.THUMBNAIL_PROPERTY_NAME, null);
+                    session.saveDocument(doc);
+                    session.save();
                 }
             }
         } catch (Exception e) {
