@@ -48,7 +48,7 @@
  }
 
  function confirmRestart() {
-  return window.confirm("Restart Nuxeo Server now ?");
+  return window.confirm("${Context.getMessage('label.simpleListing.messages.restart')}");
  }
 
 </script>
@@ -76,34 +76,52 @@
     <td> ${pkg.targetPlatform} &nbsp;</td>
     <td> ${pkg.type} </td>
     <#if showCommunityInfo && This.canDownload(pkg)>
-      <td>  downloads : ${pkg.downloadsCount}
+      <td>${Context.getMessage('label.simpleListing.downloadcount')} : ${pkg.downloadsCount}
       </td>
     <#else>
       <td>  </td>
     </#if>
-    <td> ${This.getStateLabel(pkg)} </td>
+    
+    <#if This.getStateLabel(pkg) = "downloaded">
+      <td>${Context.getMessage('label.pkgDetails.pkgState.downloaded')}</td>
+    <#elseif This.getStateLabel(pkg) = "downloading">
+      <td>${Context.getMessage('label.pkgDetails.pkgState.downloading')}</td>
+    <#elseif This.getStateLabel(pkg) = "installed">
+      <td>${Context.getMessage('label.pkgDetails.pkgState.installed')}</td>
+    <#elseif This.getStateLabel(pkg) = "installing">
+      <td>${Context.getMessage('label.pkgDetails.pkgState.installing')}</td>
+    <#elseif This.getStateLabel(pkg) = "remote">
+      <td>${Context.getMessage('label.pkgDetails.pkgState.remote')}</td>
+    <#elseif This.getStateLabel(pkg) = "started">
+      <td>${Context.getMessage('label.pkgDetails.pkgState.started')}</td>
+    <#elseif This.getStateLabel(pkg) = "unknown">
+      <td>${Context.getMessage('label.pkgDetails.pkgState.unknown')}</td>
+    <#else>
+      <td>${This.getStateLabel(pkg)}</td>
+    </#if>
+    
     <td class="alignCenter">
          <#if This.canDownload(pkg)>
-           <a class="button download" href="${Root.path}/download/start/${pkg.id}?source=${source}"> Download </a>
+           <a class="button download" href="${Root.path}/download/start/${pkg.id}?source=${source}">${Context.getMessage('label.simpleListing.links.download')}</a>
          </#if>
-         <#if This.registrationRequired(pkg)> Registration required </#if>
+         <#if This.registrationRequired(pkg)>${Context.getMessage('label.simpleListing.messages.registrationrequired')}</#if>
          <#if This.canCancel(pkg)>
-           <a class="button cancel" href="${Root.path}/download/cancel/${pkg.id}?source=${source}"> Cancel </a>
+           <a class="button cancel" href="${Root.path}/download/cancel/${pkg.id}?source=${source}">${Context.getMessage('label.simpleListing.links.cancel')}</a>
          </#if>
          <#if This.canInstall(pkg)>
-           <a class="button install" href="${Root.path}/install/start/${pkg.id}?source=${source}"> Install </a>
+           <a class="button install" href="${Root.path}/install/start/${pkg.id}?source=${source}">${Context.getMessage('label.simpleListing.links.install')}</a>
            <#if This.canRemove(pkg)>
-             <a class="button remove" href="${Root.path}/remove/start/${pkg.id}?source=${source}"> Remove </a>
+             <a class="button remove" href="${Root.path}/remove/start/${pkg.id}?source=${source}">${Context.getMessage('label.simpleListing.links.remove')}</a>
            </#if>
          </#if>
          <#if This.canUnInstall(pkg)>
-           <a class="button uninstall" href="${Root.path}/uninstall/start/${pkg.id}?source=${source}&amp;filterOnPlatform=${filterOnPlatform}"> Uninstall </a>
+           <a class="button uninstall" href="${Root.path}/uninstall/start/${pkg.id}?source=${source}&amp;filterOnPlatform=${filterOnPlatform}">${Context.getMessage('label.simpleListing.links.uninstall')}</a>
          </#if>
          <#if This.needsRestart(pkg)>
            <#if pkg.getState() == 5 >
-             <a class="button restartNeeded" onclick="return confirmRestart()" href="${Root.path}/restartView" target="_top" title="Uninstallation will be completed on next restart"> Restart&nbsp;required </a>
+             <a class="button restartNeeded" onclick="return confirmRestart()" href="${Root.path}/restartView" target="_top" title="${Context.getMessage('label.simpleListing.titles.restartlink')}">${Context.getMessage('label.simpleListing.links.restart')}</a>
            <#else>
-             <a class="button restartNeeded" onclick="return confirmRestart()" href="${Root.path}/restartView" target="_top" title="Installation will be completed on next restart"> Restart&nbsp;required </a>
+             <a class="button restartNeeded" onclick="return confirmRestart()" href="${Root.path}/restartView" target="_top" title="${Context.getMessage('label.simpleListing.titles.restartlink2')}">${Context.getMessage('label.simpleListing.links.restart')}</a>
            </#if>
          </#if>
     </td>

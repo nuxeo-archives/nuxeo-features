@@ -55,6 +55,7 @@ public class DocumentVersionnedGraphManager implements
 
     private URNDocumentViewTranslator translator;
 
+    @Override
     public void manage(Event event) {
         if (translator == null) {
             translator = new URNDocumentViewTranslator();
@@ -131,7 +132,7 @@ public class DocumentVersionnedGraphManager implements
             removeGraphFor(translator.getNuxeoUrn(repositoryName, id),
                     principal);
         } catch (Exception e) {
-            log.error(e);
+            log.error("Cannot remove graph " + id + " in repository " + repositoryName, e);
         }
     }
 
@@ -154,7 +155,7 @@ public class DocumentVersionnedGraphManager implements
                     principal);
             copyGraphFor(repositoryName, versionId, docId, principal);
         } catch (Exception e) {
-            log.error(e);
+            log.error("Cannot restore graph " + docId + " in repository " + repositoryName, e);
         }
     }
 

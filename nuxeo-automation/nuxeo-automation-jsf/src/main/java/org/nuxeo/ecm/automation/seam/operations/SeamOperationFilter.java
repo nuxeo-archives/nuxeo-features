@@ -17,14 +17,19 @@
  */
 package org.nuxeo.ecm.automation.seam.operations;
 
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.contexts.ServletLifecycle;
 import org.jboss.seam.core.ConversationPropagation;
 import org.jboss.seam.core.Manager;
 import org.jboss.seam.web.ServletContexts;
 import org.nuxeo.ecm.automation.OperationContext;
+import org.nuxeo.ecm.automation.jsf.OperationHelper;
+import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.platform.actions.ActionContext;
@@ -39,8 +44,10 @@ import org.nuxeo.ecm.platform.ui.web.util.SeamContextHelper;
  */
 public class SeamOperationFilter {
 
+    protected static final Log log = LogFactory.getLog(SeamOperationFilter.class);
+
     /**
-     * Initialise a workable Seam context as well as a conversion if needed
+     * Initialize a workable Seam context as well as a conversion if needed
      *
      * @param context
      * @param conversationId
@@ -49,29 +56,18 @@ public class SeamOperationFilter {
             String conversationId) {
 
         CoreSession session = context.getCoreSession();
-        HttpServletRequest request = (HttpServletRequest) context.get("request");
-        ServletLifecycle.beginRequest(request);
-        ServletContexts.instance().setRequest(request);
 
-        if (conversationId == null) {
-            conversationId = (String) context.get("conversationId");
-        }
-
-        if (conversationId != null) {
-            ConversationPropagation.instance().setConversationId(conversationId);
-            Manager.instance().restoreConversation();
-            ServletLifecycle.resumeConversation(request);
-            Contexts.getEventContext().set("documentManager", session);
-
-            ActionContext seamActionContext = new ActionContext();
-            NavigationContext navigationContext = (NavigationContext) Contexts.getConversationContext().get(
-                    "navigationContext");
-            seamActionContext.setCurrentDocument(navigationContext.getCurrentDocument());
-            seamActionContext.setDocumentManager(session);
-            seamActionContext.put("SeamContext", new SeamContextHelper());
-            seamActionContext.setCurrentPrincipal((NuxeoPrincipal) session.getPrincipal());
-
-            context.put("seamActionContext", seamActionContext);
+        // Initialize Seam context if needed
+        if (!OperationHelper.isSeamContextAvailable()) {
+            try {
+                initializeSeamContext(context, conversationId, session);
+            } catch (ClientException e) {
+                log.error(e.getMessage());
+                return;
+            }
+        } else {
+            // Only set Seam Action context
+            setSeamActionContext(context, session);
         }
     }
 
@@ -83,7 +79,18 @@ public class SeamOperationFilter {
      */
     public static void handleAfterRun(OperationContext context,
             String conversationId) {
-        HttpServletRequest request = (HttpServletRequest) context.get("request");
+
+        // Cannot destroy Seam context if it is not initialized
+        if (!OperationHelper.isSeamContextAvailable()) {
+            log.error("Cannot destroy Seam context: it is not initialized");
+            return;
+        }
+
+        HttpServletRequest request = getRequest(context);
+        if (request == null) {
+            log.error("Can not destroy Seam context: no HttpServletRequest was found");
+            return;
+        }
 
         if (conversationId == null) {
             conversationId = (String) context.get("conversationId");
@@ -97,4 +104,57 @@ public class SeamOperationFilter {
         }
         ServletLifecycle.endRequest(request);
     }
+
+    protected static void initializeSeamContext(OperationContext context,
+            String conversationId, CoreSession session) throws ClientException {
+
+        HttpServletRequest request = getRequest(context);
+        if (request == null) {
+            throw new ClientException(
+                    "Can not init Seam context: no HttpServletRequest was found");
+        }
+        ServletLifecycle.beginRequest(request);
+        ServletContexts.instance().setRequest(request);
+
+        if (conversationId == null) {
+            conversationId = (String) context.get("conversationId");
+        }
+
+        if (conversationId != null) {
+            ConversationPropagation.instance().setConversationId(conversationId);
+            Manager.instance().restoreConversation();
+            ServletLifecycle.resumeConversation(request);
+            Contexts.getEventContext().set("documentManager", session);
+            setSeamActionContext(context, session);
+        }
+    }
+
+    /**
+     * Gets the request from the Automation context, fallback on the
+     * FacesContext.
+     */
+    protected static HttpServletRequest getRequest(OperationContext context) {
+        HttpServletRequest request = (HttpServletRequest) context.get("request");
+        if (request == null) {
+            FacesContext faces = FacesContext.getCurrentInstance();
+            if (faces != null) {
+                request = (HttpServletRequest) faces.getExternalContext().getRequest();
+            }
+        }
+        return request;
+    }
+
+    protected static void setSeamActionContext(OperationContext context,
+            CoreSession session) {
+        ActionContext seamActionContext = new ActionContext();
+        NavigationContext navigationContext = (NavigationContext) Contexts.getConversationContext().get(
+                "navigationContext");
+        seamActionContext.setCurrentDocument(navigationContext.getCurrentDocument());
+        seamActionContext.setDocumentManager(session);
+        seamActionContext.put("SeamContext", new SeamContextHelper());
+        seamActionContext.setCurrentPrincipal((NuxeoPrincipal) session.getPrincipal());
+
+        context.put("seamActionContext", seamActionContext);
+    }
+
 }

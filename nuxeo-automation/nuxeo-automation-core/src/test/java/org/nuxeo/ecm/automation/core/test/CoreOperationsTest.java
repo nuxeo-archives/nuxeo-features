@@ -68,10 +68,8 @@ import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.DocumentRef;
 import org.nuxeo.ecm.core.api.PathRef;
 import org.nuxeo.ecm.core.api.impl.blob.StringBlob;
-import org.nuxeo.ecm.core.event.EventService;
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.core.test.TransactionalFeature;
-import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
@@ -148,6 +146,20 @@ public class CoreOperationsTest {
         assertThat(title, is("modified from mvel"));
     }
 
+    @Test
+    public void testRunScriptWithCondition() throws Exception {
+        OperationContext ctx = new OperationContext(session);
+        ctx.setInput(src);
+
+        OperationChain chain = new OperationChain("testChain");
+        chain.add(RunScript.ID).set(
+                "script",
+                "if (This.id != null &amp;&amp; This.id != '') {This.setPropertyValue(\"dc:title\",\"modified from mvel\");}");
+        service.run(ctx, chain);
+        String title = src.getProperty("dc:title").getValue(String.class);
+        assertThat(title, is("modified from mvel"));
+    }
+
     /*
      * This test is not enabled for now since the operation is disabled until
      * fully implemented Enable this test when the operation will be enabled.
@@ -171,7 +183,7 @@ public class CoreOperationsTest {
     /**
      * Create | Copy | Set Property. This is also testing
      * {@link StringToProperties} adapter
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -200,7 +212,7 @@ public class CoreOperationsTest {
     /**
      * Same as before but tests relative paths Create | Copy | Set Property This
      * is also testing {@link StringToProperties} adapter
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -221,7 +233,7 @@ public class CoreOperationsTest {
     /**
      * Same as before Create | Copy | Set Property But also test properties
      * specified using a mvel Expression
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -252,7 +264,7 @@ public class CoreOperationsTest {
 
     /**
      * Same as before but use DocumentWrapper to access properties
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -457,7 +469,7 @@ public class CoreOperationsTest {
     /**
      * Alternate version - use xml properties instead of java properties when
      * defining a properties value
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -620,8 +632,6 @@ public class CoreOperationsTest {
         assertEquals("MyDoc3", doc.getTitle());
         DocumentRef ver = (DocumentRef) ctx.get("ver");
         assertNotNull(ver);
-
-        Framework.getLocalService(EventService.class).waitForAsyncCompletion();
     }
 
     @Test
