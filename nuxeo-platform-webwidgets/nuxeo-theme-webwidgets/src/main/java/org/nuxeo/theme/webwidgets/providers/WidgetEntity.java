@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,7 +30,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.CollectionOfElements;
 import org.nuxeo.theme.webwidgets.Widget;
 import org.nuxeo.theme.webwidgets.WidgetState;
 
@@ -72,11 +72,13 @@ public class WidgetEntity implements Widget, Serializable {
         return id;
     }
 
+    @Override
     @Transient
     public String getUid() {
         return String.valueOf(id);
     }
 
+    @Override
     @Column(name = "NAME")
     public String getName() {
         return name;
@@ -97,7 +99,7 @@ public class WidgetEntity implements Widget, Serializable {
         return state;
     }
 
-    @CollectionOfElements(fetch = FetchType.EAGER)
+    @ElementCollection(fetch=FetchType.EAGER)
     @Column(name = "PREFERENCES")
     public Map<String, String> getPreferences() {
         return new HashMap<String, String>(preferences);

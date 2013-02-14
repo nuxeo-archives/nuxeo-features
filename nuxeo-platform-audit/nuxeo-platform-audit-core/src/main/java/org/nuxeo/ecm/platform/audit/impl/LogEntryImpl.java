@@ -32,6 +32,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKey;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -101,6 +102,7 @@ public class LogEntryImpl implements LogEntry {
     /**
      * @return the log identifier
      */
+    @Override
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "LOG_ID", nullable = false, columnDefinition = "integer")
@@ -108,6 +110,7 @@ public class LogEntryImpl implements LogEntry {
         return id;
     }
 
+    @Override
     public void setId(long id) {
         this.id = id;
     }
@@ -117,11 +120,13 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the name of the principal who originated the log entry
      */
+    @Override
     @Column(name = "LOG_PRINCIPAL_NAME")
     public String getPrincipalName() {
         return principalName;
     }
 
+    @Override
     public void setPrincipalName(String principalName) {
         this.principalName = principalName;
     }
@@ -131,12 +136,14 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the identifier of the event that originated the log entry
      */
+    @Override
     @Column(name = "LOG_EVENT_ID", nullable = false)
     @MapKey(name = "logKey")
     public String getEventId() {
         return eventId;
     }
 
+    @Override
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
@@ -146,12 +153,14 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the date of the event that originated the log entry
      */
+    @Override
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "LOG_EVENT_DATE")
     public Date getEventDate() {
         return eventDate;
     }
 
+    @Override
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
@@ -164,15 +173,18 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the doc UUID related to the log entry.
      */
+    @Override
     @Column(name = "LOG_DOC_UUID")
     public String getDocUUID() {
         return docUUID;
     }
 
+    @Override
     public void setDocUUID(String docUUID) {
         this.docUUID = docUUID;
     }
 
+    @Override
     public void setDocUUID(DocumentRef docRef) {
         if (docRef.type() != DocumentRef.ID) {
             throw new IllegalArgumentException("not an id reference " + docRef);
@@ -188,11 +200,13 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the doc path related to the log entry.
      */
+    @Override
     @Column(name = "LOG_DOC_PATH", length = 1024)
     public String getDocPath() {
         return docPath;
     }
 
+    @Override
     public void setDocPath(String docPath) {
         this.docPath = docPath;
     }
@@ -205,11 +219,13 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the doc type related to the log entry.
      */
+    @Override
     @Column(name = "LOG_DOC_TYPE")
     public String getDocType() {
         return docType;
     }
 
+    @Override
     public void setDocType(String docType) {
         this.docType = docType;
     }
@@ -222,11 +238,13 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the category for this log entry.
      */
+    @Override
     @Column(name = "LOG_EVENT_CATEGORY")
     public String getCategory() {
         return category;
     }
 
+    @Override
     public void setCategory(String category) {
         this.category = category;
     }
@@ -236,11 +254,13 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the associated comment for this log entry
      */
+    @Override
     @Column(name = "LOG_EVENT_COMMENT", length = 1024)
     public String getComment() {
         return comment;
     }
 
+    @Override
     public void setComment(String comment) {
         this.comment = comment;
     }
@@ -253,11 +273,13 @@ public class LogEntryImpl implements LogEntry {
      *
      * @return the life cycle if the document related to the log entry.
      */
+    @Override
     @Column(name = "LOG_DOC_LIFE_CYCLE")
     public String getDocLifeCycle() {
         return docLifeCycle;
     }
 
+    @Override
     public void setDocLifeCycle(String docLifeCycle) {
         this.docLifeCycle = docLifeCycle;
     }
@@ -286,15 +308,17 @@ public class LogEntryImpl implements LogEntry {
 //        extendedInfos = infos;
 //    }
 
+    @Override
     @OneToMany(cascade = CascadeType.ALL, targetEntity = ExtendedInfoImpl.class)
     @JoinTable(name = "NXP_LOGS_MAPEXTINFOS", joinColumns = { @JoinColumn(name = "LOG_FK") },
             inverseJoinColumns = { @JoinColumn(name = "INFO_FK") })
-    @org.hibernate.annotations.MapKey(columns={@Column(name="mapkey",nullable=false)})
+    @MapKeyJoinColumn(name="key")
     public Map<String, ExtendedInfo> getExtendedInfos() {
         return (Map)extendedInfos;
         //return (Map)getExtendedInfosImpl();
     }
 
+    @Override
     public void setExtendedInfos(Map<String, ExtendedInfo> infos) {
         extendedInfos = (Map)infos;
         //setExtendedInfosImpl((Map)infos);
@@ -311,17 +335,17 @@ public class LogEntryImpl implements LogEntry {
     public String toStringTest() {
         StringBuffer sb = new StringBuffer();
 
-        sb.append(this.id);
+        sb.append(id);
         sb.append(" ");
-        sb.append(this.category);
+        sb.append(category);
         sb.append(" ");
-        sb.append(this.eventId);
+        sb.append(eventId);
         sb.append(" ");
-        sb.append(this.docUUID);
+        sb.append(docUUID);
         sb.append(" ");
-        sb.append(this.principalName);
+        sb.append(principalName);
         sb.append(" ");
-        sb.append(this.eventDate.toString());
+        sb.append(eventDate.toString());
 
         return sb.toString();
     }

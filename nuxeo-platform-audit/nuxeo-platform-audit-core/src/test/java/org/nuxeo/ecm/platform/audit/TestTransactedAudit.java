@@ -18,10 +18,15 @@ package org.nuxeo.ecm.platform.audit;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
+import static org.junit.Assert.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.spi.LoggingEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,24 +35,72 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.LifeCycleConstants;
 import org.nuxeo.ecm.core.api.event.DocumentEventTypes;
+import org.nuxeo.ecm.core.api.impl.UserPrincipal;
 import org.nuxeo.ecm.core.event.EventService;
+import org.nuxeo.ecm.core.test.RepositorySettings;
+import org.nuxeo.ecm.core.test.TestRepositoryHandler;
 import org.nuxeo.ecm.platform.audit.api.AuditReader;
 import org.nuxeo.ecm.platform.audit.api.LogEntry;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LocalDeploy;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
+import org.nuxeo.runtime.test.runner.LogTraceFeature;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
 import com.google.inject.Inject;
 
 @RunWith(FeaturesRunner.class)
-@Features(AuditFeature.class)
+@Features({AuditFeature.class, LogTraceFeature.class, LogCaptureFeature.class})
+@LogCaptureFeature.FilterWith(TestTransactedAudit.LogFilter.class)
+@LocalDeploy("org.nuxeo.ecm.platform.audit:test-audit-contrib.xml")
 public class TestTransactedAudit {
+
+    public static class LogFilter implements LogCaptureFeature.Filter {
+
+        @Override
+        public boolean accept(LoggingEvent event) {
+            return Level.ERROR.equals(event.getLevel());
+        }
+
+    }
+
+    protected @Inject LogCaptureFeature.Result logResults;
 
     protected @Inject CoreSession repo;
 
+    protected @Inject RepositorySettings settings;
+
     @Before public void isInjected() {
         assertThat(repo, notNullValue());
+    }
+
+    @Test public void testConcurrency() throws ClientException {
+        TransactionHelper.commitOrRollbackTransaction();
+        TestRepositoryHandler handler = settings.getRepositoryHandler();
+        UserPrincipal principal = new UserPrincipal("test",
+                new ArrayList<String>(), false, true);
+        Map<String,Serializable> context = new HashMap<String,Serializable>();
+        context.put("username", "test");
+        context.put("principal", principal);
+        Framework.getLocalService(EventService.class).waitForAsyncCompletion();
+        for (int i = 0; i < 100; ++i) {
+            TransactionHelper.startTransaction();
+            try {
+                CoreSession session = handler.openSession(context);
+                try {
+                    DocumentModel doc = session.createDocumentModel("/", "a-file-" + i, "File");
+                    doc = session.createDocument(doc);
+                } finally {
+                    handler.releaseSession(session);
+                }
+            } finally {
+                TransactionHelper.commitOrRollbackTransaction();
+            }
+        }
+        Framework.getLocalService(EventService.class).waitForAsyncCompletion();
+        assertEquals(0, logResults.getCaughtEvents().size());
     }
 
     @Test public void canLogMultipleLifecycleTransitionsInSameTx() throws ClientException {
@@ -93,4 +146,5 @@ public class TestTransactedAudit {
         assertThat(seenDocDeleted, is(true));
         assertThat(seenDocCreated, is(true));
     }
+
 }

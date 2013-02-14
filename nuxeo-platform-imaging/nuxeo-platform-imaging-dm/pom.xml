@@ -55,10 +55,6 @@
       <artifactId>jboss-seam-remoting</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
-    </dependency>
   </dependencies>
 
 </project>
