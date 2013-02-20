@@ -1,17 +1,6 @@
 <?xml version="1.0"?>
 <component name="ds:nxaudit-test">
   <extension target="org.nuxeo.runtime.datasource" point="datasources">
-    <datasource name="jdbc/nxaudit-logs" driverClassName="org.h2.Driver"
-      maxActive="20" maxIdle="5">
-      <property name="url">jdbc:h2:mem:audit;MVCC=true;TRACE_LEVEL_FILE=3</property>
-    </datasource>
-  <datasource name="jdbc/nxaudit-logs-pg" xaDataSource="org.postgresql.xa.PGXADataSource"
-      maxActive="100" maxIdle="5" maxWait="10000">
-        <property name="ServerName">localhost</property>
-        <property name="PortNumber">5432</property>
-        <property name="DatabaseName">nuxeo</property>
-        <property name="User">nuxeo</property>
-        <property name="Password">password</property>
-  </datasource>
+    <link name="jdbc/nxaudit-logs" global="jdbc/nuxeo" type="javax.sql.DataSource" />
   </extension>
 </component>
