@@ -61,6 +61,7 @@ public abstract class PersistenceTestCase {
     @After
     public void tearDown() {
         persistenceProvider.releaseEntityManagerWithRollback(entityManager);
+        persistenceProvider.closePersistenceUnit();
     }
 
 }
