@@ -19,27 +19,29 @@
 
 package org.nuxeo.ecm.platform.audit;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.platform.audit.api.AuditLogger;
 import org.nuxeo.ecm.platform.audit.api.AuditReader;
 import org.nuxeo.ecm.platform.audit.api.NXAuditEvents;
 import org.nuxeo.ecm.platform.audit.service.NXAuditEventsService;
 import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.test.NXRuntimeTestCase;
+import org.nuxeo.runtime.test.runner.Deploy;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LocalDeploy;
 
-public class TestServiceAccess extends NXRuntimeTestCase {
+@SuppressWarnings("deprecation")
+@RunWith(FeaturesRunner.class)
+@Features(CoreFeature.class)
+@Deploy({ "org.nuxeo.ecm.core.persistence", "org.nuxeo.ecm.platform.audit.api", "org.nuxeo.ecm.platform.audit" })
+@LocalDeploy("org.nuxeo.ecm.platform.audit:nxaudit-tests.xml")
+public class TestServiceAccess  {
 
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        deployBundle("org.nuxeo.ecm.core.persistence");
-        deployBundle("org.nuxeo.ecm.platform.audit.api");
-        deployBundle("org.nuxeo.ecm.platform.audit");
-        fireFrameworkStarted();
-    }
 
     @Test
     public void testFullAccess() {
