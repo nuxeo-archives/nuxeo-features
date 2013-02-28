@@ -19,6 +19,10 @@
 
 package org.nuxeo.ecm.platform.audit;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.Set;
@@ -27,10 +31,7 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 import org.junit.Before;
-import org.junit.After;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
@@ -58,6 +59,7 @@ public class TestNXAuditEventsService extends SQLRepositoryTestCase {
 
     protected final MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -80,13 +82,6 @@ public class TestNXAuditEventsService extends SQLRepositoryTestCase {
 
     protected void waitForEventsDispatched() {
         Framework.getLocalService(EventService.class).waitForAsyncCompletion();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        waitForEventsDispatched();
-        closeSession();
-        super.tearDown();
     }
 
     protected DocumentModel doCreateDocument() throws ClientException {

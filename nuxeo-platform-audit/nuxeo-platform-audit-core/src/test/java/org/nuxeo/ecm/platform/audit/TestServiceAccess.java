@@ -19,6 +19,7 @@
 
 package org.nuxeo.ecm.platform.audit;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -29,6 +30,7 @@ import org.nuxeo.ecm.platform.audit.api.AuditLogger;
 import org.nuxeo.ecm.platform.audit.api.AuditReader;
 import org.nuxeo.ecm.platform.audit.api.NXAuditEvents;
 import org.nuxeo.ecm.platform.audit.service.NXAuditEventsService;
+import org.nuxeo.ecm.platform.audit.service.extension.AdapterDescriptor;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
@@ -39,7 +41,7 @@ import org.nuxeo.runtime.test.runner.LocalDeploy;
 @RunWith(FeaturesRunner.class)
 @Features(CoreFeature.class)
 @Deploy({ "org.nuxeo.ecm.core.persistence", "org.nuxeo.ecm.platform.audit.api", "org.nuxeo.ecm.platform.audit" })
-@LocalDeploy("org.nuxeo.ecm.platform.audit:nxaudit-tests.xml")
+@LocalDeploy({ "org.nuxeo.ecm.platform.audit:nxaudit-tests.xml", "org.nuxeo.ecm.platform.audit:test-audit-contrib.xml"})
 public class TestServiceAccess  {
 
 
@@ -73,4 +75,15 @@ public class TestServiceAccess  {
         }
     }
 
+    @Test
+    public void testAuditContribution() throws Exception {
+        NXAuditEventsService auditService = (NXAuditEventsService) Framework.getLocalService(NXAuditEvents.class);
+        assertNotNull(auditService);
+        AdapterDescriptor[] registeredAdapters = auditService.getRegisteredAdapters();
+        assertEquals(1, registeredAdapters.length);
+
+        AdapterDescriptor ad = registeredAdapters[0];
+        assertEquals("myadapter", ad.getName());
+
+    }
 }

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -48,6 +47,7 @@ public class TestPageProvider extends RepositoryOSGITestCase {
         }
     }
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -67,21 +67,14 @@ public class TestPageProvider extends RepositoryOSGITestCase {
         createTestEntries();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        if (session != null) {
-            closeSession();
-        }
-        super.tearDown();
-    }
-
+    @SuppressWarnings("unchecked")
     protected void createTestEntries() {
 
         AuditReader reader = Framework.getLocalService(AuditReader.class);
         assertNotNull(reader);
 
         String query = "select count(log.id) from LogEntry log ";
-        List resCount = reader.nativeQuery(query, 1, 20);
+        List<?> resCount = reader.nativeQuery(query, 1, 20);
         if (((Long) resCount.get(0)).longValue() > 0) {
             // reader.nativeQuery("DELETE FROM LogEntry log where log.docUUID='uuid'",
             // 1, 20);
@@ -107,7 +100,7 @@ public class TestPageProvider extends RepositoryOSGITestCase {
 
         logger.addLogEntries(entries);
 
-        List res = reader.nativeQuery(
+        List<?> res = reader.nativeQuery(
                 "select count(log.eventId) from LogEntry log", 1, 20);
         int count = ((Long) res.get(0)).intValue();
         dump("Audit initialized with " + count + " entries");
@@ -119,6 +112,7 @@ public class TestPageProvider extends RepositoryOSGITestCase {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testSimpleProvider() throws Exception {
 
@@ -168,6 +162,7 @@ public class TestPageProvider extends RepositoryOSGITestCase {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testProviderWithParams() throws Exception {
 
@@ -212,6 +207,7 @@ public class TestPageProvider extends RepositoryOSGITestCase {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testProviderWithWhereClause() throws Exception {
 
@@ -264,6 +260,7 @@ public class TestPageProvider extends RepositoryOSGITestCase {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testProviderWithWhereClause2() throws Exception {
 
@@ -313,6 +310,7 @@ public class TestPageProvider extends RepositoryOSGITestCase {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testProviderWithBetweenDates() throws Exception {
 
@@ -425,6 +423,7 @@ public class TestPageProvider extends RepositoryOSGITestCase {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testDocumentHistoryPageProvider() throws Exception {
 
