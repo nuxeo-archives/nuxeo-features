@@ -102,7 +102,7 @@ public class RunInNewTransaction {
                     "Catching error on new transaction, rollbacking global tx",
                     e);
         } else {
-            log.error("Caught error on new transaction, continuing global tx",
+            log.warn("Caught error on new transaction, continuing global tx",
                     e);
         }
     }
