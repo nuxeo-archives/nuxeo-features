@@ -46,13 +46,12 @@ import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.LocalDeploy;
 import org.nuxeo.runtime.test.runner.LogCaptureFeature;
-import org.nuxeo.runtime.test.runner.LogTraceFeature;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
 import com.google.inject.Inject;
 
 @RunWith(FeaturesRunner.class)
-@Features({AuditFeature.class, LogTraceFeature.class, LogCaptureFeature.class})
+@Features({AuditFeature.class, LogCaptureFeature.class})
 @LogCaptureFeature.FilterWith(TestTransactedAudit.LogFilter.class)
 @LocalDeploy("org.nuxeo.ecm.platform.audit:test-audit-contrib.xml")
 public class TestTransactedAudit {
