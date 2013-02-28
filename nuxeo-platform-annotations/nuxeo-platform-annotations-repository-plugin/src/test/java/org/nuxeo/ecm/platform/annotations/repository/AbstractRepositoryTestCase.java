@@ -64,6 +64,7 @@ public abstract class AbstractRepositoryTestCase extends SQLRepositoryTestCase {
 
     protected DocumentViewCodecManager viewCodecManager;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -118,15 +119,19 @@ public abstract class AbstractRepositoryTestCase extends SQLRepositoryTestCase {
         openSession();
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         try {
             closeSession();
         } finally {
-            if (NuxeoContainer.isInstalled()) {
-                NuxeoContainer.uninstall();
+            try {
+                if (NuxeoContainer.isInstalled()) {
+                    NuxeoContainer.uninstall();
+                }
+            } finally {
+                super.tearDown();
             }
-            super.tearDown();
         }
     }
 
