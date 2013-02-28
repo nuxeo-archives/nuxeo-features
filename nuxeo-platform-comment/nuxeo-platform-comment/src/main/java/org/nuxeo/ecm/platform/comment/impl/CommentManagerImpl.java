@@ -121,6 +121,7 @@ public class CommentManagerImpl implements CommentManager {
         return Framework.getService(RelationManager.class);
     }
 
+    @Override
     public List<DocumentModel> getComments(DocumentModel docModel)
             throws ClientException {
         Map<String, Serializable> ctxMap = new HashMap<String, Serializable>();
@@ -177,6 +178,7 @@ public class CommentManagerImpl implements CommentManager {
         return commentList;
     }
 
+    @Override
     public DocumentModel createComment(DocumentModel docModel, String comment,
             String author) throws ClientException {
         LoginContext loginContext = null;
@@ -202,6 +204,7 @@ public class CommentManagerImpl implements CommentManager {
         }
     }
 
+    @Override
     public DocumentModel createComment(DocumentModel docModel, String comment)
             throws ClientException {
         String author = getCurrentUser(docModel);
@@ -228,6 +231,7 @@ public class CommentManagerImpl implements CommentManager {
         return author;
     }
 
+    @Override
     public DocumentModel createComment(DocumentModel docModel,
             DocumentModel comment) throws ClientException {
         LoginContext loginContext = null;
@@ -279,21 +283,17 @@ public class CommentManagerImpl implements CommentManager {
             throw new ClientException("failed to create comment", e);
         }
 
-        NuxeoPrincipal principal = null;
         try {
             UserManager userManager = Framework.getService(UserManager.class);
-            if (userManager == null) {
-                log.error("Error notifying comment added: UserManager "
-                        + "service is not found");
+            if (userManager != null) {
+                NuxeoPrincipal principal = userManager.getPrincipal(author);
+                notifyEvent(session, docModel, CommentEvents.COMMENT_ADDED, null,
+                        createdComment, principal);
             } else {
-                principal = userManager.getPrincipal(author);
+                log.debug("no user service available, skipping comment notification");
             }
         } catch (Exception e) {
-            log.error("Error building principal for notification", e);
-        }
-        if (principal != null) {
-            notifyEvent(session, docModel, CommentEvents.COMMENT_ADDED, null,
-                    createdComment, principal);
+            log.error("Error notifying comment", e); // TODO should throw error ??
         }
 
         return createdComment;
@@ -475,6 +475,7 @@ public class CommentManagerImpl implements CommentManager {
         return creationDate.getTime();
     }
 
+    @Override
     public void deleteComment(DocumentModel docModel, DocumentModel comment)
             throws ClientException {
         LoginContext loginContext = null;
@@ -510,6 +511,7 @@ public class CommentManagerImpl implements CommentManager {
         }
     }
 
+    @Override
     public DocumentModel createComment(DocumentModel docModel,
             DocumentModel parent, DocumentModel child) throws ClientException {
         LoginContext loginContext = null;
@@ -550,6 +552,7 @@ public class CommentManagerImpl implements CommentManager {
         }
     }
 
+    @Override
     public List<DocumentModel> getComments(DocumentModel docModel,
             DocumentModel parent) throws ClientException {
         try {
@@ -559,6 +562,7 @@ public class CommentManagerImpl implements CommentManager {
         }
     }
 
+    @Override
     public List<DocumentModel> getDocumentsForComment(DocumentModel comment)
             throws ClientException {
         Map<String, Serializable> ctxMap = new HashMap<String, Serializable>();
@@ -611,6 +615,7 @@ public class CommentManagerImpl implements CommentManager {
 
     }
 
+    @Override
     public DocumentModel createLocatedComment(DocumentModel docModel,
             DocumentModel comment, String path) throws ClientException {
         LoginContext loginContext = null;
@@ -631,11 +636,12 @@ public class CommentManagerImpl implements CommentManager {
         return createdComment;
     }
 
+    @Override
     public DocumentModel getThreadForComment(DocumentModel comment)
             throws ClientException {
         List<DocumentModel> threads = getDocumentsForComment(comment);
         if (threads.size()>0) {
-            DocumentModel thread = (DocumentModel) threads.get(0);
+            DocumentModel thread = threads.get(0);
             while (thread.getType().equals("Post")
                     || thread.getType().equals(CommentsConstants.COMMENT_DOC_TYPE)) {
                 thread = getThreadForComment(thread);
