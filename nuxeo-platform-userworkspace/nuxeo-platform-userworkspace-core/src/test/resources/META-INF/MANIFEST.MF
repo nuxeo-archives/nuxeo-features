@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: NXUserWorkspace Test
+Bundle-SymbolicName: org.nuxeo.ecm.platform.userworkspace.core.test
+Bundle-Version: 1.0.0
+Bundle-Localization: plugin
+Bundle-Vendor: Nuxeo
+Bundle-Category: stateless

@@ -46,6 +46,7 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         super("");
     }
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -59,11 +60,15 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         deployBundle("org.nuxeo.ecm.directory.api");
         deployBundle("org.nuxeo.ecm.directory");
         deployBundle("org.nuxeo.ecm.directory.sql");
+        deployBundle("org.nuxeo.ecm.directory.types.contrib");
         deployBundle("org.nuxeo.ecm.platform.userworkspace.core");
+        deployBundle("org.nuxeo.ecm.platform.userworkspace.core.test");
+        deployTestContrib("org.nuxeo.ecm.platform.userworkspace.core.test", "test-sql-directories-contrib.xml");
         fireFrameworkStarted();
         openSession();
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         closeSession();
