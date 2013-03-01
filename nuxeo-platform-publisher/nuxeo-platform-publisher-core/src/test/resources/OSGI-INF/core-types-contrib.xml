@@ -5,9 +5,7 @@
   <extension target="org.nuxeo.ecm.core.schema.TypeService"
       point="doctype">
 
-    <doctype name="SocialDomain" extends="Domain">
-      <facet name="SocialFacet"/>
-    </doctype>
-    
+    <doctype name="SocialDomain" extends="Domain"/>
+
   </extension>
 </component>
