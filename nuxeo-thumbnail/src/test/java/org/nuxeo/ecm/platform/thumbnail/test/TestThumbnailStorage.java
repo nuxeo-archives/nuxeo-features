@@ -62,7 +62,6 @@ public class TestThumbnailStorage {
     EventService eventService;
 
     @Test
-    @Ignore
     public void testThumbnailCRUD() throws ClientException, IOException {
         DocumentModel root = session.getRootDocument();
         DocumentModel file = new DocumentModelImpl(root.getPathAsString(),
