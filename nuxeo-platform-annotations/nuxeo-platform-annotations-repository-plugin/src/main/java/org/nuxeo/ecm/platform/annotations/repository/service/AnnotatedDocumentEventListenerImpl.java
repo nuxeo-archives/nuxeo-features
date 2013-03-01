@@ -50,41 +50,49 @@ public class AnnotatedDocumentEventListenerImpl implements
 
     private static final Log log = LogFactory.getLog(AnnotatedDocumentEventListenerImpl.class);
 
+    @Override
     public void beforeAnnotationCreated(NuxeoPrincipal principal,
             DocumentLocation documentLoc, Annotation annotation) {
         // NOP
     }
 
+    @Override
     public void beforeAnnotationDeleted(NuxeoPrincipal principal,
             DocumentLocation documentLoc, Annotation annotation) {
         // NOP
     }
 
+    @Override
     public void beforeAnnotationRead(NuxeoPrincipal principal,
             String annotationId) {
         // NOP
     }
 
+    @Override
     public void beforeAnnotationUpdated(NuxeoPrincipal principal,
             DocumentLocation documentLoc, Annotation annotation) {
         // NOP
     }
 
+    @Override
     public void afterAnnotationCreated(NuxeoPrincipal principal,
             DocumentLocation documentLoc, Annotation annotation) {
         notifyEvent(ANNOTATION_CREATED, annotation, documentLoc, principal);
     }
 
+    @Override
     public void afterAnnotationDeleted(NuxeoPrincipal principal,
             DocumentLocation documentLoc, Annotation annotation) {
         notifyEvent(ANNOTATION_DELETED, annotation, documentLoc, principal);
     }
 
+    @Override
     public void afterAnnotationRead(NuxeoPrincipal principal,
             DocumentLocation documentLoc, Annotation annotation) {
         // NOP for now
     }
 
+    @Override
     public void afterAnnotationUpdated(NuxeoPrincipal principal,
             DocumentLocation documentLoc, Annotation annotation) {
         notifyEvent(ANNOTATION_UPDATED, annotation, documentLoc, principal);
@@ -98,12 +106,13 @@ public class AnnotatedDocumentEventListenerImpl implements
         DocumentModel doc = null;
         try {
             loginContext = Framework.login();
-            session = getSession(documentLocation.getServerName());
-            if (session.exists(documentLocation.getDocRef())) {
-                doc = session.getDocument(documentLocation.getDocRef());
-                title = doc.getTitle();
+            if (documentLocation != null) {
+                session = getSession(documentLocation.getServerName());
+                if (session.exists(documentLocation.getDocRef())) {
+                    doc = session.getDocument(documentLocation.getDocRef());
+                    title = doc.getTitle();
+                }
             }
-
             Map<String, Serializable> properties = new HashMap<String, Serializable>();
             properties.put(AnnotatedDocumentEventListener.ANNOTATION_ID,
                     annotation.getId());
@@ -117,11 +126,11 @@ public class AnnotatedDocumentEventListenerImpl implements
                 DocumentEventContext docCtx = new DocumentEventContext(session,
                         principal, doc);
                 docCtx.setCategory(DocumentEventCategories.EVENT_DOCUMENT_CATEGORY);
+                docCtx.setRepositoryName(documentLocation.getServerName());
                 ctx = docCtx;
             } else {
                 ctx = new EventContextImpl(session, principal);
             }
-            ctx.setRepositoryName(documentLocation.getServerName());
             ctx.setProperties(properties);
 
             Event event = ctx.newEvent(eventId);
