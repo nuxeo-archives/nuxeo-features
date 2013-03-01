@@ -39,6 +39,7 @@ public class TestServiceRegistration extends SQLRepositoryTestCase {
         super(name);
     }
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -46,13 +47,13 @@ public class TestServiceRegistration extends SQLRepositoryTestCase {
         deployBundle("org.nuxeo.ecm.platform.content.template");
         deployBundle("org.nuxeo.ecm.platform.types.api");
         deployBundle("org.nuxeo.ecm.platform.types.core");
-        deployBundle("org.nuxeo.ecm.platform.publisher.core.contrib");
         deployBundle("org.nuxeo.ecm.platform.publisher.core");
 
         openSession();
         fireFrameworkStarted();
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         closeSession();
@@ -73,8 +74,6 @@ public class TestServiceRegistration extends SQLRepositoryTestCase {
 
     @Test
     public void testContrib() throws Exception {
-        deployContrib("org.nuxeo.ecm.platform.publisher.core",
-                "OSGI-INF/publisher-contrib.xml");
         PublisherService service = Framework.getLocalService(PublisherService.class);
         List<String> treeNames = service.getAvailablePublicationTree();
         assertEquals(1, treeNames.size());
