@@ -448,7 +448,7 @@ public class Manager {
             throw new WidgetException("Provider not found: " + providerName);
         }
 
-        final List<Widget> widgets = provider.getWidgets(regionName);
+        final List<? extends Widget> widgets = provider.getWidgets(regionName);
         final Set<String> widgetTypeNames = new HashSet<String>();
         if (widgets != null) {
             for (Widget widget : widgets) {

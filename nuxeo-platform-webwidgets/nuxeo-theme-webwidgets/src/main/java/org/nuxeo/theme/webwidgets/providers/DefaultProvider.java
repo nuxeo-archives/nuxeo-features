@@ -37,12 +37,15 @@ public class DefaultProvider implements Provider {
 
     private static final String PROVIDER_SESSION_ID = "org.nuxeo.theme.webwidgets.default_provider_session";
 
+    @Override
     public void activate() {
     }
 
+    @Override
     public void deactivate() {
     }
 
+    @Override
     public void destroy() {
         HttpSession httpSession = WebEngine.getActiveContext().getRequest().getSession();
         DefaultProviderSession session = (DefaultProviderSession) httpSession.getAttribute(PROVIDER_SESSION_ID);
@@ -62,6 +65,7 @@ public class DefaultProvider implements Provider {
         return session;
     }
 
+    @Override
     public Widget createWidget(String widgetTypeName) throws ProviderException {
         if (widgetTypeName == null) {
             throw new ProviderException("Widget type name is undefined");
@@ -78,6 +82,7 @@ public class DefaultProvider implements Provider {
         return widget;
     }
 
+    @Override
     public Widget getWidgetByUid(String uid) throws ProviderException {
         DefaultProviderSession session = getDefaultProviderSession();
         Widget widget = session.getWidgetsByUid().get(uid);
@@ -87,6 +92,7 @@ public class DefaultProvider implements Provider {
         return widget;
     }
 
+    @Override
     public List<Widget> getWidgets(String regionName) throws ProviderException {
         if (regionName == null) {
             throw new ProviderException("Region name is undefined");
@@ -95,7 +101,8 @@ public class DefaultProvider implements Provider {
         return session.getWidgetsByRegion().get(regionName);
     }
 
-    public void addWidget(Widget widget, String regionName, int order)
+    @Override
+    public List<Widget> addWidget(Widget widget, String regionName, int order)
             throws ProviderException {
         if (widget == null) {
             throw new ProviderException("Widget is undefined");
@@ -108,14 +115,17 @@ public class DefaultProvider implements Provider {
         if (!widgetsByRegion.containsKey(regionName)) {
             widgetsByRegion.put(regionName, new ArrayList<Widget>());
         }
-        widgetsByRegion.get(regionName).add(order, widget);
+        List<Widget> region = widgetsByRegion.get(regionName);
+        region.add(order, widget);
         session.getRegionsByUid().put(widget.getUid(), regionName);
         log.debug("Added web widget '" + widget.getName() + "' (uid "
                 + widget.getUid() + ") into region '" + regionName
                 + "' at position " + order);
+        return region;
     }
 
-    public void moveWidget(Widget widget, String destRegionName, int order)
+    @Override
+    public List<Widget> moveWidget(Widget widget, String destRegionName, int order)
             throws ProviderException {
         if (widget == null) {
             throw new ProviderException("Widget is undefined");
@@ -126,7 +136,8 @@ public class DefaultProvider implements Provider {
         DefaultProviderSession session = getDefaultProviderSession();
         final String srcRegionName = getRegionOfWidget(widget);
         Map<String, List<Widget>> widgetsByRegion = session.getWidgetsByRegion();
-        widgetsByRegion.get(srcRegionName).remove(widget);
+        List<Widget> region = widgetsByRegion.get(srcRegionName);
+        region.remove(widget);
         if (!widgetsByRegion.containsKey(destRegionName)) {
             widgetsByRegion.put(destRegionName, new ArrayList<Widget>());
         }
@@ -135,9 +146,11 @@ public class DefaultProvider implements Provider {
         log.debug("Moved web widget '" + widget.getName() + "' (uid "
                 + widget.getUid() + ") from region '" + srcRegionName
                 + "' to '" + destRegionName + "' at position " + order);
+        return region;
     }
 
-    public void reorderWidget(Widget widget, int order)
+    @Override
+    public List<Widget> reorderWidget(Widget widget, int order)
             throws ProviderException {
         if (widget == null) {
             throw new ProviderException("Widget is undefined");
@@ -151,9 +164,11 @@ public class DefaultProvider implements Provider {
         log.debug("Reordered web widget '" + widget.getName() + "' (uid "
                 + widget.getUid() + ") in region '" + regionName
                 + "' to position " + order);
+        return widgets;
     }
 
-    public void removeWidget(Widget widget) throws ProviderException {
+    @Override
+    public List<Widget> removeWidget(Widget widget) throws ProviderException {
         if (widget == null) {
             throw new ProviderException("Widget is undefined");
         }
@@ -161,12 +176,15 @@ public class DefaultProvider implements Provider {
         final String uid = widget.getUid();
         final String regionName = getRegionOfWidget(widget);
         Map<String, List<Widget>> widgetsByRegion = session.getWidgetsByRegion();
-        widgetsByRegion.get(regionName).remove(widget);
+        List<Widget> region = widgetsByRegion.get(regionName);
+        region.remove(widget);
         session.getWidgetsByUid().remove(uid);
         log.debug("Removed web widget '" + widget.getName() + "' (uid " + uid
                 + ") from region '" + regionName + "'");
+        return region;
     }
 
+    @Override
     public String getRegionOfWidget(Widget widget) throws ProviderException {
         if (widget == null) {
             throw new ProviderException("Widget is undefined");
@@ -175,6 +193,7 @@ public class DefaultProvider implements Provider {
         return session.getRegionsByUid().get(widget.getUid());
     }
 
+    @Override
     public Map<String, String> getWidgetPreferences(Widget widget)
             throws ProviderException {
         if (widget == null) {
@@ -184,6 +203,7 @@ public class DefaultProvider implements Provider {
         return session.getPreferencesByWidget().get(widget);
     }
 
+    @Override
     public void setWidgetPreferences(Widget widget,
             Map<String, String> preferences) throws ProviderException {
         if (widget == null) {
@@ -196,6 +216,7 @@ public class DefaultProvider implements Provider {
         session.getPreferencesByWidget().put(widget, preferences);
     }
 
+    @Override
     public void setWidgetState(Widget widget, WidgetState state)
             throws ProviderException {
         if (widget == null) {
@@ -208,6 +229,7 @@ public class DefaultProvider implements Provider {
         session.getStatesByWidget().put(widget, state);
     }
 
+    @Override
     public WidgetState getWidgetState(Widget widget) throws ProviderException {
         if (widget == null) {
             throw new ProviderException("Widget is undefined");
@@ -216,6 +238,7 @@ public class DefaultProvider implements Provider {
         return session.getStatesByWidget().get(widget);
     }
 
+    @Override
     public WidgetData getWidgetData(Widget widget, String dataName)
             throws ProviderException {
         if (widget == null) {
@@ -232,6 +255,7 @@ public class DefaultProvider implements Provider {
         return null;
     }
 
+    @Override
     public void setWidgetData(Widget widget, String dataName, WidgetData data)
             throws ProviderException {
         if (widget == null) {
@@ -248,6 +272,7 @@ public class DefaultProvider implements Provider {
         dataByWidget.get(widget).put(dataName, data);
     }
 
+    @Override
     public void deleteWidgetData(Widget widget) throws ProviderException {
         if (widget == null) {
             throw new ProviderException("Widget is undefined");
@@ -262,10 +287,12 @@ public class DefaultProvider implements Provider {
     /*
      * Security
      */
+    @Override
     public boolean canRead() {
         return true;
     }
 
+    @Override
     public boolean canWrite() {
         return true;
     }

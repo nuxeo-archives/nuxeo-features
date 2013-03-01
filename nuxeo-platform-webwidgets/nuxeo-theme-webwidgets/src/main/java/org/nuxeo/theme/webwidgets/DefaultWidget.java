@@ -25,10 +25,12 @@ public class DefaultWidget implements Widget {
         this.uid = uid;
     }
 
+    @Override
     public String getUid() {
         return uid;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -39,7 +41,7 @@ public class DefaultWidget implements Widget {
             return true;
         }
         if (other instanceof DefaultWidget) {
-            return ((DefaultWidget) other).uid == uid;
+            return ((DefaultWidget) other).uid.equals(uid);
         }
         return false;
     }
