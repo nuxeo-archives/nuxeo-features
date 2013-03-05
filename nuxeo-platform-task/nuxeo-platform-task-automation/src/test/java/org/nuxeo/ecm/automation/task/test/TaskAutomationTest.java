@@ -64,7 +64,11 @@ import com.google.inject.Inject;
 @Deploy( { "org.nuxeo.ecm.automation.core",
         "org.nuxeo.ecm.platform.task.automation",
         "org.nuxeo.ecm.platform.task.core",
-        "org.nuxeo.ecm.platform.task.testing" })
+        "org.nuxeo.ecm.platform.task.testing",
+        "org.nuxeo.ecm.platform.content.template",
+        "org.nuxeo.ecm.directory",
+        "org.nuxeo.ecm.directory.api",
+        "org.nuxeo.ecm.directory.sql"})
 @LocalDeploy("org.nuxeo.ecm.platform.task.automation:test-operations.xml")
 public class TaskAutomationTest {
 

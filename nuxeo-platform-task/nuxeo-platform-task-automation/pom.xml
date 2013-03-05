@@ -38,6 +38,19 @@
       <classifier>jdk15</classifier>
     </dependency>
 
+    <!-- runtime -->
+
+    <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-platform-content-template-manager</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.platform</groupId>
+      <artifactId>nuxeo-platform-directory-sql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
     <!-- tests -->
     <dependency>
       <groupId>org.nuxeo.ecm.core</groupId>
