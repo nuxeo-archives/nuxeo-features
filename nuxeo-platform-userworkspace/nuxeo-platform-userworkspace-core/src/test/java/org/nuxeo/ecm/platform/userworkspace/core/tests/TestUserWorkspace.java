@@ -19,11 +19,15 @@
 
 package org.nuxeo.ecm.platform.userworkspace.core.tests;
 
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -37,10 +41,20 @@ import org.nuxeo.ecm.core.storage.sql.SQLRepositoryTestCase;
 import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
 import org.nuxeo.ecm.platform.userworkspace.core.service.UserWorkspaceServiceImplComponent;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 
+import com.google.inject.Inject;
+
+@RunWith(FeaturesRunner.class)
+@Features(LogCaptureFeature.class)
 public class TestUserWorkspace extends SQLRepositoryTestCase {
 
     protected CoreSession userSession;
+
+    @Inject
+    protected LogCaptureFeature.Result caughtEvents;
 
     public TestUserWorkspace() {
         super("");
@@ -220,6 +234,7 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
     }
 
     @Test
+    @LogCaptureFeature.With(value=LogCaptureFeature.FilterErrors.class, includes=CoreSession.class)
     public void testAnotherUserWorkspaceFinder() throws ClientException {
         UserWorkspaceService service = Framework.getLocalService(UserWorkspaceService.class);
         assertNotNull(service);
@@ -243,6 +258,8 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         } catch (ClientException e) {
             // Nothing to do
         }
+
+        caughtEvents.assertContains("Permission 'Read' is not granted to 'user2' on document /default-domain/UserWorkspaces/user1");
 
         uw = service.getUserPersonalWorkspace("user1", context);
         assertNotNull(uw);
