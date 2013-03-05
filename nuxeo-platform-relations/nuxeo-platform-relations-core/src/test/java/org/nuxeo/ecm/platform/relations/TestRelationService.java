@@ -19,6 +19,13 @@
 
 package org.nuxeo.ecm.platform.relations;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,8 +36,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
+import org.junit.runner.RunWith;
 import org.nuxeo.ecm.platform.relations.api.Graph;
 import org.nuxeo.ecm.platform.relations.api.QNameResource;
 import org.nuxeo.ecm.platform.relations.api.RelationManager;
@@ -39,11 +45,22 @@ import org.nuxeo.ecm.platform.relations.api.impl.QNameResourceImpl;
 import org.nuxeo.ecm.platform.relations.services.RelationService;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.NXRuntimeTestCase;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 
+import com.google.inject.Inject;
+
+@RunWith(FeaturesRunner.class)
+@Features(LogCaptureFeature.class)
 public class TestRelationService extends NXRuntimeTestCase {
 
     private RelationManager service;
 
+    @Inject
+    protected LogCaptureFeature.Result caughtEvents;
+
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -118,6 +135,7 @@ public class TestRelationService extends NXRuntimeTestCase {
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetAllResourcesFor() throws Exception {
         Serializable o = new DummyResourceLike("test");
         Set<Resource> resources = service.getAllResources(o, null);
@@ -139,22 +157,31 @@ public class TestRelationService extends NXRuntimeTestCase {
                 "http://nuxeo.org/nxrelations/test/"));
 
         assertEquals(expectedNameSpaces, nameSpaces);
+        caughtEvents.assertContains("Cannot instantiate generator with namespace 'http://nuxeo.org/nxrelations/unexistent/'");
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetResourceNoImpl() throws Exception {
         Serializable resourceLike = new DummyResourceLike("test");
         Resource resource = service.getResource(
                 "http://nuxeo.org/nxrelations/test-dummy/", resourceLike, null);
         assertNull(resource);
+        caughtEvents.assertContains(
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/test-dummy/",
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/test-dummy/");
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetResourceUnexistent() throws Exception {
         Serializable resourceLike = new DummyResourceLike("test");
         Resource resource = service.getResource(
                 "http://nuxeo.org/nxrelations/unexistent/", resourceLike, null);
         assertNull(resource);
+        caughtEvents.assertContains(
+                "Cannot instantiate generator with namespace 'http://nuxeo.org/nxrelations/unexistent/'",
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/unexistent/");
     }
 
     @Test
@@ -169,21 +196,30 @@ public class TestRelationService extends NXRuntimeTestCase {
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetResourceRepresentationNoImpl() throws Exception {
         Resource resource = new QNameResourceImpl(
                 "http://nuxeo.org/nxrelations/test-dummy/", "test");
         Object object = service.getResourceRepresentation(
                 "http://nuxeo.org/nxrelations/test-dummy/", resource, null);
         assertNull(object);
+        caughtEvents.assertContains(
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/test-dummy/",
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/test-dummy/");
+
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetResourceRepresentationUnexistent() throws Exception {
         Resource resource = new QNameResourceImpl(
                 "http://nuxeo.org/nxrelations/unexistent/", "test");
         Object object = service.getResourceRepresentation(
                 "http://nuxeo.org/nxrelations/unexistent/", resource, null);
         assertNull(object);
+        caughtEvents.assertContains(
+                "Cannot instantiate generator with namespace 'http://nuxeo.org/nxrelations/unexistent/'",
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/unexistent/");
     }
 
     @Test
@@ -200,6 +236,7 @@ public class TestRelationService extends NXRuntimeTestCase {
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetAllResourcesForWithContext() throws Exception {
         Serializable o = new DummyResourceLike("test");
         Set<Resource> resources = service.getAllResources(o, null);
@@ -221,22 +258,33 @@ public class TestRelationService extends NXRuntimeTestCase {
                 "http://nuxeo.org/nxrelations/test/"));
 
         assertEquals(expectedNameSpaces, nameSpaces);
+        caughtEvents.assertContains(
+                "Cannot instantiate generator with namespace 'http://nuxeo.org/nxrelations/unexistent/'");
+
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetResourceNoImplWithContext() throws Exception {
         Serializable resourceLike = new DummyResourceLike("test");
         Resource resource = service.getResource(
                 "http://nuxeo.org/nxrelations/test-dummy/", resourceLike, null);
         assertNull(resource);
+        caughtEvents.assertContains(
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/test-dummy/",
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/test-dummy/");
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetResourceUnexistentWithContext() throws Exception {
         Serializable resourceLike = new DummyResourceLike("test");
         Resource resource = service.getResource(
                 "http://nuxeo.org/nxrelations/unexistent/", resourceLike, null);
         assertNull(resource);
+        caughtEvents.assertContains(
+                "Cannot instantiate generator with namespace 'http://nuxeo.org/nxrelations/unexistent/'",
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/unexistent/");
     }
 
     @Test
@@ -251,6 +299,7 @@ public class TestRelationService extends NXRuntimeTestCase {
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetResourceRepresentationNoImplWithContext()
             throws Exception {
         Resource resource = new QNameResourceImpl(
@@ -258,9 +307,13 @@ public class TestRelationService extends NXRuntimeTestCase {
         Object object = service.getResourceRepresentation(
                 "http://nuxeo.org/nxrelations/test-dummy/", resource, null);
         assertNull(object);
+        caughtEvents.assertContains(
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/test-dummy/",
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/test-dummy/");
     }
 
     @Test
+    @LogCaptureFeature.With(value = LogCaptureFeature.FilterErrors.class, includes = RelationService.class)
     public void testGetResourceRepresentationUnexistentWithContext()
             throws Exception {
         Resource resource = new QNameResourceImpl(
@@ -268,6 +321,9 @@ public class TestRelationService extends NXRuntimeTestCase {
         Object object = service.getResourceRepresentation(
                 "http://nuxeo.org/nxrelations/unexistent/", resource, null);
         assertNull(object);
+        caughtEvents.assertContains(
+                "Cannot instantiate generator with namespace 'http://nuxeo.org/nxrelations/unexistent/'",
+                "Cannot find adapter for namespace: http://nuxeo.org/nxrelations/unexistent/");
     }
 
 }
