@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,18 +50,9 @@ import com.google.inject.Inject;
 
 @RunWith(FeaturesRunner.class)
 @Features({AuditFeature.class, LogCaptureFeature.class})
-@LogCaptureFeature.FilterWith(TestTransactedAudit.LogFilter.class)
+@LogCaptureFeature.With(LogCaptureFeature.FilterErrors.class)
 @LocalDeploy("org.nuxeo.ecm.platform.audit:test-audit-contrib.xml")
 public class TestTransactedAudit {
-
-    public static class LogFilter implements LogCaptureFeature.Filter {
-
-        @Override
-        public boolean accept(LoggingEvent event) {
-            return Level.ERROR.equals(event.getLevel());
-        }
-
-    }
 
     protected @Inject LogCaptureFeature.Result logResults;
 

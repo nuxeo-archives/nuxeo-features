@@ -44,7 +44,7 @@ import com.google.inject.Inject;
 @RunWith(FeaturesRunner.class)
 @Features({ CoreFeature.class, LogCaptureFeature.class })
 @Deploy({ "org.nuxeo.ecm.automation.core" })
-@LogCaptureFeature.FilterWith(TestRestoreInputFromScriptAndLogOperation.MyLogFilter.class)
+@LogCaptureFeature.With(TestRestoreInputFromScriptAndLogOperation.MyLogFilter.class)
 public class TestRestoreInputFromScriptAndLogOperation {
     @Inject
     AutomationService service;
