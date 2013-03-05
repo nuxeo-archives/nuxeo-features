@@ -74,6 +74,7 @@ import org.nuxeo.runtime.test.runner.Deploy;
 import org.nuxeo.runtime.test.runner.Features;
 import org.nuxeo.runtime.test.runner.FeaturesRunner;
 import org.nuxeo.runtime.test.runner.LocalDeploy;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 import org.nuxeo.runtime.transaction.TransactionHelper;
 
 import com.google.inject.Inject;
@@ -82,7 +83,7 @@ import com.google.inject.Inject;
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
 @RunWith(FeaturesRunner.class)
-@Features({ TransactionalFeature.class, CoreFeature.class })
+@Features({ LogCaptureFeature.class, TransactionalFeature.class, CoreFeature.class })
 @Deploy("org.nuxeo.ecm.automation.core")
 // For version label info
 @LocalDeploy("org.nuxeo.ecm.automation.core:test-operations.xml")
@@ -92,6 +93,9 @@ public class CoreOperationsTest {
     protected DocumentModel src;
 
     protected DocumentModel dst;
+
+    @Inject
+    protected LogCaptureFeature.Result caughtEvents;
 
     @Inject
     AutomationService service;
@@ -653,6 +657,7 @@ public class CoreOperationsTest {
     }
 
     @Test
+    @LogCaptureFeature.With(value=LogCaptureFeature.FilterWarnAndErrors.class, includes=RunInNewTransaction.class)
     public void testRunInNewTxOperation() throws Exception {
         OperationContext ctx = new OperationContext(session);
         OperationChain chain = new OperationChain("testChain");
@@ -675,6 +680,7 @@ public class CoreOperationsTest {
         } catch (Exception e) {
             assertTrue(TransactionHelper.isTransactionMarkedRollback());
         }
+        caughtEvents.assertContains("Caught error on new transaction, continuing global tx", "Caught error on new transaction, continuing global tx");
     }
 
 }
