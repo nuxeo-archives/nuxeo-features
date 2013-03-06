@@ -17,6 +17,9 @@
  */
 package org.nuxeo.ecm.platform.picture.core.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.nuxeo.ecm.platform.picture.api.ImagingDocumentConstants.PICTUREBOOK_TYPE_NAME;
 import static org.nuxeo.ecm.platform.picture.api.ImagingDocumentConstants.PICTURE_FACET;
 import static org.nuxeo.ecm.platform.picture.api.ImagingDocumentConstants.PICTURE_TYPE_NAME;
@@ -28,11 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
+import org.junit.runner.RunWith;
 import org.nuxeo.common.utils.FileUtils;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -44,11 +46,17 @@ import org.nuxeo.ecm.core.storage.sql.SQLRepositoryTestCase;
 import org.nuxeo.ecm.platform.picture.api.adapters.PictureBlobHolder;
 import org.nuxeo.ecm.platform.picture.api.adapters.PictureBookBlobHolder;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 
+@RunWith(FeaturesRunner.class)
+@Features(LogCaptureFeature.class)
 public class TestPictureBlobHolder extends SQLRepositoryTestCase {
 
     BlobHolderAdapterService service;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -59,6 +67,7 @@ public class TestPictureBlobHolder extends SQLRepositoryTestCase {
         assertNotNull(service);
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         closeSession();

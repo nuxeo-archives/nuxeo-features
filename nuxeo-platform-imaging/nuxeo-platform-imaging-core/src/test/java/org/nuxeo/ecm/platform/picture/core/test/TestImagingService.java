@@ -21,20 +21,28 @@ package org.nuxeo.ecm.platform.picture.core.test;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
 import org.nuxeo.ecm.platform.picture.api.ImagingService;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.test.NXRuntimeTestCase;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 
 /**
  * @author btatar
  *
  */
+@RunWith(FeaturesRunner.class)
+@Features(LogCaptureFeature.class)
 public class TestImagingService extends NXRuntimeTestCase {
 
     protected ImagingService imagingService;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

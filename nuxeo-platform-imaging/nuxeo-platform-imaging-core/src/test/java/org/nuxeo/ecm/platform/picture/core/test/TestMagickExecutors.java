@@ -23,6 +23,8 @@ import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
 import org.nuxeo.common.utils.FileUtils;
@@ -33,9 +35,15 @@ import org.nuxeo.ecm.platform.picture.magick.utils.ImageCropper;
 import org.nuxeo.ecm.platform.picture.magick.utils.ImageCropperAndResizer;
 import org.nuxeo.ecm.platform.picture.magick.utils.ImageIdentifier;
 import org.nuxeo.ecm.platform.picture.magick.utils.ImageResizer;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 
+@RunWith(FeaturesRunner.class)
+@Features(LogCaptureFeature.class)
 public class TestMagickExecutors extends RepositoryOSGITestCase {
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

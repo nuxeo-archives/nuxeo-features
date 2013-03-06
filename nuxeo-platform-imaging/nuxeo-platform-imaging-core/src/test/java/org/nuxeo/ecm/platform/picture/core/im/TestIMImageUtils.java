@@ -21,6 +21,8 @@ import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
 import org.apache.commons.io.FilenameUtils;
@@ -30,9 +32,15 @@ import org.nuxeo.ecm.core.api.impl.blob.ByteArrayBlob;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
 import org.nuxeo.ecm.platform.picture.core.im.IMImageUtils.ImageMagickCaller;
 import org.nuxeo.runtime.test.NXRuntimeTestCase;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 
+@RunWith(FeaturesRunner.class)
+@Features(LogCaptureFeature.class)
 public class TestIMImageUtils extends NXRuntimeTestCase {
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

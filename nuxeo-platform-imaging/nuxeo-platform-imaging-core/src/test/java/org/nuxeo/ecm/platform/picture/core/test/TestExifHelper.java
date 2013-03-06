@@ -25,6 +25,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
 import org.nuxeo.ecm.core.api.Blob;
@@ -32,12 +34,17 @@ import org.nuxeo.ecm.core.api.impl.blob.StreamingBlob;
 import org.nuxeo.ecm.platform.picture.ExifHelper;
 import org.nuxeo.ecm.platform.picture.api.MetadataConstants;
 import org.nuxeo.ecm.platform.picture.core.mistral.MistralMetadataUtils;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 
 /**
  *
  * @author btatar
  *
  */
+@RunWith(FeaturesRunner.class)
+@Features(LogCaptureFeature.class)
 public class TestExifHelper {
 
     MistralMetadataUtils service;

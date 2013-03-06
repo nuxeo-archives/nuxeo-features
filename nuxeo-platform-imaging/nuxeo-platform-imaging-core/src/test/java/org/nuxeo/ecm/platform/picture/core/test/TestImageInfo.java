@@ -26,6 +26,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
 import org.nuxeo.ecm.core.api.Blob;
@@ -39,11 +41,16 @@ import org.nuxeo.ecm.core.repository.jcr.testing.RepositoryOSGITestCase;
 import org.nuxeo.ecm.platform.picture.api.ImageInfo;
 import org.nuxeo.ecm.platform.picture.api.ImagingService;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.LogCaptureFeature;
 
 /**
  * @author btatar
  *
  */
+@RunWith(FeaturesRunner.class)
+@Features(LogCaptureFeature.class)
 public class TestImageInfo extends RepositoryOSGITestCase {
 
     protected DocumentModel root;
@@ -52,6 +59,7 @@ public class TestImageInfo extends RepositoryOSGITestCase {
 
     protected ImagingService imagingService;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -68,6 +76,7 @@ public class TestImageInfo extends RepositoryOSGITestCase {
         assertNotNull(imagingService);
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         closeSession();
