@@ -118,9 +118,7 @@ public class PictureChangedListener implements EventListener {
             PictureResourceAdapter adapter = doc.getAdapter(PictureResourceAdapter.class);
             adapter.preFillPictureViews(blob, pictureTemplates);
         } catch (Exception e) {
-            log.debug(e, e);
-            log.error("Error while pre-filling picture views: "
-                    + e.getMessage());
+            log.error("Error while pre-filling picture views: " + doc.getPathAsString(), e);
         }
     }
 
