@@ -27,6 +27,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Install;
 import org.jboss.seam.annotations.Name;
@@ -41,6 +43,7 @@ import org.nuxeo.ecm.platform.types.Type;
 import org.nuxeo.ecm.platform.types.TypeManager;
 import org.nuxeo.ecm.platform.types.localconfiguration.UITypesConfiguration;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
+import org.nuxeo.ecm.platform.ui.web.util.ComponentUtils;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -57,7 +60,12 @@ public class UITypesConfigurationActions implements Serializable {
 
         @Override
         public int compare(Type type1, Type type2) {
-            return type1.getId().compareTo(type2.getId());
+            FacesContext context = FacesContext.getCurrentInstance();
+
+            String label1 = ComponentUtils.translate(context, type1.getLabel());
+            String label2 = ComponentUtils.translate(context, type2.getLabel());
+
+            return label1.compareTo(label2);
         }
 
     };
@@ -142,13 +150,14 @@ public class UITypesConfigurationActions implements Serializable {
         }
 
         List<String> allowedTypes = getAllowedTypes(document);
-        Collections.sort(allowedTypes);
 
         List<Type> selectedTypes = new ArrayList<Type>();
         for (String type : allowedTypes) {
             selectedTypes.add(typeManager.getType(type));
         }
 
+        Collections.sort(selectedTypes, TYPE_ALPHABETICAL_ORDER);
+        
         return selectedTypes;
     }
 
