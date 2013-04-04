@@ -70,7 +70,7 @@ public abstract class AbstractPublishActions {
         String translatedPathElement = resourcesAccessor.getMessages().get(
                 pathElementName);
         pathFragments.add(translatedPathElement);
-        if ("Domain".equals(documentModel.getType())) {
+        if (documentModel.getPathAsString().indexOf("/", 1) == -1) {
             return;
         }
 
