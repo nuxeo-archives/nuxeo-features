@@ -82,6 +82,6 @@ public class TestExifHelper {
         Map<String, Object> metadatas = service.getImageMetadata(blob);
         String userComment = ((String) metadatas.get(MetadataConstants.META_COMMENT)).trim();
         assertNotSame("ASCII", userComment);
-        assertEquals("(C) PAULO BRANDA", userComment);
+        assertEquals("(C) PAULO BRANDAO", userComment);
     }
 }

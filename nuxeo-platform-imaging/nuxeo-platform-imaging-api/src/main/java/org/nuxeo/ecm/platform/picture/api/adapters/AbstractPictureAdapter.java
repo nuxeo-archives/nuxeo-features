@@ -42,7 +42,6 @@ import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_EXPOSURE
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_FNUMBER;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_FOCALLENGTH;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_HEADLINE;
-import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_HEIGHT;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_HRESOLUTION;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_ICCPROFILE;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_ISOSPEED;
@@ -66,7 +65,6 @@ import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_TIME_CRE
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_URGENCY;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_VRESOLUTION;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_WHITEBALANCE;
-import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_WIDTH;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_WRITER;
 
 import java.awt.*;
@@ -198,21 +196,15 @@ public abstract class AbstractPictureAdapter implements PictureResourceAdapter {
     }
 
     protected void setMetadata() throws IOException, ClientException {
-        boolean imageInfoUsed = false;
         ImageInfo imageInfo = getImagingService().getImageInfo(fileContent);
         if (imageInfo != null) {
             width = imageInfo.getWidth();
             height = imageInfo.getHeight();
             depth = imageInfo.getDepth();
-            imageInfoUsed = true;
         }
         Map<String, Object> metadata = getImagingService().getImageMetadata(
                 fileContent);
         description = (String) metadata.get(META_DESCRIPTION);
-        if (!imageInfoUsed) {
-            width = (Integer) metadata.get(META_WIDTH);
-            height = (Integer) metadata.get(META_HEIGHT);
-        }
         doc.setPropertyValue("picture:" + FIELD_BYLINE,
                 (String) metadata.get(META_BY_LINE));
         doc.setPropertyValue("picture:" + FIELD_CAPTION,

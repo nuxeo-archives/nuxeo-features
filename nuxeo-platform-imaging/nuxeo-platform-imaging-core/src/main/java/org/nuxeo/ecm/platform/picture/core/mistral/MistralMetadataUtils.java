@@ -27,7 +27,6 @@ import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_EQUIPMEN
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_EXPOSURE;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_FNUMBER;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_FOCALLENGTH;
-import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_HEIGHT;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_HRESOLUTION;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_ICCPROFILE;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_ISOSPEED;
@@ -37,12 +36,8 @@ import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_PIXEL_XD
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_PIXEL_YDIMENSION;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_VRESOLUTION;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_WHITEBALANCE;
-import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_WIDTH;
-import it.tidalwave.image.EditableImage;
-import it.tidalwave.image.Rational;
-import it.tidalwave.image.metadata.EXIFDirectory;
-import it.tidalwave.image.op.ReadOp;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,11 +45,17 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nuxeo.ecm.core.api.Blob;
-import org.nuxeo.ecm.platform.picture.ExifHelper;
 import org.nuxeo.ecm.platform.picture.IPTCHelper;
 import org.nuxeo.ecm.platform.picture.core.MetadataUtils;
 
-import com.drew.imaging.jpeg.JpegProcessingException;
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.lang.Rational;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.drew.metadata.exif.ExifSubIFDDescriptor;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
 
 /**
  *
@@ -66,130 +67,168 @@ public class MistralMetadataUtils implements MetadataUtils {
 
     private static final Log log = LogFactory.getLog(MistralMetadataUtils.class);
 
-    private static final String JPEG_MIMETYPE = "image/jpeg";
-
     @Override
     public Map<String, Object> getImageMetadata(Blob blob) {
+
         Map<String, Object> metadata = new HashMap<String, Object>();
 
+        Metadata imageMetadata = null;
+
         try {
-            EditableImage image = EditableImage.create(new ReadOp(
-                    blob.getStream(), ReadOp.Type.METADATA));
-            EXIFDirectory exif = image.getEXIFDirectory();
+            imageMetadata = ImageMetadataReader.readMetadata(new BufferedInputStream(blob.getStream()), false);
+        } catch (IOException | ImageProcessingException e) {
+            log.error("Failed to read metadata for the file:"
+                            + blob.getFilename(), e);
+        }
 
-            // CB: NXP-4348 - Return correct values for image width/height
-            image = EditableImage.create(new ReadOp(blob.getStream()));
-            metadata.put(META_WIDTH, image.getWidth());
-            metadata.put(META_HEIGHT, image.getHeight());
+        if (imageMetadata == null) {
+            return metadata;
+        }
 
-            /* EXIF */
-            if (exif.isImageDescriptionAvailable()) {
-                String description = exif.getImageDescription().trim();
+        /* EXIF */
+        try {
+            metadata.putAll(extractEXIF(imageMetadata));
+        } catch (MetadataException e) {
+            log.error("Failed to get EXIF metadata for the file:"
+                            + blob.getFilename(), e);
+        }
+
+        /* IPTC */
+        try {
+            metadata.putAll(extractIPTC(imageMetadata));
+        } catch (MetadataException e) {
+            log.error("Failed to get IPTC metadata for the file:"
+                    + blob.getFilename(), e);
+        }
+
+        return metadata;
+    }
+
+
+    protected Map<String, Object> extractEXIF(Metadata imageMetadata) throws MetadataException {
+
+        Map<String, Object> metadata = new HashMap<String, Object>();
+
+        ExifIFD0Directory exifIFD0 = imageMetadata.getDirectory(ExifIFD0Directory.class);
+
+        if (exifIFD0 != null) {
+
+            // Description
+            if (exifIFD0.containsTag(ExifIFD0Directory.TAG_IMAGE_DESCRIPTION)) {
+                String description = exifIFD0.getString(ExifIFD0Directory.TAG_IMAGE_DESCRIPTION).trim();
                 if (description.length() > 0) {
                     metadata.put(META_DESCRIPTION, description);
                 }
             }
 
-            if (exif.isUserCommentAvailable()) {
-                String comment = ExifHelper.decodeUndefined(
-                        exif.getUserComment()).trim();
-                if (comment.length() > 0) {
-                    metadata.put(META_COMMENT, comment);
-                }
-            }
-
-            if (exif.isMakeAvailable() || exif.isModelAvailable()) {
-                String equipment = (exif.getMake() + " " + exif.getModel()).trim();
+            // Make and model
+            if (exifIFD0.containsTag(ExifIFD0Directory.TAG_MAKE) || exifIFD0.containsTag(ExifIFD0Directory.TAG_MODEL)) {
+                String equipment = (exifIFD0.getString(ExifIFD0Directory.TAG_MAKE) + " " + exifIFD0.getString(ExifIFD0Directory.TAG_MODEL)).trim();
                 if (equipment.length() > 0) {
                     metadata.put(META_EQUIPMENT, equipment);
                 }
             }
 
-            if (exif.isDateTimeOriginalAvailable()) {
+            // Date
+            if (exifIFD0.containsTag(ExifIFD0Directory.TAG_DATETIME)) {
                 metadata.put(META_ORIGINALDATE,
-                        exif.getDateTimeOriginalAsDate());
+                        exifIFD0.getDate(ExifIFD0Directory.TAG_DATETIME));
             }
 
-            if (exif.isXResolutionAvailable() && exif.isYResolutionAvailable()) {
-                metadata.put(META_HRESOLUTION, exif.getXResolution().intValue());
-                metadata.put(META_VRESOLUTION, exif.getYResolution().intValue());
+            // Resolution
+            if (exifIFD0.containsTag(ExifIFD0Directory.TAG_X_RESOLUTION) && exifIFD0.containsTag(ExifIFD0Directory.TAG_Y_RESOLUTION)) {
+                metadata.put(META_HRESOLUTION, exifIFD0.getInt(ExifIFD0Directory.TAG_X_RESOLUTION));
+                metadata.put(META_VRESOLUTION, exifIFD0.getInt(ExifIFD0Directory.TAG_Y_RESOLUTION));
             }
 
-            if (exif.isPixelXDimensionAvailable()
-                    && exif.isPixelYDimensionAvailable()) {
-                metadata.put(META_PIXEL_XDIMENSION, exif.getPixelXDimension());
-                metadata.put(META_PIXEL_YDIMENSION, exif.getPixelYDimension());
-            }
-
-            if (exif.isCopyrightAvailable()) {
-                String copyright = exif.getCopyright().trim();
+            // Copyright
+            if (exifIFD0.containsTag(ExifIFD0Directory.TAG_COPYRIGHT)) {
+                String copyright = exifIFD0.getString(ExifIFD0Directory.TAG_COPYRIGHT).trim();
                 if (copyright.length() > 0) {
                     metadata.put(META_COPYRIGHT, copyright);
                 }
             }
 
-            if (exif.isExposureTimeAvailable()) {
-                Rational exposure = exif.getExposureTime();
-                int n = exposure.getNumerator();
-                int d = exposure.getDenominator();
+            if (exifIFD0.containsTag(ExifIFD0Directory.TAG_ORIENTATION)) {
+                metadata.put(META_ORIENTATION, exifIFD0.getString(ExifIFD0Directory.TAG_ORIENTATION));
+            }
+
+        }
+
+        /* EXIF from the SubIFD directory */
+
+        ExifSubIFDDirectory exifSubIFD = imageMetadata.getDirectory(ExifSubIFDDirectory.class);
+
+        if (exifSubIFD != null) {
+
+            ExifSubIFDDescriptor descriptor = new ExifSubIFDDescriptor(exifSubIFD);
+
+            // User comment
+            String comment = descriptor.getUserCommentDescription();
+            if (comment != null) {
+                metadata.put(META_COMMENT, comment);
+            }
+
+            // Dimensions
+            if (exifSubIFD.containsTag(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH) && exifSubIFD.containsTag(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT)) {
+                metadata.put(META_PIXEL_XDIMENSION, exifSubIFD.getInt(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH));
+                metadata.put(META_PIXEL_YDIMENSION, exifSubIFD.getInt(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT));
+            }
+
+            // Exposure
+            if (exifSubIFD.containsTag(ExifSubIFDDirectory.TAG_EXPOSURE_TIME)) {
+                Rational exposure = exifSubIFD.getRational(ExifSubIFDDirectory.TAG_EXPOSURE_TIME);
+                long n = exposure.getNumerator();
+                long d = exposure.getDenominator();
                 if (d >= n && d % n == 0) {
                     exposure = new Rational(1, d / n);
                 }
                 metadata.put(META_EXPOSURE, exposure.toString());
             }
 
-            if (exif.isISOSpeedRatingsAvailable()) {
-                metadata.put(META_ISOSPEED, "ISO-" + exif.getISOSpeedRatings());
+            // ISO
+            String iso = descriptor.getIsoEquivalentDescription();
+            if (iso != null) {
+                metadata.put(META_ISOSPEED, "ISO-" + iso);
             }
 
-            if (exif.isFocalLengthAvailable()) {
+            // Focal length
+            if (exifSubIFD.containsTag(ExifSubIFDDirectory.TAG_FOCAL_LENGTH)) {
                 metadata.put(META_FOCALLENGTH,
-                        exif.getFocalLength().doubleValue());
+                        exifSubIFD.getRational(ExifSubIFDDirectory.TAG_FOCAL_LENGTH).doubleValue());
             }
 
-            if (exif.isColorSpaceAvailable()) {
-                metadata.put(META_COLORSPACE, exif.getColorSpace().toString());
+            // Color space
+            String colorSpace = descriptor.getColorSpaceDescription();
+            if (colorSpace != null) {
+                metadata.put(META_COLORSPACE, colorSpace);
             }
 
-            if (exif.isWhiteBalanceAvailable()) {
-                metadata.put(META_WHITEBALANCE,
-                        exif.getWhiteBalance().toString().toLowerCase());
+            // White balance mode
+            String whiteBalanceMode = descriptor.getWhiteBalanceModeDescription();
+            if (whiteBalanceMode != null) {
+                metadata.put(META_WHITEBALANCE, whiteBalanceMode);
             }
 
-            if (exif.isInterColourProfileAvailable()) {
-                metadata.put(META_ICCPROFILE, exif.getICCProfile());
+
+            // ICC profile
+            if (exifSubIFD.containsTag(ExifSubIFDDirectory.TAG_INTER_COLOR_PROFILE)) {
+                metadata.put(META_ICCPROFILE, exifSubIFD.getString(ExifSubIFDDirectory.TAG_INTER_COLOR_PROFILE));
             }
 
-            if (exif.isOrientationAvailable()) {
-                metadata.put(META_ORIENTATION, exif.getOrientation().toString());
+            // F-stop
+            if (exifSubIFD.containsTag(ExifSubIFDDirectory.TAG_FNUMBER)) {
+                metadata.put(META_FNUMBER,
+                        exifSubIFD.getRational(ExifSubIFDDirectory.TAG_FNUMBER).doubleValue());
             }
-
-            if (exif.isFNumberAvailable()) {
-                metadata.put(META_FNUMBER, exif.getFNumber().doubleValue());
-            }
-        } catch (IOException e) {
-            log.warn("Failed to get EXIF metadata for the file: "
-                    + blob.getFilename());
-            log.debug(
-                    "Failed to get EXIF metadata for the file: "
-                            + blob.getFilename(), e);
         }
 
-        try {
-            /* IPTC */
-            if (JPEG_MIMETYPE.equals(blob.getMimeType())) {
-                IPTCHelper.extractMetadata(blob.getStream(), metadata);
-            }
-        } catch (IOException e) {
-            log.error(
-                    "Failed to get IPTC metadata for the file:"
-                            + blob.getFilename(), e);
-        } catch (JpegProcessingException e) {
-            log.error(
-                    "Failed to get IPTC metadata for the file:"
-                            + blob.getFilename(), e);
-        }
+        return metadata;
+    }
 
+    protected Map<String, Object> extractIPTC(Metadata imageMetadata) throws MetadataException {
+        Map<String, Object> metadata = new HashMap<String, Object>();
+        IPTCHelper.extract(imageMetadata, metadata);
         return metadata;
     }
 

@@ -106,8 +106,7 @@ public class ImagingComponent extends DefaultComponent implements
     @Override
     public Map<String, Object> getImageMetadata(Blob blob) {
         try {
-            return getLibrarySelectorService().getMetadataUtils().getImageMetadata(
-                    blob);
+            return getLibrarySelectorService().getMetadataUtils().getImageMetadata(blob);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
