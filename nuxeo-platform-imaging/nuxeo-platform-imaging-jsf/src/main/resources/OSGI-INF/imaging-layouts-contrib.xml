@@ -57,6 +57,11 @@
         <field>file:content</field>
         <field>file:filename</field>
       </fields>
+      <properties widgetMode="edit">
+      	<property name="acceptedExtensions">
+      	.jpg, .jpeg, .png, .gif, .tiff, .tif, .bmp, .psd, .ppm, .raw, .dng, .orf, .crw, cr2, .nef, .raf, .x3f, .pef, .dcr, .kdc, .sr2, .arw, .srf, .mrw, .erf
+      	</property>
+      </properties>
     </widget>
 
     <widget name="summary_picture_view" type="picture_view">
