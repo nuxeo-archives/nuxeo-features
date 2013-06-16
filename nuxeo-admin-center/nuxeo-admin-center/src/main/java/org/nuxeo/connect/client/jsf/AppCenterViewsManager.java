@@ -418,6 +418,8 @@ public class AppCenterViewsManager implements Serializable {
                     }
 
                     if (status.hasErrors()) {
+                        status.addWarning("Your potential previous installation of this Studio"
+                                + " package has already been uninstalled");
                         setStatus(
                                 SnapshotStatus.error,
                                 translate("label.studio.update.validation.error"),
