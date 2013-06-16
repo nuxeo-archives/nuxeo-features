@@ -50,6 +50,8 @@ import org.nuxeo.connect.data.DownloadingPackage;
 import org.nuxeo.connect.packages.PackageManager;
 import org.nuxeo.connect.packages.dependencies.DependencyResolution;
 import org.nuxeo.connect.update.LocalPackage;
+import org.nuxeo.connect.update.PackageDependency;
+import org.nuxeo.connect.update.PackageState;
 import org.nuxeo.connect.update.PackageType;
 import org.nuxeo.connect.update.PackageUpdateService;
 import org.nuxeo.connect.update.ValidationStatus;
@@ -332,10 +334,14 @@ public class AppCenterViewsManager implements Serializable {
                 setStatus(SnapshotStatus.downloading, null);
 
                 PackageUpdateService pus = Framework.getLocalService(PackageUpdateService.class);
+                LocalPackage lpkg = pus.getPackage(packageId);
+                boolean hadPackage = lpkg != null
+                        && PackageState.getByValue(lpkg.getState()).isInstalled();
 
                 String pkgId;
-                // helper for debug: avoid downloading again the Studio
-                // snapshot
+                // avoid downloading again the Studio package for debug, maybe
+                // should avoid downloading it again if validation is skipped
+                // too, in case package has changed (?)
                 boolean avoidDownload = false;
                 if (avoidDownload) {
                     pkgId = packageId;
@@ -384,21 +390,20 @@ public class AppCenterViewsManager implements Serializable {
                     pkgId = pkg.getId();
                 }
 
-                LocalPackage lpkg = null;
-                Task installTask = null;
+                lpkg = pus.getPackage(pkgId);
+                String[] targetPlatforms = lpkg.getTargetPlatforms();
+                PackageDependency[] pkgDeps = lpkg.getDependencies();
+
                 if (validate) {
-                    lpkg = pus.getPackage(pkgId);
-                    installTask = lpkg.getInstallTask();
-                    ValidationStatus status = installTask.validate();
+                    ValidationStatus status = new ValidationStatus();
                     // TODO: replace errors by internationalized labels
-                    if (!PlatformVersionHelper.isCompatible(lpkg.getTargetPlatforms())) {
+                    if (!PlatformVersionHelper.isCompatible(targetPlatforms)) {
                         status.addError(String.format(
                                 "This package is not validated for your current platform: %s",
                                 PlatformVersionHelper.getPlatformFilter()));
                     }
                     // check deps requirements
-                    if (lpkg.getDependencies() != null
-                            && lpkg.getDependencies().length > 0) {
+                    if (pkgDeps != null && pkgDeps.length > 0) {
                         DependencyResolution resolution = pm.resolveDependencies(
                                 pkgId,
                                 PlatformVersionHelper.getPlatformFilter());
@@ -411,15 +416,25 @@ public class AppCenterViewsManager implements Serializable {
                             status.addError(String.format(
                                     "Dependency check has failed for package '%s'",
                                     pkgId));
-                        } else if (resolution.requireChanges()) {
-                            status.addError(resolution.toString().trim().replaceAll(
-                                    "\n", "<br />"));
+                        } else {
+                            List<String> pkgToInstall = resolution.getInstallPackageIds();
+                            if (pkgToInstall != null
+                                    && pkgToInstall.size() == 1
+                                    && packageId.equals(pkgToInstall.get(0))) {
+                                // ignore
+                            } else if (resolution.requireChanges()) {
+                                status.addError(resolution.toString().trim().replaceAll(
+                                        "\n", "<br />"));
+                            }
                         }
                     }
 
-                    if (status.hasErrors()) {
-                        status.addWarning("Your potential previous installation of this Studio"
+                    if (Framework.isDevModeSet() && hadPackage) {
+                        status.addWarning("Your previous installation of this Studio"
                                 + " package has already been uninstalled");
+                    }
+
+                    if (status.hasErrors()) {
                         setStatus(
                                 SnapshotStatus.error,
                                 translate("label.studio.update.validation.error"),
@@ -431,12 +446,7 @@ public class AppCenterViewsManager implements Serializable {
                 if (Framework.isDevModeSet()) {
                     setStatus(SnapshotStatus.installing, null);
                     try {
-                        if (installTask == null) {
-                            if (lpkg == null) {
-                                lpkg = pus.getPackage(pkgId);
-                            }
-                            installTask = lpkg.getInstallTask();
-                        }
+                        Task installTask = lpkg.getInstallTask();
                         installTask.run(new HashMap<String, String>());
                         lastStudioSnapshotUpdate = Calendar.getInstance();
                         setStatus(SnapshotStatus.completed, null);
