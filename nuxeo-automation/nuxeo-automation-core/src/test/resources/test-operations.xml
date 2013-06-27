@@ -55,6 +55,9 @@
     <chain id="runOnList">
       <operation id="runOnListItem" />
     </chain>
+    <chain id="runOnListWithTx">
+      <operation id="runOnListItemWithTx" />
+    </chain>
     <chain id="core_chain1">
       <operation id="Context.FetchDocument" />
       <operation id="Document.Create">
