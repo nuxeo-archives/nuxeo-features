@@ -55,6 +55,7 @@ import org.nuxeo.ecm.platform.usermanager.UserManager;
 import org.nuxeo.ecm.platform.userworkspace.api.UserWorkspaceService;
 import org.nuxeo.ecm.platform.userworkspace.constants.UserWorkspaceConstants;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.api.login.LoginComponent;
 
 /**
  * Default implementation of the {@link UserWorkspaceService}.
@@ -124,6 +125,7 @@ public class DefaultUserWorkspaceServiceImpl implements UserWorkspaceService {
         CoreSession userCoreSession = CoreInstance.getInstance().getSession(
                 currentDocument.getSessionId());
 
+
         return getCurrentUserPersonalWorkspace(null, userName, userCoreSession,
                 currentDocument);
     }
@@ -176,6 +178,12 @@ public class DefaultUserWorkspaceServiceImpl implements UserWorkspaceService {
     protected synchronized PathRef createUserWorkspace(PathRef rootRef,
             PathRef userWSRef, CoreSession userCoreSession,
             Principal principal, String userName) throws ClientException {
+
+        if (LoginComponent.isSystemLogin(userCoreSession.getPrincipal())) {
+            throw new UnsupportedOperationException(
+                    "Cannot create a user workspace using a system principal for ("
+                            + userName + ")");
+        }
 
         UnrestrictedUWSCreator creator = new UnrestrictedUWSCreator(rootRef,
                 userWSRef, userCoreSession, principal, userName);

@@ -22,12 +22,14 @@ package org.nuxeo.ecm.platform.userworkspace.core.tests;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.PathRef;
+import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
 import org.nuxeo.ecm.core.api.security.ACE;
 import org.nuxeo.ecm.core.api.security.ACL;
 import org.nuxeo.ecm.core.api.security.ACP;
@@ -46,6 +48,7 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         super("");
     }
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -60,8 +63,10 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         deployBundle("org.nuxeo.ecm.platform.userworkspace.core");
         fireFrameworkStarted();
         openSession();
+        lookupService();
     }
 
+    @Override
     @After
     public void tearDown() throws Exception {
         closeSession();
@@ -71,11 +76,17 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         super.tearDown();
     }
 
+
+    protected UserWorkspaceService uwm;
+
+    public void lookupService() {
+        uwm = Framework.getLocalService(UserWorkspaceService.class);
+        assertNotNull(uwm);
+    }
+
     @Test
     public void testRestrictedAccess() throws Exception {
         userSession = openSessionAs("toto");
-        UserWorkspaceService uwm = Framework.getLocalService(UserWorkspaceService.class);
-        assertNotNull(uwm);
 
         DocumentModel uw = uwm.getCurrentUserPersonalWorkspace(userSession, null);
         assertNotNull(uw);
@@ -114,9 +125,6 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         ws2 = session.saveDocument(ws2);
 
         session.save();
-
-        UserWorkspaceService uwm = Framework.getLocalService(UserWorkspaceService.class);
-        assertNotNull(uwm);
 
         userSession = openSessionAs("toto");
 
@@ -179,8 +187,6 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
 
         // force reset
         UserWorkspaceServiceImplComponent.reset();
-        UserWorkspaceService uwm = Framework.getLocalService(UserWorkspaceService.class);
-        assertNotNull(uwm);
 
         userSession = openSessionAs("toto");
 
@@ -214,11 +220,9 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
 
     @Test
     public void testAnotherUserWorkspaceFinder() throws ClientException {
-        UserWorkspaceService service = Framework.getLocalService(UserWorkspaceService.class);
-        assertNotNull(service);
 
         DocumentModel context = session.getRootDocument();
-        DocumentModel uw = service.getCurrentUserPersonalWorkspace("user1",
+        DocumentModel uw = uwm.getCurrentUserPersonalWorkspace("user1",
                 context);
         session.save();
 
@@ -231,13 +235,13 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         context = userSession.getRootDocument();
         try {
             // Assert that it throw a ClientException
-            service.getCurrentUserPersonalWorkspace("user1", context);
+            uwm.getCurrentUserPersonalWorkspace("user1", context);
             assertTrue("user2 is not allow to read user1 workspace", false);
         } catch (ClientException e) {
             // Nothing to do
         }
 
-        uw = service.getUserPersonalWorkspace("user1", context);
+        uw = uwm.getUserPersonalWorkspace("user1", context);
         assertNotNull(uw);
         assertTrue(uw.getPathAsString().contains("user1"));
         assertEquals(user1WorkspacePath, uw.getPathAsString());
@@ -247,11 +251,9 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
     @Test
     public void testUnrestrictedFinderCorrectlyCreateWorkspace()
             throws ClientException {
-        UserWorkspaceService service = Framework.getLocalService(UserWorkspaceService.class);
-        assertNotNull(service);
 
         DocumentModel context = session.getRootDocument();
-        DocumentModel uw = service.getUserPersonalWorkspace("user1", context);
+        DocumentModel uw = uwm.getUserPersonalWorkspace("user1", context);
         assertNotNull(uw);
         String user1WorkspacePath = uw.getPathAsString();
 
@@ -259,8 +261,21 @@ public class TestUserWorkspace extends SQLRepositoryTestCase {
         userSession = openSessionAs("user1");
         context = userSession.getRootDocument();
 
-        uw = service.getCurrentUserPersonalWorkspace(userSession, context);
+        uw = uwm.getCurrentUserPersonalWorkspace(userSession, context);
         assertNotNull(uw);
         assertEquals(user1WorkspacePath, uw.getPathAsString());
+    }
+
+
+    @Test(expected=UnsupportedOperationException.class)
+    public void shouldNotCreateSystemUserWorkspace() throws ClientException {
+        new UnrestrictedSessionRunner(session) {
+
+            @Override
+            public void run() throws ClientException {
+                DocumentModel context = session.getRootDocument();
+                uwm.getCurrentUserPersonalWorkspace("pfff", context);
+            }
+        }.runUnrestricted();
     }
 }
