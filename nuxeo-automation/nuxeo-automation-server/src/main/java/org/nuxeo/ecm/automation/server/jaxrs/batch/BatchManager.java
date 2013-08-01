@@ -32,6 +32,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
  * chain
  *
  * @author Tiry (tdelprat@nuxeo.com)
+ * @author Antoine Taillefer
  * @since 5.4.2
  */
 public interface BatchManager {
@@ -50,6 +51,14 @@ public interface BatchManager {
      */
     void addStream(String batchId, String idx, InputStream is, String name,
             String mime) throws IOException;
+
+    /**
+     * Returns true if there is a batch for the given {@code batchId}, false
+     * otherwise.
+     *
+     * @since 5.7.2
+     */
+    boolean hasBatch(String batchId);
 
     /**
      * Get Blobs associated to a given batch. Returns null if batch does not
@@ -104,6 +113,19 @@ public interface BatchManager {
      * @since 5.7
      */
     Object execute(String batchId, String chainOrOperationId,
+            CoreSession session, Map<String, Object> contextParams,
+            Map<String, Object> operationParams) throws ClientException;
+
+    /**
+     * Executes the chain or operation on the {@code Blob} from the given
+     * {@code batchId} and {@code fileIdx}.
+     * <p>
+     * This method does not clean the temporary storage associated to the
+     * {@code batchId}.
+     *
+     * @since 5.7.2
+     */
+    Object execute(String batchId, String fileIdx, String chainOrOperationId,
             CoreSession session, Map<String, Object> contextParams,
             Map<String, Object> operationParams) throws ClientException;
 

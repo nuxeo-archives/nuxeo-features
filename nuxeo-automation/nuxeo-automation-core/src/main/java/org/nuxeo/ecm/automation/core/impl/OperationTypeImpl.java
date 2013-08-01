@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,8 +84,9 @@ public class OperationTypeImpl implements OperationType {
     public OperationTypeImpl(AutomationService service, Class<?> type) {
         this(service, type, null);
     }
-    
-    public OperationTypeImpl(AutomationService service, Class<?> type, String contributingComponent) {
+
+    public OperationTypeImpl(AutomationService service, Class<?> type,
+            String contributingComponent) {
         Operation anno = type.getAnnotation(Operation.class);
         if (anno == null) {
             throw new IllegalArgumentException("Invalid operation class: "
@@ -92,7 +94,7 @@ public class OperationTypeImpl implements OperationType {
         }
         this.service = service;
         this.type = type;
-        this.contributingComponent=contributingComponent;
+        this.contributingComponent = contributingComponent;
         id = anno.id();
         if (id.length() == 0) {
             id = type.getName();
@@ -104,14 +106,38 @@ public class OperationTypeImpl implements OperationType {
         initFields();
     }
 
+    static class Match implements Comparable<Match> {
+        protected InvokableMethod method;
+
+        int priority;
+
+        Match(InvokableMethod method, int priority) {
+            this.method = method;
+            this.priority = priority;
+        }
+
+        @Override
+        public int compareTo(Match o) {
+            return o.priority - priority;
+        }
+
+        @Override
+        public String toString() {
+            return "Match(" + method + ", " + priority + ")";
+        }
+    }
+
+    @Override
     public AutomationService getService() {
         return service;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public Class<?> getType() {
         return type;
     }
@@ -149,6 +175,7 @@ public class OperationTypeImpl implements OperationType {
         }
     }
 
+    @Override
     public Object newInstance(OperationContext ctx, Map<String, Object> args)
             throws Exception {
         Object obj = type.newInstance();
@@ -162,6 +189,13 @@ public class OperationTypeImpl implements OperationType {
             Object obj = args.get(entry.getKey());
             if (obj instanceof Expression) {
                 obj = ((Expression) obj).eval(ctx);
+            }
+            // Trying to fallback on Chain Parameters sub context if cannot find
+            // it
+            if (obj == null) {
+                if (ctx.containsKey(Constants.VAR_RUNTIME_CHAIN)) {
+                    obj = ((Map) ctx.get(Constants.VAR_RUNTIME_CHAIN)).get(entry.getKey());
+                }
             }
             if (obj == null) {
                 if (entry.getValue().getAnnotation(Param.class).required()) {
@@ -187,10 +221,7 @@ public class OperationTypeImpl implements OperationType {
         }
     }
 
-    public List<InvokableMethod> getMethods() {
-        return methods;
-    }
-
+    @Override
     public InvokableMethod[] getMethodsMatchingInput(Class<?> in) {
         List<Match> result = new ArrayList<Match>();
         for (InvokableMethod m : methods) {
@@ -214,27 +245,7 @@ public class OperationTypeImpl implements OperationType {
         return ar;
     }
 
-    static class Match implements Comparable<Match> {
-        protected InvokableMethod method;
-
-        int priority;
-
-        Match(InvokableMethod method, int priority) {
-            this.method = method;
-            this.priority = priority;
-        }
-
-        @Override
-        public int compareTo(Match o) {
-            return o.priority - priority;
-        }
-
-        @Override
-        public String toString() {
-            return "Match(" + method + ", " + priority + ")";
-        }
-    }
-
+    @Override
     public OperationDocumentation getDocumentation() {
         Operation op = type.getAnnotation(Operation.class);
         OperationDocumentation doc = new OperationDocumentation(op.id());
@@ -250,7 +261,7 @@ public class OperationTypeImpl implements OperationType {
         }
         doc.description = op.description();
         // load parameters information
-        doc.params = new ArrayList<OperationDocumentation.Param>();
+        List<OperationDocumentation.Param> paramsAccumulator = new LinkedList<OperationDocumentation.Param>();
         for (Field field : params.values()) {
             Param p = field.getAnnotation(Param.class);
             OperationDocumentation.Param param = new OperationDocumentation.Param();
@@ -263,14 +274,16 @@ public class OperationTypeImpl implements OperationType {
             param.order = p.order();
             param.values = p.values();
             param.isRequired = p.required();
-            doc.params.add(param);
+            paramsAccumulator.add(param);
         }
-        Collections.sort(doc.params);
+        Collections.sort(paramsAccumulator);
+        doc.params = paramsAccumulator.toArray(new OperationDocumentation.Param[paramsAccumulator.size()]);
         // load signature
         ArrayList<String> result = new ArrayList<String>(methods.size() * 2);
         Collection<String> collectedSigs = new HashSet<String>();
         for (InvokableMethod m : methods) {
-            String in = getParamDocumentationType(m.getInputType(), m.isIterable());
+            String in = getParamDocumentationType(m.getInputType(),
+                    m.isIterable());
             String out = getParamDocumentationType(m.getOutputType());
             String sigKey = in + ":" + out;
             if (!collectedSigs.contains(sigKey)) {
@@ -281,6 +294,11 @@ public class OperationTypeImpl implements OperationType {
         }
         doc.signature = result.toArray(new String[result.size()]);
         return doc;
+    }
+
+    @Override
+    public String getContributingComponent() {
+        return contributingComponent;
     }
 
     protected String getParamDocumentationType(Class<?> type) {
@@ -309,8 +327,17 @@ public class OperationTypeImpl implements OperationType {
         return t;
     }
 
-    public String getContributingComponent() {
-        return contributingComponent;
-    }    
-    
+
+    @Override
+    public String toString() {
+        return "OperationTypeImpl [id=" + id + ", type=" + type + ", params="
+                + params + "]";
+    }
+
+    /**
+     * @since 5.7.2
+     */
+    public List<InvokableMethod> getMethods() {
+        return methods;
+    }
 }

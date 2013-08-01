@@ -182,6 +182,12 @@ public interface AutomationService {
      * used in UI tools to describe operations. The returned list is sorted
      * using operation ID. Optional method.
      */
-    List<OperationDocumentation> getDocumentation();
+    List<OperationDocumentation> getDocumentation() throws OperationException;
 
+    /**
+     * @since 5.7.2
+     * @param id operation ID
+     * @return true if operation registry contains the given operation
+     */
+    boolean hasOperation(String id);
 }

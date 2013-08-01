@@ -25,6 +25,7 @@ import org.nuxeo.ecm.core.api.UnrestrictedSessionRunner;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
 import org.nuxeo.ecm.core.api.thumbnail.ThumbnailAdapter;
 import org.nuxeo.ecm.core.versioning.VersioningService;
+import org.nuxeo.ecm.platform.dublincore.listener.DublinCoreListener;
 
 /**
  * Thumbnail bean in session unrestricted to add/update thumbnail facet to a
@@ -35,6 +36,9 @@ import org.nuxeo.ecm.core.versioning.VersioningService;
 public class AddThumbnailUnrestricted extends UnrestrictedSessionRunner {
 
     private static final Log log = LogFactory.getLog(AddThumbnailUnrestricted.class);
+
+    // duplicated from Audit module to avoid circular dependency
+    public static final String DISABLE_AUDIT_LOGGER = "disableAuditLogger";
 
     protected DocumentModel doc;
 
@@ -78,8 +82,12 @@ public class AddThumbnailUnrestricted extends UnrestrictedSessionRunner {
     }
 
     protected void saveDocument() throws ClientException {
-    	doc.putContextData(VersioningService.DISABLE_AUTO_CHECKOUT, Boolean.TRUE);
+        doc.putContextData(VersioningService.DISABLE_AUTO_CHECKOUT,
+                Boolean.TRUE);
+        doc.putContextData(DublinCoreListener.DISABLE_DUBLINCORE_LISTENER,
+                Boolean.TRUE);
+        doc.putContextData(DISABLE_AUDIT_LOGGER, Boolean.TRUE);
         session.saveDocument(doc);
         session.save();
-	}
+    }
 }

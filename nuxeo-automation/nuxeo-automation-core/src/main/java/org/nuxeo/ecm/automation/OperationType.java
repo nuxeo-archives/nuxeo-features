@@ -11,7 +11,10 @@
  */
 package org.nuxeo.ecm.automation;
 
+import java.util.List;
 import java.util.Map;
+
+import org.nuxeo.ecm.automation.core.impl.InvokableMethod;
 
 /**
  * Describe an operation class. Each registered operation will be stored in the
@@ -33,12 +36,18 @@ public interface OperationType {
      */
     AutomationService getService();
 
-    OperationDocumentation getDocumentation();
+    OperationDocumentation getDocumentation() throws OperationException;
 
     /**
      * Gets the name of the component that contributed the operation
-     * 
+     *
      * @return
      */
     String getContributingComponent();
+    InvokableMethod[] getMethodsMatchingInput(Class<?> in);
+
+    /**
+     * @since 5.7.2
+     */
+    public List<InvokableMethod> getMethods();
 }

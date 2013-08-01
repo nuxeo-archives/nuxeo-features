@@ -13,7 +13,11 @@ package org.nuxeo.ecm.automation;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
+
+import org.nuxeo.common.xmap.annotation.XNode;
+import org.nuxeo.common.xmap.annotation.XNodeList;
+import org.nuxeo.common.xmap.annotation.XObject;
+import org.nuxeo.ecm.automation.core.OperationChainContribution;
 
 /**
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
@@ -27,7 +31,7 @@ public class OperationDocumentation implements
 
     /**
      * an array of size multiple of 2. Each pair in the array is the input and
-     * output type of a method
+     * output type of a method.
      */
     public String[] signature;
 
@@ -41,7 +45,12 @@ public class OperationDocumentation implements
 
     public String description;
 
-    public List<Param> params;
+    public Param[] params;
+
+    /**
+     * The operations listing in case of a chain.
+     */
+    public OperationChainContribution.Operation[] operations;
 
     // optional URL indicating the relative path (relative to the automation
     // service home)
@@ -53,65 +62,29 @@ public class OperationDocumentation implements
         this.url = id;
     }
 
-    public int compareTo(OperationDocumentation o) {
-        String s1 = label == null ? id : label;
-        String s2 = o.label == null ? o.id : o.label;
-        return s1.compareTo(s2);
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String[] getSignature() {
-        return signature;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public String getRequires() {
-        return requires;
-    }
-
-    public List<Param> getParams() {
-        return params;
-    }
-
-    @Override
-    public String toString() {
-        return category + " > " + label + " [" + id + ": "
-                + Arrays.asList(signature) + "] (" + params + ")\n"
-                + description;
-    }
-
+    @XObject("param")
     public static class Param implements Serializable, Comparable<Param> {
         private static final long serialVersionUID = 1L;
 
+        @XNode("@name")
         public String name;
 
+        @XNode("@type")
         public String type; // the data type
 
         public String widget; // the widget type
 
+        @XNodeList(value = "values", type = String[].class, componentType = String.class)
         public String[] values; // the default values
 
+        @XNode("@order")
         public int order;
 
+        @XNode("@required")
         public boolean isRequired;
+
+        public Param() {
+        }
 
         public String getName() {
             return name;
@@ -159,5 +132,54 @@ public class OperationDocumentation implements
             }
             return name.compareTo(o.name);
         }
+    }
+
+    public int compareTo(OperationDocumentation o) {
+        String s1 = label == null ? id : label;
+        String s2 = o.label == null ? o.id : o.label;
+        return s1.compareTo(s2);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String[] getSignature() {
+        return signature;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getRequires() {
+        return requires;
+    }
+
+    public Param[] getParams() {
+        return params;
+    }
+
+    public OperationChainContribution.Operation[] getOperations() {
+        return operations;
+    }
+
+    @Override
+    public String toString() {
+        return category + " > " + label + " [" + id + ": "
+                + Arrays.asList(signature) + "] (" + params + ")\n"
+                + description;
     }
 }

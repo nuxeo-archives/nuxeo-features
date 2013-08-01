@@ -22,6 +22,7 @@ import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.automation.core.util.BlobList;
+import org.nuxeo.ecm.automation.core.util.Properties;
 import org.nuxeo.ecm.core.api.Blob;
 
 /**
@@ -30,7 +31,7 @@ import org.nuxeo.ecm.core.api.Blob;
  *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
-@Operation(id = RunFileChain.ID, category = Constants.CAT_SUBCHAIN_EXECUTION, label = "Run File Chain", description = "Run an operation chain which is returning a file in the current context. The input for the chain to run is a file or a list of files. Return the output of the chain as a file or a list of files.")
+@Operation(id = RunFileChain.ID, category = Constants.CAT_SUBCHAIN_EXECUTION, label = "Run File Chain", description = "Run an operation chain which is returning a file in the current context. The input for the chain to run is a file or a list of files. Return the output of the chain as a file or a list of files. The 'parameters' injected are accessible in the subcontext ChainParameters. For instance, @{ChainParameters['parameterKey']}.")
 public class RunFileChain {
 
     public static final String ID = "Context.RunFileOperation";
@@ -47,13 +48,18 @@ public class RunFileChain {
     @Param(name="isolate", required = false, values = "false")
     protected boolean isolate = false;
 
+    @Param(name = "parameters", required = false)
+    protected Properties chainParameters;
+
 
     @OperationMethod
     public Blob run(Blob blob) throws Exception {
-        Map<String, Object> vars = isolate ? new HashMap<String, Object>(ctx.getVars()) : ctx.getVars();
-        OperationContext subctx = new OperationContext(ctx.getCoreSession(), vars);
+        Map<String, Object> vars = isolate ? new HashMap<String, Object>(
+                ctx.getVars()) : ctx.getVars();
+        OperationContext subctx = new OperationContext(ctx.getCoreSession(),
+                vars);
         subctx.setInput(blob);
-        return (Blob) service.run(subctx, chainId);
+        return (Blob) service.run(subctx, chainId, (Map) chainParameters);
     }
 
     @OperationMethod

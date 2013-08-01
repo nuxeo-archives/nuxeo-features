@@ -23,6 +23,7 @@ import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
+import org.nuxeo.ecm.automation.core.util.Properties;
 
 /**
  * Run an embedded operation chain using the current input. The output is
@@ -31,7 +32,7 @@ import org.nuxeo.ecm.automation.core.annotations.Param;
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  * @since 5.5
  */
-@Operation(id = RunOperationOnList.ID, category = Constants.CAT_SUBCHAIN_EXECUTION, label = "Run For Each", description = "Run an operation for each element from the list defined by the 'list' paramter. The 'list' parameter is pointing to context variable that represent the list which will be iterated. The 'item' parameter represent the name of the context varible which will point to the current element in the list at each iteration. You can use the 'isolate' parameter to specify whether or not the evalution context is the same as the parent context or a copy of it. If the isolate is 'true' then a copy of the current contetx is used and so that modifications in this context will not affect the parent context. Any input is accepted. The input is returned back as output when operation terminate.")
+@Operation(id = RunOperationOnList.ID, category = Constants.CAT_SUBCHAIN_EXECUTION, label = "Run For Each", description = "Run an operation for each element from the list defined by the 'list' paramter. The 'list' parameter is pointing to context variable that represent the list which will be iterated. The 'item' parameter represent the name of the context varible which will point to the current element in the list at each iteration. You can use the 'isolate' parameter to specify whether or not the evalution context is the same as the parent context or a copy of it. If the isolate is 'true' then a copy of the current contetx is used and so that modifications in this context will not affect the parent context. Any input is accepted. The input is returned back as output when operation terminate. The 'parameters' injected are accessible in the subcontext ChainParameters. For instance, @{ChainParameters['parameterKey']}.")
 public class RunOperationOnList {
 
     public static final String ID = "Context.RunOperationOnList";
@@ -54,6 +55,9 @@ public class RunOperationOnList {
     @Param(name = "isolate", required = false, values = "true")
     protected boolean isolate = true;
 
+    @Param(name = "parameters", required = false)
+    protected Properties chainParameters;
+
     @OperationMethod
     public void run() throws Exception {
         Map<String, Object> vars = isolate ? new HashMap<String, Object>(
@@ -71,10 +75,9 @@ public class RunOperationOnList {
             throw new UnsupportedOperationException(
                     ctx.get(listName).getClass() + " is not a Collection");
         }
-
         for (Object value : list) {
             subctx.put(itemName, value);
-            service.run(subctx, chainId);
+            service.run(subctx, chainId, (Map) chainParameters);
         }
     }
 

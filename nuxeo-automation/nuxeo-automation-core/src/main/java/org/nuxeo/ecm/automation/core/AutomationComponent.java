@@ -12,9 +12,11 @@
 package org.nuxeo.ecm.automation.core;
 
 import org.nuxeo.ecm.automation.AutomationService;
+import org.nuxeo.ecm.automation.OperationType;
 import org.nuxeo.ecm.automation.core.events.EventHandler;
 import org.nuxeo.ecm.automation.core.events.EventHandlerRegistry;
 import org.nuxeo.ecm.automation.core.events.operations.FireEvent;
+import org.nuxeo.ecm.automation.core.impl.ChainTypeImpl;
 import org.nuxeo.ecm.automation.core.impl.OperationServiceImpl;
 import org.nuxeo.ecm.automation.core.operations.FetchContextBlob;
 import org.nuxeo.ecm.automation.core.operations.FetchContextDocument;
@@ -43,6 +45,7 @@ import org.nuxeo.ecm.automation.core.operations.blob.GetDocumentBlobs;
 import org.nuxeo.ecm.automation.core.operations.blob.PostBlob;
 import org.nuxeo.ecm.automation.core.operations.blob.SetBlobFileName;
 import org.nuxeo.ecm.automation.core.operations.business.BusinessCreateOperation;
+import org.nuxeo.ecm.automation.core.operations.business.BusinessFetchOperation;
 import org.nuxeo.ecm.automation.core.operations.business.BusinessUpdateOperation;
 import org.nuxeo.ecm.automation.core.operations.document.AddEntryToMultiValuedProperty;
 import org.nuxeo.ecm.automation.core.operations.document.CheckInDocument;
@@ -119,7 +122,7 @@ public class AutomationComponent extends DefaultComponent {
 
     public static final String XP_EVENT_HANDLERS = "event-handlers";
 
-    protected AutomationService service;
+    protected OperationServiceImpl service;
 
     protected EventHandlerRegistry handlers;
 
@@ -219,6 +222,7 @@ public class AutomationComponent extends DefaultComponent {
         // Business Operations
         service.putOperation(BusinessCreateOperation.class);
         service.putOperation(BusinessUpdateOperation.class);
+        service.putOperation(BusinessFetchOperation.class);
 
         // disabled operations
         // service.putOperation(RunScriptFile.class);
@@ -240,12 +244,15 @@ public class AutomationComponent extends DefaultComponent {
             throws Exception {
         if (XP_OPERATIONS.equals(extensionPoint)) {
             OperationContribution opc = (OperationContribution) contribution;
-            service.putOperation(opc.type, opc.replace, contributor.getName().toString());
+            service.putOperation(opc.type, opc.replace,
+                    contributor.getName().toString());
         } else if (XP_CHAINS.equals(extensionPoint)) {
             OperationChainContribution occ = (OperationChainContribution) contribution;
-            service.putOperationChain(
+            // Register the chain
+            OperationType docChainType = new ChainTypeImpl(service,
                     occ.toOperationChain(contributor.getContext().getBundle()),
-                    occ.replace);
+                    occ);
+            service.putOperation(docChainType, occ.replace);
         } else if (XP_ADAPTERS.equals(extensionPoint)) {
             TypeAdapterContribution tac = (TypeAdapterContribution) contribution;
             service.putTypeAdapter(tac.accept, tac.produce,
@@ -268,7 +275,7 @@ public class AutomationComponent extends DefaultComponent {
             service.removeOperation(((OperationContribution) contribution).type);
         } else if (XP_CHAINS.equals(extensionPoint)) {
             OperationChainContribution occ = (OperationChainContribution) contribution;
-            service.removeOperationChain(occ.id);
+            service.removeOperationChain(occ.getId());
         } else if (XP_ADAPTERS.equals(extensionPoint)) {
             TypeAdapterContribution tac = (TypeAdapterContribution) contribution;
             service.removeTypeAdapter(tac.accept, tac.produce);

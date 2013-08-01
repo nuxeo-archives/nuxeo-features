@@ -34,6 +34,7 @@ import junit.framework.Assert;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hamcrest.number.IsCloseTo;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.common.Environment;
@@ -89,14 +90,15 @@ import com.google.inject.Inject;
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
 @RunWith(FeaturesRunner.class)
-@Deploy({ "org.nuxeo.ecm.platform.url.api", "org.nuxeo.ecm.platform.url.core",
+@Deploy({
+        "org.nuxeo.ecm.platform.url.api",
+        "org.nuxeo.ecm.platform.url.core",
         "org.nuxeo.ecm.platform.types.api",
         "org.nuxeo.ecm.platform.types.core",
-        "org.nuxeo.ecm.platform.notification.core:OSGI-INF/NotificationService.xml" })
-@LocalDeploy({ "org.nuxeo.ecm.automation.server:test-bindings.xml",
-        "org.nuxeo.ecm.automation.server:test-mvalues.xml",
-        "org.nuxeo.ecm.automation.server:core-types-contrib.xml",
-        "org.nuxeo.ecm.automation.server:adapter-contrib.xml" })
+        "org.nuxeo.ecm.platform.notification.core:OSGI-INF/NotificationService.xml",
+        "org.nuxeo.ecm.automation.test" })
+@LocalDeploy({ "org.nuxeo.ecm.automation.test:test-bindings.xml",
+        "org.nuxeo.ecm.automation.test:test-mvalues.xml" })
 @Features(EmbeddedAutomationServerFeature.class)
 @Jetty(port = 18080)
 @RepositoryConfig(cleanup = Granularity.METHOD)
@@ -254,19 +256,15 @@ public class EmbeddedAutomationClientTest extends AbstractAutomationClientTest {
     }
 
     /**
-     * test security on a chain - only disable flag is tested - TODO more tests
-     * to test each security filter
+     * We allow to call chain operation since 5.7.2. Test on it.
      */
     @Test
-    public void testChainSecurity() throws Exception {
+    public void testRemoteChain() throws Exception {
         OperationDocumentation opd = session.getOperation("principals");
         assertNotNull(opd);
-        try {
-            session.newRequest("principals").setInput(DocRef.newRef("/")).execute();
-            fail("chains invocation is supposed to fail since it is disabled - should return 404");
-        } catch (RemoteException e) {
-            assertEquals(404, e.getStatus());
-        }
+        Document doc = (Document) session.newRequest("principals").setInput(
+                DocRef.newRef("/")).execute();
+        assertNotNull(doc);
     }
 
     @Test(expected = RemoteException.class)
@@ -804,10 +802,13 @@ public class EmbeddedAutomationClientTest extends AbstractAutomationClientTest {
                 note.getTitle()).set("parentPath", "/").execute();
         assertNotNull(note);
         // Test for pojo <-> adapter automation update
+        // Fetching the business adapter model
+        note = (BusinessBean) session.newRequest(
+                "Business.BusinessFetchOperation").setInput(note).execute();
+        assertNotNull(note.getId());
         note.setTitle("Update");
         note = (BusinessBean) session.newRequest(
-                "Business.BusinessUpdateOperation").setInput(note).set("id",
-                note.getId()).execute();
+                "Business.BusinessUpdateOperation").setInput(note).execute();
         assertEquals("Update", note.getTitle());
     }
 
@@ -827,9 +828,12 @@ public class EmbeddedAutomationClientTest extends AbstractAutomationClientTest {
         // Marshaller for bean 'note' is registered on the fly
         note = businessService.create(note, note.getTitle(), "/");
         assertNotNull(note);
+        // Fetching the business adapter model
+        note = businessService.fetch(note);
+        assertNotNull(note.getId());
         // Test for pojo <-> adapter automation update
         note.setTitle("Update");
-        note = businessService.update(note, note.getId());
+        note = businessService.update(note);
         assertEquals("Update", note.getTitle());
     }
 }

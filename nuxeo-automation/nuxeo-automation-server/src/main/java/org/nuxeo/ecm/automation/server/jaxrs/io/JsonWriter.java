@@ -19,6 +19,7 @@ package org.nuxeo.ecm.automation.server.jaxrs.io;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.jackson.JsonEncoding;
@@ -30,6 +31,7 @@ import org.codehaus.jackson.map.ser.BeanSerializer;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationDocumentation;
 import org.nuxeo.ecm.automation.OperationDocumentation.Param;
+import org.nuxeo.ecm.automation.OperationException;
 import org.nuxeo.ecm.automation.server.AutomationServerComponent;
 import org.nuxeo.ecm.automation.server.jaxrs.AutomationInfo;
 import org.nuxeo.ecm.automation.server.jaxrs.ExceptionHandler;
@@ -119,7 +121,7 @@ public class JsonWriter {
     /**
      * Used to export operations to studio
      */
-    public static String exportOperations() throws IOException {
+    public static String exportOperations() throws IOException, OperationException {
         List<OperationDocumentation> ops = Framework.getLocalService(
                 AutomationService.class).getDocumentation();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -181,7 +183,7 @@ public class JsonWriter {
             jg.writeString(s);
         }
         jg.writeEndArray();
-        writeParams(jg, op.params);
+        writeParams(jg, Arrays.asList(op.params));
         jg.writeEndObject();
         jg.flush();
     }

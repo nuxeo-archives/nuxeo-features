@@ -21,14 +21,15 @@ import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
+import org.nuxeo.ecm.automation.core.util.Properties;
 
 /**
  * Run an embedded operation chain using the current input. The output is
  * undefined (Void)
- * 
+ *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
-@Operation(id = RunOperation.ID, category = Constants.CAT_SUBCHAIN_EXECUTION, label = "Run Chain", description = "Run an operation chain in the current context")
+@Operation(id = RunOperation.ID, category = Constants.CAT_SUBCHAIN_EXECUTION, label = "Run Chain", description = "Run an operation chain in the current context. The 'parameters' injected are accessible in the subcontext ChainParameters. For instance, @{ChainParameters['parameterKey']}.")
 public class RunOperation {
 
     public static final String ID = "Context.RunOperation";
@@ -45,6 +46,9 @@ public class RunOperation {
     @Param(name = "isolate", required = false, values = "false")
     protected boolean isolate = false;
 
+    @Param(name = "parameters", required = false)
+    protected Properties chainParameters;
+
     @OperationMethod
     public void run() throws Exception {
         Map<String, Object> vars = isolate ? new HashMap<String, Object>(
@@ -52,7 +56,7 @@ public class RunOperation {
         OperationContext subctx = new OperationContext(ctx.getCoreSession(),
                 vars);
         subctx.setInput(ctx.getInput());
-        service.run(subctx, chainId);
+        service.run(subctx, chainId, (Map) chainParameters);
     }
 
 }

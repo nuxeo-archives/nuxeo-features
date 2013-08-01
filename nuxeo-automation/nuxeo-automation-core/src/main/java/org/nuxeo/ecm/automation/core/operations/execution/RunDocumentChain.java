@@ -21,6 +21,7 @@ import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
+import org.nuxeo.ecm.automation.core.util.Properties;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
@@ -31,7 +32,7 @@ import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
  *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
-@Operation(id = RunDocumentChain.ID, category = Constants.CAT_SUBCHAIN_EXECUTION, label = "Run Document Chain", description = "Run an operation chain which is returning a document in the current context. The input for the chain ro run is the current input of the operation. Return the output of the chain as a document.")
+@Operation(id = RunDocumentChain.ID, category = Constants.CAT_SUBCHAIN_EXECUTION, label = "Run Document Chain", description = "Run an operation chain which is returning a document in the current context. The input for the chain ro run is the current input of the operation. Return the output of the chain as a document. The 'parameters' injected are accessible in the subcontext ChainParameters. For instance, @{ChainParameters['parameterKey']}.")
 public class RunDocumentChain {
 
     public static final String ID = "Context.RunDocumentOperation";
@@ -48,13 +49,19 @@ public class RunDocumentChain {
     @Param(name="isolate", required = false, values = "false")
     protected boolean isolate = false;
 
+    @Param(name = "parameters", required = false)
+    protected Properties chainParameters;
+
 
     @OperationMethod
     public DocumentModel run(DocumentModel doc) throws Exception {
-        Map<String, Object> vars = isolate ? new HashMap<String, Object>(ctx.getVars()) : ctx.getVars();
-        OperationContext subctx = new OperationContext(ctx.getCoreSession(), vars);
+        Map<String, Object> vars = isolate ? new HashMap<String, Object>(
+                ctx.getVars()) : ctx.getVars();
+        OperationContext subctx = new OperationContext(ctx.getCoreSession(),
+                vars);
         subctx.setInput(doc);
-        return (DocumentModel) service.run(subctx, chainId);
+        return (DocumentModel) service.run(subctx, chainId,
+                (Map) chainParameters);
     }
 
     @OperationMethod
