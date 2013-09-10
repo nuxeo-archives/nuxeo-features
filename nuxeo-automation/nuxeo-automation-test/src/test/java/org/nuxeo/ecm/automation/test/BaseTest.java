@@ -136,6 +136,13 @@ public class BaseTest {
         }
     }
 
+    protected JsonNode getResponseAsJson(RequestType requestType, String path,
+            Map<String, String> queryParams) throws IOException {
+        ClientResponse response = getResponse(requestType, path, queryParams);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        return mapper.readTree(response.getEntityInputStream());
+    }
+
     protected JsonNode getResponseAsJson(RequestType responseType, String url)
             throws IOException, JsonProcessingException {
         ClientResponse response = getResponse(responseType, url);

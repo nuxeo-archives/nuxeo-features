@@ -22,6 +22,8 @@ import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
@@ -230,7 +232,6 @@ public class DirectoryTest extends BaseTest {
     @Test
     public void userDirectoryAreNotEditable() throws Exception {
 
-
         // Given a user directory entry
         UserManager um = Framework.getLocalService(UserManager.class);
         DocumentModel model = um.getUserModel("user1");
@@ -246,10 +247,8 @@ public class DirectoryTest extends BaseTest {
 
     }
 
-
     @Test
     public void groupDirectoryAreNotEditable() throws Exception {
-
 
         // Given a user directory entry
         UserManager um = Framework.getLocalService(UserManager.class);
@@ -266,6 +265,22 @@ public class DirectoryTest extends BaseTest {
 
     }
 
+    @Test
+    public void itCanSearchDirectories() throws Exception {
+        // Given a query
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("label", "Test 4");
+
+        // When i search the directory
+        JsonNode node = getResponseAsJson(RequestType.GET, "/directory/"
+                + TESTDIRNAME + "/@search", queryParams);
+
+        // Then i get the results a JSon
+        ArrayNode items = (ArrayNode) node.get("items");
+        assertNotNull(items);
+        assertEquals(1, items.size());
+
+    }
 
     private String getDirectoryEntryAsJson(DocumentModel dirEntry)
             throws IOException, JsonGenerationException, ClientException {

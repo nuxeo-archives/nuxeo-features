@@ -23,6 +23,8 @@ import org.nuxeo.ecm.directory.Session;
 import org.nuxeo.ecm.webengine.WebException;
 
 /**
+ * Runner for the withDirectorySession method that encapsulate all the exception
+ * handling needed when working with directory sessions.
  *
  *
  * @since 5.7.3

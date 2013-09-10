@@ -18,15 +18,22 @@ package org.nuxeo.ecm.automation.server.jaxrs.directory;
 
 import static org.nuxeo.ecm.automation.server.jaxrs.directory.DirectorySessionRunner.withDirectorySession;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import org.nuxeo.ecm.automation.jaxrs.io.directory.DirectoryEntry;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -83,15 +90,28 @@ public class DirectoryObject extends DefaultObject {
                     List<DirectoryEntry> run(Session session)
                             throws ClientException {
                         DocumentModelList entries = session.getEntries();
-                        List<DirectoryEntry> dirEntries = new ArrayList<>();
-                        for (DocumentModel doc : entries) {
-                            dirEntries.add(new DirectoryEntry(
-                                    directory.getName(), doc));
-                        }
-                        return dirEntries;
+                        return docModelListToDirEntries(entries);
                     }
+
                 });
 
+    }
+
+    /**
+     * Transform a DocumentModelList to a List<DirectoryEntry>.
+     *
+     * @param entries
+     * @return
+     * @throws DirectoryException
+     *
+     */
+    private List<DirectoryEntry> docModelListToDirEntries(
+            DocumentModelList entries) throws DirectoryException {
+        List<DirectoryEntry> dirEntries = new ArrayList<>();
+        for (DocumentModel doc : entries) {
+            dirEntries.add(new DirectoryEntry(directory.getName(), doc));
+        }
+        return dirEntries;
     }
 
     @POST
@@ -110,12 +130,9 @@ public class DirectoryObject extends DefaultObject {
         return Response.ok(result).status(Status.CREATED).build();
     }
 
-
-
     void checkEditGuards() {
         NuxeoPrincipal currentUser = (NuxeoPrincipal) getContext().getCoreSession().getPrincipal();
-        if (!(currentUser.isAdministrator()
-                || currentUser.isMemberOf("powerusers"))) {
+        if (!(currentUser.isAdministrator() || currentUser.isMemberOf("powerusers"))) {
             throw new WebSecurityException("Not allowed to edit directory");
         }
 
@@ -129,6 +146,46 @@ public class DirectoryObject extends DefaultObject {
         } catch (ClientException e) {
             throw WebException.wrap(e);
         }
+    }
+
+    @GET
+    @Path("@search")
+    public List<DirectoryEntry> search(@Context
+    UriInfo uriInfo) {
+        final Map<String, Serializable> filter = queryParamsToFilter(uriInfo.getQueryParameters());
+
+        return withDirectorySession(directory,
+                new DirectorySessionRunner<List<DirectoryEntry>>() {
+
+                    @Override
+                    List<DirectoryEntry> run(Session session)
+                            throws ClientException {
+                        return docModelListToDirEntries(session.query(filter));
+                    }
+                });
+
+    }
+
+    /**
+     * Transform query parameters as aDirectory filter
+     *
+     * @param queryParams
+     * @return
+     *
+     */
+    private Map<String, Serializable> queryParamsToFilter(
+            MultivaluedMap<String, String> queryParams) {
+        final Map<String, Serializable> filter = new HashMap<>();
+        for (Entry<String, List<String>> entry : queryParams.entrySet()) {
+            if (entry.getValue().size() != 1) {
+                throw new IllegalArgumentException(String.format(
+                        "Filter param (%s) can hold only one value",
+                        entry.getKey()));
+            }
+
+            filter.put(entry.getKey(), entry.getValue().get(0));
+        }
+        return filter;
     }
 
     @Path("{entryId}")
