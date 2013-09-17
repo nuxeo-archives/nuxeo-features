@@ -13,6 +13,7 @@
  *
  * Contributors:
  *     Thomas Roger
+ *     Marwane Kalam-Alami
  */
 
 package org.nuxeo.ecm.platform.publisher.web;
@@ -27,6 +28,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.security.SecurityConstants;
+import org.nuxeo.ecm.core.schema.types.Type;
 import org.nuxeo.ecm.platform.ui.web.api.NavigationContext;
 import org.nuxeo.ecm.webapp.helpers.ResourcesAccessor;
 
@@ -70,7 +72,8 @@ public abstract class AbstractPublishActions {
         String translatedPathElement = resourcesAccessor.getMessages().get(
                 pathElementName);
         pathFragments.add(translatedPathElement);
-        if ("Domain".equals(documentModel.getType())) {
+        
+        if (isDomain(documentModel) || "/".equals(documentModel.getPathAsString())) {
             return;
         }
 
@@ -81,5 +84,17 @@ public abstract class AbstractPublishActions {
             getPathFragments(parentDocument, pathFragments);
         }
     }
+
+    protected boolean isDomain(DocumentModel documentModel) {
+        Type type = documentModel.getDocumentType();
+        while (type != null) {
+            if ("Domain".equals(type.getName())) {
+                return true;
+            }
+            type = type.getSuperType();
+        }
+        return false;
+    }
+
 
 }
