@@ -5,6 +5,7 @@
     <artifactId>nuxeo-features-parent</artifactId>
     <version>5.7.3</version>
   </parent>
+  <version>5.7.3-NXP-12628</version>
   <artifactId>nuxeo-platform-ui-select2</artifactId>
   <name>Select2 Integration</name>
   <description>
