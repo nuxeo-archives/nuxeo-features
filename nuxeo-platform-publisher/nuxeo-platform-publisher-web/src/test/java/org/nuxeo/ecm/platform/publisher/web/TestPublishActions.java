@@ -18,6 +18,7 @@ package org.nuxeo.ecm.platform.publisher.web;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nuxeo.ecm.core.api.ClientException;
@@ -48,9 +49,31 @@ public class TestPublishActions {
     @Inject
     private ResourcesAccessorBean resourcesAccessor;
 
-    @Test(timeout = 3000)
-    // In case an infinite loop occurs
-    public void testGetPathFragments() throws ClientException {
+    public static class ThreadGuard implements Runnable {
+        protected final Thread fixtureThread;
+
+        public ThreadGuard() {
+            fixtureThread = Thread.currentThread();
+        }
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            fixtureThread.interrupt();
+        }
+    }
+
+    @Before
+    public void guardInfiniteLoop() {
+        new Thread( new ThreadGuard(), "test-timeout").start();
+    }
+
+    @Test
+    public void testGetPathFragments() throws ClientException, InterruptedException {
         // Create file in standard domain
         DocumentModel fileModel = documentManager.createDocumentModel(
                 "/default-domain/workspaces/", "myfile", "File");
