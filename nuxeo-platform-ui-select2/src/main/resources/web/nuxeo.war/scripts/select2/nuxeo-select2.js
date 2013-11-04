@@ -277,6 +277,15 @@
       select2_params.allowClear = !required;
     }
 
+    var createSearchChoice = null;
+    if (params.createSearchChoice && params.createSearchChoice.length > 0) {
+      createSearchChoice = eval(params.createSearchChoice);
+    }
+
+    if (createSearchChoice != null) {
+      select2_params.createSearchChoice = createSearchChoice;
+    }
+
     // init select2
     el.select2(select2_params);
 
@@ -320,6 +329,9 @@
               newValue = JSON.stringify(e.added);
             }
             initHolder.val(newValue);
+            if (params.onAddEntryHandler) {
+               window[params.onAddEntryHandler](e.added);
+            }
           }
 
           if (e.removed) {
@@ -341,6 +353,9 @@
                 initHolder.val('');
               }
             }
+            if (params.onRemoveEntryHandler) {
+               window[params.onRemoveEntryHandler](e.removed);
+            }
           }
         }
 
@@ -351,7 +366,7 @@
 
         // Handle onchange widget property
         if (params.onchange) {
-          eval(params.onchange);
+          eval(params.onchange)(e);
         }
 
       });
