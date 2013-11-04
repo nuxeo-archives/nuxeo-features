@@ -3,6 +3,7 @@
   xmlns:a4j="http://richfaces.org/a4j"
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:nxu="http://nuxeo.org/nxweb/util"
+  xmlns:nxl="http://nuxeo.org/nxforms/layout"
   xmlns:c="http://java.sun.com/jstl/core"
   xmlns:rich="http://richfaces.org/rich">
 
@@ -15,7 +16,8 @@
     <c:if test="#{widget.handlingLabels}">
       <c:if test="#{!empty widget.label}">
         <ui:include src="/widgets/incl/widget_label_template.xhtml">
-          <ui:param name="labelStyleClass" value="summaryTitle #{widgetProperty_headerStyleClass}" />
+          <ui:param name="labelStyleClass"
+            value="summaryTitle #{widgetProperty_headerStyleClass}" />
         </ui:include>
       </c:if>
       <c:if test="#{empty widget.label}">
@@ -24,47 +26,49 @@
           <ui:param name="helpLabel" value="#{widget.helpLabel}" />
           <ui:param name="translated" value="true" />
           <ui:param name="required" value="#{widget.required}" />
-          <ui:param name="labelStyleClass" value="summaryTitle #{widgetProperty_headerStyleClass}" />
+          <ui:param name="labelStyleClass"
+            value="summaryTitle #{widgetProperty_headerStyleClass}" />
         </ui:include>
       </c:if>
     </c:if>
 
     <a4j:outputPanel id="#{outputPanelId}">
       <a4j:outputPanel ajaxRendered="false" id="#{listRegionId}">
-        <nxu:inputList id="#{widget.id}_list" value="#{currentDocumentTags}" model="model"
+        <nxu:inputList id="#{widget.id}_list"
+          value="#{currentDocumentTags}" model="model"
           required="#{widget.required}">
           <h:panelGroup id="#{widget.id}_listItem">
-          <span class="tag tagLink">
-            <h:commandLink value="#{model.rowData.label}"
-              action="#{tagActions.listDocumentsForTag(model.rowData.label)}" />
-            <a4j:commandLink id="#{widget.id}_removeTag"
-              action="#{tagActions.removeTagging(model.rowData.label)}"
-              immediate="true"
-              reRender="#{nxl:joinReRender(outputPanelId, ajaxReRender)}"
-              rendered="#{tagActions.canModifyTag(model.rowData)}">
-              <h:graphicImage value="/icons/action_tag_delete.png" />
-            </a4j:commandLink>
-          </span>
+            <span class="tag tagLink"> <h:commandLink
+                value="#{model.rowData.label}"
+                action="#{tagActions.listDocumentsForTag(model.rowData.label)}" />
+              <a4j:commandLink id="#{widget.id}_removeTag"
+                action="#{tagActions.removeTagging(model.rowData.label)}"
+                immediate="true"
+                reRender="#{nxl:joinReRender(outputPanelId, ajaxReRender)}"
+                rendered="#{tagActions.canModifyTag(model.rowData)}">
+                <h:graphicImage value="/icons/action_tag_delete.png" />
+              </a4j:commandLink>
+            </span>
           </h:panelGroup>
         </nxu:inputList>
         <h:message styleClass="errorMessage" for="#{widget.id}_list"
           id="#{widget.id}_message" />
       </a4j:outputPanel>
 
-      <span id="#{widget.id}_suggestDiv">
-        <h:inputText id="#{widget.id}_suggest"
+      <span id="#{widget.id}_suggestDiv"> <h:inputText
+          id="#{widget.id}_suggest"
           onkeydown="if (event.keyCode == 13) {return false;}"
-          styleClass="tagInput" placeholder="#{widgetProperty_placeholder}" />
+          styleClass="tagInput"
+          placeholder="#{widgetProperty_placeholder}" />
       </span>
       <rich:suggestionbox id="#{widget.id}_suggestionBox"
         for="#{widget.id}_suggest" tokens=""
-        suggestionAction="#{tagActions.getSuggestions}"
-        var="sugtag" fetchValue=""
+        suggestionAction="#{tagActions.getSuggestions}" var="sugtag"
+        fetchValue=""
         nothingLabel="#{messages['label.suggestion.noSearchResults']}"
         minChars="1" frequency="0" requestDelay="100">
         <f:param name="canSelectNewTag" value="true" />
-        <a4j:support event="onselect"
-          focus="#{widget.id}_suggest"
+        <a4j:support event="onselect" focus="#{widget.id}_suggest"
           bypassUpdates="true"
           reRender="#{nxl:joinReRender(listRegionId, ajaxReRender)}"
           id="#{widget.id}_listRegion_select">
@@ -75,18 +79,62 @@
         </a4j:support>
         <h:column>
           <f:subview rendered="#{sugtag.weight eq -1}">
-            <span class="tag newTag">
-              <h:outputText value="${sugtag.label}" />
+            <span class="tag newTag"> <h:outputText
+                value="${sugtag.label}" />
             </span>
           </f:subview>
           <f:subview rendered="#{sugtag.weight gt -1}">
-            <span class="tag tagLink">
-              <h:outputText value="${sugtag.label}" />
+            <span class="tag tagLink"> <h:outputText
+                value="${sugtag.label}" />
             </span>
           </f:subview>
         </h:column>
       </rich:suggestionbox>
     </a4j:outputPanel>
+
+    <script>
+          function createNewTag(term, data) {
+            return {
+              id : term,
+              displayLabel : term,
+              newTag : true
+            };
+          }
+
+          function addTagHandler(tag) {
+            return addTagging(tag.id);
+          }
+
+          function removeTagHandler(tag) {
+            return removeTagging(tag.id);
+          }
+        </script>
+
+    <a4j:jsFunction name="addTagging"
+      action="#{tagSelect2Support.addTagging}">
+      <a4j:actionparam name="param1"
+        assignTo="#{tagSelect2Support.label}" />
+    </a4j:jsFunction>
+
+    <a4j:jsFunction name="removeTagging"
+      action="#{tagSelect2Support.removeTagging}">
+      <a4j:actionparam name="param1"
+        assignTo="#{tagSelect2Support.label}" />
+    </a4j:jsFunction>
+
+    <ui:include src="/incl/select2_js.xhtml" />
+
+    <a4j:region>
+      <h:inputHidden id="#{widget.id}_select2" immediate="true"
+        ajaxSingle="true" value="#{documentTagIds}">
+        <f:converter converterId="select2Converter" />
+      </h:inputHidden>
+      <h:inputHidden readonly="true" id="#{widget.id}_select2_init"
+        value="#{resolveDocumentTags}" />
+    </a4j:region>
+
+    <h:inputHidden readonly="true" id="#{widget.id}_select2_params"
+      value="#{tagSelect2Support.encodePrameters()}" />
 
   </c:if>
 
