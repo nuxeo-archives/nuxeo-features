@@ -19,7 +19,7 @@
 package org.nuxeo.ecm.platform.tag.web;
 
 import static org.jboss.seam.ScopeType.APPLICATION;
-import static org.jboss.seam.ScopeType.CONVERSATION;
+import static org.jboss.seam.ScopeType.PAGE;
 import static org.jboss.seam.ScopeType.EVENT;
 
 import java.io.Serializable;
@@ -61,7 +61,7 @@ import org.nuxeo.runtime.api.Framework;
  * on the current document.
  */
 @Name("tagActions")
-@Scope(CONVERSATION)
+@Scope(PAGE)
 public class TagActionsBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
