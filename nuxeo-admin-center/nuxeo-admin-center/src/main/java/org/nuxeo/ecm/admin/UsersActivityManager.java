@@ -34,7 +34,7 @@ import org.jboss.seam.contexts.Contexts;
 import org.nuxeo.ecm.platform.audit.api.AuditReader;
 import org.nuxeo.ecm.platform.audit.api.LogEntry;
 import org.nuxeo.ecm.platform.web.common.session.NuxeoHttpSessionMonitor;
-import org.nuxeo.ecm.platform.web.common.session.SessionInfoImpl;
+import org.nuxeo.ecm.platform.web.common.session.SessionInfo;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -187,7 +187,7 @@ public class UsersActivityManager implements Serializable {
     }
 
     @Factory(value = "userHttpSessions", scope = ScopeType.EVENT)
-    public List<SessionInfoImpl> getUserSessions() {
+    public List<SessionInfo> getUserSessions() {
         if (getSelectedHttpSessionsTimeRange().equals("all")) {
             return NuxeoHttpSessionMonitor.instance().getSortedSessions();
         } else {
