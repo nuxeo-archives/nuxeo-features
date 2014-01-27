@@ -255,6 +255,9 @@
                 <row>
                   <widget category="widgetTypeConf">select2_suggestionFormatter</widget>
                 </row>
+                <row>
+                  <widget category="widgetTypeConf">validator</widget>
+                </row>
               </rows>
             </layout>
           </layouts>
@@ -405,6 +408,9 @@
                 </row>
                 <row>
                   <widget category="widgetTypeConf">select2_suggestionFormatter</widget>
+                </row>
+                <row>
+                  <widget category="widgetTypeConf">validator</widget>
                 </row>
               </rows>
             </layout>

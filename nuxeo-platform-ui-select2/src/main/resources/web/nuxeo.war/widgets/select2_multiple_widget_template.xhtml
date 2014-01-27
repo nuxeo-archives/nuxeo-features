@@ -44,6 +44,9 @@
           immediate="true" ajaxSingle="true"
           required="#{widgetProperty_required}" var="currentValue">
           <f:converter converterId="select2Converter" />
+          <c:if test ="#{widgetProperty_validator != null}">
+            <f:validator validatorId="widgetProperty_validator"/>
+          </c:if>
           <h:inputHidden readonly="true" id="#{widget.id}_select2_init"
             value="#{select2Actions.resolveMultipleReferences(currentValue, widgetProperty_repository,widgetProperty_initOperationId, widgetProperty_idProperty, widgetProperty_documentSchemas)}" />
         </nxu:valueHolder>
