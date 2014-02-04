@@ -25,10 +25,6 @@ package org.nuxeo.ecm.platform.picture.api;
  */
 public class MetadataConstants {
 
-    public static final String META_WIDTH = "width";
-
-    public static final String META_HEIGHT = "height";
-
     /* EXIF */
     public static final String META_DESCRIPTION = "description";
 

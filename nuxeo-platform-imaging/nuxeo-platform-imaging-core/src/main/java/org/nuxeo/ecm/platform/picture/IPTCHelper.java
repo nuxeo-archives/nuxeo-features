@@ -48,62 +48,21 @@ import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_TIME_CRE
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_URGENCY;
 import static org.nuxeo.ecm.platform.picture.api.MetadataConstants.META_WRITER;
 
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.drew.imaging.jpeg.JpegProcessingException;
-import com.drew.imaging.jpeg.JpegSegmentReader;
-import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
-import com.drew.metadata.MetadataReader;
-import com.drew.metadata.exif.ExifReader;
 import com.drew.metadata.iptc.IptcDirectory;
-import com.drew.metadata.iptc.IptcReader;
-import com.drew.metadata.jpeg.JpegCommentReader;
-import com.drew.metadata.jpeg.JpegReader;
 
 public class IPTCHelper {
 
-    private static final Log log = LogFactory.getLog(IPTCHelper.class);
+    public static void extract(Metadata md, Map<String, Object> metadata) throws MetadataException {
 
-    public static void extractMetadata(InputStream stream,
-            Map<String, Object> metadata) throws JpegProcessingException {
-        JpegSegmentReader reader = new JpegSegmentReader(stream);
-        extractMetadataFromSegment(metadata, reader,
-                JpegSegmentReader.SEGMENT_APP1, ExifReader.class);
-        extractMetadataFromSegment(metadata, reader,
-                JpegSegmentReader.SEGMENT_APPD, IptcReader.class);
-        extractMetadataFromSegment(metadata, reader,
-                JpegSegmentReader.SEGMENT_SOF0, JpegReader.class);
-        extractMetadataFromSegment(metadata, reader,
-                JpegSegmentReader.SEGMENT_COM, JpegCommentReader.class);
-    }
+        IptcDirectory iptc = md.getDirectory(IptcDirectory.class);
 
-    public static void extractMetadataFromSegment(Map<String, Object> metadata,
-            JpegSegmentReader reader, byte marker,
-            Class<? extends MetadataReader> klass) {
-        try {
-            Constructor<? extends MetadataReader> constructor = klass.getConstructor(byte[].class);
-            int n = reader.getSegmentCount(marker);
-            for (int i = 0; i < n; i++) {
-                byte[] segment = reader.readSegment(marker, i);
-
-                Metadata md = new Metadata();
-                constructor.newInstance(segment).extract(md);
-                extract(md, metadata);
-            }
-        } catch (Exception e) {
-            // Unable to read this kind of metadata, so skip
+        if (iptc == null) {
+            return;
         }
-    }
-
-    public static void extract(Metadata md, Map<String, Object> metadata) {
-        Directory iptc = md.getDirectory(IptcDirectory.class);
 
         if (iptc.containsTag(IptcDirectory.TAG_BY_LINE)) {
             metadata.put(META_BY_LINE,
@@ -137,10 +96,10 @@ public class IPTCHelper {
                     cleanupData(iptc.getString(IptcDirectory.TAG_COPYRIGHT_NOTICE)));
         }
 
-        if (iptc.containsTag(IptcDirectory.TAG_COUNTRY_OR_PRIMARY_LOCATION)) {
+        if (iptc.containsTag(IptcDirectory.TAG_COUNTRY_OR_PRIMARY_LOCATION_NAME)) {
             metadata.put(
                     META_COUNTRY_OR_PRIMARY_LOCATION,
-                    cleanupData(iptc.getString(IptcDirectory.TAG_COUNTRY_OR_PRIMARY_LOCATION)));
+                    cleanupData(iptc.getString(IptcDirectory.TAG_COUNTRY_OR_PRIMARY_LOCATION_NAME)));
         }
 
         if (iptc.containsTag(IptcDirectory.TAG_CREDIT)) {
@@ -149,12 +108,8 @@ public class IPTCHelper {
         }
 
         if (iptc.containsTag(IptcDirectory.TAG_DATE_CREATED)) {
-            try {
-                metadata.put(META_DATE_CREATED,
+            metadata.put(META_DATE_CREATED,
                         iptc.getDate(IptcDirectory.TAG_DATE_CREATED));
-            } catch (MetadataException e) {
-                log.error("Failed to get IPTC - date created", e);
-            }
         }
 
         if (iptc.containsTag(IptcDirectory.TAG_HEADLINE)) {
@@ -200,19 +155,16 @@ public class IPTCHelper {
                     cleanupData(iptc.getString(IptcDirectory.TAG_PROVINCE_OR_STATE)));
         }
 
-        if (iptc.containsTag(IptcDirectory.TAG_RECORD_VERSION)) {
+        if (iptc.containsTag(IptcDirectory.TAG_APPLICATION_RECORD_VERSION)) {
             metadata.put(
                     META_RECORD_VERSION,
-                    cleanupData(iptc.getString(IptcDirectory.TAG_RECORD_VERSION)));
+                    cleanupData(iptc.getString(IptcDirectory.TAG_APPLICATION_RECORD_VERSION)));
         }
 
         if (iptc.containsTag(IptcDirectory.TAG_RELEASE_DATE)) {
-            try {
-                metadata.put(META_RELEASE_DATE,
-                        iptc.getDate(IptcDirectory.TAG_RELEASE_DATE));
-            } catch (MetadataException e) {
-                log.error("Failed to get IPTC - release date", e);
-            }
+           metadata.put(
+                   META_RELEASE_DATE,
+                   iptc.getDate(IptcDirectory.TAG_RELEASE_DATE));
         }
 
         if (iptc.containsTag(IptcDirectory.TAG_RELEASE_TIME)) {
@@ -247,9 +199,9 @@ public class IPTCHelper {
                     cleanupData(iptc.getString(IptcDirectory.TAG_URGENCY)));
         }
 
-        if (iptc.containsTag(IptcDirectory.TAG_WRITER)) {
+        if (iptc.containsTag(IptcDirectory.TAG_CAPTION_WRITER)) {
             metadata.put(META_WRITER,
-                    cleanupData(iptc.getString(IptcDirectory.TAG_WRITER)));
+                    cleanupData(iptc.getString(IptcDirectory.TAG_CAPTION_WRITER)));
         }
     }
 

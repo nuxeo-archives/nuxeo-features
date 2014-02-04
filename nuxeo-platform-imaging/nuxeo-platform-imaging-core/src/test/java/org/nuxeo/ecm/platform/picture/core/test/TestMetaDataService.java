@@ -79,11 +79,9 @@ public class TestMetaDataService extends NXRuntimeTestCase {
         assertNotNull(map.get(MetadataConstants.META_CREDIT));
         assertNotNull(map.get(MetadataConstants.META_DATE_CREATED));
         assertNotNull(map.get(MetadataConstants.META_HEADLINE));
-        assertNotNull(map.get(MetadataConstants.META_HEIGHT));
         assertNotNull(map.get(MetadataConstants.META_OBJECT_NAME));
         assertNotNull(map.get(MetadataConstants.META_SOURCE));
         assertNotNull(map.get(MetadataConstants.META_SUPPLEMENTAL_CATEGORIES));
-        assertNotNull(map.get(MetadataConstants.META_WIDTH));
 
         // those metadata are not found by the parser
         // assertNotNull(map.get(MetadataConstants.META_COMMENT));
