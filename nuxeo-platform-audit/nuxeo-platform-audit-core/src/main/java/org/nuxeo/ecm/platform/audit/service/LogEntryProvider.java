@@ -83,6 +83,9 @@ public class LogEntryProvider {
     }
 
     protected LogEntry doPublish(LogEntry entry) {
+        if (entry == null) {
+            return null;
+        }
         if (entry.getExtendedInfos() != null) {
             entry.getExtendedInfos().size(); // force lazy loading
         }
@@ -343,7 +346,13 @@ public class LogEntryProvider {
     @SuppressWarnings("unchecked")
     public List<String> findEventIds() {
         Query query = em.createNamedQuery("LogEntry.findEventIds");
-        return (List<String>) query.getResultList();
+        return query.getResultList();
+    }
+
+    public void removeEntries(List<LogEntry> entries) {
+        for (LogEntry each:entries) {
+            em.remove(each);
+        }
     }
 
 }

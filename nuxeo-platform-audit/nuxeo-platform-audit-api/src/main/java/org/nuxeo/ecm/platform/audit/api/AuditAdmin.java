@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2006-2011 Nuxeo SA (http://nuxeo.com/) and others.
  *
  * All rights reserved. This program and the accompanying materials
@@ -30,4 +30,10 @@ public interface AuditAdmin {
      */
     long syncLogCreationEntries(String repoId, String path, Boolean recurs)
             throws ClientException;
+
+    /**
+     * Remove an entry from the log
+     * @since 5.9.2
+     */
+    void removeLogEntries(String uuid);
 }

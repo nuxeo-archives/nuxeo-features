@@ -18,7 +18,7 @@ package org.nuxeo.ecm.platform.audit;
 
 import java.io.File;
 
-import org.nuxeo.common.utils.FileUtils;
+import org.apache.commons.io.FileUtils;
 import org.nuxeo.ecm.core.test.TransactionalFeature;
 import org.nuxeo.ecm.platform.test.PlatformFeature;
 import org.nuxeo.runtime.test.runner.Deploy;
@@ -40,7 +40,7 @@ public class AuditFeature extends SimpleFeature {
     @Override
     public void initialize(FeaturesRunner runner) throws Exception {
         dir = new File(DIRECTORY);
-        FileUtils.deleteTree(dir);
+        FileUtils.deleteQuietly(dir);
         dir.mkdirs();
         System.setProperty(PROP_NAME, dir.getPath());
         super.initialize(runner);
@@ -48,7 +48,7 @@ public class AuditFeature extends SimpleFeature {
 
     @Override
     public void stop(FeaturesRunner runner) throws Exception {
-        FileUtils.deleteTree(dir);
+        FileUtils.deleteDirectory(dir);
         dir = null;
         super.stop(runner);
     }

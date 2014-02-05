@@ -230,6 +230,7 @@ public class NXAuditEventsService extends DefaultComponent implements
         }
     }
 
+    @Override
     public Set<String> getAuditableEventNames() {
         return eventNames;
     }
@@ -387,9 +388,11 @@ public class NXAuditEventsService extends DefaultComponent implements
         return entry;
     }
 
+    @Override
     public void addLogEntries(final List<LogEntry> entries) {
         try {
             getOrCreatePersistenceProvider().run(true, new RunVoid() {
+                @Override
                 public void runWith(EntityManager em) {
                     addLogEntries(em, entries);
                 }
@@ -403,10 +406,12 @@ public class NXAuditEventsService extends DefaultComponent implements
         LogEntryProvider.createProvider(em).addLogEntries(entries);
     }
 
+    @Override
     public List<LogEntry> getLogEntriesFor(final String uuid) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<LogEntry>>() {
+                        @Override
                         public List<LogEntry> runWith(EntityManager em) {
                             return getLogEntriesFor(em, uuid);
                         }
@@ -420,12 +425,14 @@ public class NXAuditEventsService extends DefaultComponent implements
         return LogEntryProvider.createProvider(em).getLogEntriesFor(uuid);
     }
 
+    @Override
     public List<LogEntry> getLogEntriesFor(final String uuid,
             final Map<String, FilterMapEntry> filterMap,
             final boolean doDefaultSort) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<LogEntry>>() {
+                        @Override
                         public List<LogEntry> runWith(EntityManager em) {
                             return getLogEntriesFor(em, uuid, filterMap,
                                     doDefaultSort);
@@ -442,10 +449,12 @@ public class NXAuditEventsService extends DefaultComponent implements
                 filterMap, doDefaultSort);
     }
 
+    @Override
     public LogEntry getLogEntryByID(final long id) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<LogEntry>() {
+                        @Override
                         public LogEntry runWith(EntityManager em) {
                             return getLogEntryByID(em, id);
                         }
@@ -459,11 +468,13 @@ public class NXAuditEventsService extends DefaultComponent implements
         return LogEntryProvider.createProvider(em).getLogEntryByID(id);
     }
 
+    @Override
     public List<LogEntry> nativeQueryLogs(final String whereClause,
             final int pageNb, final int pageSize) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<LogEntry>>() {
+                        @Override
                         public List<LogEntry> runWith(EntityManager em) {
                             return nativeQueryLogs(em, whereClause, pageNb,
                                     pageSize);
@@ -480,11 +491,13 @@ public class NXAuditEventsService extends DefaultComponent implements
                 pageNb, pageSize);
     }
 
+    @Override
     public List<?> nativeQuery(final String query, final int pageNb,
             final int pageSize) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<?>>() {
+                        @Override
                         public List<?> runWith(EntityManager em) {
                             return nativeQuery(em, query, pageNb, pageSize);
                         }
@@ -500,12 +513,14 @@ public class NXAuditEventsService extends DefaultComponent implements
                 pageSize);
     }
 
+    @Override
     public List<?> nativeQuery(final String query,
             final Map<String, Object> params, final int pageNb,
             final int pageSize) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<?>>() {
+                        @Override
                         public List<?> runWith(EntityManager em) {
                             return nativeQuery(em, query, params, pageNb,
                                     pageSize);
@@ -522,11 +537,13 @@ public class NXAuditEventsService extends DefaultComponent implements
                 pageNb, pageSize);
     }
 
+    @Override
     public List<LogEntry> queryLogs(final String[] eventIds,
             final String dateRange) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<LogEntry>>() {
+                        @Override
                         public List<LogEntry> runWith(EntityManager em) {
                             return queryLogs(em, eventIds, dateRange);
                         }
@@ -542,12 +559,14 @@ public class NXAuditEventsService extends DefaultComponent implements
                 dateRange);
     }
 
+    @Override
     public List<LogEntry> queryLogsByPage(final String[] eventIds,
             final String dateRange, final String[] category, final String path,
             final int pageNb, final int pageSize) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<LogEntry>>() {
+                        @Override
                         public List<LogEntry> runWith(EntityManager em) {
                             return queryLogsByPage(em, eventIds, dateRange,
                                     category, path, pageNb, pageSize);
@@ -569,12 +588,14 @@ public class NXAuditEventsService extends DefaultComponent implements
         }
     }
 
+    @Override
     public List<LogEntry> queryLogsByPage(final String[] eventIds,
             final Date limit, final String[] category, final String path,
             final int pageNb, final int pageSize) {
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<LogEntry>>() {
+                        @Override
                         public List<LogEntry> runWith(EntityManager em) {
                             return queryLogsByPage(em, eventIds, limit,
                                     category, path, pageNb, pageSize);
@@ -591,11 +612,13 @@ public class NXAuditEventsService extends DefaultComponent implements
                 limit, category, path, pageNb, pageSize);
     }
 
+    @Override
     public long syncLogCreationEntries(final String repoId, final String path,
             final Boolean recurs) {
         try {
             return getOrCreatePersistenceProvider().run(true,
                     new RunCallback<Long>() {
+                        @Override
                         public Long runWith(EntityManager em) {
                             return syncLogCreationEntries(em, repoId, path,
                                     recurs);
@@ -665,10 +688,32 @@ public class NXAuditEventsService extends DefaultComponent implements
         return nbSyncedEntries;
     }
 
+    @Override
+    public void removeLogEntries(final String uuid) {
+        try {
+            getOrCreatePersistenceProvider().run(true,
+                    new RunCallback<Integer>() {
+                        @Override
+                        public Integer runWith(EntityManager em) {
+                            em.createNamedQuery("LogEntry.removeByDocUUID").setParameter(
+                                    "docUUID", uuid).executeUpdate();
+                            return 0;
+                        }
+                    });
+        } catch (ClientException e) {
+            throw new ClientRuntimeException(e);
+        }
+    }
+
+    public void removeLogEntries(EntityManager em, List<LogEntry> entries) {
+        LogEntryProvider.createProvider(em).removeEntries(entries);
+    }
+
     public void addLogEntry(final LogEntry entry) {
         try {
             getOrCreatePersistenceProvider().run(true,
                     new RunCallback<Integer>() {
+                        @Override
                         public Integer runWith(EntityManager em) {
                             addLogEntry(em, entry);
                             return 0;
@@ -687,6 +732,7 @@ public class NXAuditEventsService extends DefaultComponent implements
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<Long>() {
+                        @Override
                         public Long runWith(EntityManager em) {
                             return getEventsCount(em, eventId);
                         }
@@ -705,6 +751,7 @@ public class NXAuditEventsService extends DefaultComponent implements
         try {
             return getOrCreatePersistenceProvider().run(false,
                     new RunCallback<List<String>>() {
+                        @Override
                         public List<String> runWith(EntityManager em) {
                             return getLoggedEventIds(em);
                         }
@@ -719,9 +766,11 @@ public class NXAuditEventsService extends DefaultComponent implements
         return LogEntryProvider.createProvider(em).findEventIds();
     }
 
+    @Override
     public void logEvent(final Event event) {
         try {
             getOrCreatePersistenceProvider().run(true, new RunVoid() {
+                @Override
                 public void runWith(EntityManager em) {
                     logEvent(em, event);
                 }
@@ -731,9 +780,11 @@ public class NXAuditEventsService extends DefaultComponent implements
         }
     }
 
+    @Override
     public void logEvents(final EventBundle eventBundle) {
         try {
             getOrCreatePersistenceProvider().run(true, new RunVoid() {
+                @Override
                 public void runWith(EntityManager em) {
                     logEvents(em, eventBundle);
                 }
@@ -875,6 +926,7 @@ public class NXAuditEventsService extends DefaultComponent implements
                 pageNb, pageSize);
     }
 
+    @Override
     public List<LogEntry> queryLogsByPage(String[] eventIds, String dateRange,
             String category, String path, int pageNb, int pageSize) {
         String[] categories = { category };
@@ -882,6 +934,7 @@ public class NXAuditEventsService extends DefaultComponent implements
                 pageSize);
     }
 
+    @Override
     public List<LogEntry> queryLogsByPage(String[] eventIds, Date limit,
             String category, String path, int pageNb, int pageSize) {
         String[] categories = { category };
