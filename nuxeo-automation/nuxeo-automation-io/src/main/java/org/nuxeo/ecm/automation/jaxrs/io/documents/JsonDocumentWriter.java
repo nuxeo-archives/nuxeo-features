@@ -13,6 +13,7 @@ package org.nuxeo.ecm.automation.jaxrs.io.documents;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
@@ -20,6 +21,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
@@ -53,8 +56,10 @@ import org.nuxeo.ecm.core.api.model.impl.ArrayProperty;
 import org.nuxeo.ecm.core.api.model.impl.ComplexProperty;
 import org.nuxeo.ecm.core.api.model.impl.ListProperty;
 import org.nuxeo.ecm.core.api.model.impl.primitives.BlobProperty;
+import org.nuxeo.ecm.core.schema.types.ComplexTypeImpl;
 import org.nuxeo.ecm.core.schema.types.ListType;
 import org.nuxeo.ecm.core.schema.utils.DateParser;
+import org.nuxeo.ecm.platform.web.common.vh.VirtualHostHelper;
 import org.nuxeo.runtime.api.Framework;
 
 /**
@@ -73,6 +78,9 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
 
     @Context
     protected HttpHeaders headers;
+
+    @Context
+    private HttpServletRequest servletRequest;
 
     @Override
     public long getSize(DocumentModel arg0, Class<?> arg1, Type arg2,
@@ -120,29 +128,39 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
             String[] schemas, Map<String, String> contextParameters)
             throws Exception {
         writeDocument(factory.createJsonGenerator(out, JsonEncoding.UTF8), doc,
-                schemas, contextParameters, headers);
+                schemas, contextParameters, headers, servletRequest);
     }
 
     public static void writeDocument(JsonGenerator jg, DocumentModel doc,
-            String[] schemas) throws Exception {
-        writeDocument(jg, doc, schemas, null);
+            String[] schemas, ServletRequest request) throws Exception {
+        writeDocument(jg, doc, schemas, null, request);
     }
 
     /**
      * @since 5.6
      */
     public static void writeDocument(JsonGenerator jg, DocumentModel doc,
-            String[] schemas, Map<String, String> contextParameters)
-            throws Exception {
-        writeDocument(jg, doc, schemas, contextParameters, null);
+            String[] schemas, Map<String, String> contextParameters,
+            ServletRequest request) throws Exception {
+        writeDocument(jg, doc, schemas, contextParameters, null, request);
     }
 
     /**
+     *
+     * @param jg a ready to user JSON generator
+     * @param doc the document to serialize
+     * @param schemas an array of schemas that must be serialized in the
+     *            properties map
+     * @param contextParameters
+     * @param headers
+     * @param request the ServletRequest. If null blob URLs won't be generated.
+     * @throws Exception
+     *
      * @since 5.7.3
      */
     public static void writeDocument(JsonGenerator jg, DocumentModel doc,
             String[] schemas, Map<String, String> contextParameters,
-            HttpHeaders headers) throws Exception {
+            HttpHeaders headers, ServletRequest request) throws Exception {
         jg.writeStartObject();
         jg.writeStringField("entity-type", "document");
         jg.writeStringField("repository", doc.getRepositoryName());
@@ -176,11 +194,11 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
             if (schemas.length == 1 && "*".equals(schemas[0])) {
                 // full document
                 for (String schema : doc.getSchemas()) {
-                    writeProperties(jg, doc, schema);
+                    writeProperties(jg, doc, schema, request);
                 }
             } else {
                 for (String schema : schemas) {
-                    writeProperties(jg, doc, schema);
+                    writeProperties(jg, doc, schema, request);
                 }
             }
             jg.writeEndObject();
@@ -200,7 +218,7 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
             }
         }
 
-        writeRestContributions(jg, doc, headers);
+        writeRestContributions(jg, doc, headers, request);
         jg.writeEndObject();
 
         jg.writeEndObject();
@@ -218,15 +236,16 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
      * @since 5.7.3
      */
     protected static void writeRestContributions(JsonGenerator jg,
-            DocumentModel doc, HttpHeaders headers)
+            DocumentModel doc, HttpHeaders headers, ServletRequest request)
             throws JsonGenerationException, IOException, ClientException {
         RestContributorService rcs = Framework.getLocalService(RestContributorService.class);
-        RestEvaluationContext ec = new HeaderDocEvaluationContext(doc, headers);
+        RestEvaluationContext ec = new HeaderDocEvaluationContext(doc, headers,
+                request);
         rcs.writeContext(jg, ec);
     }
 
     protected static void writeProperties(JsonGenerator jg, DocumentModel doc,
-            String schema) throws Exception {
+            String schema, ServletRequest request) throws Exception {
         DocumentPart part = doc.getPart(schema);
         if (part == null) {
             return;
@@ -236,10 +255,19 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
             prefix = schema;
         }
         prefix = prefix + ":";
-        String filesBaseUrl = "files/" + doc.getId() + "?path=";
+
+        String blobUrlPrefix = null;
+        if (request != null) {
+            StringBuilder sb = new StringBuilder(
+                    VirtualHostHelper.getBaseURL(request));
+            sb.append("nxbigfile/").append(doc.getRepositoryName()).append("/").append(
+                    doc.getId()).append("/");
+            blobUrlPrefix = sb.toString();
+        }
+
         for (Property p : part.getChildren()) {
             jg.writeFieldName(prefix + p.getField().getName().getLocalName());
-            writePropertyValue(jg, p, filesBaseUrl);
+            writePropertyValue(jg, p, blobUrlPrefix);
         }
     }
 
@@ -302,7 +330,7 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
 
     protected static void writeMapPropertyValue(JsonGenerator jg,
             ComplexProperty prop, String filesBaseUrl)
-            throws JsonGenerationException, IOException, PropertyException  {
+            throws JsonGenerationException, IOException, PropertyException {
         jg.writeStartObject();
         for (Property p : prop.getChildren()) {
             jg.writeFieldName(p.getName());
@@ -345,9 +373,34 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
             jg.writeStringField("digest", v);
         }
         jg.writeStringField("length", Long.toString(blob.getLength()));
-        jg.writeStringField("data",
-                filesBaseUrl + URLEncoder.encode(prop.getPath(), "UTF-8"));
+        if (filesBaseUrl != null) {
+            jg.writeStringField("data", getBlobUrl(prop, filesBaseUrl));
+        }
         jg.writeEndObject();
+    }
+
+    /**
+     * Get the full URL of where a blob can be downloaded.
+     *
+     * @param prop
+     * @param filesBaseUrl
+     * @return
+     * @throws UnsupportedEncodingException
+     * @throws PropertyException
+     *
+     * @since 5.9.3
+     */
+    private static String getBlobUrl(Property prop, String filesBaseUrl)
+            throws UnsupportedEncodingException, PropertyException {
+        StringBuilder blobUrlBuilder = new StringBuilder(filesBaseUrl);
+        blobUrlBuilder.append(prop.getSchema().getName());
+        blobUrlBuilder.append(":");
+        String canonicalXPath = ComplexTypeImpl.canonicalXPath(prop.getPath().substring(
+                1));
+        blobUrlBuilder.append(URLEncoder.encode(canonicalXPath, "UTF-8"));
+        blobUrlBuilder.append("/");
+        blobUrlBuilder.append(((Blob) prop.getValue()).getFilename());
+        return blobUrlBuilder.toString();
     }
 
 }

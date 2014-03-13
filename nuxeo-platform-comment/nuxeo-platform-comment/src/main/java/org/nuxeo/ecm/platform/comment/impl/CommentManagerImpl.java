@@ -123,9 +123,9 @@ public class CommentManagerImpl implements CommentManager {
 
     public List<DocumentModel> getComments(DocumentModel docModel)
             throws ClientException {
-        Map<String, Serializable> ctxMap = new HashMap<String, Serializable>();
-        ctxMap.put(ResourceAdapter.CORE_SESSION_ID_CONTEXT_KEY,
-                docModel.getSessionId());
+        Map<String, Object> ctxMap = Collections.<String, Object> singletonMap(
+                ResourceAdapter.CORE_SESSION_CONTEXT_KEY,
+                docModel.getCoreSession());
         RelationManager relationManager;
         try {
             relationManager = getRelationManager();
@@ -238,6 +238,7 @@ public class CommentManagerImpl implements CommentManager {
             DocumentModel doc = internalCreateComment(session, docModel,
                     comment, null);
             session.save();
+            doc.detach(true);
             return doc;
         } catch (Exception e) {
             throw new ClientException(e);
@@ -561,9 +562,9 @@ public class CommentManagerImpl implements CommentManager {
 
     public List<DocumentModel> getDocumentsForComment(DocumentModel comment)
             throws ClientException {
-        Map<String, Serializable> ctxMap = new HashMap<String, Serializable>();
-        ctxMap.put(ResourceAdapter.CORE_SESSION_ID_CONTEXT_KEY,
-                comment.getSessionId());
+        Map<String, Object> ctxMap = Collections.<String, Object> singletonMap(
+                ResourceAdapter.CORE_SESSION_CONTEXT_KEY,
+                comment.getCoreSession());
         RelationManager relationManager;
         try {
             relationManager = getRelationManager();

@@ -45,18 +45,14 @@ import org.nuxeo.ecm.automation.core.util.Properties;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
-import org.nuxeo.ecm.core.api.DataModel;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.DocumentModelFactory;
 import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.impl.DataModelImpl;
 import org.nuxeo.ecm.core.api.impl.SimpleDocumentModel;
 import org.nuxeo.ecm.core.api.model.PropertyNotFoundException;
 import org.nuxeo.ecm.core.api.model.impl.primitives.BlobProperty;
-import org.nuxeo.ecm.core.api.pathsegment.PathSegmentService;
 import org.nuxeo.ecm.webengine.WebException;
 import org.nuxeo.ecm.webengine.jaxrs.session.SessionFactory;
-import org.nuxeo.runtime.api.Framework;
 
 /**
  * JAX-RS reader for a DocumentModel. If an id is given, it tries to reattach
@@ -128,24 +124,22 @@ public class JSONDocumentModelReader implements
         if (jp.getCurrentToken() == JsonToken.START_OBJECT) {
             tok = jp.nextToken();
         }
-        DocumentModel tmp = new SimpleDocumentModel();
-        String id = null;
+        SimpleDocumentModel simpleDoc = new SimpleDocumentModel();
         String type = null;
         String name = null;
+        String uid = null;
         while (tok != JsonToken.END_OBJECT) {
             String key = jp.getCurrentName();
             jp.nextToken();
-            if ("uid".equals(key)) {
-                id = jp.readValueAs(String.class);
-            } else if ("properties".equals(key)) {
-                Properties props = readProperties(jp);
-                // Put null for CoreSession, only needed for ecm:acl... Won't be
-                // supported for rest API
-                DocumentHelper.setJSONProperties(null, tmp, props);
+            if ("properties".equals(key)) {
+                DocumentHelper.setJSONProperties(null, simpleDoc,
+                        readProperties(jp));
             } else if ("name".equals(key)) {
                 name = jp.readValueAs(String.class);
             } else if ("type".equals(key)) {
                 type = jp.readValueAs(String.class);
+            } else if ("uid".equals(key)) {
+                uid = jp.readValueAs(String.class);
             } else if ("entity-type".equals(key)) {
                 String entityType = jp.readValueAs(String.class);
                 if (!"document".equals(entityType)) {
@@ -160,40 +154,34 @@ public class JSONDocumentModelReader implements
             tok = jp.nextToken();
         }
 
-        CoreSession session = SessionFactory.getSession(request);
-
-        DocumentModel doc = getOrCreateDocumentModel(id, type, name, session);
-
-        applyPropertyValues(tmp, doc);
-
-        return doc;
-
-    }
-
-    private static void applyPropertyValues(DocumentModel src, DocumentModel dst)
-            throws ClientException {
-        for (String schema : src.getSchemas()) {
-            DataModelImpl dataModel = (DataModelImpl) dst.getDataModel(schema);
-            DataModel fromDataModel = src.getDataModel(schema);
-
-            for (String field : fromDataModel.getDirtyFields()) {
-                Serializable data = (Serializable) fromDataModel.getData(field);
-                try {
-                    if (isNotNull(data)) {
-                        if (!(dataModel.getDocumentPart().get(field) instanceof BlobProperty)) {
-                            dataModel.setData(field, data);
-                        } else {
-                            dataModel.setData(field, decodeBlob(data));
-                        }
-                    }
-                } catch (PropertyNotFoundException e) {
-                    log.warn(String.format(
-                            "Trying to deserialize unexistent field : {%s}",
-                            field));
-                }
-            }
+        if (StringUtils.isNotBlank(type)) {
+            simpleDoc.setType(type);
         }
+
+        if (StringUtils.isNotBlank(name)) {
+            simpleDoc.setPathInfo(null, name);
+        }
+
+        // If a uid is specified, we try to get the doc from
+        // the core session
+        if (uid != null) {
+            CoreSession session = SessionFactory.getSession(request);
+            DocumentModel doc = session.getDocument(new IdRef(uid));
+            applyPropertyValues(simpleDoc, doc);
+            return doc;
+        } else {
+            return simpleDoc;
+        }
+
     }
+
+    static Properties readProperties(JsonParser jp) throws Exception {
+        JsonNode node = jp.readValueAsTree();
+        return new Properties(node);
+
+    }
+
+
 
     /**
      * Decodes a Serializable to make it a blob.
@@ -217,34 +205,30 @@ public class JSONDocumentModelReader implements
         return data != null && !"null".equals(data);
     }
 
-    private static DocumentModel getOrCreateDocumentModel(String id,
-            String type, String name, CoreSession session)
+    public static void applyPropertyValues(DocumentModel src, DocumentModel dst)
             throws ClientException {
-        DocumentModel doc = null;
-        if (StringUtils.isNotBlank(id)) {
-            if (session.exists(new IdRef(id))) {
-                doc = session.getDocument(new IdRef(id));
-            } else {
-                throw new WebApplicationException(Response.Status.NOT_FOUND);
-            }
-        } else {
-            if (StringUtils.isNotBlank(type)) {
-                doc = DocumentModelFactory.createDocumentModel(type);
-                if (StringUtils.isNotBlank(name)) {
-                    PathSegmentService pss = Framework.getLocalService(PathSegmentService.class);
-                    doc.setPathInfo(null, pss.generatePathSegment(name));
+        for (String schema : src.getSchemas()) {
+            DataModelImpl dataModel = (DataModelImpl) dst.getDataModel(schema);
+            DataModelImpl fromDataModel = (DataModelImpl) src.getDataModel(schema);
+
+            for (String field : fromDataModel.getDirtyFields()) {
+                Serializable data = (Serializable) fromDataModel.getData(field);
+                try {
+                    if (isNotNull(data)) {
+                        if (!(dataModel.getDocumentPart().get(field) instanceof BlobProperty)) {
+                            dataModel.setData(field, data);
+                        } else {
+                            dataModel.setData(field, decodeBlob(data));
+                        }
+                    }
+                } catch (PropertyNotFoundException e) {
+                    log.warn(String.format(
+                            "Trying to deserialize unexistent field : {%s}",
+                            field));
                 }
-            } else {
-                throw new WebApplicationException(Response.Status.BAD_REQUEST);
             }
         }
-        return doc;
     }
 
-    static Properties readProperties(JsonParser jp) throws Exception {
-        JsonNode node = jp.readValueAsTree();
-        return new Properties(node);
-
-    }
 
 }
