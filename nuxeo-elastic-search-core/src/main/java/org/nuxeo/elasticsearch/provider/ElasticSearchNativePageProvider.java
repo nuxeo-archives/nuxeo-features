@@ -30,6 +30,8 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.BaseQueryBuilder;
+import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.ClientRuntimeException;
@@ -42,6 +44,7 @@ import org.nuxeo.ecm.platform.query.api.AbstractPageProvider;
 import org.nuxeo.ecm.platform.query.api.PageProviderDefinition;
 import org.nuxeo.elasticsearch.ElasticSearchComponent;
 import org.nuxeo.elasticsearch.api.ElasticSearchService;
+import org.nuxeo.elasticsearch.query.AbstractNuxeoESQueryBuilder;
 import org.nuxeo.runtime.api.Framework;
 
 public class ElasticSearchNativePageProvider extends
@@ -51,8 +54,7 @@ public class ElasticSearchNativePageProvider extends
 
     public static final String CORE_SESSION_PROPERTY = "coreSession";
 
-    protected static final Log log = LogFactory
-            .getLog(ElasticSearchNativePageProvider.class);
+    protected static final Log log = LogFactory.getLog(ElasticSearchNativePageProvider.class);
 
     protected List<DocumentModel> currentPageDocuments;
 
@@ -63,10 +65,9 @@ public class ElasticSearchNativePageProvider extends
             return currentPageDocuments;
         }
         if (log.isDebugEnabled()) {
-            log.debug(String
-                    .format("Perform query for provider '%s': with pageSize=%d, offset=%d",
-                            getName(), getMinMaxPageSize(),
-                            getCurrentPageOffset()));
+            log.debug(String.format(
+                    "Perform query for provider '%s': with pageSize=%d, offset=%d",
+                    getName(), getMinMaxPageSize(), getCurrentPageOffset()));
         }
         // Build the ES query
         SearchRequestBuilder builder = makeQueryBuilder();
@@ -98,43 +99,18 @@ public class ElasticSearchNativePageProvider extends
     }
 
     protected SearchRequestBuilder makeQueryBuilder() {
-        Principal principal = getCoreSession().getPrincipal();
-        ElasticSearchService ess = Framework
-                .getLocalService(ElasticSearchService.class);
-        SearchRequestBuilder ret = ess.getClient()
-                .prepareSearch(ElasticSearchComponent.MAIN_IDX)
-                .setTypes(ElasticSearchComponent.NX_DOCUMENT)
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setFetchSource(ElasticSearchComponent.ID_FIELD, null)
-                .setFrom((int) getCurrentPageOffset())
-                .setSize((int) getMinMaxPageSize());
+
+        ElasticSearchService ess = Framework.getLocalService(ElasticSearchService.class);
+
+        ElasticSearchQueryBuilder builder = new ElasticSearchQueryBuilder(
+                getDefinition(), getSearchDocumentModel(), getParameters());
         try {
-            SortInfo[] sortArray = null;
-            if (sortInfos != null) {
-                sortArray = sortInfos.toArray(new SortInfo[] {});
-            }
-            PageProviderDefinition def = getDefinition();
-            if (def.getWhereClause() == null) {
-                ElasticSearchQueryBuilder.makeQuery(ret, principal, def.getPattern(),
-                        getParameters(), def.getQuotePatternParameters(),
-                        def.getEscapePatternParameters(), sortArray);
-            } else {
-                DocumentModel searchDocumentModel = getSearchDocumentModel();
-                if (searchDocumentModel == null) {
-                    throw new ClientException(String.format(
-                            "Cannot build query of provider '%s': "
-                                    + "no search document model is set",
-                            getName()));
-                }
-                ElasticSearchQueryBuilder.makeQuery(ret, principal, searchDocumentModel,
-                        def.getWhereClause(), getParameters(), sortArray);
-            }
+            return builder.makeSearchQueryBuilder(ess.getClient(),
+                    getCoreSession().getPrincipal(), sortInfos, pageSize,
+                    offset);
         } catch (ClientException e) {
-            throw new ClientRuntimeException(e);
+            throw new ClientRuntimeException("Unable to build query", e);
         }
-        // TODO: Add primarytype filter
-        // TODO: Add acl filtering
-        return ret;
     }
 
     @Override
@@ -177,8 +153,7 @@ public class ElasticSearchNativePageProvider extends
 
     protected CoreSession getCoreSession() {
         Map<String, Serializable> props = getProperties();
-        CoreSession coreSession = (CoreSession) props
-                .get(CORE_SESSION_PROPERTY);
+        CoreSession coreSession = (CoreSession) props.get(CORE_SESSION_PROPERTY);
         if (coreSession == null) {
             throw new ClientRuntimeException("cannot find core session");
         }
