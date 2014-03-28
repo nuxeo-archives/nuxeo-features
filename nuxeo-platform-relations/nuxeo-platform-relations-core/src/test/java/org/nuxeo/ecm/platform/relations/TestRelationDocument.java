@@ -25,6 +25,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
+import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.ecm.platform.relations.api.Graph;
 import org.nuxeo.ecm.platform.relations.api.Node;
@@ -83,6 +84,7 @@ public class TestRelationDocument {
                 "The relation comment"));
         Graph graph = relationManager.getGraph("myrelations", session);
         graph.add(statement);
+        session.save();
 
         // Check file1 relation document
         DocumentModelList docRelations = session.query(String.format(
@@ -94,7 +96,8 @@ public class TestRelationDocument {
                 relation.getPropertyValue("relation:predicate"));
         assertEquals("The related text",
                 relation.getPropertyValue("relation:targetString"));
-        assertEquals("Administrator", relation.getPropertyValue("dc:creator"));
+        assertEquals(SecurityConstants.SYSTEM_USERNAME,
+                relation.getPropertyValue("dc:creator"));
         assertEquals("The relation comment",
                 relation.getPropertyValue("dc:description"));
     }

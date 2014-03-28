@@ -11,13 +11,13 @@
  */
 package org.nuxeo.ecm.automation.core.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.net.URL;
 
-import org.junit.runner.RunWith;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
+import org.junit.runner.RunWith;
 import org.nuxeo.ecm.automation.AutomationService;
 import org.nuxeo.ecm.automation.OperationChain;
 import org.nuxeo.ecm.automation.OperationContext;
@@ -31,6 +31,7 @@ import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.DocumentModelList;
 import org.nuxeo.ecm.core.api.impl.DocumentModelListImpl;
+import org.nuxeo.ecm.core.api.security.SecurityConstants;
 import org.nuxeo.ecm.core.test.CoreFeature;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.services.resource.ResourceService;
@@ -49,6 +50,7 @@ import com.google.inject.Inject;
 public class RenderingServiceTest {
 
     protected DocumentModel src;
+
     protected DocumentModel dst;
 
     @Inject
@@ -85,7 +87,7 @@ public class RenderingServiceTest {
         OperationChain chain = new OperationChain("testRenderingFm");
         chain.add(FetchContextDocument.ID);
         chain.add(RenderDocument.ID).set("template", "Hello ${This.title}");
-        Blob blob = (Blob)service.run(ctx, chain);
+        Blob blob = (Blob) service.run(ctx, chain);
         assertEquals("Hello Source", blob.getString());
 
         // again but with mvel
@@ -93,9 +95,11 @@ public class RenderingServiceTest {
         ctx.setInput(src);
         chain = new OperationChain("testRenderingMvel");
         chain.add(FetchContextDocument.ID);
-        chain.add(RenderDocument.ID).set("template", "Hello ${This.title} ${CurrentUser.name}").set("type", "mvel");
-        blob = (Blob)service.run(ctx, chain);
-        assertEquals("Hello Source Administrator", blob.getString());
+        chain.add(RenderDocument.ID).set("template",
+                "Hello ${This.title} ${CurrentUser.name}").set("type", "mvel");
+        blob = (Blob) service.run(ctx, chain);
+        assertEquals("Hello Source " + SecurityConstants.SYSTEM_USERNAME,
+                blob.getString());
 
         // same test but using a list of docs
         ctx = new OperationContext(session);
@@ -104,8 +108,9 @@ public class RenderingServiceTest {
         list.add(dst);
         ctx.setInput(list);
         chain = new OperationChain("testRenderingMvel2");
-        chain.add(RenderDocument.ID).set("template", "${This.title}").set("type", "mvel");
-        BlobList blobs = (BlobList)service.run(ctx, chain);
+        chain.add(RenderDocument.ID).set("template", "${This.title}").set(
+                "type", "mvel");
+        BlobList blobs = (BlobList) service.run(ctx, chain);
         assertEquals(2, blobs.size());
         assertEquals("Source", blobs.get(0).getString());
         assertEquals("Destination", blobs.get(1).getString());
@@ -114,7 +119,7 @@ public class RenderingServiceTest {
         ctx.setInput(list);
         chain = new OperationChain("testRenderingFtl2");
         chain.add(RenderDocument.ID).set("template", "${This.title}");
-        blobs = (BlobList)service.run(ctx, chain);
+        blobs = (BlobList) service.run(ctx, chain);
         assertEquals(2, blobs.size());
         assertEquals("Source", blobs.get(0).getString());
         assertEquals("Destination", blobs.get(1).getString());
@@ -124,9 +129,11 @@ public class RenderingServiceTest {
     @Test
     public void testRenderingFeed() throws Exception {
         URL url = getClass().getClassLoader().getResource("render.mvel");
-        Framework.getLocalService(ResourceService.class).addResource("render.mvel", url);
+        Framework.getLocalService(ResourceService.class).addResource(
+                "render.mvel", url);
         url = getClass().getClassLoader().getResource("render.ftl");
-        Framework.getLocalService(ResourceService.class).addResource("render.ftl", url);
+        Framework.getLocalService(ResourceService.class).addResource(
+                "render.ftl", url);
 
         OperationContext ctx = new OperationContext(session);
         DocumentModelList list = new DocumentModelListImpl();
@@ -134,8 +141,9 @@ public class RenderingServiceTest {
         list.add(dst);
         ctx.setInput(list);
         OperationChain chain = new OperationChain("testRenderingFeed");
-        chain.add(RenderDocumentFeed.ID).set("template", Renderer.TEMPLATE_PREFIX+"render.mvel").set("type", "mvel");
-        Blob blob = (Blob)service.run(ctx, chain);
+        chain.add(RenderDocumentFeed.ID).set("template",
+                Renderer.TEMPLATE_PREFIX + "render.mvel").set("type", "mvel");
+        Blob blob = (Blob) service.run(ctx, chain);
         String r = blob.getString();
         r = r.replaceAll("\\s+", "");
         assertEquals("SourceDestination", r);
@@ -143,8 +151,9 @@ public class RenderingServiceTest {
         ctx = new OperationContext(session);
         ctx.setInput(list);
         chain = new OperationChain("testRenderingFeed2");
-        chain.add(RenderDocumentFeed.ID).set("template", Renderer.TEMPLATE_PREFIX+"render.ftl");
-        blob = (Blob)service.run(ctx, chain);
+        chain.add(RenderDocumentFeed.ID).set("template",
+                Renderer.TEMPLATE_PREFIX + "render.ftl");
+        blob = (Blob) service.run(ctx, chain);
         r = blob.getString();
         r = r.replaceAll("\\s+", "");
         assertEquals("SourceDestination", r);

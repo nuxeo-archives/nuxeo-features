@@ -173,9 +173,9 @@ public class IterableOperationsTest {
         DocumentModelList out = (DocumentModelList) service.run(ctx, chain);
 
         assertEquals(2, out.size());
-        assertEquals(SecurityConstants.ADMINISTRATOR,
+        assertEquals(SecurityConstants.SYSTEM_USERNAME,
                 out.get(0).getLockInfo().getOwner());
-        assertEquals(SecurityConstants.ADMINISTRATOR,
+        assertEquals(SecurityConstants.SYSTEM_USERNAME,
                 out.get(1).getLockInfo().getOwner());
     }
 
