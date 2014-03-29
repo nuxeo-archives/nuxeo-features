@@ -83,7 +83,7 @@ public class NotificationService extends DefaultComponent implements
 
     protected static final String GENERAL_SETTINGS_EP = "generalSettings";
     
-    protected static final String NUXEO_URL = "nuxeo.url";
+    protected static final String NUXEO_URL = "nuxeo.url"; 
 
     protected static final String NOTIFICATION_HOOK_EP = "notificationListenerHook";
 
