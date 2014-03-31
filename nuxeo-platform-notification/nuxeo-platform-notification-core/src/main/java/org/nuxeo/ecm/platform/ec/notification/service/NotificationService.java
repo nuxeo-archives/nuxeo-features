@@ -82,6 +82,8 @@ public class NotificationService extends DefaultComponent implements
     protected static final String TEMPLATES_EP = "templates";
 
     protected static final String GENERAL_SETTINGS_EP = "generalSettings";
+    
+    protected static final String NUXEO_URL = "nuxeo.url"; 
 
     protected static final String NOTIFICATION_HOOK_EP = "notificationListenerHook";
 
@@ -118,7 +120,7 @@ public class NotificationService extends DefaultComponent implements
 
         // init default settings
         generalSettings = new GeneralSettingsDescriptor();
-        generalSettings.serverPrefix = "http://localhost:8080/nuxeo/";
+        generalSettings.serverPrefix = Framework.getProperty(NUXEO_URL);
         generalSettings.eMailSubjectPrefix = "[Nuxeo]";
         generalSettings.mailSessionJndiName = "java:/Mail";
     }
