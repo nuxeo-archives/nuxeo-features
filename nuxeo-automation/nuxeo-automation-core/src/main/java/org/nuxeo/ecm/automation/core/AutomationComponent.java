@@ -81,6 +81,7 @@ import org.nuxeo.ecm.automation.core.operations.document.DeleteDocument;
 import org.nuxeo.ecm.automation.core.operations.document.FetchByProperty;
 import org.nuxeo.ecm.automation.core.operations.document.FetchDocument;
 import org.nuxeo.ecm.automation.core.operations.document.FilterDocuments;
+import org.nuxeo.ecm.automation.core.operations.document.GetDocumentACP;
 import org.nuxeo.ecm.automation.core.operations.document.GetDocumentChild;
 import org.nuxeo.ecm.automation.core.operations.document.GetDocumentChildren;
 import org.nuxeo.ecm.automation.core.operations.document.GetDocumentParent;
@@ -213,6 +214,7 @@ public class AutomationComponent extends DefaultComponent {
         service.putOperation(SaveDocument.class);
         service.putOperation(SaveSession.class);
         service.putOperation(SetDocumentLifeCycle.class);
+        service.putOperation(GetDocumentACP.class);
         service.putOperation(SetDocumentACE.class);
         service.putOperation(AddPermission.class);
         service.putOperation(RemovePermission.class);

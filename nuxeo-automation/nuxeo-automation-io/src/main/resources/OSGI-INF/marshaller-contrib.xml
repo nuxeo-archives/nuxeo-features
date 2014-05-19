@@ -16,6 +16,7 @@
       </writer>
       <writer>org.nuxeo.ecm.automation.jaxrs.io.documents.BlobsWriter
       </writer>
+      <writer>org.nuxeo.ecm.automation.jaxrs.io.documents.ACPWriter</writer>
       <writer>org.nuxeo.ecm.automation.jaxrs.io.JsonLoginInfoWriter
       </writer>
       <writer>org.nuxeo.ecm.automation.jaxrs.io.operations.JsonOperationWriter
