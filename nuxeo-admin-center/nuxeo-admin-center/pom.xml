@@ -8,6 +8,7 @@
   </parent>
 
   <artifactId>nuxeo-admin-center</artifactId>
+  <version>5.9.3-patch-NXP-14377</version>
   <name>Nuxeo Administration Center</name>
   <description>Nuxeo Administration Center</description>
 
