@@ -22,6 +22,7 @@ import org.nuxeo.ecm.core.api.ClientException;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.thumbnail.ThumbnailAdapter;
 import org.nuxeo.ecm.platform.ui.web.tag.fn.DocumentModelFunctions;
+import org.nuxeo.ecm.platform.web.common.vh.VirtualHostHelper;
 
 import java.io.IOException;
 
@@ -31,6 +32,12 @@ import java.io.IOException;
  * @since 5.9.5
  */
 public class ThumbnailRestContributor implements RestContributor {
+
+    public static final String THUMBNAIL_URL_LABEL = "url";
+
+    public static final String THUMB_THUMBNAIL = "thumb:thumbnail";
+
+    public static final String DOWNLOAD_THUMBNAIL = "downloadThumbnail";
 
     @Override
     public void contribute(JsonGenerator jg, RestEvaluationContext ec)
@@ -44,9 +51,11 @@ public class ThumbnailRestContributor implements RestContributor {
                 Blob thumbnail = thumbnailAdapter.getThumbnail(doc
                         .getCoreSession());
                 if (thumbnail != null) {
-                    String url = DocumentModelFunctions.fileUrl("downloadFile",
-                            doc, "thumb:thumbnail", thumbnail.getFilename());
-                    jg.writeStringField("thumbnailUrl", url);
+                    String url = VirtualHostHelper.getContextPathProperty()
+                            + "/" + DocumentModelFunctions.fileUrl
+                            (DOWNLOAD_THUMBNAIL, doc, THUMB_THUMBNAIL,
+                                    thumbnail.getFilename());
+                    jg.writeStringField(THUMBNAIL_URL_LABEL, url);
                 } else {
                     writeEmptyThumbnail(jg);
                 }
@@ -61,7 +70,7 @@ public class ThumbnailRestContributor implements RestContributor {
     }
 
     private void writeEmptyThumbnail(JsonGenerator jg) throws IOException {
-        jg.writeStringField("thumbnailUrl", null);
+        jg.writeStringField(THUMBNAIL_URL_LABEL, null);
     }
 
 }
