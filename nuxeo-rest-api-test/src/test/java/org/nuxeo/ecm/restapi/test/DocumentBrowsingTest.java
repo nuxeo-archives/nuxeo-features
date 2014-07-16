@@ -337,7 +337,7 @@ public class DocumentBrowsingTest extends BaseTest {
         JsonNode node = mapper.readTree(response.getEntityInputStream());
         assertEquals(null, node.get(RestConstants
                 .CONTRIBUTOR_CTX_PARAMETERS).get("thumbnail").get
-                ("thumbnailUrl").getTextValue());
+                ("url").getTextValue());
     }
 
     @Test
