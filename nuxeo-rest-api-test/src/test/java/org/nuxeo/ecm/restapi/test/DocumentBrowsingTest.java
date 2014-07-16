@@ -299,7 +299,7 @@ public class DocumentBrowsingTest extends BaseTest {
     @Test
     public void iCanGetTheThumbnailOfADocumentThroughContributor() throws
             Exception {
-        //TODO NXP-14702: Improve testing by adding thumbnail conversion
+        //TODO NXP-14793: Improve testing by adding thumbnail conversion
         // Attach a blob
         //Blob blob = new InputStreamBlob(DocumentBrowsingTest.class.getResource(
         //"/test-data/png.png").openStream(), "image/png",
