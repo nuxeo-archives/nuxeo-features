@@ -269,7 +269,8 @@ public class DocumentBrowsingTest extends BaseTest {
         // Then i get a the ACL
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         JsonNode node = mapper.readTree(response.getEntityInputStream());
-        assertEquals(ACPWriter.ENTITY_TYPE, node.get("entity-type").getValueAsText());
+        assertEquals(ACPWriter.ENTITY_TYPE,
+                node.get("entity-type").getValueAsText());
 
     }
 
