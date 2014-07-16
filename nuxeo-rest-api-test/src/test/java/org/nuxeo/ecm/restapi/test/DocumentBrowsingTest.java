@@ -296,6 +296,50 @@ public class DocumentBrowsingTest extends BaseTest {
     }
 
     @Test
+    public void iCanGetTheThumbnailOfADocumentThroughContributor() throws
+            Exception {
+        //TODO NXP-14702: Improve testing by adding thumbnail conversion
+        // Attach a blob
+        //Blob blob = new InputStreamBlob(DocumentBrowsingTest.class.getResource(
+        //"/test-data/png.png").openStream(), "image/png",
+        //null, "logo.png", null);
+        //DocumentModel file = RestServerInit.getFile(0, session);
+        //file.setPropertyValue("file:content", (Serializable) blob);
+        //file = session.saveDocument(file);
+        //session.save();
+        //ClientResponse response = getResponse(
+        //RequestType.GET,
+        //"repo/" + file.getRepositoryName() + "/path"
+        //+ file.getPathAsString(), headers);
+          // Then i get an entry for thumbnail
+        //assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        //JsonNode node = mapper.readTree(response.getEntityInputStream());
+        //assertEquals("specificUrl", node.get(RestConstants
+        //.CONTRIBUTOR_CTX_PARAMETERS).get("thumbnail").get
+        //("thumbnailUrl").getTextValue());
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put(RestContributorServiceImpl.NXCONTENT_CATEGORY_HEADER,
+                "thumbnail");
+
+        // Given an existing document
+        DocumentModel note = RestServerInit.getNote(0, session);
+
+        // When i do a GET Request on the note without any image
+        ClientResponse response = getResponse(RequestType.GET,
+                "repo/" + note.getRepositoryName() + "/path"
+                        + note.getPathAsString(), headers);
+
+        // Then i get no result for valid thumbnail url as expected but still
+        // thumbnail entry from the contributor
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        JsonNode node = mapper.readTree(response.getEntityInputStream());
+        assertEquals(null, node.get(RestConstants
+                .CONTRIBUTOR_CTX_PARAMETERS).get("thumbnail").get
+                ("thumbnailUrl").getTextValue());
+    }
+
+    @Test
     public void itCanBrowseDocumentWithSpacesInPath() throws Exception {
         DocumentModel folder = RestServerInit.getFolder(0, session);
         DocumentModel note = session.createDocumentModel(
