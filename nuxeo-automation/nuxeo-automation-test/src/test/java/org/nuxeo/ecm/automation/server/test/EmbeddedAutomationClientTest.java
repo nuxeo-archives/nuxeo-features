@@ -463,14 +463,13 @@ public class EmbeddedAutomationClientTest extends AbstractAutomationClientTest {
         assertEquals("testDoc", testDoc.getTitle());
         assertEquals("testDoc", testDoc.getProperties().get("dc:title"));
 
-        // schema only a subset of the properties are serialized with default
-        // configuration (common and dublincore only)
+        // Return all schemas by default
         // see @Constants.HEADER_NX_SCHEMAS
 
-        assertNull(testDoc.getProperties().get("ds:tableName"));
-        assertNull(testDoc.getProperties().get("ds:fields"));
+        assertNotNull(testDoc.getProperties().get("ds:tableName"));
+        assertNotNull(testDoc.getProperties().get("ds:fields"));
 
-        // refetch the doc, but with the correct header
+        // refetch the doc, with * header (same behavior than default one)
         testDoc = (Document) session.newRequest(DocumentService.FetchDocument).setHeader(
                 Constants.HEADER_NX_SCHEMAS, "*").set("value", "/testDoc").execute();
 
@@ -739,7 +738,7 @@ public class EmbeddedAutomationClientTest extends AbstractAutomationClientTest {
         documentService.update(folder);
 
         // Check if title has been updated
-        folder = documentService.getDocument(folder, "*");
+        folder = documentService.getDocument(folder);
         assertEquals("New Title", folder.getString("dc:title"));
 
         // Test with complex metadata

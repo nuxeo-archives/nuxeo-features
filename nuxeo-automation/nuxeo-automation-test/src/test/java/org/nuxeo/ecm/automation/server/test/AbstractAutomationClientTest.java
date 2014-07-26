@@ -569,8 +569,8 @@ public abstract class AbstractAutomationClientTest {
         try {
             Document root = (Document) session.newRequest(FetchDocument.ID).set(
                     "value", "/").execute();
-            // only title and modified
-            assertEquals(1, root.getProperties().size());
+            // Return all properties by default
+            assertEquals(21, root.getProperties().size());
 
             // lot of properties ...
             session.setDefaultSchemas("common,dublincore,file");
@@ -587,7 +587,7 @@ public abstract class AbstractAutomationClientTest {
             session.setDefaultSchemas(null);
             root = (Document) session.newRequest(FetchDocument.ID).set("value",
                     "/").execute();
-            assertEquals(1, root.getProperties().size());
+            assertEquals(21, root.getProperties().size());
 
         } finally {
             session.setDefaultSchemas(null);

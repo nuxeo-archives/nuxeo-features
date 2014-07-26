@@ -194,20 +194,18 @@ public class JsonDocumentWriter implements MessageBodyWriter<DocumentModel> {
             // ignore
         }
 
-        if (schemas != null && schemas.length > 0) {
-            jg.writeObjectFieldStart("properties");
-            if (schemas.length == 1 && "*".equals(schemas[0])) {
-                // full document
-                for (String schema : doc.getSchemas()) {
-                    writeProperties(jg, doc, schema, request);
-                }
-            } else {
-                for (String schema : schemas) {
-                    writeProperties(jg, doc, schema, request);
-                }
+        jg.writeObjectFieldStart("properties");
+        if (schemas == null || schemas.length == 1 && "*".equals(schemas[0])) {
+            // full document
+            for (String schema : doc.getSchemas()) {
+                writeProperties(jg, doc, schema, request);
             }
-            jg.writeEndObject();
+        } else {
+            for (String schema : schemas) {
+                writeProperties(jg, doc, schema, request);
+            }
         }
+        jg.writeEndObject();
 
         jg.writeArrayFieldStart("facets");
         for (String facet : doc.getFacets()) {
