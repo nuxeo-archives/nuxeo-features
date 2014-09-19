@@ -6,8 +6,8 @@
     <version>5.9.6-SNAPSHOT</version>
   </parent>
 
-  <artifactId>nuxeo-elasticsearch-audit</artifactId>
-  <name>Elasticsearch based Audit backend implementation</name>
+  <artifactId>nuxeo-elasticsearch-seqgen</artifactId>
+  <name>Elasticsearch based Audit Sequence generator</name>
 
   <dependencies>
     <dependency>
@@ -35,11 +35,6 @@
     <dependency>
       <groupId>org.nuxeo.elasticsearch</groupId>
       <artifactId>nuxeo-elasticsearch-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.nuxeo.elasticsearch</groupId>
-      <artifactId>nuxeo-elasticsearch-seqgen</artifactId>
-      <version>5.9.6-SNAPSHOT</version>
     </dependency>
 
     <dependency>
