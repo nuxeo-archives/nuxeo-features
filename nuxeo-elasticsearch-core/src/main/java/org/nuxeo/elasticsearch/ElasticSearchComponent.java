@@ -111,6 +111,8 @@ public class ElasticSearchComponent extends DefaultComponent implements
             log.info("Registering index configuration: " + idx
                     + ", loaded from " + contributor.getName());
             break;
+        default:
+            throw new IllegalArgumentException("Invalid EP: " + extensionPoint);
         }
 
     }
