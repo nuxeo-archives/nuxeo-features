@@ -22,8 +22,8 @@
 
     <command name="resizer" enabled="true">
       <commandLine>convert</commandLine>
-      <parameterString>-quiet -depth #{targetDepth} #{inputFilePath}[0] jpg:- | convert - -resize #{targetWidth}x#{targetHeight} #{outputFilePath}</parameterString>
-      <winParameterString>-quiet -depth #{targetDepth} #{inputFilePath}[0] -resize #{targetWidth}x#{targetHeight} #{outputFilePath}</winParameterString>
+      <parameterString>-quiet -auto-orient -depth #{targetDepth} #{inputFilePath}[0] jpg:- | convert - -resize #{targetWidth}x#{targetHeight} #{outputFilePath}</parameterString>
+      <winParameterString>-quiet -auto-orient -depth #{targetDepth} #{inputFilePath}[0] -resize #{targetWidth}x#{targetHeight} #{outputFilePath}</winParameterString>
       <installationDirective>You need to install ImageMagic.</installationDirective>
     </command>
 
