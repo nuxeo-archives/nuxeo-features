@@ -156,12 +156,12 @@ public class SendMail {
             map.put("from", from);
             map.put("fromResolved",
                     MailBox.fetchPersonsFromString(from, isStrict));
-            map.put("from", cc);
-            map.put("fromResolved", MailBox.fetchPersonsFromList(cc, isStrict));
-            map.put("from", bcc);
-            map.put("fromResolved", MailBox.fetchPersonsFromList(bcc, isStrict));
-            map.put("from", replyto);
-            map.put("fromResolved",
+            map.put("cc", cc);
+            map.put("ccResolved", MailBox.fetchPersonsFromList(cc, isStrict));
+            map.put("bcc", bcc);
+            map.put("bccResolved", MailBox.fetchPersonsFromList(bcc, isStrict));
+            map.put("replyto", replyto);
+            map.put("replytoResolved",
                     MailBox.fetchPersonsFromList(replyto, isStrict));
             map.put("viewId", viewId);
             map.put("baseUrl",
@@ -170,7 +170,7 @@ public class SendMail {
             Mailer.Message msg = createMessage(doc, getContent(), map);
             msg.setSubject(subject, "UTF-8");
 
-            addMailBoxInfo(msg);
+            addMailBoxInfo(msg, map);
 
             msg.send();
         } catch (Exception e) {
@@ -188,24 +188,19 @@ public class SendMail {
     /**
      * @since 5.9.1
      */
-    private void addMailBoxInfo(Mailer.Message msg) throws MessagingException,
+    private void addMailBoxInfo(Mailer.Message msg, Map<String, Object> map) throws MessagingException,
             ClientException {
-        List<MailBox> persons = MailBox.fetchPersonsFromString(from, isStrict);
-        addMailBoxInfoInMessageHeader(msg, AS.FROM, persons);
+        addMailBoxInfoInMessageHeader(msg, AS.FROM, map.get("fromResolved"));
 
-        persons = MailBox.fetchPersonsFromList(to, isStrict);
-        addMailBoxInfoInMessageHeader(msg, AS.TO, persons);
+        addMailBoxInfoInMessageHeader(msg, AS.TO, map.get("toResolved"));
 
-        persons = MailBox.fetchPersonsFromList(cc, isStrict);
-        addMailBoxInfoInMessageHeader(msg, AS.CC, persons);
+        addMailBoxInfoInMessageHeader(msg, AS.CC, map.get("ccResolved"));
 
-        persons = MailBox.fetchPersonsFromList(bcc, isStrict);
-        addMailBoxInfoInMessageHeader(msg, AS.BCC, persons);
+        addMailBoxInfoInMessageHeader(msg, AS.BCC, map.get("bccResolved"));
 
         if (replyto != null && !replyto.isEmpty()) {
             msg.setReplyTo(null);
-            persons = MailBox.fetchPersonsFromList(replyto, isStrict);
-            addMailBoxInfoInMessageHeader(msg, AS.REPLYTO, persons);
+            addMailBoxInfoInMessageHeader(msg, AS.REPLYTO, map.get("replytoResolved"));
         }
     }
 
